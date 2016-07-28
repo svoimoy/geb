@@ -12,5 +12,5 @@ clean:
 .PHONY: hofstadter
 hofstadter:
 	@echo "output to: '$(output_path)'"
-	@goagen --out $(output_path) -d $(design_path) gen --pkg-path=github.com/hofstadter-io/hofstadter/gen/dsl
+	@goagen --out $(output_path) -d $(design_path) gen --pkg-path=github.com/hofstadter-io/geb-dsl-cli/gen/dsl
 
