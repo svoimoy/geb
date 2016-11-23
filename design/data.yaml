@@ -1,13 +1,15 @@
-package: main
-host: google.com
-bar: foogoo
-params:
-  - arg1
-  - arg2
-params2:
-  - name: arg1
-    type: string
-    default: foo
-  - name: arg2
-    type: int
-    default: 0
+CUSTOM:
+  package: main
+  name: hofstadter
+  host: google.com
+  bar: foogoo
+  params:
+    - arg1
+    - arg2
+  params2:
+    - name: arg1
+      type: string
+      default: foo
+    - name: arg2
+      type: int
+      default: 0
