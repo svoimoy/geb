@@ -27,18 +27,22 @@ func init() {
 	DESIGN.types = make(map[string]DesignData)
 }
 
-func ImportDesigns(folder string) error {
+func ImportDesignFile(filename string) error {
+	return import_design(filename)
+}
+
+func ImportDesignFolder(folder string) error {
 
 	fmt.Println("Loading designs from: ", folder)
 	// Walk the directory
-	err := filepath.Walk(folder, import_design)
+	err := filepath.Walk(folder, import_design_walk_func)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func import_design(path string, info os.FileInfo, err error) error {
+func import_design_walk_func(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return nil
 	}
@@ -46,7 +50,11 @@ func import_design(path string, info os.FileInfo, err error) error {
 		return nil
 	}
 
-	fmt.Println(" -", path)
+	return import_design(path)
+}
+
+func import_design(path string) error {
+	// fmt.Println(" -", path)
 	top_level := make(map[string]interface{})
 	raw_data, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -73,14 +81,14 @@ func store_design(dsl string, design DesignData) error {
 	switch dsl {
 	case "CUSTOM":
 		DESIGN.dsls[dsl] = design
-		fmt.Println("    ", dsl, "data")
+		// fmt.Println("    ", dsl, "data")
 	case "API", "CLI":
 		_, ok := design["name"]
 		if !ok {
 			return errors.New("field 'name' missing from " + dsl + " dsl")
 		}
 		DESIGN.dsls[dsl] = design
-		fmt.Println("    ", dsl, design["name"])
+		// fmt.Println("    ", dsl, design["name"])
 	case "TYPE":
 		iname, ok := design["name"]
 		if !ok {
@@ -91,7 +99,7 @@ func store_design(dsl string, design DesignData) error {
 			return errors.New("field 'name' is not a string in TYPE " + fmt.Sprint(iname))
 		}
 		DESIGN.types[name] = design
-		fmt.Println("    ", dsl, design["name"])
+		// fmt.Println("    ", dsl, design["name"])
 
 	default:
 		return errors.New("Unknown dsl: " + dsl)

@@ -18,18 +18,22 @@ func init() {
 	templates = make(map[string]*raymond.Template)
 }
 
-func ImportTemplates(folder string) error {
+func ImportTemplateFile(filename string) error {
+	return import_template(filename)
+}
+
+func ImportTemplateFolder(folder string) error {
 
 	fmt.Println("Loading templates from: ", folder)
 	// Walk the directory
-	err := filepath.Walk(folder, import_template)
+	err := filepath.Walk(folder, import_template_walk_func)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func import_template(path string, info os.FileInfo, err error) error {
+func import_template_walk_func(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return nil
 	}
@@ -37,7 +41,12 @@ func import_template(path string, info os.FileInfo, err error) error {
 		return nil
 	}
 
-	fmt.Println(" -", path)
+	return import_template(path)
+}
+
+func import_template(path string) error {
+
+	// fmt.Println(" -", path)
 	raw_template, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
