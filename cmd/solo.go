@@ -44,7 +44,7 @@ var SoloCmd = &cobra.Command{
 			cmd.Help()
 		}
 
-		result, err := engine.RenderTemplate(template)
+		result, err := engine.RenderTemplate(template, engine.DESIGN)
 		if err != nil {
 			fmt.Println("Error while rendering:", err)
 			cmd.Help()
