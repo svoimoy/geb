@@ -1,12 +1,39 @@
 package engine
 
-import "errors"
+import (
+	"errors"
+	"io/ioutil"
+)
 
-func Generate(generators, outdir string) error {
+func Generate(generators []string, outdir string) error {
 
-	// make plan
+	// make rendering plans
+	plans, err := MakeRenderingPlans(generators)
+	if err != nil {
+		return err
+	}
 
 	// render designs
+	for _, plan := range plans {
+		err = RenderPlan(plan)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func RenderPlan(plan Plan) error {
+	result, err := RenderTemplate(plan.template, plan.design)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(plan.outfile, []byte(result), 0644)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

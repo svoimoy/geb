@@ -12,8 +12,9 @@ import (
 )
 
 type Design struct {
-	dsls  map[string]DesignData
-	types map[string]DesignData
+	custom map[string]DesignData
+	dsls   map[string]DesignData
+	types  map[string]DesignData
 }
 
 type DesignData map[interface{}]interface{}
@@ -23,6 +24,7 @@ var (
 )
 
 func init() {
+	DESIGN.custom = make(map[string]DesignData)
 	DESIGN.dsls = make(map[string]DesignData)
 	DESIGN.types = make(map[string]DesignData)
 }
@@ -79,17 +81,14 @@ func import_design(path string) error {
 
 func store_design(dsl string, design DesignData) error {
 	switch dsl {
-	case "CUSTOM":
-		DESIGN.dsls[dsl] = design
-		// fmt.Println("    ", dsl, "data")
-	case "API", "CLI":
+	case "api", "cli":
 		_, ok := design["name"]
 		if !ok {
 			return errors.New("field 'name' missing from " + dsl + " dsl")
 		}
 		DESIGN.dsls[dsl] = design
 		// fmt.Println("    ", dsl, design["name"])
-	case "TYPE":
+	case "type":
 		iname, ok := design["name"]
 		if !ok {
 			return errors.New("field 'name' missing from TYPE dsl")
@@ -102,7 +101,8 @@ func store_design(dsl string, design DesignData) error {
 		// fmt.Println("    ", dsl, design["name"])
 
 	default:
-		return errors.New("Unknown dsl: " + dsl)
+		DESIGN.custom[dsl] = design
+		// fmt.Println("    ", dsl, "data")
 	}
 
 	return nil

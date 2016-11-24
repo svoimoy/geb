@@ -34,7 +34,8 @@ var GenerateCmd = &cobra.Command{
 
 		outdir := viper.Get("output-dir").(string)
 		geners := viper.Get("generators").(string)
-		engine.Generate(geners, outdir)
+		generators := strings.Split(geners, ",")
+		engine.Generate(generators, outdir)
 
 	},
 }

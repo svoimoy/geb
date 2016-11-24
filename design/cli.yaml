@@ -1,4 +1,4 @@
-CLI:
+cli:
   name: geb
   short: "geb is a data centric code generator"
   long: |

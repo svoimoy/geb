@@ -1,4 +1,4 @@
-TYPE:
+type:
   name: user
   public-fields:
     - id
