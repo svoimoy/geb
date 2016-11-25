@@ -1,0 +1,10 @@
+type:
+  name: user
+  public-fields:
+    - id
+    - fname
+    - lname
+    - email
+  private-fields:
+    - ssn
+    - address
