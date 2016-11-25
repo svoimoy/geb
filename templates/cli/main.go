@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/hofstadter-io/geb/output/cli/cmd"
+	"{{generator.outdir}}/cmd"
 )
 
 func main() {

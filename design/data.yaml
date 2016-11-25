@@ -1,4 +1,4 @@
-custom:
+mydata:
   package: main
   name: hofstadter
   host: google.com

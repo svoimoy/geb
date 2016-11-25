@@ -1,0 +1,16 @@
+generators:
+  - sample
+  - cli
+
+# This should pick up on defaults found in the templates directories
+# This would also be useful when looking and verifying generators
+pipeline:
+  - name: geb generate
+    generate:
+      - sample
+      - cli
+  - name: test cli
+    test:
+      - cli
+  - name: build golang sample:v2
+    cmd: go build -o sample-v2 output/sample/golang/v2

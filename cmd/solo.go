@@ -36,18 +36,21 @@ var SoloCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println("Error reading design:", err)
 			cmd.Help()
+			return
 		}
 
 		err = engine.ImportTemplateFile(template)
 		if err != nil {
 			fmt.Println("Error reading template:", err)
 			cmd.Help()
+			return
 		}
 
 		result, err := engine.RenderTemplate(template, engine.DESIGN)
 		if err != nil {
 			fmt.Println("Error while rendering:", err)
 			cmd.Help()
+			return
 		}
 
 		if output == "stdout" {
@@ -59,6 +62,7 @@ var SoloCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println("Error writing file:", err)
 			cmd.Help()
+			return
 		}
 
 	},

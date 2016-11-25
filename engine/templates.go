@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -11,42 +10,52 @@ import (
 
 var (
 	// A map from filename to template
-	templates map[string]*raymond.Template
+	TEMPLATES map[string]*raymond.Template
 )
 
 func init() {
-	templates = make(map[string]*raymond.Template)
+	TEMPLATES = make(map[string]*raymond.Template)
 }
 
 func ImportTemplateFile(filename string) error {
-	return import_template(filename)
+	return import_template("", filename)
 }
 
 func ImportTemplateFolder(folder string) error {
-
-	fmt.Println("Loading templates from: ", folder)
 	// Walk the directory
-	err := filepath.Walk(folder, import_template_walk_func)
+	err := filepath.Walk(folder, import_template_walk_func(folder))
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func import_template_walk_func(path string, info os.FileInfo, err error) error {
-	if err != nil {
-		return nil
-	}
-	if info.IsDir() {
-		return nil
-	}
+func import_template_walk_func(base_path string) filepath.WalkFunc {
+	return func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return nil
+		}
+		if info.IsDir() {
+			return nil
+		}
 
-	return import_template(path)
+		return import_template(base_path, path)
+	}
 }
 
-func import_template(path string) error {
+func import_template(base_path, path string) error {
+	tpl_name := path
+	L := len(base_path)
+	if L > 0 {
+		// should handle trailing slashes better here
+		if base_path[L-1] == '/' {
+			tpl_name = path[L:]
+		} else {
+			tpl_name = path[L+1:]
+		}
+	}
 
-	// fmt.Println(" -", path)
+	// fmt.Println(" -", base_path, tpl_name)
 	raw_template, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -59,6 +68,6 @@ func import_template(path string) error {
 		return err
 	}
 
-	templates[path] = tpl
+	TEMPLATES[tpl_name] = tpl
 	return nil
 }

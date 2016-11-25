@@ -7,21 +7,21 @@ import (
 )
 
 var (
-{{#each CLI.flags}}	{{ name }}Flag string
+{{#each dsl.cli.flags}}	{{ name }}Flag string
 	{{/each}}
 )
 
 func init() {
 	//	cobra.OnInitialize(initConfig)
-{{#each CLI.flags}}	RootCmd.PersistentFlags().StringVarP(&{{ name }}Flag, "{{name}}", "{{short}}", "{{default}}", "{{help}}")
+{{#each dsl.cli.flags}}	RootCmd.PersistentFlags().StringVarP(&{{ name }}Flag, "{{name}}", "{{short}}", "{{default}}", "{{help}}")
 {{/each}}
 }
 
 var (
 	RootCmd = &cobra.Command{
-		Use:   "{{ CLI.name }}",
-		Short: "{{ CLI.short }}",
-		Long:  `{{ CLI.long }}`,
+		Use:   "{{ dsl.cli.name }}",
+		Short: "{{ dsl.cli.short }}",
+		Long:  `{{ dsl.cli.long }}`,
 		Run: func(cmd *cobra.Command, args []string) {
 			// HOFSTADTER_START root_cmd_func
 			// Do Stuff Here

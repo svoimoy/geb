@@ -8,49 +8,35 @@ import (
 )
 
 var (
-	configFile    string
-	designDir     string
-	templatePaths string
-	outputDir     string
-	generators    string
-	verbose       bool
+	FlagConfigFile    string
+	FlagDesignDir     string
+	FlagTemplatePaths string
+	FlagOutputDir     string
+	LOUD              bool
 )
 
 func init() {
-	viper.SetConfigType("yaml")
-
 	//	cobra.OnInitialize(initConfig)
-	RootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "geb config file for your projectd.")
-	RootCmd.PersistentFlags().StringVarP(&designDir, "design-dir", "d", "", "the design files directory. (default ./design)")
-	RootCmd.PersistentFlags().StringVarP(&templatePaths, "template-paths", "t", "", "base templates directory. (default ./templates:~/.hofstadter/templates)")
-	RootCmd.PersistentFlags().StringVarP(&outputDir, "output-dir", "o", "", "the output files directory. (default ./output)")
-	RootCmd.PersistentFlags().StringVarP(&generators, "generators", "g", "", "which generator to run. (defaults to all found)")
-	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Print out verbose messages to see whats giong on.")
+	RootCmd.PersistentFlags().StringVarP(&FlagConfigFile, "config", "c", "", "geb config file for your projectd.")
+	RootCmd.PersistentFlags().StringVarP(&FlagDesignDir, "design-dir", "d", "", "the design files directory. (default ./design)")
+	RootCmd.PersistentFlags().StringVarP(&FlagTemplatePaths, "template-paths", "t", "", "base templates directory. (default ./templates:~/.hofstadter/templates)")
+	RootCmd.PersistentFlags().StringVarP(&FlagOutputDir, "output-dir", "o", "", "the output files directory. (default ./output)")
+	RootCmd.PersistentFlags().BoolVarP(&LOUD, "verbose", "v", false, "Print out verbose messages to see whats giong on.")
 
 	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("design-dir", RootCmd.PersistentFlags().Lookup("design-dir"))
 	viper.BindPFlag("template-paths", RootCmd.PersistentFlags().Lookup("template-paths"))
 	viper.BindPFlag("output-dir", RootCmd.PersistentFlags().Lookup("output-dir"))
-	viper.BindPFlag("generators", RootCmd.PersistentFlags().Lookup("generators"))
 
-	viper.SetDefault("config", "geb.yaml")
-	viper.SetDefault("design-dir", "design")
-	viper.SetDefault("template-paths", "~/.hofstadter/templates:./templates")
-	viper.SetDefault("output-dir", "output")
-	viper.SetDefault("generators", "all")
-
-	viper.SetConfigName(viper.Get("config").(string))
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("geb")
 	viper.AddConfigPath(".")
-	err := viper.ReadInConfig() // Find and read the config file
-	if err != nil {
-		if err.Error() == "open : no such file or directory" { // Handle errors reading the config file
-			if verbose {
-				fmt.Println("No 'geb.yaml' file found. Use 'geb project init' to create one.")
-			}
-		} else {
-			fmt.Println(err)
-		}
-	}
+
+	viper.SetDefault("design-dir", "design")
+	viper.SetDefault("template-paths", "$HOME/.hofstadter/templates:templates")
+	viper.SetDefault("output-dir", "output")
+	viper.SetDefault("verbose", false)
+
 }
 
 var (

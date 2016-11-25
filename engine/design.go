@@ -12,9 +12,9 @@ import (
 )
 
 type Design struct {
-	custom map[string]DesignData
-	dsls   map[string]DesignData
-	types  map[string]DesignData
+	Custom map[string]DesignData
+	Dsl    map[string]DesignData
+	Type   map[string]DesignData
 }
 
 type DesignData map[interface{}]interface{}
@@ -24,9 +24,9 @@ var (
 )
 
 func init() {
-	DESIGN.custom = make(map[string]DesignData)
-	DESIGN.dsls = make(map[string]DesignData)
-	DESIGN.types = make(map[string]DesignData)
+	DESIGN.Custom = make(map[string]DesignData)
+	DESIGN.Dsl = make(map[string]DesignData)
+	DESIGN.Type = make(map[string]DesignData)
 }
 
 func ImportDesignFile(filename string) error {
@@ -35,7 +35,6 @@ func ImportDesignFile(filename string) error {
 
 func ImportDesignFolder(folder string) error {
 
-	fmt.Println("Loading designs from: ", folder)
 	// Walk the directory
 	err := filepath.Walk(folder, import_design_walk_func)
 	if err != nil {
@@ -86,8 +85,8 @@ func store_design(dsl string, design DesignData) error {
 		if !ok {
 			return errors.New("field 'name' missing from " + dsl + " dsl")
 		}
-		DESIGN.dsls[dsl] = design
-		// fmt.Println("    ", dsl, design["name"])
+		DESIGN.Dsl[dsl] = design
+		fmt.Println("    ", dsl, design["name"])
 	case "type":
 		iname, ok := design["name"]
 		if !ok {
@@ -97,12 +96,12 @@ func store_design(dsl string, design DesignData) error {
 		if !ok {
 			return errors.New("field 'name' is not a string in TYPE " + fmt.Sprint(iname))
 		}
-		DESIGN.types[name] = design
-		// fmt.Println("    ", dsl, design["name"])
+		DESIGN.Type[name] = design
+		fmt.Println("    ", dsl, design["name"])
 
 	default:
-		DESIGN.custom[dsl] = design
-		// fmt.Println("    ", dsl, "data")
+		DESIGN.Custom[dsl] = design
+		fmt.Println("    ", dsl, "data")
 	}
 
 	return nil
