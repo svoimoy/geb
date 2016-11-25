@@ -22,7 +22,3 @@ cli:
       short: o
       default: output
       help: The directory to output generated files to.
-    - name: generators
-      short: g
-      default: all
-      help: A comma separated list of generators to run. (defaults to all found)

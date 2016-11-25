@@ -86,7 +86,7 @@ func store_design(dsl string, design DesignData) error {
 			return errors.New("field 'name' missing from " + dsl + " dsl")
 		}
 		DESIGN.Dsl[dsl] = design
-		fmt.Println("    ", dsl, design["name"])
+		fmt.Println("     ", dsl, design["name"])
 	case "type":
 		iname, ok := design["name"]
 		if !ok {
@@ -97,11 +97,11 @@ func store_design(dsl string, design DesignData) error {
 			return errors.New("field 'name' is not a string in TYPE " + fmt.Sprint(iname))
 		}
 		DESIGN.Type[name] = design
-		fmt.Println("    ", dsl, design["name"])
+		fmt.Println("     ", dsl, design["name"])
 
 	default:
 		DESIGN.Custom[dsl] = design
-		fmt.Println("    ", dsl, "data")
+		fmt.Println("     ", dsl, "data")
 	}
 
 	return nil

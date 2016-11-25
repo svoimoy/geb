@@ -1,0 +1,4 @@
+template-paths: /Users/tony/golang/src/github.com/hofstadter-io/geb/templates
+generators:
+  - api/golang/gin
+

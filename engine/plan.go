@@ -45,7 +45,7 @@ func MakeRenderingPlans(generators []string, design interface{}, templates map[s
 		if len(plan.templates) == 0 {
 			return nil, errors.New("No templates found for generator: " + g)
 		}
-		fmt.Printf("  %4d files:  %s\n", len(plan.templates), g)
+		fmt.Printf(" %4d files:  %s\n", len(plan.templates), g)
 		plans = append(plans, plan)
 	}
 

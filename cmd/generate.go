@@ -67,7 +67,7 @@ var GenerateCmd = &cobra.Command{
 		fmt.Println("Loading Templates:")
 		t_dirs := strings.Split(viper.Get("template-paths").(string), ":")
 		for _, dir := range t_dirs {
-			fmt.Println(" -", dir)
+			fmt.Println("     ", dir)
 			err := engine.ImportTemplateFolder(dir)
 			if err != nil {
 				fmt.Println("Error:", err)
