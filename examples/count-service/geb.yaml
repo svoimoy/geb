@@ -1,5 +1,15 @@
+name: "count-service"
+version: "0.1"
+about: "A transaction counting service for AlchemyAPI services"
+
 output-dir: "."
+design-dir: "design"
 generators:
-  - pb
-  - api
+  paths:
+    - $HOME/.hofstadter/generators
+    - generators
+  default:
+    - types
+    - pb
+    - api
 
