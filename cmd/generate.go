@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
+	// "strings"
 
-	"github.com/hofstadter-io/geb/engine"
+	// "github.com/hofstadter-io/geb/engine"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -45,51 +45,53 @@ var GenerateCmd = &cobra.Command{
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		var geners []string
+		/*
+			var geners []string
 
-		// Check number of args, should be no args
-		if len(args) == 0 {
-			geners = viper.GetStringSlice("generators")
-		} else {
-			geners = args
-		}
-
-		// Read in designs
-		d_dir := viper.GetString("design-dir")
-		fmt.Println("Loading designs from:", d_dir)
-		err := engine.ImportDesignFolder(d_dir)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-
-		// Read in templates
-		fmt.Println("Loading Templates:")
-		t_dirs := strings.Split(viper.Get("template-paths").(string), ":")
-		for _, dir := range t_dirs {
-			fmt.Println("     ", dir)
-			err := engine.ImportTemplateFolder(dir)
-			if err != nil {
-				fmt.Println("Error:", err)
-				return
+			// Check number of args, should be no args
+			if len(args) == 0 {
+				geners = viper.GetStringSlice("generators")
+			} else {
+				geners = args
 			}
-		}
 
-		// make rendering plans
-		plans, err := engine.MakeRenderingPlans(geners, engine.DESIGN, engine.TEMPLATES)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
+				// Read in designs
+				d_dir := viper.GetString("design-dir")
+				fmt.Println("Loading designs from:", d_dir)
+				err := engine.ImportDesignFolder(d_dir)
+				if err != nil {
+					fmt.Println("Error:", err)
+					return
+				}
 
-		// Render the files
-		outdir := viper.Get("output-dir").(string)
-		fmt.Println("Rendering files to:", outdir)
-		err = engine.RenderPlans(plans, outdir)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
+				// Read in templates
+				fmt.Println("Loading Templates:")
+				t_dirs := strings.Split(viper.Get("template-paths").(string), ":")
+				for _, dir := range t_dirs {
+					fmt.Println("     ", dir)
+					err := engine.ImportTemplateFolder(dir)
+					if err != nil {
+						fmt.Println("Error:", err)
+						return
+					}
+				}
+
+				// make rendering plans
+				plans, err := engine.MakeRenderingPlans(geners, engine.DESIGN, engine.TEMPLATES)
+				if err != nil {
+					fmt.Println("Error:", err)
+					return
+				}
+
+				// Render the files
+				outdir := viper.Get("output-dir").(string)
+				fmt.Println("Rendering files to:", outdir)
+				err = engine.RenderPlans(plans, outdir)
+				if err != nil {
+					fmt.Println("Error:", err)
+					return
+				}
+		*/
 
 	},
 }

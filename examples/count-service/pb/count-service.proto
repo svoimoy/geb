@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+// Name:   count-service
+// Vesion: 0.1
+// About:  Protobuf spec for the AlchemyAPI count-service
+
+message OwnerId {
+  string owner_id = 1;
+}
+
+message KeyPair {
+  repeated OwnerId owner_id = 1;
+  uint64 trans_count = 2;
+}
+
+message UpdatedKeyPair {
+  repeated KeyPair key_pair = 1;
+}
+
+message Date {
+  string date = 1;
+}
+
+message DeleteCount {
+  uint64 delete_count = 1;
+}
+
+
+service count-service {
+  rpc PutTransCount(UpdateKeyPair) returns (KeyPair) {}
+  rpc GetTransCount(OwnerId) returns (KeyPair) {}
+  rpc DelTransCount(Date) returns (DeleteCount) {}
+}
+

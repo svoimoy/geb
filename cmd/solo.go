@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"fmt"
-	"io/ioutil"
+	// "fmt"
+	// "io/ioutil"
 
-	"github.com/hofstadter-io/geb/engine"
+	// "github.com/hofstadter-io/geb/engine"
 	"github.com/spf13/cobra"
 )
 
@@ -23,48 +23,48 @@ var SoloCmd = &cobra.Command{
 			cmd.Usage()
 		}
 
-		design := args[0]
-		template := args[1]
-		output := "stdout"
-		if len(args) == 3 {
-			output = args[2]
-		}
+		/*
+			design := args[0]
+			template := args[1]
+			output := "stdout"
+			if len(args) == 3 {
+				output = args[2]
+			}
 
-		// fmt.Printf("%s + %s => %s\n", design, template, output)
+			// fmt.Printf("%s + %s => %s\n", design, template, output)
+				err := engine.ImportDesignFile(design)
+				if err != nil {
+					fmt.Println("Error reading design:", err)
+					cmd.Help()
+					return
+				}
 
-		err := engine.ImportDesignFile(design)
-		if err != nil {
-			fmt.Println("Error reading design:", err)
-			cmd.Help()
-			return
-		}
+				err = engine.ImportTemplateFile(template)
+				if err != nil {
+					fmt.Println("Error reading template:", err)
+					cmd.Help()
+					return
+				}
 
-		err = engine.ImportTemplateFile(template)
-		if err != nil {
-			fmt.Println("Error reading template:", err)
-			cmd.Help()
-			return
-		}
+				result, err := engine.RenderTemplate(template, engine.DESIGN)
+				if err != nil {
+					fmt.Println("Error while rendering:", err)
+					cmd.Help()
+					return
+				}
 
-		result, err := engine.RenderTemplate(template, engine.DESIGN)
-		if err != nil {
-			fmt.Println("Error while rendering:", err)
-			cmd.Help()
-			return
-		}
+				if output == "stdout" {
+					fmt.Println(result)
+					return
+				}
 
-		if output == "stdout" {
-			fmt.Println(result)
-			return
-		}
-
-		err = ioutil.WriteFile(output, []byte(result), 0644)
-		if err != nil {
-			fmt.Println("Error writing file:", err)
-			cmd.Help()
-			return
-		}
-
+				err = ioutil.WriteFile(output, []byte(result), 0644)
+				if err != nil {
+					fmt.Println("Error writing file:", err)
+					cmd.Help()
+					return
+				}
+		*/
 	},
 }
 

@@ -1,0 +1,40 @@
+api:
+  name: count-service
+  version: "0.1"
+  about: AlchemyAPI count-service for daily transaction counts.
+  config:
+    base-url: api/v1
+  routes:
+    - route: version
+      method: GET
+      return: VersionResponse
+    - route: all_counts
+      method: GET
+      return: KeyPairList
+    - route: trans_count
+      method: GET
+      params:
+        - name: owner_id
+          type: string
+          required: true
+      return: KeyPair
+    - route: trans_count
+      method: PUT
+      params:
+        - name: owner_id
+          type: string
+          required: true
+        - name: count
+          type: "uint"
+          is-uint: true
+          required: true
+      return: KeyPair
+    - route: trans_count
+      method: DELETE
+      params:
+        - name: date
+          type: string
+          required: true
+      return: DeleteCount
+
+

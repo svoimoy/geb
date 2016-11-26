@@ -1,0 +1,23 @@
+syntax = "proto{{dsl.pb.pb-version}}";
+
+// Name:   {{dsl.pb.name}}
+// Vesion: {{dsl.pb.version}}
+// About:  {{dsl.pb.about}}
+
+{{#each dsl.pb.messages}}
+message {{name}} {
+  {{#each fields }}
+  {{#if optional}}optional {{/if}}{{#if required}}required {{/if}}{{#if repeated}}repeated {{/if}}{{type}} {{name}} = {{index}};{{#if comment}}  // {{comment}}{{/if}}
+  {{/each}}
+}
+
+{{/each}}
+
+{{#each dsl.pb.services}}
+service {{name}} {
+  {{#each rpc}}
+  rpc {{name}}({{argument}}) returns ({{return}}) {}
+  {{/each}}
+}
+
+{{/each}}
