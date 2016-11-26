@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -70,4 +71,36 @@ func import_template(base_path, path string) error {
 
 	TEMPLATES[tpl_name] = tpl
 	return nil
+}
+
+func add_template_helpers(tpl *raymond.Template) {
+
+	tpl.RegisterHelper("eq", helper_eq)
+	tpl.RegisterHelper("if_eq", helper_if_eq)
+	tpl.RegisterHelper("if_ne", helper_if_ne)
+
+}
+
+func helper_eq(lhs, rhs string, options *raymond.Options) string {
+	fmt.Printf("EQ: %q %q\n", lhs, rhs)
+	if lhs == rhs {
+		return "something"
+	}
+	return ""
+}
+
+func helper_if_eq(lhs, rhs string, options *raymond.Options) string {
+	fmt.Printf("IF_EQ: %q %q\n", lhs, rhs)
+	if lhs == rhs {
+		return options.Fn()
+	}
+	return ""
+}
+
+func helper_if_ne(lhs, rhs string, options *raymond.Options) string {
+	fmt.Printf("IF_NE: %q %q\n", lhs, rhs)
+	if lhs != rhs {
+		return options.Fn()
+	}
+	return ""
 }

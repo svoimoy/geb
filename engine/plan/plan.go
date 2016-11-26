@@ -8,12 +8,14 @@ import (
 	"github.com/ryanuber/go-glob"
 )
 
+/*
 type Plan struct {
 	template  string
 	design    interface{}
 	outfile   string
 	templates []string
 }
+*/
 
 /*
 Force the issue of folder structure, dsl designs, plan making,

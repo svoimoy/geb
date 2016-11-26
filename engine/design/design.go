@@ -11,6 +11,7 @@ import (
 	"gopkg.in/yaml.v1"
 )
 
+/*
 type Design struct {
 	Custom map[string]DesignData
 	Dsl    map[string]DesignData
@@ -18,6 +19,7 @@ type Design struct {
 }
 
 type DesignData map[interface{}]interface{}
+*/
 
 var (
 	DESIGN Design
@@ -80,7 +82,7 @@ func import_design(path string) error {
 
 func store_design(dsl string, design DesignData) error {
 	switch dsl {
-	case "api", "cli":
+	case "api", "cli", "pb":
 		_, ok := design["name"]
 		if !ok {
 			return errors.New("field 'name' missing from " + dsl + " dsl")
