@@ -58,14 +58,6 @@ func RenderPlan(plan Plan, outdir string) error {
 	return nil
 }
 
-func RenderTemplate(path string, design interface{}) (string, error) {
-	tpl, ok := TEMPLATES[path]
-	if !ok {
-		return "", errors.New("Unknown template: " + path)
-	}
-	return tpl.Exec(design)
-}
-
 func WriteResults(filename, content string) error {
 	dir := filepath.Dir(filename)
 	err := os.MkdirAll(dir, 0755)

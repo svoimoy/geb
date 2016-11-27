@@ -16,5 +16,5 @@ dsl-config:
     - dsl: api
     - dsl: cli
 
-log-level: debug
+log-level: info
 

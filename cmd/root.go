@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/hofstadter-io/geb/cmd/dsl"
+	"github.com/hofstadter-io/geb/cmd/project"
 	"github.com/hofstadter-io/geb/engine"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -48,18 +48,13 @@ var (
 	RootCmd = &cobra.Command{
 		Use:   "geb",
 		Short: "geb is a data centric code generator",
-		Long: `A data centric code generator which
+		Long: `geb is hofstadter = data + templates = profit
+A data centric code generator which
 combines yaml and handlebar templates
-to genereate all of the codes.`,
+to genereate all of the things.`,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			read_config()
 			config_logger()
-		},
-		Run: func(cmd *cobra.Command, args []string) {
-			// Do Stuff Here
-			// dostuff()
-			fmt.Println("geb is hofstadter = data + templates = profit")
-			cmd.Usage()
 		},
 	}
 )
@@ -86,4 +81,9 @@ func config_logger() {
 	termlog := log.LvlFilterHandler(term_level, log.StdoutHandler)
 	logger.SetHandler(termlog)
 	engine.SetLogger(logger)
+}
+
+func init() {
+	RootCmd.AddCommand(cmd_dsl.DslCmd)
+	RootCmd.AddCommand(cmd_proj.ProjectCmd)
 }

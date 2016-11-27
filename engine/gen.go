@@ -10,7 +10,11 @@ func GenerateProject(generators []string) error {
 
 	proj := project.NewProject()
 
-	proj.Load(filename)
+	proj.Load(filename, generators)
+
+	proj.Plan()
+
+	proj.Render()
 
 	return nil
 }

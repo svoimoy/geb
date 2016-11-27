@@ -16,22 +16,25 @@ type Dsl struct {
 	About   string
 
 	SourcePath          string
-	AvailableGenerators []string
+	AvailableGenerators map[string]string
 
-	Generators map[string]gen.Generator
+	Generators map[string]*gen.Generator
 }
 
 func NewDsl() *Dsl {
 	return &Dsl{
-		AvailableGenerators: []string{},
-		Generators:          map[string]gen.Generator{},
+		AvailableGenerators: map[string]string{},
+		Generators:          map[string]*gen.Generator{},
 	}
 }
 
 func LoadDsl(folder string) (*Dsl, error) {
-	D, err := ReadDslFile(filepath.Join(folder, "dsl.yaml"))
+	D, err := ReadDslFile(filepath.Join(folder, "geb-dsl.yml"))
 	if err != nil {
-		return nil, err
+		D, err = ReadDslFile(filepath.Join(folder, "geb-dsl.yaml"))
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	D.SourcePath = folder
@@ -63,6 +66,7 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 		if err != nil {
 			return nil
 		}
+
 		if info.IsDir() || !(strings.Contains(info.Name(), ".yml") || strings.Contains(info.Name(), ".yaml")) {
 			return nil
 		}
@@ -86,18 +90,55 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 			if err != nil {
 				return err
 			}
-			logger.Info("    found gen: ", "dsl", curr_dsl.Name, "name", rel)
-			curr_dsl.AvailableGenerators = append(curr_dsl.AvailableGenerators, rel)
+			logger.Info("    generator: ", "dsl", curr_dsl.Name, "name", rel)
+			curr_dsl.AvailableGenerators[rel] = rel
 		}
 
 		return nil
 	}
 
+	info, err := os.Lstat(folder)
+	if err != nil {
+		return nil, err
+	}
+	if info.Mode()&os.ModeSymlink != 0 {
+		dir, err := os.Readlink(folder)
+		if err != nil {
+			return nil, err
+		}
+		folder = dir
+	}
 	// Walk the directory
-	err := filepath.Walk(folder, walk_func)
+	err = filepath.Walk(folder, walk_func)
 	if err != nil {
 		return nil, err
 	}
 
 	return dsls, nil
+}
+
+func (D *Dsl) MergeAvailable(fresh *Dsl) {
+	logger.Info("Merging Available", "existing", D.Name, "fresh", fresh.Name)
+	for path, G := range fresh.Generators {
+		_, ok := D.Generators[path]
+		if !ok {
+			logger.Info("Adding Generator", "generator", path)
+			D.Generators[path] = G
+		}
+	}
+}
+
+func (D *Dsl) MergeOverwrite(fresh *Dsl) {
+	logger.Info("Merging DSLs", "existing", D.Name, "fresh", fresh.Name)
+	for path, G := range fresh.Generators {
+		existing, ok := D.Generators[path]
+		if ok {
+			logger.Info("Merging Gen")
+			existing.MergeOverwrite(G)
+			D.Generators[path] = existing
+		} else {
+			logger.Info("Adding Gen")
+			D.Generators[path] = G
+		}
+	}
 }
