@@ -65,6 +65,15 @@ func (G *Generator) MergeOverwrite(fresh *Generator) {
 		}
 		G.Templates[path] = T
 	}
+	for path, T := range fresh.Repeated {
+		_, ok := G.Repeated[path]
+		if ok {
+			logger.Info("Overriding repeated", "repeated", path)
+		} else {
+			logger.Info("Adding repeated", "repeated", path)
+		}
+		G.Repeated[path] = T
+	}
 	for path, P := range fresh.Partials {
 		_, ok := G.Partials[path]
 		if ok {
@@ -85,6 +94,15 @@ func (G *Generator) MergeSkipExisting(stale *Generator) {
 		} else {
 			logger.Info("Adding template", "template", path)
 			G.Templates[path] = T
+		}
+	}
+	for path, T := range stale.Repeated {
+		_, ok := G.Repeated[path]
+		if ok {
+			logger.Info("Skipping repeated", "repeated", path)
+		} else {
+			logger.Info("Adding repeated", "repeated", path)
+			G.Repeated[path] = T
 		}
 	}
 	for path, P := range stale.Partials {
