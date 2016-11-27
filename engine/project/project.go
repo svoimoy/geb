@@ -11,6 +11,7 @@ type Project struct {
 	Design *design.Design
 
 	DslMap map[string]*dsl.Dsl
+	Plans  []FileGenData
 
 	// Pipelines  []Pipeline
 }

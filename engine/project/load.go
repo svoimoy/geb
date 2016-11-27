@@ -9,6 +9,7 @@ import (
 
 	"github.com/hofstadter-io/geb/engine/design"
 	"github.com/hofstadter-io/geb/engine/dsl"
+	"github.com/hofstadter-io/geb/engine/gen"
 	"github.com/ryanuber/go-glob"
 )
 
@@ -88,60 +89,70 @@ func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) erro
 		}
 
 		if len(gp.Gen) == 0 {
-			for _, path := range d_dsl.AvailableGenerators {
-				logger.Info("    importing", "dsl", s_dsl, "generator", path)
+			logger.Info("  importing all for " + gp.Dsl)
+			for key, path := range d_dsl.AvailableGenerators {
+				logger.Info("    appending", "key", key, "dsl", s_dsl, "generator", path)
+				gp.Gen = append(gp.Gen, path)
 			}
+		}
 
-		} else {
-			for _, s_gen := range gp.Gen {
+		for _, s_gen := range gp.Gen {
 
-				spath := s_gen + "*"
+			spath := s_gen + "*"
 
-				found := false
-				for _, path := range d_dsl.AvailableGenerators {
-					found = glob.Glob(spath, path)
-					logger.Debug("GLOB:", "spath", spath, "path", path, "found", found)
-					if found {
-						break
-					}
-				} // end for loop looking for gen in available generators
-
+			found := false
+			for _, path := range d_dsl.AvailableGenerators {
+				found = glob.Glob(spath, path)
+				logger.Debug("GLOB:", "spath", spath, "path", path, "found", found)
 				if found {
-					logger.Info("    importing", "dsl", s_dsl, "generator", s_gen)
-					for _, path := range cfg.Paths {
-						if path[:2] == "~/" {
-							usr, _ := user.Current()
-							home := usr.HomeDir
-							path = strings.Replace(path, "~", home, 1)
-						}
-						info, err := os.Lstat(path)
-						if err != nil {
-							return err
-						}
-						if info.Mode()&os.ModeSymlink != 0 {
-							dir, err := os.Readlink(path)
-							if err != nil {
-								return err
-							}
-							path = dir
-						}
+					break
+				}
+			} // end for loop looking for gen in available generators
 
-						dsl_path := filepath.Join(path, s_dsl)
-						D, err := dsl.LoadDsl(dsl_path)
+			if found {
+				logger.Info("    importing", "dsl", s_dsl, "generator", s_gen)
+				for _, path := range cfg.Paths {
+					if path[:2] == "~/" {
+						usr, _ := user.Current()
+						home := usr.HomeDir
+						path = strings.Replace(path, "~", home, 1)
+					}
+					info, err := os.Lstat(path)
+					if err != nil {
+						return err
+					}
+					if info.Mode()&os.ModeSymlink != 0 {
+						dir, err := os.Readlink(path)
 						if err != nil {
 							return err
 						}
-						orig, ok := P.DslMap[dsl_path]
-						if ok {
-							orig.MergeOverwrite(D)
-						} else {
-							P.DslMap[dsl_path] = D
-						}
+						path = dir
+					}
+
+					dsl_path := filepath.Join(path, s_dsl)
+					D, err := dsl.LoadDsl(dsl_path)
+					if err != nil {
+						return err
+					}
+
+					gen_path := filepath.Join(dsl_path, s_gen)
+					G, err := gen.CreateFromFolder(gen_path)
+					if err != nil {
+						return err
+					}
+					D.Generators[s_gen] = G
+
+					orig, ok := P.DslMap[s_dsl]
+					logger.Debug("    ", "path", path, "s_dsl", s_dsl, "ok", ok)
+					if ok {
+						orig.MergeSkipExisting(D)
+					} else {
+						P.DslMap[s_dsl] = D
 					}
 				}
+			}
 
-			} // end loop over dsl generators
-		}
+		} // end loop over dsl generators
 
 	} // end loop over default dsls
 

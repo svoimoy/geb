@@ -4,13 +4,6 @@ type FileGenData struct {
 	Data     interface{}
 }
 
-type Plan struct {
-	template  string
-	design    interface{}
-	outfile   string
-	templates []string
-}
-
 
 
 type Stage struct {

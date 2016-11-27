@@ -7,6 +7,7 @@ type Generator struct {
 	Config     *Config
 
 	Templates TemplateMap
+	Repeats   TemplateMap
 	Partials  TemplateMap
 }
 
@@ -14,6 +15,7 @@ func NewGenerator() *Generator {
 	return &Generator{
 		Config:    NewConfig(),
 		Templates: NewTemplateMap(),
+		Repeats:   NewTemplateMap(),
 		Partials:  NewTemplateMap(),
 	}
 }
@@ -36,6 +38,12 @@ func CreateFromFolder(folder string) (*Generator, error) {
 		return nil, err
 	}
 	g.Templates = t
+
+	r, err := CreateTemplateMapFromFolder(filepath.Join(folder, "repeats"))
+	if err != nil {
+		return nil, err
+	}
+	g.Repeats = r
 
 	p, err := CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
 	if err != nil {
@@ -65,5 +73,27 @@ func (G *Generator) MergeOverwrite(fresh *Generator) {
 			logger.Info("Adding partial", "partial", path)
 		}
 		G.Partials[path] = P
+	}
+}
+
+func (G *Generator) MergeSkipExisting(stale *Generator) {
+	logger.Info("Merging GEN", "existing", G.SourcePath, "stale", stale.SourcePath)
+	for path, T := range stale.Templates {
+		_, ok := G.Templates[path]
+		if ok {
+			logger.Info("Skipping template", "template", path)
+		} else {
+			logger.Info("Adding template", "template", path)
+			G.Templates[path] = T
+		}
+	}
+	for path, P := range stale.Partials {
+		_, ok := G.Partials[path]
+		if ok {
+			logger.Info("Skipping partial", "partial", path)
+		} else {
+			logger.Info("Adding partial", "partial", path)
+			G.Partials[path] = P
+		}
 	}
 }

@@ -128,6 +128,21 @@ func (D *Dsl) MergeAvailable(fresh *Dsl) {
 	}
 }
 
+func (D *Dsl) MergeSkipExisting(fresh *Dsl) {
+	logger.Info("Merging DSLs", "existing", D.Name, "fresh", fresh.Name)
+	for path, G := range fresh.Generators {
+		existing, ok := D.Generators[path]
+		if ok {
+			logger.Info("Merging Gen")
+			G.MergeSkipExisting(existing)
+			D.Generators[path] = G
+		} else {
+			logger.Info("Adding Gen")
+			D.Generators[path] = G
+		}
+	}
+}
+
 func (D *Dsl) MergeOverwrite(fresh *Dsl) {
 	logger.Info("Merging DSLs", "existing", D.Name, "fresh", fresh.Name)
 	for path, G := range fresh.Generators {
