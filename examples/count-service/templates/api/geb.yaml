@@ -1,9 +1,0 @@
-dsl:
-  name: cli
-  version: "0.1"
-  about: A geb-dsl for cli's
-  terms:
-
-  plan: "..."
-  validate: "..."
-

@@ -35,3 +35,4 @@ func {{route}}_{{method}}_Handler(ctx *gin.Context) {
 {{/each}}
 
 {{/with}}
+

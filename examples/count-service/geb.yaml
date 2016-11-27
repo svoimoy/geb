@@ -2,14 +2,15 @@ name: "count-service"
 version: "0.1"
 about: "A transaction counting service for AlchemyAPI services"
 
-output-dir: "."
+output-dir: "output"
 design-dir: "design"
-generators:
-  paths:
-    - $HOME/.hofstadter/generators
-    - generators
-  default:
-    - types
-    - pb
-    - api
 
+dsl-config:
+  paths:
+    - dsl
+    - ~/.hofstadter/dsl
+  default:
+    - dsl: types
+    - dsl: api
+
+log-level: info

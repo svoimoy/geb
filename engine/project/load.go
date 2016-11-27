@@ -55,6 +55,17 @@ func (P *Project) LoadGenerators(generators []string) error {
 			home := usr.HomeDir
 			path = strings.Replace(path, "~", home, 1)
 		}
+
+		// skip it?
+		_, err := os.Lstat(path)
+		if err != nil {
+			if _, ok := err.(*os.PathError); ok {
+				continue
+			}
+			return err
+		}
+
+		// find whats available
 		avail, err := dsl.FindAvailable(path)
 		if err != nil {
 			return err
@@ -117,10 +128,16 @@ func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) erro
 						home := usr.HomeDir
 						path = strings.Replace(path, "~", home, 1)
 					}
+
+					// skip it?
 					info, err := os.Lstat(path)
 					if err != nil {
+						if _, ok := err.(*os.PathError); ok {
+							continue
+						}
 						return err
 					}
+
 					if info.Mode()&os.ModeSymlink != 0 {
 						dir, err := os.Readlink(path)
 						if err != nil {
@@ -209,10 +226,16 @@ func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generato
 						home := usr.HomeDir
 						path = strings.Replace(path, "~", home, 1)
 					}
+
+					// skip it?
 					info, err := os.Lstat(path)
 					if err != nil {
+						if _, ok := err.(*os.PathError); ok {
+							continue
+						}
 						return err
 					}
+
 					if info.Mode()&os.ModeSymlink != 0 {
 						dir, err := os.Readlink(path)
 						if err != nil {
