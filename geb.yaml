@@ -9,6 +9,8 @@ dsl-config:
     - dsl
     - ~/.hofstadter/dsl
   default:
+    - dsl: project/fresh
+    - dsl: sample
     - dsl: types
       gen:
         - golang

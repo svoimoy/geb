@@ -85,7 +85,7 @@ func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) erro
 
 		d_dsl, ok := available_dsls[s_dsl]
 		if !ok {
-			return errors.New("Unknown DSL: " + s_dsl)
+			return errors.New("Did not find DSL in available list: " + s_dsl)
 		}
 
 		if len(gp.Gen) == 0 {
