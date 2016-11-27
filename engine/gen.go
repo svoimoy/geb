@@ -10,11 +10,20 @@ func GenerateProject(generators []string) error {
 
 	proj := project.NewProject()
 
-	proj.Load(filename, generators)
+	err := proj.Load(filename, generators)
+	if err != nil {
+		return err
+	}
 
-	proj.Plan()
+	err = proj.Plan()
+	if err != nil {
+		return err
+	}
 
-	proj.Render()
+	err = proj.Render()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
