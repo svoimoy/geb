@@ -4,12 +4,17 @@ about: "The geb command-line tool for making profit."
 
 output-dir: "contracrostipunctus"
 design-dir: "design"
-generators:
+dsl-config:
   paths:
-    - generators
+    - ~/.hofstadter/dsl
+    - dsl
   default:
-    - types
-    - pb
-    - api
-    - cli
+    - dsl: types
+      gen:
+        - golang
+        - protobuf
+    - dsl: api
+    - dsl: cli
+
+log-level: debug
 

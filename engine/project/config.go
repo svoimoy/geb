@@ -8,9 +8,14 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type GenConfig struct {
-	Paths   []string `yaml:"paths"`
-	Default []string `yaml:"default"`
+type GenPair struct {
+	Dsl string   `yaml:"dsl"`
+	Gen []string `yaml:"gen"`
+}
+
+type DslConfig struct {
+	Paths   []string  `yaml:"paths"`
+	Default []GenPair `yaml:"default"`
 }
 
 type Config struct {
@@ -18,16 +23,16 @@ type Config struct {
 	Version string `yaml:"version"`
 	About   string `yaml:"about"`
 
-	OutputDir  string    `yaml:"output-dir"`
-	DesignDir  string    `yaml:"design-dir"`
-	Generators GenConfig `yaml:"generators"`
+	OutputDir string    `yaml:"output-dir"`
+	DesignDir string    `yaml:"design-dir"`
+	DslConfig DslConfig `yaml:"dsl-config"`
 }
 
 func NewConfig() *Config {
 	return &Config{
-		Generators: GenConfig{
+		DslConfig: DslConfig{
 			Paths:   []string{},
-			Default: []string{},
+			Default: []GenPair{},
 		},
 	}
 }
@@ -59,10 +64,13 @@ func ReadConfig(r io.Reader) (*Config, error) {
 
 func (c *Config) Read(r io.Reader) error {
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(r)
-	data := buf.Bytes()
+	_, err := buf.ReadFrom(r)
+	if err != nil {
+		return err
+	}
 
-	err := yaml.Unmarshal(data, c)
+	data := buf.Bytes()
+	err = yaml.Unmarshal(data, c)
 	if err != nil {
 		return err
 	}
@@ -71,6 +79,18 @@ func (c *Config) Read(r io.Reader) error {
 }
 
 func (c *Config) Write(w io.Writer) error {
+
+	data, err := yaml.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	buf := new(bytes.Buffer)
+	buf.Write(data)
+	_, err = buf.WriteTo(w)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

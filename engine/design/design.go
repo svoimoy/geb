@@ -1,4 +1,4 @@
-package engine
+package design
 
 import (
 	"errors"
@@ -11,31 +11,46 @@ import (
 	"gopkg.in/yaml.v1"
 )
 
-/*
-type Design struct {
-	Custom map[string]DesignData
-	Dsl    map[string]DesignData
-	Type   map[string]DesignData
-}
-
 type DesignData map[interface{}]interface{}
-*/
+type DesignDataMap map[string]DesignData
 
-var (
-	DESIGN Design
-)
-
-func init() {
-	DESIGN.Custom = make(map[string]DesignData)
-	DESIGN.Dsl = make(map[string]DesignData)
-	DESIGN.Type = make(map[string]DesignData)
+type Design struct {
+	Custom DesignDataMap
+	Dsl    DesignDataMap
+	Type   DesignDataMap
 }
 
-func ImportDesignFile(filename string) error {
-	return import_design(filename)
+func NewDesign() *Design {
+	return &Design{
+		Custom: make(DesignDataMap),
+		Dsl:    make(DesignDataMap),
+		Type:   make(DesignDataMap),
+	}
+}
+func CreateFromFolder(folder string) (*Design, error) {
+	d := NewDesign()
+	d.ImportDesignFolder(folder)
+	return d, nil
 }
 
-func ImportDesignFolder(folder string) error {
+func (d *Design) ImportDesignFile(filename string) error {
+	return d.import_design(filename)
+}
+
+func (d *Design) ImportDesignFolder(folder string) error {
+
+	// local walk function closure
+	import_design_walk_func := func(path string, info os.FileInfo, err error) error {
+		local_d := d
+		if err != nil {
+			return nil
+		}
+		if info.IsDir() || !(strings.Contains(info.Name(), ".yml") || strings.Contains(info.Name(), ".yaml")) {
+			return nil
+		}
+
+		return local_d.import_design(path)
+	}
 
 	// Walk the directory
 	err := filepath.Walk(folder, import_design_walk_func)
@@ -45,18 +60,7 @@ func ImportDesignFolder(folder string) error {
 	return nil
 }
 
-func import_design_walk_func(path string, info os.FileInfo, err error) error {
-	if err != nil {
-		return nil
-	}
-	if info.IsDir() || !(strings.Contains(info.Name(), ".yml") || strings.Contains(info.Name(), ".yaml")) {
-		return nil
-	}
-
-	return import_design(path)
-}
-
-func import_design(path string) error {
+func (d *Design) import_design(path string) error {
 	// fmt.Println(" -", path)
 	top_level := make(map[string]interface{})
 	raw_data, err := ioutil.ReadFile(path)
@@ -71,7 +75,7 @@ func import_design(path string) error {
 	// get list of all top level DSL entries
 	for dsl, val := range top_level {
 		data := val.(map[interface{}]interface{})
-		err = store_design(dsl, data)
+		err = d.store_design(dsl, data)
 		if err != nil {
 			return err
 		}
@@ -80,15 +84,16 @@ func import_design(path string) error {
 	return nil
 }
 
-func store_design(dsl string, design DesignData) error {
+func (d *Design) store_design(dsl string, design DesignData) error {
 	switch dsl {
-	case "api", "cli", "pb":
+	case "api", "cli":
 		_, ok := design["name"]
 		if !ok {
 			return errors.New("field 'name' missing from " + dsl + " dsl")
 		}
-		DESIGN.Dsl[dsl] = design
-		fmt.Println("     ", dsl, design["name"])
+		d.Dsl[dsl] = design
+		logger.Info("  found dsl", "dsl", dsl, "name", design["name"])
+
 	case "type":
 		iname, ok := design["name"]
 		if !ok {
@@ -98,12 +103,12 @@ func store_design(dsl string, design DesignData) error {
 		if !ok {
 			return errors.New("field 'name' is not a string in TYPE " + fmt.Sprint(iname))
 		}
-		DESIGN.Type[name] = design
-		fmt.Println("     ", dsl, design["name"])
+		d.Type[name] = design
+		logger.Info("  found type", "type", dsl, "name", design["name"])
 
 	default:
-		DESIGN.Custom[dsl] = design
-		fmt.Println("     ", dsl, "data")
+		d.Custom[dsl] = design
+		logger.Info("  found custom", "name", dsl)
 	}
 
 	return nil
