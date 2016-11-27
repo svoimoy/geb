@@ -202,55 +202,49 @@ func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generato
 			logger.Debug("GLOB:", "spath", spath, "path", path, "found", found)
 			if found {
 				gpath = path
-				break
-			}
-		} // end for loop looking for gen in available generators
-
-		if found {
-			logger.Info("    importing", "dsl", s_dsl, "generator", s_gen, "spath", spath)
-			for _, path := range P.Config.DslConfig.Paths {
-				if path[:2] == "~/" {
-					usr, _ := user.Current()
-					home := usr.HomeDir
-					path = strings.Replace(path, "~", home, 1)
-				}
-				info, err := os.Lstat(path)
-				if err != nil {
-					return err
-				}
-				if info.Mode()&os.ModeSymlink != 0 {
-					dir, err := os.Readlink(path)
+				logger.Warn("    importing", "dsl", s_dsl, "generator", s_gen, "spath", spath)
+				for _, path := range P.Config.DslConfig.Paths {
+					if path[:2] == "~/" {
+						usr, _ := user.Current()
+						home := usr.HomeDir
+						path = strings.Replace(path, "~", home, 1)
+					}
+					info, err := os.Lstat(path)
 					if err != nil {
 						return err
 					}
-					path = dir
-				}
+					if info.Mode()&os.ModeSymlink != 0 {
+						dir, err := os.Readlink(path)
+						if err != nil {
+							return err
+						}
+						path = dir
+					}
 
-				dsl_path := filepath.Join(path, s_dsl)
-				D, err := dsl.LoadDsl(dsl_path)
-				if err != nil {
-					return err
-				}
+					dsl_path := filepath.Join(path, s_dsl)
+					D, err := dsl.LoadDsl(dsl_path)
+					if err != nil {
+						return err
+					}
 
-				logger.Debug("  gen path;", "dsl_path", dsl_path, "gpath", gpath)
-				gen_path := filepath.Join(dsl_path, gpath)
-				G, err := gen.CreateFromFolder(gen_path)
-				if err != nil {
-					return err
-				}
-				D.Generators[s_gen] = G
+					logger.Debug("  gen path;", "dsl_path", dsl_path, "gpath", gpath)
+					gen_path := filepath.Join(dsl_path, gpath)
+					G, err := gen.CreateFromFolder(gen_path)
+					if err != nil {
+						return err
+					}
+					D.Generators[s_gen] = G
 
-				orig, ok := P.DslMap[s_dsl]
-				logger.Debug("    ", "path", path, "s_dsl", s_dsl, "ok", ok)
-				if ok {
-					orig.MergeOverwrite(D)
-				} else {
-					P.DslMap[s_dsl] = D
+					orig, ok := P.DslMap[s_dsl]
+					logger.Debug("    ", "path", path, "s_dsl", s_dsl, "ok", ok)
+					if ok {
+						orig.MergeOverwrite(D)
+					} else {
+						P.DslMap[s_dsl] = D
+					}
 				}
 			}
-		} else {
-			logger.Error("    importing generator", "dsl", s_dsl, "generator", s_gen)
-		}
+		} // end for loop looking for gen in available generators
 	} // End loop over generators
 
 	return nil
