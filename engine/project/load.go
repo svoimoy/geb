@@ -145,7 +145,7 @@ func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) erro
 					orig, ok := P.DslMap[s_dsl]
 					logger.Debug("    ", "path", path, "s_dsl", s_dsl, "ok", ok)
 					if ok {
-						orig.MergeSkipExisting(D)
+						orig.MergeOverwrite(D)
 					} else {
 						P.DslMap[s_dsl] = D
 					}

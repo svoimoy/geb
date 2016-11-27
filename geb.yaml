@@ -6,8 +6,8 @@ output-dir: "contracrostipunctus"
 design-dir: "design"
 dsl-config:
   paths:
-    - ~/.hofstadter/dsl
     - dsl
+    - ~/.hofstadter/dsl
   default:
     - dsl: types
       gen:

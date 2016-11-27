@@ -7,7 +7,7 @@ type Generator struct {
 	Config     *Config
 
 	Templates TemplateMap
-	Repeats   TemplateMap
+	Repeated  TemplateMap
 	Partials  TemplateMap
 }
 
@@ -15,7 +15,7 @@ func NewGenerator() *Generator {
 	return &Generator{
 		Config:    NewConfig(),
 		Templates: NewTemplateMap(),
-		Repeats:   NewTemplateMap(),
+		Repeated:  NewTemplateMap(),
 		Partials:  NewTemplateMap(),
 	}
 }
@@ -49,7 +49,7 @@ func CreateFromFolder(folder string) (*Generator, error) {
 	if err != nil {
 		return nil, err
 	}
-	g.Repeats = r
+	g.Repeated = r
 
 	return g, nil
 }

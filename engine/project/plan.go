@@ -99,9 +99,9 @@ func (P *Project) Plan() error {
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
 				for _, t_key := range R.Templates {
-					logger.Info("Looking for repeat template: ", "key", t_key, "in", G.Repeats)
+					logger.Info("Looking for repeat template: ", "key", t_key, "in", G.Repeated)
 
-					T, ok := G.Repeats[t_key]
+					T, ok := G.Repeated[t_key]
 					if !ok {
 						return errors.New("Unknown repeat template: " + t_key)
 					}
