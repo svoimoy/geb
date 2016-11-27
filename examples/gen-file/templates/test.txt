@@ -1,0 +1,13 @@
+{{#with custom}}
+Hello {{name}}
+
+{{message.addressee}}, {{message.title}}
+
+  {{{message.body}}}
+
+{{#with signature}}
+{{salutation}},
+{{name}}
+{{/with}}
+{{/with}}
+
