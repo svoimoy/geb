@@ -1,0 +1,12 @@
+name: golang-cli
+version: "0.1"
+language: golang
+type: cli
+about: A golang viper/cobra cli dsl
+
+repeated:
+  - name: command
+    field: commands
+    templates:
+      - cmd/cmd.go
+

@@ -33,23 +33,23 @@ func CreateFromFolder(folder string) (*Generator, error) {
 	g.Config = c
 	g.SourcePath = folder
 
+	p, err := CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
+	if err != nil {
+		return nil, err
+	}
+	g.Partials = p
+
 	t, err := CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
 	if err != nil {
 		return nil, err
 	}
 	g.Templates = t
 
-	r, err := CreateTemplateMapFromFolder(filepath.Join(folder, "repeats"))
+	r, err := CreateTemplateMapFromFolder(filepath.Join(folder, "repeated"))
 	if err != nil {
 		return nil, err
 	}
 	g.Repeats = r
-
-	p, err := CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
-	if err != nil {
-		return nil, err
-	}
-	g.Partials = p
 
 	return g, nil
 }

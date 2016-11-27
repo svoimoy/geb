@@ -13,7 +13,6 @@ dsl-config:
       gen:
         - golang
         - protobuf
-    - dsl: api
     - dsl: cli
 
 log-level: info

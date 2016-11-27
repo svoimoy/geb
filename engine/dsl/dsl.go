@@ -14,6 +14,7 @@ type Dsl struct {
 	Name    string
 	Version string
 	About   string
+	Type    string
 
 	SourcePath          string
 	AvailableGenerators map[string]string

@@ -22,3 +22,31 @@ cli:
       short: o
       default: output
       help: The directory to output generated files to.
+  commands:
+    - name: geb
+      usage: geb
+      parent: root
+    - name: init
+      usage: init
+      parent: root
+    - name: import
+      usage: import
+      parent: root
+    - name: project
+      usage: project
+      parent: root
+    - name: dsl
+      usage: dsl
+      parent: root
+    - name: dsl-list
+      usage: list
+      parent: dsl
+    - name: dsl-get
+      usage: get
+      parent: dsl
+    - name: dsl-add
+      usage: add
+      parent: dsl
+    - name: dsl-update
+      usage: update
+      parent: dsl

@@ -6,6 +6,12 @@ import (
 	"gopkg.in/yaml.v1"
 )
 
+type RepeatConfig struct {
+	Name      string
+	Field     string
+	Templates []string
+}
+
 type Config struct {
 	Name    string
 	Version string
@@ -13,6 +19,8 @@ type Config struct {
 
 	Type     string
 	Language string
+
+	Repeated []RepeatConfig
 }
 
 func NewConfig() *Config {
