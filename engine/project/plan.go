@@ -66,7 +66,7 @@ func (P *Project) Plan() error {
 			// Render the repeated templates
 			// Get the root of the data to index into
 			for k, _ := range P.Design.Dsl {
-				logger.Warn("dsl keys", "key", k)
+				logger.Debug("dsl keys", "key", k)
 			}
 			dsl_design, ok := P.Design.Dsl[d_key]
 			if !ok {

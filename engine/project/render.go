@@ -12,7 +12,7 @@ import (
 )
 
 func (P *Project) Render() error {
-	logger.Warn("Rendering Project TBD")
+	logger.Info("Rendering Project")
 
 	for _, plan := range P.Plans {
 		tpl := (*raymond.Template)(plan.Template)

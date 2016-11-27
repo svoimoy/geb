@@ -68,7 +68,37 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 			return nil
 		}
 
-		if info.IsDir() || !(strings.Contains(info.Name(), ".yml") || strings.Contains(info.Name(), ".yaml")) {
+		logger.Debug("Walking:  " + path)
+
+		if info.IsDir() {
+			// check to see if there is a geb file (due to walking in alpha order)
+			// if so, just rewrite the path and things should work out
+			// we will make sure we aren't overwriting the second time witht the DSL
+			fns := []string{
+				"geb-dsl.yml",
+				"geb-dsl.yaml",
+				"geb-gen.yml",
+				"geb-gen.yaml",
+			}
+
+			geb_fn := ""
+			for _, fn := range fns {
+				g_fn := filepath.Join(path, fn)
+				_, g_err := os.Lstat(g_fn)
+				if g_err == nil {
+					geb_fn = g_fn
+					break
+				}
+			}
+
+			if geb_fn != "" {
+				path = geb_fn
+			} else {
+				// skip this directory
+				return nil
+			}
+		} else if !(strings.Contains(info.Name(), ".yml") || strings.Contains(info.Name(), ".yaml")) {
+			// only interested in yaml files (actually geb files) for making decisions
 			return nil
 		}
 
@@ -78,6 +108,10 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 			rel, err := filepath.Rel(folder, dir)
 			if err != nil {
 				return err
+			}
+			if _, ok := dsls[rel]; ok {
+				// already discovered this dsl
+				return nil
 			}
 			curr_dsl = NewDsl()
 			curr_dsl.Name = rel
@@ -90,6 +124,10 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 			rel, err := filepath.Rel(curr_dsl.SourcePath, dir)
 			if err != nil {
 				return err
+			}
+			if _, ok := curr_dsl.AvailableGenerators[rel]; ok {
+				// already discovered this dsl
+				return nil
 			}
 			logger.Info("    generator: ", "dsl", curr_dsl.Name, "name", rel)
 			curr_dsl.AvailableGenerators[rel] = rel
