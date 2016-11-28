@@ -1,6 +1,6 @@
-name: "count-service"
+name: "sample"
 version: "0.1"
-about: "A key counting service"
+about: "Sample folder layouts and references"
 
 output-dir: "output"
 design-dir: "design"
@@ -10,7 +10,6 @@ dsl-config:
     - dsl
     - ~/.hofstadter/dsl
   default:
-    - dsl: types
-    - dsl: api
+    - dsl: sample
 
 log-level: info

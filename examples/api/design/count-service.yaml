@@ -1,7 +1,7 @@
 api:
   name: count-service
   version: "0.1"
-  about: count-service for daily transaction counts.
+  about: count-service for tracking counts by key
   config:
     base-url: api/v1
   routes:
@@ -36,5 +36,7 @@ api:
           type: string
           required: true
       return: DeleteCount
+
+
 
 

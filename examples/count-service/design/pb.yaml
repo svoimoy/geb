@@ -1,7 +1,7 @@
 pb:
   name: count-service
   version: 0.1
-  about: "Protobuf spec for the AlchemyAPI count-service"
+  about: "Protobuf spec for the count-service"
   pb-version: 3
   messages:
     - name: OwnerId

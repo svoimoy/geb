@@ -30,5 +30,19 @@ from the geb-hub library.
 
 ### Developing
 
+Please contribute, we are working towards and ecosystem.
 
+##### Tips:
+
+Make the following symlinks,
+from the development folder:
+
+1. the `geb` binary to `/usr/local/bin/geb`
+1. the `dsl` folder go `~/.hofstadter/dsl`
+
+This will keep you defaulting to
+the latest build and templates,
+when working in any directory
+and letting you override
+locally while still developing.
 

@@ -1,0 +1,17 @@
+name: "cli-example"
+version: "0.1"
+about: "A example cli"
+
+output-dir: "output"
+design-dir: "design"
+
+dsl-config:
+  paths:
+    - dsl
+    - ~/.hofstadter/dsl
+  default:
+    - dsl: types
+    - dsl: cli
+
+log-level: info
+

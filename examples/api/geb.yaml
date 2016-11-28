@@ -1,4 +1,16 @@
-template-paths: /Users/tony/golang/src/github.com/hofstadter-io/geb/templates
-generators:
-  - api/golang/gin
+name: "api-example"
+version: "0.1"
+about: "A example api"
 
+output-dir: "output"
+design-dir: "design"
+
+dsl-config:
+  paths:
+    - dsl
+    - ~/.hofstadter/dsl
+  default:
+    - dsl: types
+    - dsl: api
+
+log-level: info
