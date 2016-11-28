@@ -53,6 +53,27 @@ add any new files you wish to.
 Repeated templates also need
 to be associated in the `geb-gen.yaml` file.
 
+##### Extending dsls
+
+DSLs are also easily extended.
+Since both dsl and design are data
+both are quite flexible together,
+and combine for simple extensibility
+and customization
+(with the ability to override generators as well).
+
+To extend a dsl:
+
+1. Add any additional data to the design file, in the dsl specs.
+1. Reference the new fields in your overriden generators.
+
+Eventually DSLs will become more formal
+and the documentation will also
+become more detailed on the
+dsl specifics (types too)
+ 
+
+
 
 ##### Tips:
 
