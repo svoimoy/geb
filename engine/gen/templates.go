@@ -1,7 +1,6 @@
 package gen
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -85,35 +84,10 @@ func (M TemplateMap) import_template(base_path, path string) error {
 
 func add_template_helpers(tpl *raymond.Template) {
 
-	tpl.RegisterHelper("eq", helper_eq)
-	tpl.RegisterHelper("if_eq", helper_if_eq)
-	tpl.RegisterHelper("if_ne", helper_if_ne)
+	tpl.RegisterHelper("concat", helper_concat)
 
 }
 
-func helper_eq(lhs, rhs string, options *raymond.Options) string {
-	str := fmt.Sprintf("EQ: %q %q\n", lhs, rhs)
-	logger.Debug(str)
-	if lhs == rhs {
-		return "something"
-	}
-	return ""
-}
-
-func helper_if_eq(lhs, rhs string, options *raymond.Options) string {
-	str := fmt.Sprintf("IF_EQ: %q %q\n", lhs, rhs)
-	logger.Debug(str)
-	if lhs == rhs {
-		return options.Fn()
-	}
-	return ""
-}
-
-func helper_if_ne(lhs, rhs string, options *raymond.Options) string {
-	str := fmt.Sprintf("IF_NE: %q %q\n", lhs, rhs)
-	logger.Debug(str)
-	if lhs != rhs {
-		return options.Fn()
-	}
-	return ""
+func helper_concat(prefix, value, suffix string, options *raymond.Options) string {
+	return prefix + value + suffix
 }

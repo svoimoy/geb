@@ -19,16 +19,9 @@ func {{route}}_{{method}}_Handler(ctx *gin.Context) {
 		return
 	}
 	{{/if}}
-  {{#if is-uint }}
-	{{name}}_int, err := strconv.ParseUint({{name}}, 10, 64)
-	if err != nil {
-		res := gin.H{"error": "{{name}} must be an unsigned integer"}
-		c.JSON(http.StatusBadRequest, res)
-		return
-	}
-	{{else ~}}
-	// not a uint: '{{type}}'
-	{{/if}}
+
+	{{#if type }} {{> (concat "parse/" type ".go") }} {{/if}}
+
 {{/each}}
 }
 
