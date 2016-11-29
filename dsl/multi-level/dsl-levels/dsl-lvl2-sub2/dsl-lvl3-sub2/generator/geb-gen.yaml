@@ -1,0 +1,5 @@
+name: generator
+version: "0.1"
+language: none
+type: multi-level
+about: A simple generator example
