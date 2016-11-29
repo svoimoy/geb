@@ -9,26 +9,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var importLong = `geb import [type] [file]
-imports a file type to a geb design file
+var importLong = `imports a file(s)/folder(s) type to a geb design file(s)/folder(s)
 to a folder named 'imports' in the output dir.
 
-Intended file formats are:
+Intended mportable formats are:
+
+ - swagger
+ - json
+ - protobuf
+ - golang
+ - xml
+ - sql table create
  - goa.design
- - types
-	 - protobuf
-	 - json
-	 - xml
-	 - golang
- - apis
-	 - swagger
- - dsls
-   - kubernetes
 `
 
 var ImportCmd = &cobra.Command{
-	Use:   "import [type] [file]",
-	Short: "Import another file type to geb design.",
+	Use:   "import [type] [file(s)/folder(s)]",
+	Short: "Import another file type into geb design.",
 	Long:  generateLong,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("import is TBD")
