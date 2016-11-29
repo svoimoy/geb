@@ -6,21 +6,67 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.com/hofstadter-io/geb/engine/design"
 	"github.com/hofstadter-io/geb/engine/gen"
 )
 
 func (P *Project) Render() error {
 	logger.Info("Rendering Project")
 
+	cwd, err := os.Getwd()
+	if err != nil {
+		logger.Crit("While current working directory", "error", err)
+		return err
+	}
+	p_dir := filepath.Join(cwd, P.Config.OutputDir)
+	logger.Debug("o_dir: " + p_dir)
+	P.Design.Proj["proj_outdir"] = p_dir
+
 	for _, plan := range P.Plans {
+
+		d_dir := filepath.Join(p_dir, plan.Dsl)
+		P.Design.Proj["dsl_basedir"] = d_dir
+		g_dir := filepath.Join(d_dir, plan.Gen)
+		P.Design.Proj["gen_basedir"] = g_dir
+
+		// get file basedir
+		f_dir := filepath.Dir(plan.Outfile)
+		P.Design.Proj["file_basedir"] = f_dir
+
+		// if golang generator, add gopath relative base dir
+		if strings.Contains(plan.Gen, "golang") {
+			gopath := os.Getenv("GOPATH")
+			if gopath == "" {
+				logger.Warn("GOPATH environment variable is not set", "error", err)
+				// return err
+			}
+			logger.Debug("GOPATH: " + gopath)
+			gopath += "/src/"
+
+			go_dir := strings.TrimPrefix(g_dir, gopath)
+			P.Design.Proj["goimport_basedir"] = go_dir
+			logger.Debug("go_dir: " + go_dir)
+		}
+
+		if plan.RepeatedContext != nil {
+			D, ok := plan.Data.(*design.Design)
+			if !ok {
+				return errors.New("Expected plan.Data to be design.Design because there was a plan.RepeatedContext != nil")
+			}
+			D.RepeatedContext = plan.RepeatedContext
+		}
+
+		// Render the template
 		tpl := (*raymond.Template)(plan.Template)
 		result, err := tpl.Exec(plan.Data)
 		if err != nil {
 			return err
 		}
 
+		// Write the results, splicing if needed
 		err = WriteResults(plan.Outfile, result)
 		if err != nil {
 			return err

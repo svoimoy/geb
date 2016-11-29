@@ -16,6 +16,8 @@ type FileGenData struct {
 	Data     interface{}
 	Template *raymond.Template
 	Outfile  string
+
+	RepeatedContext interface{}
 }
 
 func (P *Project) Plan() error {
@@ -117,6 +119,8 @@ func (P *Project) Plan() error {
 					for idx, val := range c_slice {
 						logger.Info("   Collection templates", "val", val, "count", len(R.Templates))
 
+						local_ctx := val
+
 						m_val := val.(map[interface{}]interface{})
 						elem_name := m_val["name"]
 						r_dir, r_file := filepath.Split(t_key)
@@ -131,6 +135,8 @@ func (P *Project) Plan() error {
 							Template: t_ray,
 							Data:     P.Design,
 							Outfile:  outfile,
+
+							RepeatedContext: local_ctx,
 						}
 						logger.Info("        repeat file: "+t_key, "fgd", fgd, "index", idx)
 

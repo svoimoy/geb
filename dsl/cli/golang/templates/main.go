@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hofstadter-io/geb/output/cli/cmd"
-	"{{generator.outdir}}/cmd"
+	"{{Proj.goimport_basedir}}/cmd"
 )
 
 func main() {

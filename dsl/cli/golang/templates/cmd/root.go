@@ -1,32 +1,38 @@
-package main
+{{#with dsl.cli as |CLI| }}
+package cmd
 
 import (
+	{{#unless CLI.omit-root-run}}
 	"fmt"
+	{{/unless}}
 
 	"github.com/spf13/cobra"
 )
 
 var (
-{{#each dsl.cli.flags}}	{{ name }}Flag string
+{{#each CLI.flags}}	{{ name }}Flag string
 	{{/each}}
 )
 
 func init() {
 	//	cobra.OnInitialize(initConfig)
-{{#each dsl.cli.flags}}	RootCmd.PersistentFlags().StringVarP(&{{ name }}Flag, "{{name}}", "{{short}}", "{{default}}", "{{help}}")
+{{#each CLI.flags}}	RootCmd.PersistentFlags().StringVarP(&{{ name }}Flag, "{{long}}", "{{short}}", "{{default}}", "{{help}}")
 {{/each}}
 }
 
 var (
 	RootCmd = &cobra.Command{
-		Use:   "{{ dsl.cli.name }}",
-		Short: "{{ dsl.cli.short }}",
-		Long:  `{{ dsl.cli.long }}`,
+		Use:   "{{ CLI.name }}",
+		Short: "{{ CLI.short }}",
+		Long:  `{{ CLI.long }}`,
+		{{#unless CLI.omit-root-run}}
 		Run: func(cmd *cobra.Command, args []string) {
 			// HOFSTADTER_START root_cmd_func
 			// Do Stuff Here
 			fmt.Println("dostuff")
 			// HOFSTADTER_END   root_cmd_func
 		},
+		{{/unless}}
 	}
 )
+{{/with}}

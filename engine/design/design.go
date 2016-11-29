@@ -15,16 +15,20 @@ type DesignData map[interface{}]interface{}
 type DesignDataMap map[string]DesignData
 
 type Design struct {
-	Custom DesignDataMap
-	Dsl    DesignDataMap
+	Proj   map[string]interface{}
 	Type   DesignDataMap
+	Dsl    DesignDataMap
+	Custom DesignDataMap
+
+	RepeatedContext interface{}
 }
 
 func NewDesign() *Design {
 	return &Design{
-		Custom: make(DesignDataMap),
-		Dsl:    make(DesignDataMap),
+		Proj:   make(map[string]interface{}),
 		Type:   make(DesignDataMap),
+		Dsl:    make(DesignDataMap),
+		Custom: make(DesignDataMap),
 	}
 }
 func CreateFromFolder(folder string) (*Design, error) {
