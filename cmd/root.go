@@ -21,26 +21,27 @@ var (
 
 func init() {
 	//	cobra.OnInitialize(initConfig)
-	RootCmd.PersistentFlags().StringVarP(&FlagConfigFile, "config", "c", "", "geb config file for your project.")
+	RootCmd.PersistentFlags().StringVar(&FlagConfigFile, "merge-config", "", "merge a geb config file, overriding values.")
+	RootCmd.PersistentFlags().StringVarP(&FlagConfigFile, "set-config", "c", "", "reset the geb config file to the file specified.")
 	RootCmd.PersistentFlags().StringVarP(&FlagDesignDir, "design-dir", "d", "", "the design files directory. (default ./design)")
 	RootCmd.PersistentFlags().StringVarP(&FlagLogLevel, "log-level", "l", "", "geb logging level.")
 	RootCmd.PersistentFlags().StringVarP(&FlagOutputDir, "output-dir", "o", "", "the output files directory. (default ./output)")
 	RootCmd.PersistentFlags().StringVarP(&FlagTemplatePaths, "template-paths", "t", "", "base templates directory. (default ./templates:~/.hofstadter/templates)")
 
-	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
+	viper.BindPFlag("merge-config", RootCmd.PersistentFlags().Lookup("merge-config"))
+	viper.BindPFlag("set-config", RootCmd.PersistentFlags().Lookup("set-config"))
 	viper.BindPFlag("design-dir", RootCmd.PersistentFlags().Lookup("design-dir"))
 	viper.BindPFlag("log-level", RootCmd.PersistentFlags().Lookup("log-level"))
 	viper.BindPFlag("output-dir", RootCmd.PersistentFlags().Lookup("output-dir"))
 	viper.BindPFlag("template-paths", RootCmd.PersistentFlags().Lookup("template-paths"))
 
-	viper.SetConfigType("yaml")
-	viper.SetConfigName("geb")
-	viper.AddConfigPath(".")
-
 	viper.SetDefault("design-dir", "design")
 	viper.SetDefault("log-level", "warn")
 	viper.SetDefault("output-dir", "output")
 	viper.SetDefault("template-paths", "$HOME/.hofstadter/templates:templates")
+
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("geb")
 
 }
 
@@ -60,11 +61,22 @@ to genereate all of the things.`,
 )
 
 func read_config() {
-	cfg := viper.GetString("config")
+	viper.AddConfigPath("$HOME/.hofstadter")
+	viper.ReadInConfig()
+	viper.AddConfigPath(".")
+	viper.MergeInConfig()
+
+	cfg := viper.GetString("add-config")
 	if cfg != "" {
 		viper.SetConfigFile(cfg)
+		viper.MergeInConfig()
 	}
-	viper.ReadInConfig()
+
+	cfg = viper.GetString("set-config")
+	if cfg != "" {
+		viper.SetConfigFile(cfg)
+		viper.MergeInConfig()
+	}
 }
 
 func config_logger() {
@@ -81,6 +93,7 @@ func config_logger() {
 	termlog := log.LvlFilterHandler(term_level, log.StdoutHandler)
 	logger.SetHandler(termlog)
 	engine.SetLogger(logger)
+
 }
 
 func init() {

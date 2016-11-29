@@ -22,7 +22,9 @@ var GenerateCmd = &cobra.Command{
 	Long:  generateLong,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		err := engine.GenerateProject(args)
+		filename := "geb.yaml"
+
+		err := engine.GenerateProject(filename, args)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}

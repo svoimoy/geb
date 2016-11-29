@@ -4,9 +4,7 @@ import (
 	"github.com/hofstadter-io/geb/engine/project"
 )
 
-func GenerateProject(generators []string) error {
-
-	filename := "geb.yaml"
+func GenerateProject(filename string, generators []string) error {
 
 	proj := project.NewProject()
 
