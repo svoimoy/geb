@@ -12,25 +12,14 @@ With it, you can:
 
 ### Installation
 
-Download a binary from the [releases](https://github.ibm.com/afworm/geb/releases).
-
-or get the latest by `go get`'n from github:
-
-`go get github.ibm.com/afworm/geb`
+1. Clone this repository to: `$GOPATH/github.com/hofstadter-io/geb`
+2. Change to that directory and run: `go install`
 
 Then do the initial setup:
 
 See the Developing section on tips (making symlinks).
 You can copy if you do not plan to develop geb.
 
-Eventually this will be the way:
-
-```
-`geb setup`.
-This will download the
-default designs and templates
-from the geb-hub library.
-```
 
 ### Documentation
 
