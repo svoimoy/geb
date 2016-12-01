@@ -57,15 +57,15 @@ func (P *Project) Plan() error {
 
 			// only do repeats for actual dsls
 			if D.Type != "dsl" {
-				logger.Info("skipping dsl repeat: "+D.Type, "name", D.Name)
+				logger.Debug("       skipping dsl repeat: "+D.Type, "name", D.Name)
 				continue
 			}
-			logger.Info("doing dsl repeat: "+D.Type, "name", D.Name, "d_key", d_key)
+			logger.Info("      doing dsl repeat: "+D.Type, "name", D.Name, "d_key", d_key)
 
 			// Render the repeated templates
 			// Get the root of the data to index into
 			for k, _ := range P.Design.Dsl {
-				logger.Debug("dsl keys", "key", k)
+				logger.Debug("       - dsl keys", "key", k)
 			}
 			dsl_design, ok := P.Design.Dsl[d_key]
 			if !ok {

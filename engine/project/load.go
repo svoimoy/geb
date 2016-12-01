@@ -22,6 +22,7 @@ func (P *Project) Load(filename string, generators []string) error {
 		return err
 	}
 	P.Config = c
+	logger.Debug("Project Config", "config", P.Config)
 
 	d_dir := P.Config.DesignDir
 	logger.Info("Reading designs", "folder", d_dir)
@@ -31,6 +32,7 @@ func (P *Project) Load(filename string, generators []string) error {
 		return err
 	}
 	P.Design = d
+	logger.Debug("Project Design", "design", P.Design)
 
 	err = P.LoadGenerators(generators)
 	if err != nil {

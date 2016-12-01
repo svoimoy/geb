@@ -38,10 +38,12 @@ func CreateFromFolder(folder string) (*Design, error) {
 }
 
 func (d *Design) ImportDesignFile(filename string) error {
+	logger.Info("Importing Design fileame:", "filename", filename)
 	return d.import_design(filename)
 }
 
 func (d *Design) ImportDesignFolder(folder string) error {
+	logger.Info("Importing Design folder: " + folder)
 
 	// local walk function closure
 	import_design_walk_func := func(path string, info os.FileInfo, err error) error {
@@ -65,6 +67,7 @@ func (d *Design) ImportDesignFolder(folder string) error {
 }
 
 func (d *Design) import_design(path string) error {
+	logger.Info("  - file: " + path)
 	// fmt.Println(" -", path)
 	top_level := make(map[string]interface{})
 	raw_data, err := ioutil.ReadFile(path)
@@ -89,6 +92,8 @@ func (d *Design) import_design(path string) error {
 }
 
 func (d *Design) store_design(dsl string, design DesignData) error {
+	logger.Info("    - " + dsl)
+	logger.Debug("        data:", "design", design, "dsl", dsl)
 	switch dsl {
 	case "api", "cli":
 		_, ok := design["name"]

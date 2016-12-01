@@ -90,7 +90,10 @@ func config_logger() {
 	// term_caller := log.CallerFuncHandler(log.CallerFileHandler(term_stack))
 	// termlog := log.LvlFilterHandler(term_level, term_caller)
 
-	termlog := log.LvlFilterHandler(term_level, log.StdoutHandler)
+	term_caller := log.CallerFuncHandler(log.CallerFileHandler(log.StdoutHandler))
+	termlog := log.LvlFilterHandler(term_level, term_caller)
+
+	//	termlog := log.LvlFilterHandler(term_level, log.StdoutHandler)
 	logger.SetHandler(termlog)
 	engine.SetLogger(logger)
 
