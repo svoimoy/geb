@@ -10,7 +10,7 @@ import (
 
 	"github.com/aymerick/raymond"
 	"github.com/hofstadter-io/geb/engine/design"
-	"github.com/hofstadter-io/geb/engine/gen"
+	"github.com/hofstadter-io/geb/engine/templates"
 )
 
 func (P *Project) Render() error {
@@ -77,7 +77,7 @@ func (P *Project) Render() error {
 	return nil
 }
 
-func RenderTemplate(template *gen.Template, design interface{}) (string, error) {
+func RenderTemplate(template *templates.Template, design interface{}) (string, error) {
 	tpl := (*raymond.Template)(template)
 	return tpl.Exec(design)
 }

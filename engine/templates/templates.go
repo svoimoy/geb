@@ -1,4 +1,4 @@
-package gen
+package templates
 
 import (
 	"io/ioutil"
@@ -80,14 +80,4 @@ func (M TemplateMap) import_template(base_path, path string) error {
 
 	M[tpl_name] = (*Template)(tpl)
 	return nil
-}
-
-func add_template_helpers(tpl *raymond.Template) {
-
-	tpl.RegisterHelper("concat", helper_concat)
-
-}
-
-func helper_concat(prefix, value, suffix string, options *raymond.Options) string {
-	return prefix + value + suffix
 }

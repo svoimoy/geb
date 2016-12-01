@@ -1,4 +1,4 @@
-package plan
+package render
 
 import (
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework

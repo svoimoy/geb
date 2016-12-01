@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 
 	"github.com/hofstadter-io/geb/engine/design"
-	"github.com/hofstadter-io/geb/engine/gen"
 	"github.com/hofstadter-io/geb/engine/project"
+	"github.com/hofstadter-io/geb/engine/templates"
 )
 
 func GenerateFile(designFile, templateFile, outputFile string) error {
@@ -19,7 +19,7 @@ func GenerateFile(designFile, templateFile, outputFile string) error {
 		return err
 	}
 
-	T := gen.NewTemplateMap()
+	T := templates.NewTemplateMap()
 	err = T.ImportTemplateFile(templateFile)
 	if err != nil {
 		return err

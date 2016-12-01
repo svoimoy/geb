@@ -1,22 +1,25 @@
 package gen
 
-import "path/filepath"
+import (
+	"github.com/hofstadter-io/geb/engine/templates"
+	"path/filepath"
+)
 
 type Generator struct {
 	SourcePath string
 	Config     *Config
 
-	Templates TemplateMap
-	Repeated  TemplateMap
-	Partials  TemplateMap
+	Templates templates.TemplateMap
+	Repeated  templates.TemplateMap
+	Partials  templates.TemplateMap
 }
 
 func NewGenerator() *Generator {
 	return &Generator{
 		Config:    NewConfig(),
-		Templates: NewTemplateMap(),
-		Repeated:  NewTemplateMap(),
-		Partials:  NewTemplateMap(),
+		Templates: templates.NewTemplateMap(),
+		Repeated:  templates.NewTemplateMap(),
+		Partials:  templates.NewTemplateMap(),
 	}
 }
 
@@ -33,19 +36,19 @@ func CreateFromFolder(folder string) (*Generator, error) {
 	g.Config = c
 	g.SourcePath = folder
 
-	p, err := CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
+	p, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
 	if err != nil {
 		return nil, err
 	}
 	g.Partials = p
 
-	t, err := CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
+	t, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
 	if err != nil {
 		return nil, err
 	}
 	g.Templates = t
 
-	r, err := CreateTemplateMapFromFolder(filepath.Join(folder, "repeated"))
+	r, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "repeated"))
 	if err != nil {
 		return nil, err
 	}

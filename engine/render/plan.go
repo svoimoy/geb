@@ -1,12 +1,11 @@
-package project
+package render
 
 import (
 	"errors"
+	"fmt"
 	"path/filepath"
-	"strings"
 
 	"github.com/aymerick/raymond"
-	"github.com/hofstadter-io/geb/engine/templates"
 	"github.com/hofstadter-io/geb/engine/utils"
 )
 
@@ -24,8 +23,6 @@ type FileGenData struct {
 func (P *Project) Plan() error {
 	logger.Info("Planning Project")
 
-	P.register_partials()
-
 	plans := []FileGenData{}
 
 	// Loop over DSLs in the plans
@@ -39,6 +36,12 @@ func (P *Project) Plan() error {
 			// Render the normal templates
 			for t_key, T := range G.Templates {
 				t_ray := (*raymond.Template)(T)
+
+				// add the partials before putting into plan
+				for p_key, partial := range G.Partials {
+					p_ray := (*raymond.Template)(partial)
+					t_ray.RegisterPartialTemplate(p_key, p_ray)
+				}
 
 				// build up the plan data struct
 				fgd := FileGenData{
@@ -78,8 +81,21 @@ func (P *Project) Plan() error {
 			for _, R := range repeats {
 				logger.Info("Processing Repeated Field " + R.Name)
 
-				collection, err := utils.GetByPath(R.Field, (map[interface{}]interface{})(dsl_design))
-				// collection, err := dsl_design.GetByPath(R.Field)
+				/*
+					// unpack field indexing to actual collection
+					fields := strings.Split(R.Field, ".")
+					logger.Info("  Indexing fields", "cnt", len(fields), "fields", fields)
+
+					if len(fields) > 1 {
+						return errors.New("Repeat field indexing is not supported yet")
+					}
+
+					collection, ok := dsl_design[R.Field]
+					if !ok {
+						return errors.New("Did not find repeat field in data: " + R.Field)
+					}
+				*/
+				collection, err := utils.GetByPath(R.Field, dsl_design)
 				if err != nil {
 					return err
 				}
@@ -90,10 +106,8 @@ func (P *Project) Plan() error {
 				}
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
-				for _, t_pair := range R.Templates {
-					logger.Info("Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
-
-					t_key := t_pair.In
+				for _, t_key := range R.Templates {
+					logger.Info("Looking for repeat template: ", "key", t_key, "in", G.Repeated)
 
 					T, ok := G.Repeated[t_key]
 					if !ok {
@@ -101,41 +115,23 @@ func (P *Project) Plan() error {
 					}
 					t_ray := (*raymond.Template)(T)
 
+					// add the partials before putting into plan
+					for p_key, partial := range G.Partials {
+						logger.Info("Registering partial with template", "partial", p_key, "template", t_key)
+						p_ray := (*raymond.Template)(partial)
+						t_ray.RegisterPartialTemplate(p_key, p_ray)
+					}
+
 					for idx, val := range c_slice {
 						logger.Info("   Collection templates", "val", val, "count", len(R.Templates))
 
 						local_ctx := val
 
-						of_tpl_source := t_pair.Out
-						tpl, err := raymond.Parse(of_tpl_source)
-						if err != nil {
-							return err
-						}
-
-						templates.AddHelpers(tpl)
-
-						/*
-							tpl_data := map[string]interface{}{
-								"design": P.Design,
-								"dsl":    dsl_design,
-								"repeat": val,
-							}
-							OF_name, err := tpl.Exec(tpl_data)
-						*/
-						OF_name, err := tpl.Exec(val)
-						if err != nil {
-							return err
-						}
-
-						OF_name = strings.ToLower(OF_name)
-						logger.Info("OFNAME", "name", OF_name)
-						outfile := filepath.Join(P.Config.OutputDir, d_key, g_key, OF_name)
-
-						// m_val := val.(map[interface{}]interface{})
-						// elem_name := m_val["name"]
-						// r_dir, r_file := filepath.Split(t_key)
-						// of_name := fmt.Sprintf("%s-%s", elem_name, r_file)
-						// outfile := filepath.Join(P.Config.OutputDir, d_key, g_key, r_dir, of_name)
+						m_val := val.(map[interface{}]interface{})
+						elem_name := m_val["name"]
+						r_dir, r_file := filepath.Split(t_key)
+						of_name := fmt.Sprintf("%s-%s", elem_name, r_file)
+						outfile := filepath.Join(P.Config.OutputDir, d_key, g_key, r_dir, of_name)
 
 						// build up the plan data struct
 						fgd := FileGenData{
@@ -166,35 +162,4 @@ func (P *Project) Plan() error {
 	P.Plans = plans
 
 	return nil
-}
-
-func (P *Project) register_partials() {
-	logger.Debug("Registering partials with templates and repeats")
-	for d_key, D := range P.DslMap {
-		logger.Debug("    dsl: "+D.Name, "key", d_key)
-
-		// Loop over each generator in the current DSL
-		for g_key, G := range D.Generators {
-			logger.Debug("      gen: "+g_key, "gen_cfg", G.Config)
-
-			// Register with the normal templates
-			for _, T := range G.Templates {
-				t_ray := (*raymond.Template)(T)
-				for p_key, partial := range G.Partials {
-					p_ray := (*raymond.Template)(partial)
-					t_ray.RegisterPartialTemplate(p_key, p_ray)
-				}
-			}
-
-			for _, R := range G.Repeated {
-				t_ray := (*raymond.Template)(R)
-				for p_key, partial := range G.Partials {
-					p_ray := (*raymond.Template)(partial)
-					t_ray.RegisterPartialTemplate(p_key, p_ray)
-				}
-			}
-
-		}
-	}
-
 }

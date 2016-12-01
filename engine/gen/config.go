@@ -6,10 +6,15 @@ import (
 	"gopkg.in/yaml.v1"
 )
 
+type RepeatTemplatePair struct {
+	In  string
+	Out string
+}
+
 type RepeatConfig struct {
 	Name      string
 	Field     string
-	Templates []string
+	Templates []RepeatTemplatePair
 }
 
 type Config struct {

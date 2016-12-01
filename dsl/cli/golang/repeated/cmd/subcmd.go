@@ -1,6 +1,6 @@
 {{#with RepeatedContext as |RC| }}
 {{#with dsl.cli as |CLI| }}
-package cmd
+package {{#lower RC.parent}}{{/lower}}
 
 import (
 	// HOFSTADTER_START import
@@ -8,7 +8,7 @@ import (
 	// HOFSTADTER_END   import
 
 	{{#if sub-commands}}
-	"{{Proj.goimport_basedir}}/cmd/{{#lower RC.name}}{{/lower}}"
+	"{{Proj.goimport_basedir}}/cmd/{{#lower RC.parent}}{{/lower}}/{{#lower RC.name}}{{/lower}}"
 	{{/if}}
 
 	{{#if RC.flags}}
@@ -45,8 +45,6 @@ var {{RC.name}}Cmd = &cobra.Command {
 
 
 func init() {
-	{{RC.parent}}Cmd.AddCommand({{RC.name}}Cmd)
-
 	{{#each sub-commands}}
 	{{RC.name}}Cmd.AddCommand({{#lower RC.name}}{{/lower}}.{{name}}Cmd)
 	{{/each}}
