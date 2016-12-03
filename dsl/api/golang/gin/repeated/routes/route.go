@@ -14,8 +14,8 @@ API:     {{API.name}}
 Name:    {{RC.name}}
 Route:   {{RC.route}}
 Method:  {{RC.method}}
-Parent:  {{RC.parent.name}}
-Parent2: {{RC.parent.parent.name}}
+Path:    {{RC.path}}
+Parent:  {{RC.parent}}
 
 Params:
 {{#params}}
@@ -25,6 +25,17 @@ Params:
 	{{/each}}
 {{/params}}
 
+
+Parent Object:
+{{#get_obj_by_path RC.parent data=@root.dsl}}
+		{{name}}:v{{version}}
+{{/get_obj_by_path}}
+
+join: {{join3 "." RC.parent "routes" RC.name}}
+
+{{#get_elem_by_name "routes" RC.name data=API}}
+join_obj: {{.}}
+{{/get_elem_by_name}}
 */
 
 
@@ -41,7 +52,7 @@ func {{RC.name}}_{{RC.method}}_Handler(ctx *gin.Context) {
 		return
 	}
 	{{/if}}
-	{{#if type }} {{> (concat "parse/" type ".go") }} {{/if}}
+	{{#if type }} {{> (concat3 "parse/" type ".go") }} {{/if}}
 {{/each}}
 
 }

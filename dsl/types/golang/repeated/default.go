@@ -1,9 +1,9 @@
-{{#with type.count}}
 package main
 
+{{#with type.count}}
 // Name:    {{name}}
 // Version: {{version}}
-type {{title name}} struct {
+
 {{#each fields}}
 {{#if private}}
 private: '{{name}}'
@@ -11,6 +11,6 @@ private: '{{name}}'
 public:  '{{name}}' {{> tags.go}}
 {{/if}}
 {{/each}}
-}
+
 
 {{/with}}

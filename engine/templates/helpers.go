@@ -13,7 +13,15 @@ func AddHelpers(tpl *raymond.Template) {
 
 func add_template_helpers(tpl *raymond.Template) {
 
-	tpl.RegisterHelper("concat", helper_concat)
+	tpl.RegisterHelper("concat2", helper_concat2)
+	tpl.RegisterHelper("concat3", helper_concat3)
+	tpl.RegisterHelper("concat4", helper_concat4)
+	tpl.RegisterHelper("concat5", helper_concat5)
+	tpl.RegisterHelper("join2", helper_join2)
+	tpl.RegisterHelper("join3", helper_join3)
+	tpl.RegisterHelper("join4", helper_join4)
+	tpl.RegisterHelper("join5", helper_join5)
+
 	tpl.RegisterHelper("lwidth", helper_lwidth)
 	tpl.RegisterHelper("rwidth", helper_rwidth)
 	tpl.RegisterHelper("printf", helper_printf)
@@ -25,8 +33,30 @@ func add_template_helpers(tpl *raymond.Template) {
 
 }
 
-func helper_concat(prefix, value, suffix string, options *raymond.Options) string {
-	return prefix + value + suffix
+func helper_concat2(s1, s2 string) string {
+	return s1 + s2
+}
+func helper_concat3(s1, s2, s3 string) string {
+	return s1 + s2 + s3
+}
+func helper_concat4(s1, s2, s3, s4 string) string {
+	return s1 + s2 + s3 + s4
+}
+func helper_concat5(s1, s2, s3, s4, s5 string) string {
+	return s1 + s2 + s3 + s4 + s5
+}
+
+func helper_join2(sep, s1, s2 string) string {
+	return strings.Join([]string{s1, s2}, sep)
+}
+func helper_join3(sep, s1, s2, s3 string) string {
+	return strings.Join([]string{s1, s2, s3}, sep)
+}
+func helper_join4(sep, s1, s2, s3, s4 string) string {
+	return strings.Join([]string{s1, s2, s3, s4}, sep)
+}
+func helper_join5(sep, s1, s2, s3, s4, s5 string) string {
+	return strings.Join([]string{s1, s2, s3, s4, s5}, sep)
 }
 
 func helper_lwidth(width string, value string) string {

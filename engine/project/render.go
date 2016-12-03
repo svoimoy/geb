@@ -2,7 +2,7 @@ package project
 
 import (
 	"bytes"
-	"errors"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -63,7 +63,7 @@ func (P *Project) Render() error {
 		tpl := (*raymond.Template)(plan.Template)
 		result, err := tpl.Exec(plan.Data)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
 		}
 
 		// Write the results, splicing if needed

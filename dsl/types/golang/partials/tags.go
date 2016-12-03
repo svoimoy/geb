@@ -1,1 +1,1 @@
-`yaml:"{{.}}",json:"{{.}}"`
+`yaml:"{{name}}" json:"{{name}}"`

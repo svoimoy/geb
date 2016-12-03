@@ -20,7 +20,7 @@ func {{route}}_{{method}}_Handler(ctx *gin.Context) {
 	}
 	{{/if}}
 
-	{{#if type }} {{> (concat "parse/" type ".go") }} {{/if}}
+	{{#if type }} {{> (concat3 "parse/" type ".go") }} {{/if}}
 
 {{/each}}
 }

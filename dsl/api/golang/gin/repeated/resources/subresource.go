@@ -7,8 +7,8 @@ API:       {{API.name}}
 Name:      {{RC.name}}
 Route:     {{RC.route}}
 Resource:  {{RC.resource}}
-Parent:    {{RC.parent.name}}
-Parent2:   {{RC.parent.parent.name}}
+Path:      {{RC.path}}
+Parent:    {{RC.parent}}
 
 Methods:
 {{#methods}}

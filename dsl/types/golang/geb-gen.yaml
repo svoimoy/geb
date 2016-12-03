@@ -1,3 +1,11 @@
 name: "types/golang"
 version: "0.1"
 about: "generator for golang types"
+
+
+repeated:
+  - name: type
+    field: "."
+    templates:
+      - in: "default.go"
+        out: "{{name}}.go"

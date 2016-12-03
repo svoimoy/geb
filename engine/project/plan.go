@@ -1,7 +1,8 @@
 package project
 
 import (
-	"errors"
+	"github.com/pkg/errors"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -25,6 +26,7 @@ func (P *Project) Plan() error {
 	logger.Info("Planning Project")
 
 	P.register_partials()
+	P.add_template_helpers()
 
 	plans := []FileGenData{}
 
@@ -82,12 +84,12 @@ func (P *Project) Plan() error {
 			}
 
 			for _, R := range repeats {
-				logger.Info("Processing Repeated Field " + R.Name)
+				logger.Info("Processing Repeated Field: '" + R.Name + "'")
 
+				// look up field
 				collection, err := utils.GetByPath(R.Field, (map[interface{}]interface{})(dsl_design))
-				// collection, err := dsl_design.GetByPath(R.Field)
 				if err != nil {
-					return err
+					return errors.Errorf("looking up by path:  repeat(" + R.Name + ")  path" + R.Field + ")")
 				}
 
 				c_slice, ok := collection.([]interface{})
@@ -97,52 +99,48 @@ func (P *Project) Plan() error {
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
 				for _, t_pair := range R.Templates {
-					logger.Info("Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
+					// fmt.Println("AAAAAAAA = ", I)
+					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
 
 					t_key := t_pair.In
 
 					T, ok := G.Repeated[t_key]
 					if !ok {
+						// fmt.Println("    XXXX = ", t_key)
 						return errors.New("Unknown repeat template: " + t_key)
 					}
 					t_ray := (*raymond.Template)(T)
+					logger.Debug("        found repeat template: ", "repeat", R.Name, "in", t_key)
+					// fmt.Println("BBBBBBBB = ", I)
+
+					os.Stdout.Sync()
 
 					for idx, val := range c_slice {
-						logger.Info("   Collection templates", "val", val, "count", len(R.Templates))
 
+						// fmt.Println("    AAAA = ", idx, val)
 						local_ctx := val
+						logger.Debug("     context", "val", local_ctx, "idx", idx)
+						os.Stdout.Sync()
 
 						of_tpl_source := t_pair.Out
 						tpl, err := raymond.Parse(of_tpl_source)
 						if err != nil {
 							return err
 						}
+						// fmt.Println("    BBBB = ", idx, val)
 
 						templates.AddHelpers(tpl)
-
-						/*
-							tpl_data := map[string]interface{}{
-								"design": P.Design,
-								"dsl":    dsl_design,
-								"repeat": val,
-							}
-							OF_name, err := tpl.Exec(tpl_data)
-						*/
 						OF_name, err := tpl.Exec(val)
 						if err != nil {
 							return err
 						}
+						// fmt.Println("    TTTT = ", idx, OF_name)
 
 						OF_name = strings.ToLower(OF_name)
 						logger.Info("OFNAME", "name", OF_name)
 						outfile := filepath.Join(P.Config.OutputDir, d_key, g_key, OF_name)
 
-						// m_val := val.(map[interface{}]interface{})
-						// elem_name := m_val["name"]
-						// r_dir, r_file := filepath.Split(t_key)
-						// of_name := fmt.Sprintf("%s-%s", elem_name, r_file)
-						// outfile := filepath.Join(P.Config.OutputDir, d_key, g_key, r_dir, of_name)
-
+						// fmt.Println("    CCCC = ", I)
 						// build up the plan data struct
 						fgd := FileGenData{
 							Dsl:      d_key,
@@ -154,12 +152,14 @@ func (P *Project) Plan() error {
 
 							RepeatedContext: local_ctx,
 						}
-						logger.Info("        repeat file: "+t_key, "fgd", fgd, "index", idx)
+						logger.Info("        planned repeat file: "+t_key, "fgd", fgd, "index", idx)
 
 						// add the plan to a linear list to be rendered
 						plans = append(plans, fgd)
 
-					}
+					} // END of context loop 'c_slice'
+					logger.Debug("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", c_slice)
+
 				}
 
 			}
@@ -172,35 +172,4 @@ func (P *Project) Plan() error {
 	P.Plans = plans
 
 	return nil
-}
-
-func (P *Project) register_partials() {
-	logger.Debug("Registering partials with templates and repeats")
-	for d_key, D := range P.DslMap {
-		logger.Debug("    dsl: "+D.Name, "key", d_key)
-
-		// Loop over each generator in the current DSL
-		for g_key, G := range D.Generators {
-			logger.Debug("      gen: "+g_key, "gen_cfg", G.Config)
-
-			// Register with the normal templates
-			for _, T := range G.Templates {
-				t_ray := (*raymond.Template)(T)
-				for p_key, partial := range G.Partials {
-					p_ray := (*raymond.Template)(partial)
-					t_ray.RegisterPartialTemplate(p_key, p_ray)
-				}
-			}
-
-			for _, R := range G.Repeated {
-				t_ray := (*raymond.Template)(R)
-				for p_key, partial := range G.Partials {
-					p_ray := (*raymond.Template)(partial)
-					t_ray.RegisterPartialTemplate(p_key, p_ray)
-				}
-			}
-
-		}
-	}
-
 }
