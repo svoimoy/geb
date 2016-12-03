@@ -9,8 +9,8 @@ import (
 )
 
 type Generator struct {
-	SourcePath string
 	Config     *Config
+	SourcePath string
 
 	Templates templates.TemplateMap
 	Repeated  templates.TemplateMap

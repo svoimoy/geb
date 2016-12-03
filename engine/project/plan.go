@@ -34,7 +34,7 @@ func (P *Project) Plan() error {
 
 	// Loop over DSLs in the plans
 	for d_key, D := range P.DslMap {
-		logger.Info("    dsl: "+D.Name, "key", d_key)
+		logger.Info("    dsl: "+D.Config.Name, "key", d_key)
 
 		// Loop over each generator in the current DSL
 		for g_key, G := range D.Generators {
@@ -65,12 +65,12 @@ func (P *Project) Plan() error {
 			//   when there are repeats
 			//
 			repeats := G.Config.Repeated
-			if D.Type != "dsl" || len(repeats) == 0 {
-				logger.Debug("       skipping dsl repeat: "+D.Type, "name", D.Name)
+			if D.Config.Type != "dsl" || len(repeats) == 0 {
+				logger.Debug("       skipping dsl repeat: "+D.Config.Type, "name", D.Config.Name)
 				continue
 			}
 			logger.Info("Repeated found in config:", "count", len(repeats), "repeats", repeats)
-			logger.Info("      doing dsl repeat: "+D.Type, "name", D.Name, "d_key", d_key)
+			logger.Info("      doing dsl repeat: "+D.Config.Type, "name", D.Config.Name, "d_key", d_key)
 
 			// Render the repeated templates
 			// Get the root of the data to index into

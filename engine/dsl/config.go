@@ -11,13 +11,14 @@ type Config struct {
 	Name    string
 	Version string
 	About   string
+	Type    string
 
-	Imports []string
+	Spec map[string]interface{}
 }
 
 func NewConfig() *Config {
 	return &Config{
-		Imports: []string{},
+		Spec: map[string]interface{}{},
 	}
 }
 

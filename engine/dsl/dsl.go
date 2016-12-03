@@ -2,22 +2,17 @@ package dsl
 
 import (
 	"github.com/pkg/errors"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/hofstadter-io/geb/engine/gen"
-	"gopkg.in/yaml.v1"
 )
 
 type Dsl struct {
-	Name    string
-	Version string
-	About   string
-	Type    string
+	Config     *Config
+	SourcePath string
 
-	SourcePath          string
 	AvailableGenerators map[string]string
 
 	Generators map[string]*gen.Generator
@@ -25,38 +20,30 @@ type Dsl struct {
 
 func NewDsl() *Dsl {
 	return &Dsl{
+		Config:              NewConfig(),
 		AvailableGenerators: map[string]string{},
 		Generators:          map[string]*gen.Generator{},
 	}
 }
 
 func CreateFromFolder(folder string) (*Dsl, error) {
-	D, err := ReadDslFile(filepath.Join(folder, "geb-dsl.yml"))
+	D := NewDsl()
+
+	C, err := ReadConfigFile(filepath.Join(folder, "geb-dsl.yml"))
 	if err != nil {
+		logger.Info("error reading, geb-dsl.yml, trying geb-dsl.yaml", "err", err)
 		err = errors.Wrapf(err, "Error in dsl.CreateFromFolder with 'geb-dsl.yml' file in folder: %s\n", folder)
-		D, err = ReadDslFile(filepath.Join(folder, "geb-dsl.yaml"))
-		if err != nil {
-			return nil, errors.Wrapf(err, "Error in dsl.CreateFromFolder with 'geb-dsl.yaml' file in folder: %s\n", folder)
+		C2, err2 := ReadConfigFile(filepath.Join(folder, "geb-dsl.yaml"))
+		if err2 != nil {
+			err2 = errors.Wrap(err, "error reading geb-dsl.yaml, giving up.\n")
+			return nil, errors.Wrapf(err2, "Error in dsl.CreateFromFolder with 'geb-dsl.yaml' file in folder: %s\n", folder)
 		}
+		C = C2
 	}
+	D.Config = C
 
 	D.SourcePath = folder
 	return D, nil
-}
-
-func ReadDslFile(filename string) (*Dsl, error) {
-	data, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, errors.Wrapf(err, "while reading dsl config file: (readfile) %s\n", filename)
-	}
-
-	d := NewDsl()
-	err = yaml.Unmarshal(data, d)
-	if err != nil {
-		return nil, errors.Wrapf(err, "while reading dsl config file: (unmarshal) %s\n", filename)
-	}
-
-	return d, nil
 }
 
 func FindAvailable(folder string) (map[string]*Dsl, error) {
@@ -80,8 +67,7 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 				"geb-dsl.yml",
 				"geb-dsl.yaml",
 				"geb-gen.yml",
-				"geb-gen.yaml",
-			}
+				"geb-gen.yaml"}
 
 			geb_fn := ""
 			for _, fn := range fns {
@@ -116,7 +102,7 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 				return nil
 			}
 			curr_dsl = NewDsl()
-			curr_dsl.Name = rel
+			curr_dsl.Config.Name = rel
 			curr_dsl.SourcePath = dir
 			dsls[rel] = curr_dsl
 			logger.Info("  found DSL", "name", rel)
@@ -131,7 +117,7 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 				// already discovered this dsl
 				return nil
 			}
-			logger.Info("    generator: ", "dsl", curr_dsl.Name, "name", rel)
+			logger.Info("    generator: ", "dsl", curr_dsl.Config.Name, "name", rel)
 			curr_dsl.AvailableGenerators[rel] = rel
 		}
 
@@ -159,7 +145,7 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 }
 
 func (D *Dsl) MergeAvailable(fresh *Dsl) {
-	logger.Info("Merging Available", "existing", D.Name, "fresh", fresh.Name)
+	logger.Info("Merging Available", "existing", D.Config.Name, "fresh", fresh.Config.Name)
 	for path, G := range fresh.Generators {
 		_, ok := D.Generators[path]
 		if !ok {
@@ -170,7 +156,7 @@ func (D *Dsl) MergeAvailable(fresh *Dsl) {
 }
 
 func (D *Dsl) MergeSkipExisting(fresh *Dsl) {
-	logger.Info("Merging DSLs", "existing", D.Name, "fresh", fresh.Name)
+	logger.Info("Merging DSLs", "existing", D.Config.Name, "fresh", fresh.Config.Name)
 	for path, G := range fresh.Generators {
 		existing, ok := D.Generators[path]
 		if ok {
@@ -185,7 +171,7 @@ func (D *Dsl) MergeSkipExisting(fresh *Dsl) {
 }
 
 func (D *Dsl) MergeOverwrite(fresh *Dsl) {
-	logger.Info("Merging DSLs", "existing", D.Name, "fresh", fresh.Name)
+	logger.Info("Merging DSLs", "existing", D.Config.Name, "fresh", fresh.Config.Name)
 	for path, G := range fresh.Generators {
 		existing, ok := D.Generators[path]
 		if ok {

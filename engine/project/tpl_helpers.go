@@ -8,7 +8,7 @@ import (
 func (P *Project) register_partials() {
 	logger.Debug("Registering partials with templates and repeats")
 	for d_key, D := range P.DslMap {
-		logger.Debug("    dsl: "+D.Name, "key", d_key)
+		logger.Debug("    dsl: "+D.Config.Name, "key", d_key)
 
 		// Loop over each generator in the current DSL
 		for g_key, G := range D.Generators {
@@ -40,7 +40,7 @@ func (P *Project) add_template_helpers() {
 
 	logger.Debug("Registering partials with templates and repeats")
 	for d_key, D := range P.DslMap {
-		logger.Debug("    dsl: "+D.Name, "key", d_key)
+		logger.Debug("    dsl: "+D.Config.Name, "key", d_key)
 
 		// Loop over each generator in the current DSL
 		for g_key, G := range D.Generators {
