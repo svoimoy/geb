@@ -1,6 +1,7 @@
 package dsl
 
 import (
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -29,12 +30,13 @@ func NewDsl() *Dsl {
 	}
 }
 
-func LoadDsl(folder string) (*Dsl, error) {
+func CreateFromFolder(folder string) (*Dsl, error) {
 	D, err := ReadDslFile(filepath.Join(folder, "geb-dsl.yml"))
 	if err != nil {
+		err = errors.Wrapf(err, "Error in dsl.CreateFromFolder with 'geb-dsl.yml' file in folder: %s\n", folder)
 		D, err = ReadDslFile(filepath.Join(folder, "geb-dsl.yaml"))
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrapf(err, "Error in dsl.CreateFromFolder with 'geb-dsl.yaml' file in folder: %s\n", folder)
 		}
 	}
 
@@ -45,13 +47,13 @@ func LoadDsl(folder string) (*Dsl, error) {
 func ReadDslFile(filename string) (*Dsl, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading dsl config file: (readfile) %s\n", filename)
 	}
 
 	d := NewDsl()
 	err = yaml.Unmarshal(data, d)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading dsl config file: (unmarshal) %s\n", filename)
 	}
 
 	return d, nil
@@ -107,7 +109,7 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 		if fn == "geb-dsl.yml" || fn == "geb-dsl.yaml" {
 			rel, err := filepath.Rel(folder, dir)
 			if err != nil {
-				return err
+				return errors.Wrapf(err, "In dsl.FindAvailable:  %s %s\n", folder, dir)
 			}
 			if _, ok := dsls[rel]; ok {
 				// already discovered this dsl
@@ -123,7 +125,7 @@ func FindAvailable(folder string) (map[string]*Dsl, error) {
 		if fn == "geb-gen.yml" || fn == "geb-gen.yaml" {
 			rel, err := filepath.Rel(curr_dsl.SourcePath, dir)
 			if err != nil {
-				return err
+				return errors.Wrapf(err, "In dsl.FindAvailable:  %s %s\n", curr_dsl.SourcePath, dir)
 			}
 			if _, ok := curr_dsl.AvailableGenerators[rel]; ok {
 				// already discovered this dsl

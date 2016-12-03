@@ -1,0 +1,8 @@
+custom: '{{custom.my-custom-data.value}}'
+
+{{dsl.multi-level.dsl-twolvl}}
+
+{{#with dsl.multi-level.dsl-twolvl}}
+multi-level: '{{name}}' = {{value}}
+{{/with}}
+

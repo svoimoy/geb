@@ -1,8 +1,7 @@
 package design
 
 import (
-	"errors"
-	"fmt"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,6 +11,10 @@ import (
 )
 
 type DesignData map[interface{}]interface{}
+
+// these two should be in with the next map at load time
+// DesignRoot string // Folder from design list in Project
+// 	SourceFile string // The actual design the file
 type DesignDataMap map[string]DesignData
 
 type Design struct {
@@ -92,32 +95,55 @@ func (d *Design) import_design(path string) error {
 }
 
 func (d *Design) store_design(dsl string, design DesignData) error {
-	logger.Info("    - " + dsl)
+	logger.Info("    - storing: " + dsl)
 	logger.Debug("        data:", "design", design, "dsl", dsl)
-	switch dsl {
-	case "api", "cli":
-		_, ok := design["name"]
-		if !ok {
-			return errors.New("field 'name' missing from " + dsl + " dsl")
-		}
-		d.Dsl[dsl] = design
-		logger.Info("  found dsl", "dsl", dsl, "name", design["name"])
 
+	// Everything must have a name!
+	iname, ok := design["name"]
+	if !ok {
+		return errors.New("Top-level definition '" + dsl + "' missing required field 'name'")
+	}
+	name, ok := iname.(string)
+	if !ok {
+		return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string")
+	}
+
+	switch dsl {
 	case "type":
-		iname, ok := design["name"]
-		if !ok {
-			return errors.New("field 'name' missing from TYPE dsl")
-		}
-		name, ok := iname.(string)
-		if !ok {
-			return errors.New("field 'name' is not a string in TYPE " + fmt.Sprint(iname))
-		}
+		_, overwrite := d.Type[name]
 		d.Type[name] = design
-		logger.Info("  found type", "type", dsl, "name", design["name"])
+		logger.Debug("    - storing type", "type", dsl, "name", name, "overwrite", overwrite)
+
+	case "custom":
+		_, overwrite := d.Custom[name]
+		d.Custom[name] = design
+		logger.Debug("    - storing custom", "type", dsl, "name", name, "overwrite", overwrite)
 
 	default:
-		d.Custom[dsl] = design
-		logger.Info("  found custom", "name", dsl)
+		logger.Debug("    - storing dsl", "type", dsl, "name", name)
+		fields := strings.Split(dsl, "/")
+		logger.Debug("Fields", "fields", fields)
+
+		if L := len(fields); L > 0 {
+
+			dd_map := design
+			logger.Debug("       - "+name, "L", L)
+
+			for i := L - 1; i > 0; i-- {
+				curr := fields[i]
+				logger.Debug("       - "+curr, "L", L, "i", i)
+				tmp_map := make(DesignData)
+				tmp_map[curr] = dd_map
+				dd_map = tmp_map
+			}
+
+			d.Dsl[fields[0]] = dd_map
+			logger.Debug("       - " + fields[0])
+
+		} else {
+			d.Dsl[dsl] = design
+		}
+
 	}
 
 	return nil

@@ -1,0 +1,5 @@
+type:
+  name: birthday
+  fields:
+    - name: birthday
+      type: date

@@ -5,36 +5,35 @@ api:
   config:
     base-url: api/v1
   routes:
-    - route: version
+    - name: version
+      route: version
       method: GET
       return: VersionResponse
-    - route: all_counts
-      method: GET
-      return: KeyPairList
-    - route: trans_count
-      method: GET
-      params:
-        - name: owner_id
-          type: string
-          required: true
-      return: KeyPair
-    - route: trans_count
-      method: PUT
-      params:
-        - name: owner_id
-          type: string
-          required: true
-        - name: count
-          type: "uint"
-          is-uint: true
-          required: true
-      return: KeyPair
-    - route: trans_count
+
+    - name: clearCountByDate
+      route: count
       method: DELETE
       params:
         - name: date
           type: string
           required: true
+          validation:
+            min: 11
+            max: 11
+            regex: "[0-3][0-9]-[01][0-9]-20[12][0-9]"
       return: DeleteCount
 
+  resources:
+    - name: count
+      route: count
+      resource: count
+      methods:
+        list:
+          return: list[count.views.extern]
+        get:
+          input:  count.fields.owner_id
+          return: count.views.extern
+        put:
+          input:  count.views.extern
+          return: count.views.extern
 

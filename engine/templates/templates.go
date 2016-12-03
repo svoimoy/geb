@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/aymerick/raymond"
+	"github.com/pkg/errors"
 )
 
 type Template raymond.Template
@@ -19,7 +20,7 @@ func CreateTemplateMapFromFolder(folder string) (TemplateMap, error) {
 	M := NewTemplateMap()
 	err := M.ImportFromFolder(folder)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while importing %s\n", folder)
 	}
 	return M, nil
 }
@@ -73,7 +74,7 @@ func (M TemplateMap) import_template(base_path, path string) error {
 	// parse template
 	tpl, err := raymond.Parse(source)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "While parsing file: %s\n", tpl_name)
 	}
 
 	add_template_helpers(tpl)

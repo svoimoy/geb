@@ -3,6 +3,7 @@ package gen
 import (
 	"io/ioutil"
 
+	"github.com/pkg/errors"
 	"gopkg.in/yaml.v1"
 )
 
@@ -35,13 +36,13 @@ func NewConfig() *Config {
 func ReadConfigFile(filename string) (*Config, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading generator config file: (readfile) %s\n", filename)
 	}
 
 	c := NewConfig()
 	err = yaml.Unmarshal(data, c)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading generator config file: (unmarshal) %s\n", filename)
 	}
 
 	return c, nil

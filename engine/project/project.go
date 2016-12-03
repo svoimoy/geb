@@ -8,12 +8,13 @@ import (
 type Project struct {
 	// Read from project directories
 	Config *Config
+
+	// Design Data + Dsl/Generators
 	Design *design.Design
-
 	DslMap map[string]*dsl.Dsl
-	Plans  []FileGenData
 
-	// Pipelines  []Pipeline
+	// Rendering Plans
+	Plans []FileGenData
 }
 
 func NewProject() *Project {

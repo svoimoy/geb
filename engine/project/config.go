@@ -23,8 +23,8 @@ type Config struct {
 	Version string `yaml:"version"`
 	About   string `yaml:"about"`
 
-	OutputDir string    `yaml:"output-dir"`
 	DesignDir string    `yaml:"design-dir"`
+	OutputDir string    `yaml:"output-dir"`
 	DslConfig DslConfig `yaml:"dsl-config"`
 }
 

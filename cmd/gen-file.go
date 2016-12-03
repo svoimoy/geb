@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/geb/engine"
 	"github.com/spf13/cobra"
 )
@@ -29,7 +31,7 @@ var FileCmd = &cobra.Command{
 
 		err := engine.GenerateFile(design, template, output)
 		if err != nil {
-			logger.Error("While GenerateFile", "error", err)
+			fmt.Println("Error: ", err)
 		}
 	},
 }

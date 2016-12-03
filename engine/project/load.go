@@ -1,7 +1,7 @@
 package project
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -18,27 +18,24 @@ func (P *Project) Load(filename string, generators []string) error {
 	logger.Info("Reading config file", "filename", filename)
 	c, err := ReadConfigFile(filename)
 	if err != nil {
-		logger.Crit("While reading project config", "filename", filename, "error", err)
-		return err
+		return errors.Wrap(err, "while reading project config file: "+filename)
 	}
 	P.Config = c
 	logger.Debug("Project Config", "config", P.Config)
+
+	err = P.LoadGenerators(generators)
+	if err != nil {
+		return errors.Wrap(err, "while loading generators\n")
+	}
 
 	d_dir := P.Config.DesignDir
 	logger.Info("Reading designs", "folder", d_dir)
 	d, err := design.CreateFromFolder(d_dir)
 	if err != nil {
-		logger.Crit("While reading project designs", "folder", d_dir, "error", err)
-		return err
+		return errors.Wrapf(err, "While reading design folder: %s\n", d_dir)
 	}
 	P.Design = d
 	logger.Debug("Project Design", "design", P.Design)
-
-	err = P.LoadGenerators(generators)
-	if err != nil {
-		logger.Crit("While loading generators", "error", err)
-		return err
-	}
 
 	return nil
 
@@ -149,7 +146,7 @@ func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) erro
 					}
 
 					dsl_path := filepath.Join(path, s_dsl)
-					D, err := dsl.LoadDsl(dsl_path)
+					D, err := dsl.CreateFromFolder(dsl_path)
 					if err != nil {
 						return err
 					}
@@ -235,28 +232,28 @@ func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generato
 						if _, ok := err.(*os.PathError); ok {
 							continue
 						}
-						return err
+						return errors.Wrapf(err, "in project.LoadGeneratorList")
 					}
 
 					if info.Mode()&os.ModeSymlink != 0 {
 						dir, err := os.Readlink(path)
 						if err != nil {
-							return err
+							return errors.Wrapf(err, "in project.LoadGeneratorList")
 						}
 						path = dir
 					}
 
 					dsl_path := filepath.Join(path, s_dsl)
-					D, err := dsl.LoadDsl(dsl_path)
+					D, err := dsl.CreateFromFolder(dsl_path)
 					if err != nil {
-						return err
+						return errors.Wrapf(err, "in project.LoadGeneratorList")
 					}
 
 					logger.Debug("  gen path;", "dsl_path", dsl_path, "gpath", gpath)
 					gen_path := filepath.Join(dsl_path, gpath)
 					G, err := gen.CreateFromFolder(gen_path)
 					if err != nil {
-						return err
+						return errors.Wrapf(err, "in project.LoadGeneratorList")
 					}
 					D.Generators[s_gen] = G
 

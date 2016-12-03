@@ -1,0 +1,29 @@
+type:
+  name: us-address
+  fields:
+    - name: address-line1
+      type: string
+      validation:
+        - min: 1
+        - max: 128
+    - name: address-line2
+      type: string
+      validation:
+        - min: 1
+        - max: 128
+    - name: city
+      type: string
+      validation:
+        - min: 1
+        - max: 64
+    - name: state
+      type: string
+      validation:
+        - min: 1
+        - max: 64
+    - name: zipcode
+      type: string
+      validation:
+        - min: 5
+        - max: 5
+

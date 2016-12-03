@@ -1,0 +1,7 @@
+type:
+  name: social-basic
+  fields:
+    - name: account
+      type: string
+    - name: username
+      type: string

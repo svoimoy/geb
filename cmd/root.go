@@ -86,9 +86,11 @@ func config_logger() {
 		panic(err)
 	}
 
-	// term_stack := log.CallerStackHandler("%+v", log.StdoutHandler)
-	// term_caller := log.CallerFuncHandler(log.CallerFileHandler(term_stack))
-	// termlog := log.LvlFilterHandler(term_level, term_caller)
+	/*
+		term_stack := log.CallerStackHandler("%+v", log.StdoutHandler)
+		term_caller := log.CallerFuncHandler(log.CallerFileHandler(term_stack))
+		termlog := log.LvlFilterHandler(term_level, term_caller)
+	*/
 
 	term_caller := log.CallerFuncHandler(log.CallerFileHandler(log.StdoutHandler))
 	termlog := log.LvlFilterHandler(term_level, term_caller)

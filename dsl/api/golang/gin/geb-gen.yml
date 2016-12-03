@@ -1,0 +1,40 @@
+name: golang-gin-api
+version: "0.1"
+language: golang
+type: api
+about: A golang gin api
+
+repeated:
+  - name: route
+    field: routes
+    templates:
+      - in: "routes/route.go"
+        out: "routes/{{name}}.go"
+  - name: sub-route
+    field: routes.routes
+    templates:
+      - in: "routes/subroute.go"
+        out: "routes/{{parent.name}}/{{name}}.go"
+  - name: sub-sub-route
+    field: routes.routes.routes
+    templates:
+      - in: "routes/subroute.go"
+        out: "routes/{{parent.parent.name}}/{{parent.name}}/{{name}}.go"
+
+  - name: resource
+    field: resources
+    templates:
+      - in: "resources/resource.go"
+        out: "resources/{{name}}.go"
+  - name: sub-resource
+    field: resources.resources
+    templates:
+      - in: "resources/subresource.go"
+        out: "resources/{{parent.name}}/{{name}}.go"
+  - name: sub-sub-resource
+    field: resources.resources.resources
+    templates:
+      - in: "resources/subresource.go"
+        out: "resources/{{parent.parent.name}}/{{parent.name}}/{{name}}.go"
+
+

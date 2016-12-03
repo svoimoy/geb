@@ -28,6 +28,8 @@ func (P *Project) Plan() error {
 
 	plans := []FileGenData{}
 
+	logger.Info("Making the plans")
+
 	// Loop over DSLs in the plans
 	for d_key, D := range P.DslMap {
 		logger.Info("    dsl: "+D.Name, "key", d_key)
@@ -55,11 +57,17 @@ func (P *Project) Plan() error {
 				plans = append(plans, fgd)
 			} // End of normal template processing
 
-			// only do repeats for actual dsls
-			if D.Type != "dsl" {
+			// Start of repeat processing section:
+			//
+			// only do repeats for actual dsls and
+			//   when there are repeats
+			//
+			repeats := G.Config.Repeated
+			if D.Type != "dsl" || len(repeats) == 0 {
 				logger.Debug("       skipping dsl repeat: "+D.Type, "name", D.Name)
 				continue
 			}
+			logger.Info("Repeated found in config:", "count", len(repeats), "repeats", repeats)
 			logger.Info("      doing dsl repeat: "+D.Type, "name", D.Name, "d_key", d_key)
 
 			// Render the repeated templates
@@ -73,8 +81,6 @@ func (P *Project) Plan() error {
 				return errors.New("Unknown dsl design: " + d_key)
 			}
 
-			repeats := G.Config.Repeated
-			logger.Info("Repeated found in config:", "count", len(repeats), "repeats", repeats)
 			for _, R := range repeats {
 				logger.Info("Processing Repeated Field " + R.Name)
 

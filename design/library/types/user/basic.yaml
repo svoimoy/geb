@@ -1,0 +1,11 @@
+type:
+  name: basic
+  fields:
+    - name: id
+      type: uuid
+    - name: username
+      type: string
+      validation:
+        - min: 4
+        - max: 64
+        - regex: "azAZ09"

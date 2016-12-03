@@ -1,7 +1,7 @@
 package design
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 	"strings"
 
 	"github.com/hofstadter-io/geb/engine/utils"

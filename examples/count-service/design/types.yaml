@@ -1,0 +1,27 @@
+type:
+  name: count
+  version: "0.1"
+  fields:
+    - name: ownder_id
+      type: string
+      validation:
+        min: 40
+        max: 40
+        regex: "[0-9A-Za-z-]"
+    - name: redis_id
+      type: string
+      validation:
+        min: 51
+        max: 51
+        regex: "[0-3][0-9]-[01][0-9]-20[12][0-9]_[0-9A-Za-z-]"
+    - name: value
+      type: uint64
+  views:
+    - name: extern
+      fields:
+        - owner_id
+        - value
+    - name: redis
+      fields:
+        - redis_id
+        - value

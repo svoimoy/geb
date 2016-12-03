@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"github.com/pkg/errors"
+
 	"github.com/hofstadter-io/geb/engine/design"
 	"github.com/hofstadter-io/geb/engine/project"
 	"github.com/hofstadter-io/geb/engine/templates"
@@ -16,18 +18,18 @@ func GenerateFile(designFile, templateFile, outputFile string) error {
 	D := design.NewDesign()
 	err := D.ImportDesignFile(designFile)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "While generating file: %s %s %s\n", designFile, templateFile, outputFile)
 	}
 
 	T := templates.NewTemplateMap()
 	err = T.ImportTemplateFile(templateFile)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "While generating file: %s %s %s\n", designFile, templateFile, outputFile)
 	}
 
 	result, err := project.RenderTemplate(T[templateFile], D.Custom)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "While generating file: %s %s %s\n", designFile, templateFile, outputFile)
 	}
 
 	if outputFile == "stdout" {
@@ -37,7 +39,7 @@ func GenerateFile(designFile, templateFile, outputFile string) error {
 
 	err = ioutil.WriteFile(outputFile, []byte(result), 0644)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "While generating file:  %s %s %s\n", designFile, templateFile, outputFile)
 	}
 
 	return nil

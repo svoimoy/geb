@@ -1,6 +1,7 @@
 package dsl
 
 import (
+	"github.com/pkg/errors"
 	"io/ioutil"
 
 	"gopkg.in/yaml.v1"
@@ -23,13 +24,13 @@ func NewConfig() *Config {
 func ReadConfigFile(filename string) (*Config, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading dsl config file: (readfile) %s\n", filename)
 	}
 
 	c := NewConfig()
 	err = yaml.Unmarshal(data, c)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading dsl config file: (unmarshal) %s\n", filename)
 	}
 
 	return c, nil

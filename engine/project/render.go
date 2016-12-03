@@ -131,7 +131,7 @@ func spliceResults(existing, rendered string) (string, error) {
 	old_lines := bytes.Split([]byte(existing), []byte("\n"))
 	new_lines := bytes.Split([]byte(rendered), []byte("\n"))
 
-	// find HOFSTADTER tags and extract splices
+	// find HOFSTADTER tags and extract splices from the OLD file
 	old_lpos := -1
 	splices := map[string][][]byte{}
 	splice := ""
@@ -167,6 +167,7 @@ func spliceResults(existing, rendered string) (string, error) {
 		}
 	*/
 
+	// Merge files while processing NEW file
 	splice = ""
 	all_lines := [][]byte{}
 	for _, line := range new_lines {
@@ -198,6 +199,13 @@ func spliceResults(existing, rendered string) (string, error) {
 		}
 	}
 
+	// If we foud the HOFSTADTER_BELOW line in the OLD file,
+	// respect it in the NEW file and put in back
+	if old_lpos > -1 {
+		all_lines = append(all_lines, old_lines[old_lpos:]...)
+	}
+
+	// Rejoin the lines
 	all_data := bytes.Join(all_lines, []byte("\n"))
 	real_template := string(all_data)
 

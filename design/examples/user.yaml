@@ -1,0 +1,13 @@
+type:
+  name: user
+  fields:
+    - include: user.basic
+    - include: user.real-name
+    - include: user.email
+    - include: user.birtday
+    - name: home-address
+      type: location.us-address
+    - name: work-address
+      type: location.us-address
+    - name: social-accounts
+      type: set[user.social-basic]

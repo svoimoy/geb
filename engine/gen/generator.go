@@ -1,8 +1,11 @@
 package gen
 
 import (
-	"github.com/hofstadter-io/geb/engine/templates"
 	"path/filepath"
+
+	"github.com/pkg/errors"
+
+	"github.com/hofstadter-io/geb/engine/templates"
 )
 
 type Generator struct {
@@ -26,31 +29,33 @@ func NewGenerator() *Generator {
 func CreateFromFolder(folder string) (*Generator, error) {
 	g := NewGenerator()
 
-	c, err := ReadConfigFile(filepath.Join(folder, "geb-gen.yml"))
-	if err != nil {
-		c, err = ReadConfigFile(filepath.Join(folder, "geb-gen.yaml"))
-		if err != nil {
-			return nil, err
+	c, cerr := ReadConfigFile(filepath.Join(folder, "geb-gen.yml"))
+	if cerr != nil {
+		cerr = errors.Wrapf(cerr, "Error in gen.CreateFromFolder with 'geb-gen.yml' file in folder: %s\n", folder)
+		c, cerr = ReadConfigFile(filepath.Join(folder, "geb-gen.yaml"))
+		if cerr != nil {
+			return nil, errors.Wrapf(cerr, "Error in gen.CreateFromFolder with 'geb-gen.yaml' file in folder: %s\n", folder)
 		}
 	}
+
 	g.Config = c
 	g.SourcePath = folder
 
 	p, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading 'partials' folder in: %s\n", folder)
 	}
 	g.Partials = p
 
 	t, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading 'templates' folder in: %s\n", folder)
 	}
 	g.Templates = t
 
 	r, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "repeated"))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "while reading 'repeated' folder in: %s\n", folder)
 	}
 	g.Repeated = r
 

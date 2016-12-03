@@ -21,6 +21,8 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("upper", helper_upper)
 	tpl.RegisterHelper("title", helper_title)
 
+	tpl.RegisterHelper("eq", helper_eq)
+
 }
 
 func helper_concat(prefix, value, suffix string, options *raymond.Options) string {
@@ -51,4 +53,11 @@ func helper_upper(value string) string {
 
 func helper_title(value string) string {
 	return strings.ToTitle(value)
+}
+
+func helper_eq(lhs, rhs string) string {
+	if lhs == rhs {
+		return lhs
+	}
+	return ""
 }
