@@ -87,7 +87,7 @@ func (P *Project) Plan() error {
 				logger.Info("Processing Repeated Field: '" + R.Name + "'")
 
 				// look up field
-				collection, err := utils.GetByPath(R.Field, (map[interface{}]interface{})(dsl_design))
+				collection, err := utils.GetByPath(R.Field, dsl_design)
 				if err != nil {
 					return errors.Errorf("looking up by path:  repeat(" + R.Name + ")  path" + R.Field + ")")
 				}

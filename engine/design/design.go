@@ -10,18 +10,11 @@ import (
 	"gopkg.in/yaml.v1"
 )
 
-type DesignData map[interface{}]interface{}
-
-// these two should be in with the next map at load time
-// DesignRoot string // Folder from design list in Project
-// 	SourceFile string // The actual design the file
-type DesignDataMap map[string]DesignData
-
 type Design struct {
 	Proj   map[string]interface{}
-	Type   DesignDataMap
-	Dsl    DesignDataMap
-	Custom DesignDataMap
+	Type   map[string]interface{}
+	Dsl    map[string]interface{}
+	Custom map[string]interface{}
 
 	RepeatedContext interface{}
 }
@@ -29,9 +22,9 @@ type Design struct {
 func NewDesign() *Design {
 	return &Design{
 		Proj:   make(map[string]interface{}),
-		Type:   make(DesignDataMap),
-		Dsl:    make(DesignDataMap),
-		Custom: make(DesignDataMap),
+		Type:   make(map[string]interface{}),
+		Dsl:    make(map[string]interface{}),
+		Custom: make(map[string]interface{}),
 	}
 }
 func CreateFromFolder(folder string) (*Design, error) {
@@ -94,18 +87,41 @@ func (d *Design) import_design(path string) error {
 	return nil
 }
 
-func (d *Design) store_design(dsl string, design DesignData) error {
+func (d *Design) store_design(dsl string, design interface{}) error {
 	logger.Info("    - storing: " + dsl)
 	logger.Debug("        data:", "design", design, "dsl", dsl)
 
 	// Everything must have a name!
-	iname, ok := design["name"]
-	if !ok {
-		return errors.New("Top-level definition '" + dsl + "' missing required field 'name'")
+	name := ""
+	switch D := design.(type) {
+
+	case map[string]interface{}:
+		iname, ok := D["name"]
+		if !ok {
+			return errors.New("Top-level definition '" + dsl + "' missing required field 'name'.")
+		}
+		tmp, ok := iname.(string)
+		if !ok {
+			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
+		}
+		name = tmp
+	case map[interface{}]interface{}:
+		iname, ok := D["name"]
+		if !ok {
+			return errors.New("Top-level definition '" + dsl + "' missing required field 'name'.")
+		}
+		tmp, ok := iname.(string)
+		if !ok {
+			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
+		}
+		name = tmp
+
+	default:
+		return errors.New("Top-level definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
+
 	}
-	name, ok := iname.(string)
-	if !ok {
-		return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string")
+	if name == "" {
+		return errors.New("Top-level definition '" + dsl + "' field 'name' is empty.")
 	}
 
 	switch dsl {
@@ -132,7 +148,7 @@ func (d *Design) store_design(dsl string, design DesignData) error {
 			for i := L - 1; i > 0; i-- {
 				curr := fields[i]
 				logger.Debug("       - "+curr, "L", L, "i", i)
-				tmp_map := make(DesignData)
+				tmp_map := make(map[string]interface{})
 				tmp_map[curr] = dd_map
 				dd_map = tmp_map
 			}

@@ -2,7 +2,7 @@ type:
   name: count
   version: "0.1"
   fields:
-    - name: ownder_id
+    - name: owner_id
       type: string
       validation:
         min: 40
@@ -19,9 +19,9 @@ type:
   views:
     - name: extern
       fields:
-        - owner_id
-        - value
+        - local-ref: owner_id
+        - local-ref: value
     - name: redis
       fields:
-        - redis_id
-        - value
+        - local-ref: redis_id
+        - local-ref: value

@@ -29,7 +29,15 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("upper", helper_upper)
 	tpl.RegisterHelper("title", helper_title)
 
+	tpl.RegisterHelper("contains", helper_contains)
+	tpl.RegisterHelper("split", helper_split)
+	tpl.RegisterHelper("replace", helper_replace)
+	tpl.RegisterHelper("hasprefix", helper_hasprefix)
+	tpl.RegisterHelper("hassuffix", helper_hassuffix)
+	tpl.RegisterHelper("substr", helper_substr)
+
 	tpl.RegisterHelper("eq", helper_eq)
+	tpl.RegisterHelper("ne", helper_ne)
 
 }
 
@@ -85,8 +93,48 @@ func helper_title(value string) string {
 	return strings.ToTitle(value)
 }
 
+func helper_contains(str, srch string) string {
+	if strings.Contains(str, srch) {
+		return "true"
+	}
+	return ""
+}
+
+func helper_split(str, sep string) []string {
+	return strings.Split(str, sep)
+}
+
+func helper_replace(str, old, new string, cnt int) string {
+	return strings.Replace(str, old, new, cnt)
+}
+func helper_hasprefix(str, pre string) string {
+	if strings.HasPrefix(str, pre) {
+		return "true"
+	}
+	return ""
+}
+func helper_hassuffix(str, suf string) string {
+	if strings.HasSuffix(str, suf) {
+		return "true"
+	}
+	return ""
+}
+func helper_substr(str string, start, end int) string {
+	if end == -1 {
+		end = len(str)
+	}
+	return str[start:end]
+}
+
 func helper_eq(lhs, rhs string) string {
 	if lhs == rhs {
+		return lhs
+	}
+	return ""
+}
+
+func helper_ne(lhs, rhs string) string {
+	if lhs != rhs {
 		return lhs
 	}
 	return ""

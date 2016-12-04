@@ -3,6 +3,7 @@ package project
 import (
 	"fmt"
 	"github.com/aymerick/raymond"
+	"github.com/hofstadter-io/geb/engine/utils"
 )
 
 func (P *Project) register_partials() {
@@ -81,14 +82,16 @@ func (P *Project) tpl_helper_get_obj_by_path(path string, options *raymond.Optio
 		return options.FnWith("Path not found: " + path)
 	}
 
+	// obj, err := GetByPath(path, data)
+	// if err != nil {
+	// 	return options.FnWith("Error during path search: " + err.Error())
+	// }
+
 	obj := options.Eval(data, path)
 	if obj == nil {
 		return options.FnWith("Path not found: " + path)
 	}
 	return options.FnWith(obj)
-
-	// return options.FnWith(data)
-
 }
 
 // data optional argument defaults to DSL
@@ -101,10 +104,17 @@ func (P *Project) tpl_helper_get_elem_by_name(path, name string, options *raymon
 		return options.FnWith("Nil data supplied" + path)
 	}
 
-	obj := options.Eval(data, path)
+	obj, err := utils.GetByPath(path, data)
+	if err != nil {
+		return options.FnWith("Error during path search: " + err.Error())
+	}
+	// obj := options.Eval(data, path)
 	if obj == nil {
 		return options.FnWith("Path not found: " + path + fmt.Sprintf("\n%+v", data))
 	}
+
+	return options.FnWith(obj)
+
 	list, ok := obj.([]interface{})
 	if !ok {
 		return options.FnWith("Path is not a list: " + path)

@@ -29,12 +29,12 @@ api:
       resource: count
       methods:
         list:
-          input:  null
+          input:  none
           output: list[count.views.extern]
         get:
           input:  count.fields.owner_id
           output: count.views.extern
         put:
-          input:  nil
+          input:  count.views.extern
           output: count.views.extern
 

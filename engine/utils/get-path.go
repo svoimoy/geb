@@ -23,7 +23,7 @@ func GetByPathSlice(path []string, data interface{}) (interface{}, error) {
 }
 
 func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error) {
-	header := fmt.Sprintf("get_by_path:  %v  in:\n%+v\n\n", paths, data)
+	header := fmt.Sprintf("get_by_path:  %d  %v  in:\n%+v\n\n", IDX, paths, data)
 	// fmt.Println(header)
 	logger.Info(header)
 
@@ -67,10 +67,11 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 		subs := []interface{}{}
 		if len(paths) == IDX+1 {
 			for _, elem := range T {
-				logger.Info("    - elem", "elem", elem)
+				logger.Info("    - elem", "elem", elem, "paths", paths, "P", P, "elem", elem)
 				switch V := elem.(type) {
 
 				case map[string]interface{}:
+					logger.Debug("        map[string]")
 					val, ok := V[P]
 					if !ok {
 						logger.Debug("could not find '" + P + "' in object")
@@ -90,22 +91,27 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 					}
 
 				case map[interface{}]interface{}:
-					val, ok := V[P]
+					logger.Debug("        map[iface]", "P", P, "V", V, "paths", paths)
+					val, ok := V["name"]
 					if !ok {
 						logger.Debug("could not find '" + P + "' in object")
 						continue
 					}
 
-					// accumulate based on type (slice or not)
-					switch a_val := val.(type) {
+					if val == P {
 
-					case []interface{}:
-						logger.Debug("Adding vals", "val", a_val)
-						subs = append(subs, a_val...)
+						// accumulate based on type (slice or not)
+						switch a_val := val.(type) {
 
-					default:
-						logger.Debug("Adding val", "val", a_val)
-						subs = append(subs, a_val)
+						case []interface{}:
+							logger.Debug("Adding vals", "val", a_val)
+							subs = append(subs, a_val...)
+
+						default:
+							logger.Debug("Adding val", "val", a_val)
+							subs = append(subs, a_val)
+						}
+						return V, nil
 					}
 
 				default:
