@@ -1,7 +1,8 @@
-# geb - The Hofstadter tool
+# geb - The data-centric, output-agnostic generation framework.
 
-__geb__ is the command-line tool for hofstadter
-data-centric design and code generation.
+__geb__ is the command-line tool for the hofstadter
+framework for data-centric design and _stuff_ generation.
+
 With it, you can:
 
 - Create designs and generate code
