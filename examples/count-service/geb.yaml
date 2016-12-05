@@ -7,8 +7,8 @@ design-dir: "design"
 
 dsl-config:
   paths:
-    - dsl
-    - ~/.hofstadter/dsl
+    - "dsl"
+    - "$HOME/.hofstadter/dsl"
   default:
     - dsl: types
     - dsl: api

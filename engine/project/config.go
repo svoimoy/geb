@@ -8,16 +8,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type GenPair struct {
-	Dsl string   `yaml:"dsl"`
-	Gen []string `yaml:"gen"`
-}
-
-type DslConfig struct {
-	Paths   []string  `yaml:"paths"`
-	Default []GenPair `yaml:"default"`
-}
-
 type Config struct {
 	Name    string `yaml:"name"`
 	Version string `yaml:"version"`
@@ -26,6 +16,16 @@ type Config struct {
 	DesignDir string    `yaml:"design-dir"`
 	OutputDir string    `yaml:"output-dir"`
 	DslConfig DslConfig `yaml:"dsl-config"`
+}
+
+type DslConfig struct {
+	Paths   []string  `yaml:"paths"`
+	Default []GenPair `yaml:"default"`
+}
+
+type GenPair struct {
+	Dsl string   `yaml:"dsl"`
+	Gen []string `yaml:"gen"`
 }
 
 func NewConfig() *Config {

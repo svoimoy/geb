@@ -3,13 +3,13 @@ package project
 import (
 	"github.com/pkg/errors"
 	"os"
-	"os/user"
 	"path/filepath"
 	"strings"
 
 	"github.com/hofstadter-io/geb/engine/design"
 	"github.com/hofstadter-io/geb/engine/dsl"
 	"github.com/hofstadter-io/geb/engine/gen"
+	"github.com/hofstadter-io/geb/engine/utils"
 	"github.com/ryanuber/go-glob"
 )
 
@@ -41,59 +41,79 @@ func (P *Project) Load(filename string, generators []string) error {
 
 }
 
-func (P *Project) LoadGenerators(generators []string) error {
+// This function seraches for available dsls and generators.
+// If no paths are provided, it uses the project defaults, or geb defaults.
+// This function may be called repeatedly to add and merge.
+func (P *Project) FindAvailableGenerators(paths []string) error {
+	logger.Info("Searching for Generators")
 
-	logger.Info("Loading Generators")
-	cfg := P.Config.DslConfig
+	// If no paths are provided, use those defined in the configuration
+	if len(paths) == 0 {
+		paths = P.Config.DslConfig.Paths
+	}
 
-	logger.Info("DSL override order (first to last):")
-	available_dsls := map[string]*dsl.Dsl{}
-	for _, path := range cfg.Paths {
-		if path[:2] == "~/" {
-			usr, _ := user.Current()
-			home := usr.HomeDir
-			path = strings.Replace(path, "~", home, 1)
-		}
+	logger.Info("DSL override order (first to last):", "paths", paths)
+	if P.Available == nil {
+		P.Available = map[string]*dsl.Dsl{}
+	}
+	for _, path := range paths {
 
-		// skip it?
-		_, err := os.Lstat(path)
+		// Resolve the path for EnvVars, symlinks, existance
+		t_path, err := utils.ResolvePath(path)
+		// skip it if the file does not exist
 		if err != nil {
 			if _, ok := err.(*os.PathError); ok {
 				continue
 			}
-			return err
-		}
+			if strings.Contains(err.Error(), "no such file or directory") {
+				continue
+			}
 
-		// find whats available
+			// otherwise return the error
+			return errors.Wrapf(err, "in project.FindAvailGens\n")
+		}
+		path = t_path
+
+		// Find out what's available
 		avail, err := dsl.FindAvailable(path)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "in proj.FindAvailGens %v\n", paths)
 		}
 		for key, val := range avail {
-			existing, ok := available_dsls[key]
+			existing, ok := P.Available[key]
 			if ok {
 				existing.MergeAvailable(val)
-				available_dsls[key] = existing
+				P.Available[key] = existing
 			} else {
-				available_dsls[key] = val
+				P.Available[key] = val
 			}
 		}
 	}
 
+	return nil
+}
+
+func (P *Project) LoadGenerators(generators []string) error {
+	err := P.FindAvailableGenerators(nil)
+	if err != nil {
+		return errors.Wrap(err, "while LoadingGenerators\n")
+	}
 	if len(generators) == 0 {
-		return P.LoadDefaultGenerators(available_dsls)
+		return P.LoadDefaultGenerators()
 	} else {
-		return P.LoadGeneratorList(available_dsls, generators)
+		return P.LoadGeneratorList(generators)
 	}
 }
 
-func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) error {
-	logger.Info("Importing generators:")
+func (P *Project) LoadDefaultGenerators() error {
+	logger.Info("Loading Default Generators")
+	logger.Info("  Available:", "avail", P.Available)
+
 	cfg := P.Config.DslConfig
 	for _, gp := range cfg.Default {
 		s_dsl := gp.Dsl
 
-		d_dsl, ok := available_dsls[s_dsl]
+		d_dsl, ok := P.Available[s_dsl]
 		if !ok {
 			return errors.New("Did not find DSL in available list: " + s_dsl)
 		}
@@ -122,28 +142,22 @@ func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) erro
 			if found {
 				logger.Info("    importing", "dsl", s_dsl, "generator", s_gen)
 				for _, path := range cfg.Paths {
-					if path[:2] == "~/" {
-						usr, _ := user.Current()
-						home := usr.HomeDir
-						path = strings.Replace(path, "~", home, 1)
-					}
 
-					// skip it?
-					info, err := os.Lstat(path)
+					// Resolve the path for EnvVars, symlinks, existance
+					t_path, err := utils.ResolvePath(path)
+					// skip it if the file does not exist
 					if err != nil {
 						if _, ok := err.(*os.PathError); ok {
 							continue
 						}
-						return err
-					}
-
-					if info.Mode()&os.ModeSymlink != 0 {
-						dir, err := os.Readlink(path)
-						if err != nil {
-							return err
+						if strings.Contains(err.Error(), "no such file or directory") {
+							continue
 						}
-						path = dir
+
+						// otherwise return the error
+						return errors.Wrapf(err, "in project.LoadGeneratorList")
 					}
+					path = t_path
 
 					dsl_path := filepath.Join(path, s_dsl)
 					D, err := dsl.CreateFromFolder(dsl_path)
@@ -175,10 +189,11 @@ func (P *Project) LoadDefaultGenerators(available_dsls map[string]*dsl.Dsl) erro
 	return nil
 }
 
-func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generators []string) error {
-	logger.Info("Importing generator list:")
-	logger.Info("  Available:", "avail", available_dsls)
-	logger.Info("  Generators:", "gener", generators)
+// This function loads a list of generators into the project
+// It looks through the list of paths defined in the project configuration
+func (P *Project) LoadGeneratorList(generators []string) error {
+	logger.Info("Loading Custom Generators", generators, generators)
+	logger.Info("  Available:", "avail", P.Available)
 
 	for _, g_str := range generators {
 		fields := strings.Split(g_str, "/")
@@ -191,7 +206,7 @@ func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generato
 		} else {
 			for i := len(fields) - 1; i > 0; i-- {
 				l_dsl := strings.Join(fields[:i], "/")
-				_, ok := available_dsls[l_dsl]
+				_, ok := P.Available[l_dsl]
 				if ok {
 					s_dsl = l_dsl
 					s_gen = strings.Join(fields[i:], "/")
@@ -204,7 +219,7 @@ func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generato
 		if s_dsl == "" {
 			return errors.New("Did not find DSL in available list: " + s_dsl)
 		}
-		d_dsl, ok := available_dsls[s_dsl]
+		d_dsl, ok := P.Available[s_dsl]
 		if !ok {
 			return errors.New("Really did not find DSL in available list: " + s_dsl)
 		}
@@ -220,35 +235,30 @@ func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generato
 				gpath = path
 				logger.Warn("    importing", "dsl", s_dsl, "generator", s_gen, "spath", spath)
 				for _, path := range P.Config.DslConfig.Paths {
-					if path[:2] == "~/" {
-						usr, _ := user.Current()
-						home := usr.HomeDir
-						path = strings.Replace(path, "~", home, 1)
-					}
 
-					// skip it?
-					info, err := os.Lstat(path)
+					t_path, err := utils.ResolvePath(path)
+					// skip it if the file does not exist
 					if err != nil {
 						if _, ok := err.(*os.PathError); ok {
 							continue
 						}
+						if strings.Contains(err.Error(), "no such file or directory") {
+							continue
+						}
+
+						// otherwise return the error
 						return errors.Wrapf(err, "in project.LoadGeneratorList")
 					}
+					path = t_path
 
-					if info.Mode()&os.ModeSymlink != 0 {
-						dir, err := os.Readlink(path)
-						if err != nil {
-							return errors.Wrapf(err, "in project.LoadGeneratorList")
-						}
-						path = dir
-					}
-
+					// load the dsl config file
 					dsl_path := filepath.Join(path, s_dsl)
 					D, err := dsl.CreateFromFolder(dsl_path)
 					if err != nil {
 						return errors.Wrapf(err, "in project.LoadGeneratorList")
 					}
 
+					//
 					logger.Debug("  gen path;", "dsl_path", dsl_path, "gpath", gpath)
 					gen_path := filepath.Join(dsl_path, gpath)
 					G, err := gen.CreateFromFolder(gen_path)
@@ -264,6 +274,7 @@ func (P *Project) LoadGeneratorList(available_dsls map[string]*dsl.Dsl, generato
 					} else {
 						P.DslMap[s_dsl] = D
 					}
+
 				}
 			}
 		} // end for loop looking for gen in available generators

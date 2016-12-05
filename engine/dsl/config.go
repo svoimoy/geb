@@ -11,8 +11,8 @@ type Config struct {
 	Name    string
 	Version string
 	About   string
-	Type    string
 
+	Type string
 	Spec map[string]interface{}
 }
 

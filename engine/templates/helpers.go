@@ -7,6 +7,16 @@ import (
 	"github.com/aymerick/raymond"
 )
 
+func (template *Template) Render(design interface{}) (string, error) {
+	tpl := (*raymond.Template)(template)
+	return tpl.Exec(design)
+}
+
+func RenderTemplate(template *Template, design interface{}) (string, error) {
+	tpl := (*raymond.Template)(template)
+	return tpl.Exec(design)
+}
+
 func AddHelpers(tpl *raymond.Template) {
 	add_template_helpers(tpl)
 }

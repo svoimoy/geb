@@ -20,8 +20,8 @@ default-generators:
   - dsl: sample
   - dsl: types
     gen:
-      - golang
-      - protobuf
+      - name: golang
+      - name: protobuf
   - dsl: cli
 
 log-level: info

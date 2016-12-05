@@ -1,39 +1,36 @@
-package project
+package plan
 
 import (
 	"github.com/pkg/errors"
-	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.com/hofstadter-io/geb/engine/dsl"
 	"github.com/hofstadter-io/geb/engine/templates"
 	"github.com/hofstadter-io/geb/engine/utils"
 )
 
-type FileGenData struct {
+type Plan struct {
 	Dsl      string
 	Gen      string
 	File     string
-	Data     interface{}
+	Data     map[string]interface{}
 	Template *raymond.Template
 	Outfile  string
 
 	RepeatedContext interface{}
 }
 
-func (P *Project) Plan() error {
+func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {
 	logger.Info("Planning Project")
 
-	P.register_partials()
-	P.add_template_helpers()
-
-	plans := []FileGenData{}
+	plans := []Plan{}
 
 	logger.Info("Making the plans")
 
 	// Loop over DSLs in the plans
-	for d_key, D := range P.DslMap {
+	for d_key, D := range dsl_map {
 		logger.Info("    dsl: "+D.Config.Name, "key", d_key)
 
 		// Loop over each generator in the current DSL
@@ -45,18 +42,18 @@ func (P *Project) Plan() error {
 				t_ray := (*raymond.Template)(T)
 
 				// build up the plan data struct
-				fgd := FileGenData{
+				p := Plan{
 					Dsl:      d_key,
 					Gen:      g_key,
 					File:     t_key,
 					Template: t_ray,
-					Data:     P.Design,
-					Outfile:  filepath.Join(P.Config.OutputDir, d_key, g_key, t_key),
+					Data:     design_data,
+					Outfile:  filepath.Join(d_key, g_key, t_key),
 				}
-				logger.Info("        template file: "+t_key, "fgd", fgd)
+				logger.Info("        template file: "+t_key, "plan", p)
 
 				// add the plan to a linear list to be rendered
-				plans = append(plans, fgd)
+				plans = append(plans, p)
 			} // End of normal template processing
 
 			// Start of repeat processing section:
@@ -74,80 +71,69 @@ func (P *Project) Plan() error {
 
 			// Render the repeated templates
 			// Get the root of the data to index into
-			for k, _ := range P.Design.Dsl {
+			for k, _ := range dsl_map {
 				logger.Debug("       - dsl keys", "key", k)
 			}
-			dsl_design, ok := P.Design.Dsl[d_key]
+			data, ok := design_data["dsl"].(map[string]interface{})[d_key]
 			if !ok {
 				logger.Error("Did not find DSL data", "d_key", d_key)
-				return errors.New("Unknown dsl design: " + d_key)
+				return nil, errors.New("Unknown dsl design: " + d_key)
 			}
 
 			for _, R := range repeats {
 				logger.Info("Processing Repeated Field: '" + R.Name + "'")
 
 				// look up field
-				collection, err := utils.GetByPath(R.Field, dsl_design)
+				collection, err := utils.GetByPath(R.Field, data)
 				if err != nil {
-					return errors.Errorf("looking up by path:  repeat(" + R.Name + ")  path" + R.Field + ")")
+					return nil, errors.Wrapf(err, "looking up by path:  repeat(%s)  path(%s) in data:\n%+v\n\n", R.Name, R.Field, data)
 				}
 
 				c_slice, ok := collection.([]interface{})
 				if !ok {
-					return errors.New("Collection is not a list: " + R.Field)
+					return nil, errors.New("Collection is not a list: " + R.Field)
 				}
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
 				for _, t_pair := range R.Templates {
-					// fmt.Println("AAAAAAAA = ", I)
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
 
 					t_key := t_pair.In
 
 					T, ok := G.Repeated[t_key]
 					if !ok {
-						// fmt.Println("    XXXX = ", t_key)
-						return errors.New("Unknown repeat template: " + t_key)
+						return nil, errors.New("Unknown repeat template: " + t_key)
 					}
 					t_ray := (*raymond.Template)(T)
 					logger.Debug("        found repeat template: ", "repeat", R.Name, "in", t_key)
-					// fmt.Println("BBBBBBBB = ", I)
-
-					os.Stdout.Sync()
 
 					for idx, val := range c_slice {
-
-						// fmt.Println("    AAAA = ", idx, val)
 						local_ctx := val
 						logger.Debug("     context", "val", local_ctx, "idx", idx)
-						os.Stdout.Sync()
 
 						of_tpl_source := t_pair.Out
 						tpl, err := raymond.Parse(of_tpl_source)
 						if err != nil {
-							return err
+							return nil, errors.Wrap(err, "in MakePlans\n")
 						}
-						// fmt.Println("    BBBB = ", idx, val)
 
 						templates.AddHelpers(tpl)
 						OF_name, err := tpl.Exec(val)
 						if err != nil {
-							return err
+							return nil, errors.Wrap(err, "in MakePlans\n")
 						}
-						// fmt.Println("    TTTT = ", idx, OF_name)
 
 						OF_name = strings.ToLower(OF_name)
 						logger.Info("OFNAME", "name", OF_name)
-						outfile := filepath.Join(P.Config.OutputDir, d_key, g_key, OF_name)
+						outfile := filepath.Join(d_key, g_key, OF_name)
 
-						// fmt.Println("    CCCC = ", I)
 						// build up the plan data struct
-						fgd := FileGenData{
+						fgd := Plan{
 							Dsl:      d_key,
 							Gen:      g_key,
 							File:     t_key,
 							Template: t_ray,
-							Data:     P.Design,
+							Data:     design_data,
 							Outfile:  outfile,
 
 							RepeatedContext: local_ctx,
@@ -169,7 +155,5 @@ func (P *Project) Plan() error {
 
 	} // End DSL loop
 
-	P.Plans = plans
-
-	return nil
+	return plans, nil
 }

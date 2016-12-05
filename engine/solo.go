@@ -7,7 +7,6 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/geb/engine/design"
-	"github.com/hofstadter-io/geb/engine/project"
 	"github.com/hofstadter-io/geb/engine/templates"
 )
 
@@ -27,7 +26,7 @@ func GenerateFile(designFile, templateFile, outputFile string) error {
 		return errors.Wrapf(err, "While generating file: %s %s %s\n", designFile, templateFile, outputFile)
 	}
 
-	result, err := project.RenderTemplate(T[templateFile], D.Custom)
+	result, err := templates.RenderTemplate(T[templateFile], D.Custom)
 	if err != nil {
 		return errors.Wrapf(err, "While generating file: %s %s %s\n", designFile, templateFile, outputFile)
 	}
