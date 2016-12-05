@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/hofstadter-io/geb/cmd/dsl"
+	"github.com/hofstadter-io/geb/cmd/info"
 	"github.com/hofstadter-io/geb/cmd/project"
 	"github.com/hofstadter-io/geb/engine"
 	"github.com/spf13/cobra"
@@ -104,4 +105,5 @@ func config_logger() {
 func init() {
 	RootCmd.AddCommand(cmd_dsl.DslCmd)
 	RootCmd.AddCommand(cmd_proj.ProjectCmd)
+	RootCmd.AddCommand(cmd_info.InfoCmd)
 }

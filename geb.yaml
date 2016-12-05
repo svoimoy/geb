@@ -4,7 +4,7 @@ about: "The geb command-line tool for making profit."
 
 output-dir: "contracrostipunctus"
 
-design-dir: "geb-design"
+design-dir: "design"
 design-imports:
   - "github.com:hofstadter-io/designs/webapp.backend"
   - "github.com:hofstadter-io/designs/webapp.frontend"
