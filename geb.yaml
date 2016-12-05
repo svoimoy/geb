@@ -4,25 +4,22 @@ about: "The geb command-line tool for making profit."
 
 output-dir: "contracrostipunctus"
 
-design-paths:
-  - design
+design-dir: "geb-design"
 design-imports:
   - "github.com:hofstadter-io/designs/webapp.backend"
   - "github.com:hofstadter-io/designs/webapp.frontend"
   - "github.com:hofstadter-io/designs/webapp.chat"
   - "local-dir:$HOME/mydesigns/user/extended-profile.yaml"
 
-library-paths:
-  - dsl
-  - ~/.hofstadter/dsl
-default-generators:
-  - dsl: project/fresh
-  - dsl: sample
-  - dsl: types
-    gen:
-      - name: golang
-      - name: protobuf
-  - dsl: cli
+dsl-config:
+  paths:
+    - "dsl"
+    - "$HOME/.hofstadter/dsl"
+  default:
+    - dsl: cli
+      gen:
+        - golang
+
 
 log-level: info
 

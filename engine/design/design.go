@@ -15,8 +15,6 @@ type Design struct {
 	Type   map[string]interface{}
 	Dsl    map[string]interface{}
 	Custom map[string]interface{}
-
-	RepeatedContext interface{}
 }
 
 func NewDesign() *Design {
@@ -29,7 +27,10 @@ func NewDesign() *Design {
 }
 func CreateFromFolder(folder string) (*Design, error) {
 	d := NewDesign()
-	d.ImportDesignFolder(folder)
+	err := d.ImportDesignFolder(folder)
+	if err != nil {
+		return nil, errors.Wrap(err, "in design.CreateFromFolder")
+	}
 	return d, nil
 }
 
@@ -40,6 +41,12 @@ func (d *Design) ImportDesignFile(filename string) error {
 
 func (d *Design) ImportDesignFolder(folder string) error {
 	logger.Info("Importing Design folder: " + folder)
+
+	// Make sure the folder exists
+	_, err := os.Lstat(folder)
+	if err != nil {
+		return errors.Wrapf(err, "error lstat'n path in utils.ResolvePath\n")
+	}
 
 	// local walk function closure
 	import_design_walk_func := func(path string, info os.FileInfo, err error) error {
@@ -55,9 +62,9 @@ func (d *Design) ImportDesignFolder(folder string) error {
 	}
 
 	// Walk the directory
-	err := filepath.Walk(folder, import_design_walk_func)
+	err = filepath.Walk(folder, import_design_walk_func)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "in design.CreateFromFolder")
 	}
 	return nil
 }
@@ -68,11 +75,11 @@ func (d *Design) import_design(path string) error {
 	top_level := make(map[string]interface{})
 	raw_data, err := ioutil.ReadFile(path)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "in design.import_design")
 	}
 	err = yaml.Unmarshal([]byte(raw_data), &top_level)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "in design.import_design")
 	}
 
 	// get list of all top level DSL entries
@@ -80,7 +87,7 @@ func (d *Design) import_design(path string) error {
 		data := val.(map[interface{}]interface{})
 		err = d.store_design(dsl, data)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "in design.import_design")
 		}
 	}
 

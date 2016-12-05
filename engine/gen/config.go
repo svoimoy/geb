@@ -8,14 +8,15 @@ import (
 )
 
 type Config struct {
-	Name    string
-	Version string
-	About   string
-
+	Name     string
+	Version  string
+	About    string
 	Type     string
 	Language string
 
 	Repeated []RepeatConfig
+
+	OutputDir string `yaml:"output-dir"`
 }
 
 type RepeatConfig struct {

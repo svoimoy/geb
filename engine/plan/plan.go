@@ -72,12 +72,12 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 			// Render the repeated templates
 			// Get the root of the data to index into
 			for k, _ := range dsl_map {
-				logger.Debug("       - dsl keys", "key", k)
+				logger.Debug("       - dsl key: "+k, "key", k)
 			}
-			data, ok := design_data["dsl"].(map[string]interface{})[d_key]
+			data, ok := design_data[d_key]
 			if !ok {
-				logger.Error("Did not find DSL data", "d_key", d_key)
-				return nil, errors.New("Unknown dsl design: " + d_key)
+				logger.Error("Did not find DSL data", "d_key", d_key, "design_data", design_data)
+				return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
 			}
 
 			for _, R := range repeats {
