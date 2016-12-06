@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/hofstadter-io/geb/engine/templates"
+	"github.ibm.com/hofstadter-io/geb/engine/templates"
 )
 
 type Generator struct {

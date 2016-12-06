@@ -6,8 +6,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/hofstadter-io/geb/engine/design"
-	"github.com/hofstadter-io/geb/engine/templates"
+	"github.ibm.com/hofstadter-io/geb/engine/design"
+	"github.ibm.com/hofstadter-io/geb/engine/templates"
 )
 
 func GenerateFile(designFile, templateFile, outputFile string) error {

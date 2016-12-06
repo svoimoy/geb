@@ -6,11 +6,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/hofstadter-io/geb/engine/design"
-	"github.com/hofstadter-io/geb/engine/dsl"
-	"github.com/hofstadter-io/geb/engine/gen"
-	"github.com/hofstadter-io/geb/engine/utils"
 	"github.com/ryanuber/go-glob"
+	"github.ibm.com/hofstadter-io/geb/engine/design"
+	"github.ibm.com/hofstadter-io/geb/engine/dsl"
+	"github.ibm.com/hofstadter-io/geb/engine/gen"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
 func (P *Project) Load(filename string, generators []string) error {

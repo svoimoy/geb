@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/hofstadter-io/geb/engine/gen"
+	"github.ibm.com/hofstadter-io/geb/engine/gen"
 )
 
 type Dsl struct {

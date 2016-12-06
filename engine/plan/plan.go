@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/aymerick/raymond"
-	"github.com/hofstadter-io/geb/engine/dsl"
-	"github.com/hofstadter-io/geb/engine/templates"
-	"github.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/geb/engine/dsl"
+	"github.ibm.com/hofstadter-io/geb/engine/templates"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
 type Plan struct {

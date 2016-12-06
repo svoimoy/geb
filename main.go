@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hofstadter-io/geb/cmd"
+	"github.ibm.com/hofstadter-io/geb/cmd"
 )
 
 func main() {

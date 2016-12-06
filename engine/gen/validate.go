@@ -3,7 +3,7 @@ package gen
 import (
 	"github.com/pkg/errors"
 
-	"github.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
 func (G *Generator) Validate() []error {

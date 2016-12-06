@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"strings"
 
-	"github.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
 func (D *Design) Get(path string) (interface{}, error) {

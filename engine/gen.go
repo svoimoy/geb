@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
-	"github.com/hofstadter-io/geb/engine/project"
+	"github.ibm.com/hofstadter-io/geb/engine/project"
 )
 
 func GenerateProject(filename string, generators []string) error {

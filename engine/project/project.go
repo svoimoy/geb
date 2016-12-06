@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
-	"github.com/hofstadter-io/geb/engine/design"
-	"github.com/hofstadter-io/geb/engine/dsl"
-	"github.com/hofstadter-io/geb/engine/plan"
-	"github.com/hofstadter-io/geb/engine/render"
+	"github.ibm.com/hofstadter-io/geb/engine/design"
+	"github.ibm.com/hofstadter-io/geb/engine/dsl"
+	"github.ibm.com/hofstadter-io/geb/engine/plan"
+	"github.ibm.com/hofstadter-io/geb/engine/render"
 )
 
 type Project struct {

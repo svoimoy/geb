@@ -3,7 +3,7 @@ package dsl
 import (
 	"github.com/pkg/errors"
 
-	"github.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
 func (D *Dsl) Validate() []error {

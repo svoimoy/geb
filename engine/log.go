@@ -1,14 +1,14 @@
 package engine
 
 import (
-	"github.com/hofstadter-io/geb/engine/design"
-	"github.com/hofstadter-io/geb/engine/dsl"
-	"github.com/hofstadter-io/geb/engine/gen"
-	"github.com/hofstadter-io/geb/engine/plan"
-	"github.com/hofstadter-io/geb/engine/project"
-	"github.com/hofstadter-io/geb/engine/render"
-	"github.com/hofstadter-io/geb/engine/templates"
-	"github.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/geb/engine/design"
+	"github.ibm.com/hofstadter-io/geb/engine/dsl"
+	"github.ibm.com/hofstadter-io/geb/engine/gen"
+	"github.ibm.com/hofstadter-io/geb/engine/plan"
+	"github.ibm.com/hofstadter-io/geb/engine/project"
+	"github.ibm.com/hofstadter-io/geb/engine/render"
+	"github.ibm.com/hofstadter-io/geb/engine/templates"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework
 )
 

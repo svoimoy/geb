@@ -3,7 +3,7 @@ package project
 import (
 	"fmt"
 	"github.com/aymerick/raymond"
-	"github.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
 func (P *Project) register_partials() {

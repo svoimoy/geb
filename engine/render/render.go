@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/aymerick/raymond"
-	"github.com/hofstadter-io/geb/engine/plan"
+	"github.ibm.com/hofstadter-io/geb/engine/plan"
 )
 
 // RenderPlans renders a list of plans to an output directory.

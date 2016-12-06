@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/hofstadter-io/geb/engine"
 	"github.com/spf13/cobra"
+	"github.ibm.com/hofstadter-io/geb/engine"
 )
 
 var fileLong = `Renders a single output from

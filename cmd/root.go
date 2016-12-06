@@ -1,12 +1,12 @@
 package cmd
 
 import (
-	"github.com/hofstadter-io/geb/cmd/dsl"
-	"github.com/hofstadter-io/geb/cmd/info"
-	"github.com/hofstadter-io/geb/cmd/project"
-	"github.com/hofstadter-io/geb/engine"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.ibm.com/hofstadter-io/geb/cmd/dsl"
+	"github.ibm.com/hofstadter-io/geb/cmd/info"
+	"github.ibm.com/hofstadter-io/geb/cmd/project"
+	"github.ibm.com/hofstadter-io/geb/engine"
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework
 )
 
