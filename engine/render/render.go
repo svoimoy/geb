@@ -78,8 +78,10 @@ func RenderPlan(plan plan.Plan, output_dir string) error {
 	out_filename := filepath.Join(output_dir, plan.Outfile)
 	err = WriteResults(out_filename, result)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
 	}
+
+	logger.Info("Wrote file", "filename", out_filename)
 
 	return nil
 }

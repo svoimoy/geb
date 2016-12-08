@@ -62,6 +62,7 @@ func (P *Project) Render() error {
 		for i, err := range errs {
 			fmt.Printf("  %d) %v\n\n", i, err)
 		}
+		return errs[0]
 	}
 
 	return nil

@@ -6,6 +6,8 @@ import (
 
 	"github.com/kr/pretty"
 	"github.com/spf13/cobra"
+
+	"github.ibm.com/hofstadter-io/geb/engine"
 )
 
 var projectLong = `Print information about a project.
@@ -25,14 +27,13 @@ var ProjectCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		var (
-			data interface{}
-			err  error
+			err error
 		)
 
 		file := look_for_file()
 		switch file {
 		case "geb.yml", "geb.yaml":
-			data, err = project_info(file, args)
+			err = project_info(file, args)
 
 		default:
 			fmt.Println("No project file found in the current directory.")
@@ -44,7 +45,6 @@ var ProjectCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("%# v", pretty.Formatter(data))
 		return
 
 	},
@@ -54,7 +54,13 @@ func init() {
 	InfoCmd.AddCommand(ProjectCmd)
 }
 
-func project_info(filename string, args []string) (interface{}, error) {
+func project_info(filename string, args []string) error {
 
-	return nil, errors.New("Not implemented yet")
+	proj, err := engine.GetProjectData(filename, []string{})
+	if err != nil {
+		return errors.Wrap(err, "in cmd/info.project_info")
+	}
+
+	fmt.Printf("%# v", pretty.Formatter(proj.Config))
+	return nil
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
-	"github.com/kr/pretty"
+	// "github.com/kr/pretty"
 	"github.com/spf13/cobra"
 )
 
@@ -25,21 +25,25 @@ var DslCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		var (
-			data interface{}
-			err  error
+			err error
 		)
 
 		file := look_for_file()
 		switch file {
 		case "geb.yml", "geb.yaml":
 			args = append([]string{"dsl"}, args...)
-			data, err = project_info(file, args)
+			err = project_info(file, args)
 
 		case "geb-dsl.yml", "geb-dsl.yaml":
-			data, err = dsl_info(file, args)
+			err = dsl_info(file, args)
+
+		case "geb-gen.yml", "geb-gen.yaml":
+			args = append([]string{"dsl"}, args...)
+			err = project_info(file, args)
 
 		default:
-			data, err = dsl_info("", args)
+			args = append([]string{"dsl"}, args...)
+			err = geb_info(args)
 		}
 
 		if err != nil {
@@ -47,7 +51,6 @@ var DslCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("%# v", pretty.Formatter(data))
 		return
 	},
 }
@@ -56,7 +59,7 @@ func init() {
 	InfoCmd.AddCommand(DslCmd)
 }
 
-func dsl_info(filename string, args []string) (interface{}, error) {
+func dsl_info(filename string, args []string) error {
 
-	return nil, errors.New("Not implemented yet")
+	return errors.New("Not implemented yet")
 }

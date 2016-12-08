@@ -3,7 +3,7 @@ package cmd_info
 import (
 	"fmt"
 
-	"github.com/kr/pretty"
+	//	"github.com/kr/pretty"
 	"github.com/spf13/cobra"
 )
 
@@ -33,8 +33,7 @@ var InfoCmd = &cobra.Command{
 func do_info_cmd(args []string) {
 
 	var (
-		data interface{}
-		err  error
+		err error
 	)
 
 	// What file are we dealing with?
@@ -42,16 +41,16 @@ func do_info_cmd(args []string) {
 	file := look_for_file()
 	switch file {
 	case "geb.yml", "geb.yaml":
-		data, err = project_info(file, args)
+		err = project_info(file, args)
 
 	case "geb-dsl.yml", "geb-dsl.yaml":
-		data, err = dsl_info(file, args)
+		err = dsl_info(file, args)
 
 	case "geb-gen.yml", "geb-gen.yaml":
-		data, err = gen_info(file, args)
+		err = gen_info(file, args)
 
 	default:
-		data, err = geb_info(args)
+		err = geb_info(args)
 	}
 
 	if err != nil {
@@ -59,7 +58,6 @@ func do_info_cmd(args []string) {
 		return
 	}
 
-	fmt.Printf("%# v", pretty.Formatter(data))
 	return
 
 }

@@ -1,4 +1,4 @@
-{{#with dsl.api}}
+{{#with dsl.api as |API| }}
 package main
 
 import (
@@ -8,24 +8,36 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-{{#each routes}}
-func {{route}}_{{method}}_Handler(ctx *gin.Context) {
-{{#each params}}
-	{{name}} := c.Query("{{name}}")
-	{{#if required }}
-	if {{name}} == "" {
-		res := gin.H{"error": "missing {{name}} in request"}
-		c.JSON(http.StatusBadRequest, res)
-		return
-	}
-	{{/if}}
+/*
+	This is a test for dotpath indexing enhancement:
 
-	{{#if type }} {{> (concat3 "parse/" type ".go") }} {{/if}}
+	Path: dsl.api.[???]
 
-{{/each}}
-}
+	??? = routes.version
+	---
+	{{#get_elem_by_name "routes.version" "" data=API}}
+	{{name}}
+	{{/get_elem_by_name}}
+	---
+	{{#dotpath "api.routes.version" data=@root.dsl}}
+	{{name}}
+	{{/dotpath}}
+	---
+	{{#dotpath "routes.version" data=API}}
+	{{name}}
+	{{/dotpath}}
+  ---
+	{{#getdsl "api.routes.[0]"}}
+	{{#each .}}
+	 - {{name}}
+	{{/each~}}
+	{{/getdsl}}
+  ---
+	{{#gettype "count"}}
+	{{name}}
+	{{/gettype}}
 
-{{/each}}
+*/
 
 {{/with}}
 

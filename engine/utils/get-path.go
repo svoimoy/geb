@@ -30,6 +30,15 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 	P := paths[IDX]
 	path_str := strings.Join(paths[:IDX+1], ".")
 
+	has_indexing := strings.Contains(P, "[")
+	has_slicing := strings.Contains(P, ":")
+	has_listing := strings.Contains(P, ",")
+	has_assign := strings.Contains(P, "=")
+
+	if has_indexing {
+		logger.Warn("Has indexing", "idx", IDX, "curr", P, "paths", paths)
+	}
+
 	switch T := data.(type) {
 
 	case map[string]interface{}:

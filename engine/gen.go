@@ -8,11 +8,12 @@ import (
 )
 
 func GenerateProject(filename string, generators []string) error {
+	var err error
 
 	proj := project.NewProject()
 
 	fmt.Println("Loading...")
-	err := proj.Load(filename, generators)
+	err = proj.Load(filename, generators)
 	if err != nil {
 		return errors.Wrapf(err, "While generating project: %s %v\n", filename, generators)
 	}

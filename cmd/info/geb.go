@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
-	"github.com/kr/pretty"
+	// "github.com/kr/pretty"
 	"github.com/spf13/cobra"
 )
 
@@ -22,13 +22,12 @@ var GebCmd = &cobra.Command{
 	Long:  gebLong,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		data, err := geb_info(args)
+		err := geb_info(args)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
 		}
 
-		fmt.Printf("%# v", pretty.Formatter(data))
 		return
 
 	},
@@ -38,7 +37,7 @@ func init() {
 	InfoCmd.AddCommand(GebCmd)
 }
 
-func geb_info(args []string) (interface{}, error) {
+func geb_info(args []string) error {
 
-	return nil, errors.New("Not implemented yet")
+	return errors.New("Not implemented yet")
 }
