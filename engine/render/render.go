@@ -48,20 +48,15 @@ func RenderPlan(plan plan.Plan, output_dir string) error {
 	f_dir := filepath.Dir(plan.Outfile)
 	plan.Data["file_basedir"] = f_dir
 
-	// if golang generator, add gopath relative base dir
-	if strings.Contains(plan.Gen, "golang") {
-		gopath := os.Getenv("GOPATH")
-		if gopath == "" {
-			logger.Warn("GOPATH environment variable is not set", "error", err)
-			// return err
-		}
-		logger.Debug("GOPATH: " + gopath)
-		gopath += "/src/"
-
-		go_dir := strings.TrimPrefix(g_dir, gopath)
-		plan.Data["goimport_basedir"] = go_dir
-		logger.Debug("go_dir: " + go_dir)
+	env_vars := make(map[string]string)
+	vars := os.Environ()
+	for _, v := range vars {
+		flds := strings.Split(v, "=")
+		key, val := flds[0], flds[1]
+		env_vars[key] = val
 	}
+
+	plan.Data["ENV"] = env_vars
 
 	if plan.RepeatedContext != nil {
 		plan.Data["RepeatedContext"] = plan.RepeatedContext

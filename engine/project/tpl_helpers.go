@@ -2,8 +2,9 @@ package project
 
 import (
 	"fmt"
+
 	"github.com/aymerick/raymond"
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/dotpath"
 )
 
 func (P *Project) register_partials() {
@@ -108,7 +109,7 @@ func (P *Project) tpl_helper_get_elem_by_name(path, name string, options *raymon
 		return options.FnWith("Nil data supplied" + path)
 	}
 
-	obj, err := utils.GetByPath(path, data)
+	obj, err := dotpath.Get(path, data)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}
@@ -130,7 +131,7 @@ func (P *Project) tpl_helper_dotpath(path string, options *raymond.Options) inte
 		return options.FnWith("Nil data supplied" + path)
 	}
 
-	obj, err := utils.GetByPath(path, data)
+	obj, err := dotpath.Get(path, data)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}
@@ -152,7 +153,7 @@ func (P *Project) tpl_helper_dotpath_type(path string, options *raymond.Options)
 		return options.FnWith("Nil data supplied" + path)
 	}
 
-	obj, err := utils.GetByPath(path, data)
+	obj, err := dotpath.Get(path, data)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}
@@ -174,7 +175,7 @@ func (P *Project) tpl_helper_dotpath_dsl(path string, options *raymond.Options) 
 		return options.FnWith("Nil data supplied" + path)
 	}
 
-	obj, err := utils.GetByPath(path, data)
+	obj, err := dotpath.Get(path, data)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}

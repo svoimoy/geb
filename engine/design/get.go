@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"strings"
 
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.ibm.com/hofstadter-io/dotpath"
 )
 
 func (D *Design) Get(path string) (interface{}, error) {
@@ -16,16 +16,16 @@ func (D *Design) Get(path string) (interface{}, error) {
 
 	switch P {
 	case "proj":
-		return utils.GetByPathSlice(rest, D.Proj)
+		return dotpath.GetByPathSlice(rest, D.Proj)
 
 	case "type":
-		return utils.GetByPathSlice(rest, D.Type)
+		return dotpath.GetByPathSlice(rest, D.Type)
 
 	case "dsl":
-		return utils.GetByPathSlice(rest, D.Dsl)
+		return dotpath.GetByPathSlice(rest, D.Dsl)
 
 	case "custom":
-		return utils.GetByPathSlice(rest, D.Custom)
+		return dotpath.GetByPathSlice(rest, D.Custom)
 
 	default:
 		return nil, errors.New("Unknown path start for design: " + P)

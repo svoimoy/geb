@@ -2,6 +2,7 @@ package templates
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/aymerick/raymond"
@@ -44,11 +45,14 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("replace", helper_replace)
 	tpl.RegisterHelper("hasprefix", helper_hasprefix)
 	tpl.RegisterHelper("hassuffix", helper_hassuffix)
+	tpl.RegisterHelper("trimprefix", helper_trimprefix)
+	tpl.RegisterHelper("trimsuffix", helper_trimsuffix)
 	tpl.RegisterHelper("substr", helper_substr)
 
 	tpl.RegisterHelper("eq", helper_eq)
 	tpl.RegisterHelper("ne", helper_ne)
 
+	tpl.RegisterHelper("getenv", helper_getenv)
 }
 
 func helper_concat2(s1, s2 string) string {
@@ -129,6 +133,12 @@ func helper_hassuffix(str, suf string) string {
 	}
 	return ""
 }
+func helper_trimprefix(str, pre string) string {
+	return strings.TrimPrefix(str, pre)
+}
+func helper_trimsuffix(str, suf string) string {
+	return strings.TrimSuffix(str, suf)
+}
 func helper_substr(str string, start, end int) string {
 	if end == -1 {
 		end = len(str)
@@ -148,4 +158,12 @@ func helper_ne(lhs, rhs string) string {
 		return lhs
 	}
 	return ""
+}
+
+func helper_getenv(env_var string) string {
+	ret := os.Getenv(env_var)
+	if ret == "" {
+		return fmt.Sprintf("ENV_VAR: %q is empty", env_var)
+	}
+	return ret
 }

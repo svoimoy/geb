@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	"github.ibm.com/hofstadter-io/geb/engine/templates"
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
 type Plan struct {
@@ -84,7 +84,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				logger.Info("Processing Repeated Field: '" + R.Name + "'")
 
 				// look up field
-				collection, err := utils.GetByPath(R.Field, data)
+				collection, err := dotpath.Get(R.Field, data)
 				if err != nil {
 					return nil, errors.Wrapf(err, "looking up by path:  repeat(%s)  path(%s) in data:\n%+v\n\n", R.Name, R.Field, data)
 				}

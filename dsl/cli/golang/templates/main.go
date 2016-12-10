@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"{{Proj.goimport_basedir}}/cmd"
+	"{{{trimprefix gen_basedir (concat2 ENV.GOPATH '/src/' )}}}/cmd"
+	"{{{trimprefix gen_basedir (concat2 (getenv 'GOPATH') '/src/' )}}}/cmd"
 )
 
 func main() {

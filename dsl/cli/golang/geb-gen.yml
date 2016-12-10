@@ -12,13 +12,13 @@ repeated:
         out: "cmd/{{name}}.go"
 
   - name: sub-command
-    field: commands.sub-commands
+    field: commands.subcommands
     templates:
       - in: "cmd/subcmd.go"
         out: "cmd/{{parent}}/{{name}}.go"
 
   - name: sub-sub-command
-    field: commands.sub-commands.sub-commands
+    field: commands.subcommands.subcommands
     templates:
       - in: "cmd/subcmd.go"
         out: "cmd/{{parent-parent}}/{{parent}}/{{name}}.go"
