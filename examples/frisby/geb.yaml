@@ -1,0 +1,16 @@
+name: "frisby"
+version: "0.1"
+about: "an API testing and thrashing library"
+
+output-dir: "."
+design-dir: "design"
+
+dsl-config:
+  paths:
+    - "dsl"
+    - "$HOME/.hofstadter/dsl"
+  default:
+    - dsl: cli
+
+log-level: info
+

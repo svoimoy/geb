@@ -1,0 +1,47 @@
+cli:
+  name: frisby
+  version: "0.0.0"
+  short: "frisby is an API testing and thrashing toolset"
+  long: "frisby is an API testing and thrashing toolset"
+  omit-root-run: true
+  config:
+    auth:
+      user: some-user-name
+      apikey: some-api-key
+  commands:
+    - name: Test
+      usage: test <file> <host>
+      short: Run a frisby test file against a host.
+      long: Run a frisby test file against a host.
+      args:
+        - name: file
+          type: string
+          help: the name of a frisby file
+          required: true
+        - name: host
+          type: string
+          help: the host string to test against
+          required: true
+
+    - name: Load
+      usage: load <file> <host>
+      short: Run a frisby test file, loading a host.
+      long: Run a frisby test file, loading a host.
+      args:
+        - name: file
+          type: string
+          help: the name of a frisby file
+          required: true
+        - name: host
+          type: string
+          help: the host string to load against
+          required: true
+      flags:
+        - name: Workers
+          long: workers
+          short: w
+          type: int
+          default: 8
+          help: the number of workers
+
+

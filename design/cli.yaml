@@ -1,16 +1,16 @@
 cli:
   name: geb
-  short: "geb is a data first code generator"
+  short: "geb is the Hofstadter framework CLI tool"
   long: |
-    A data first code generator which
-    combines data and templates
-    to genereate all of the things.
-  flags:
+    Hofstadter is a Framework
+    for building data-centric
+    Platforms. geb is the tool.
+  pflags:
     - name: config
       short: c
       default: geb.yaml
       help: A geb project config file.
-    - name: design-dir
+    - name: design
       short: d
       default: design
       help: The design files directory.
@@ -18,35 +18,87 @@ cli:
       short: t
       default: templates:~/.hofstadter/templates
       help: The search path for templates, reads from left to right, overriding along the way.
-    - name: output-dir
+    - name: output
       short: o
       default: output
       help: The directory to output generated files to.
   commands:
-    - name: geb
+    - name: Geb
       usage: geb
-      parent: root
-    - name: init
+    - name: Init
       usage: init
-      parent: root
-    - name: import
-      usage: import
-      parent: root
-    - name: project
-      usage: project
-      parent: root
-    - name: dsl
-      usage: dsl
-      parent: root
-    - name: dsl-list
-      usage: list
-      parent: dsl
-    - name: dsl-get
-      usage: get
-      parent: dsl
-    - name: dsl-add
-      usage: add
-      parent: dsl
-    - name: dsl-update
-      usage: update
-      parent: dsl
+      short: Initialize the geb tool and files
+      long: Intializes the geb tool and the ~/.hofstadter dotfolder
+      aliases:
+        - setup
+    - name: Create
+      usage: create <name> <dsl/gen>...
+      short: Create a new project
+      long: |
+        Create a new project with the given name.
+        Optionally specifiy the starting set of
+        DSLs and generators for the project.
+        The output directory defaults to the same name,
+        unless overridden by the output flag.
+      args:
+        - name: name
+          type: string
+          required: true
+          help: The name of the new project to create
+        - name: dsls_n_gens
+          rest: true
+          type: array[string]
+          help: The starting list of DSLs and generators by path.
+    - name: View
+      usage: view
+      short: View information known to the geb tool.
+      long: View information known to the geb tool.
+      run: false
+      subcommands:
+        - name: Geb
+          usage: geb <dotpaths>...
+          short: View information about the global geb config
+          long: View information about the global geb config
+          args:
+            - name: path
+              type: string
+              help: one ore more dotpaths for indexing into the data
+        - name: Dsl
+          usage: dsl <dotpath>...
+          short: View information about DSLs
+          long: View information about DSLs known from the current path
+          args:
+            - name: path
+              type: string
+              help: one ore more dotpaths for indexing into the data
+        - name: Design
+          usage: design <dotpath>...
+          short: View information about Designs
+          long: View information about Designs known from the current path
+          args:
+            - name: path
+              type: string
+              help: one ore more dotpaths for indexing into the data
+    - name: Gen
+      usage: gen
+      short: Generate a project.
+      long: Generate a project from its working directory.
+      subcommands:
+        - name: File
+          usage: file <dataFile> <templateFile> <outputFile>
+          short: Generate a file.
+          long: Generate a file from data and a template.
+          args:
+            - name: dataFile
+              type: string
+              required: true
+              help: Path to the input data file. Can also be 'stdin'.
+            - name: templateFile
+              type: string
+              required: true
+              help: Path to the template file.
+            - name: outputFile
+              type: string
+              required: true
+              help: Path to the output file. Can also be 'stdout'.
+

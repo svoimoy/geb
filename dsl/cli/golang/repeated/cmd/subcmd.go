@@ -23,18 +23,18 @@ import (
 
 // Tool:   {{CLI.name}}
 // Name:   {{RC.name}}
-// Usage:  {{RC.usage}}
-// Parent: {{RC.parent}}
+// Usage:  {{{RC.usage}}}
+// Parent: {{{RC.parent}}}
 
-var {{RC.name}}Long = `{{long}}`
+var {{RC.name}}Long = `{{{long}}}`
 
 {{> "flag-var.go" RC }}
 
 {{> "flag-init.go" RC }}
 
 var {{RC.name}}Cmd = &cobra.Command {
-	Use: "{{RC.usage}}",
-	Short: "{{RC.short}}",
+	Use: "{{{RC.usage}}}",
+	Short: "{{{RC.short}}}",
 	Long: {{RC.name}}Long,
 	Run: func(cmd *cobra.Command, args []string) {
 		// HOFSTADTER_START cmd_run

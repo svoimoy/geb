@@ -1,21 +1,17 @@
-{{#with dsl.cli as |CLI| }}
 package cmd
 
 import (
   // HOFSTADTER_START import
   // HOFSTADTER_END   import
-	{{#unless CLI.omit-root-run}}
-	"fmt"
-	{{/unless}}
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework
 )
 
-{{> "flag-var.go" CLI }}
 
-{{> "flag-init.go" CLI }}
+
+
 var (
 	FlagMergeConfigFile    string
 	FlagSetConfigFile    string
@@ -33,24 +29,16 @@ var (
 	logger = log.New()
 	
 	RootCmd = &cobra.Command{
-		Use:   "{{ CLI.name }}",
-		Short: "{{ CLI.short }}",
-		Long:  `{{ CLI.long }}`,
-		{{#unless CLI.omit-root-run}}
-		Run: func(cmd *cobra.Command, args []string) {
-			// HOFSTADTER_START root_cmd_func
-			// Do Stuff Here
-			fmt.Println("dostuff")
-			// HOFSTADTER_END   root_cmd_func
-		},
-		{{/unless}}
+		Use:   "frisby",
+		Short: "frisby is an API testing and thrashing toolset",
+		Long:  `frisby is an API testing and thrashing toolset`,
 	}
 )
 
 func read_config() {
 	viper.SetConfigType("yaml")
-	viper.SetConfigName("{{CLI.name}}")
-	viper.AddConfigPath("$HOME/.{{CLI.name}}")
+	viper.SetConfigName("frisby")
+	viper.AddConfigPath("$HOME/.frisby")
 	viper.ReadInConfig()
 	viper.AddConfigPath(".")
 	viper.MergeInConfig()
@@ -84,6 +72,7 @@ func config_logger() {
 
 }
 
-{{/with}}
+
+// HOFSTADTER_BELOW
 
 // HOFSTADTER_BELOW
