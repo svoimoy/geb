@@ -24,9 +24,15 @@ type Project struct {
 	Plans []plan.Plan
 }
 
+func New() *Project {
+	return NewProject()
+}
+
 func NewProject() *Project {
 	return &Project{
+		Config:    NewConfig(),
 		Available: map[string]*dsl.Dsl{},
+		Design:    design.New(),
 		DslMap:    map[string]*dsl.Dsl{},
 	}
 }

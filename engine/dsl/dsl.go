@@ -18,6 +18,10 @@ type Dsl struct {
 	Generators map[string]*gen.Generator
 }
 
+func New() *Dsl {
+	return NewDsl()
+}
+
 func NewDsl() *Dsl {
 	return &Dsl{
 		Config:              NewConfig(),
@@ -31,7 +35,7 @@ func CreateFromFolder(folder string) (*Dsl, error) {
 
 	C, err := ReadConfigFile(filepath.Join(folder, "geb-dsl.yml"))
 	if err != nil {
-		logger.Info("error reading, geb-dsl.yml, trying geb-dsl.yaml", "err", err)
+		// logger.Info("error reading, geb-dsl.yml, trying geb-dsl.yaml", "err", err)
 		err = errors.Wrapf(err, "Error in dsl.CreateFromFolder with 'geb-dsl.yml' file in folder: %s\n", folder)
 		C2, err2 := ReadConfigFile(filepath.Join(folder, "geb-dsl.yaml"))
 		if err2 != nil {

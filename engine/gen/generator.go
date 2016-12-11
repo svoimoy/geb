@@ -17,6 +17,10 @@ type Generator struct {
 	Partials  templates.TemplateMap
 }
 
+func New() *Generator {
+	return NewGenerator()
+}
+
 func NewGenerator() *Generator {
 	return &Generator{
 		Config:    NewConfig(),

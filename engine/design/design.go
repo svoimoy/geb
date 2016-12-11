@@ -17,6 +17,10 @@ type Design struct {
 	Custom map[string]interface{}
 }
 
+func New() *Design {
+	return NewDesign()
+}
+
 func NewDesign() *Design {
 	return &Design{
 		Proj:   make(map[string]interface{}),

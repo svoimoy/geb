@@ -12,6 +12,10 @@ import (
 type Template raymond.Template
 type TemplateMap map[string]*Template
 
+func NewMap() TemplateMap {
+	return NewTemplateMap()
+}
+
 func NewTemplateMap() TemplateMap {
 	return make(map[string]*Template)
 }
