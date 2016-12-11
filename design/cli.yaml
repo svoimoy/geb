@@ -119,14 +119,14 @@ cli:
       long: Generate a project from its working directory.
       subcommands:
         - name: File
-          usage: file <dataFile> <templateFile> <outputFile>
+          usage: file <designFile> <templateFile> <outputFile>
           short: Generate a file.
-          long: Generate a file from data and a template.
+          long: Generate a file from design and a template.
           args:
-            - name: dataFile
+            - name: designFile
               type: string
               required: true
-              help: Path to the input data file. Can also be 'stdin'.
+              help: Path to the input design file.
             - name: templateFile
               type: string
               required: true

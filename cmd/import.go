@@ -1,37 +1,120 @@
 package cmd
 
-// this command is for converting
-// various file types to geb designs
-
 import (
+	// HOFSTADTER_START import
 	"fmt"
+	// HOFSTADTER_END   import
+
+
+	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
 )
 
-var convertLong = `converts a file(s)/folder(s) type to a geb design file(s)/folder(s)
-to a folder named 'converts' in the output dir.
+// Tool:   geb
+// Name:   Import
+// Usage:  import <file or directory> <output file or directory>
+// Parent: geb
 
-Intended mportable formats are:
+var ImportLong = `Import other stuff into Hofstadter.
 
- - swagger
- - json
- - protobuf
- - golang
- - xml
- - sql table create
- - goa.design
+Stuff is...
+  - json/jsonl, yaml, xml, protobuf, taml
+  - swagger, goa.design
+  - golang type definitions
 `
 
-var ConvertCmd = &cobra.Command{
-	Use:   "convert [type] [file(s)/folder(s)]",
-	Short: "Convert another file type into geb design.",
-	Long:  generateLong,
+
+var (
+	TypeFlag string
+)
+
+
+func init() {
+	ImportCmd.Flags().StringVarP(&TypeFlag, "type", "T", "", "The type of input data to force geb to use a certain format")
+	viper.BindPFlag("type", ImportCmd.Flags().Lookup("type"))
+
+}
+
+var ImportCmd = &cobra.Command {
+	Use: "import <file or directory> <output file or directory>",
+	Short: "Import other stuff into Hofstadter",
+	Long: ImportLong,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("convert is TBD")
+		fmt.Println("In ImportCmd", args)
+		// Argument Parsing
+		// [0]name:   input
+		//     help:   Path to the file or folder. Can also be 'stdin'.
+		//     req'd:  true
+		if 0 >= len(args) {
+			fmt.Println("not enough args supplied")
+			return
+		}
+		var input string
+		if 0 < len(args) {
+			input = args[0]
+		}
+		
+		fmt.Println("arg[0] = ", input)
+		
+		// [1]name:   output
+		//     help:   Path to the output file or folder. Can also be 'stdout'.
+		//     req'd:  true
+		if 1 >= len(args) {
+			fmt.Println("not enough args supplied")
+			return
+		}
+		var output string
+		if 1 < len(args) {
+			output = args[1]
+		}
+		
+		fmt.Println("arg[1] = ", output)
+		
+		
+
+		// HOFSTADTER_START cmd_run
+		fmt.Println("In ImportCmd")
+		// HOFSTADTER_END   cmd_run
 	},
 }
 
+
 func init() {
-	RootCmd.AddCommand(ConvertCmd)
+	RootCmd.AddCommand(ImportCmd)
+
 }
+
+
+/*
+Repeated Context
+----------------
+args:
+- help: Path to the file or folder. Can also be 'stdin'.
+  name: input
+  required: true
+  type: string
+- help: Path to the output file or folder. Can also be 'stdout'.
+  name: output
+  required: true
+  type: string
+flags:
+- help: The type of input data to force geb to use a certain format
+  long: type
+  name: Type
+  short: T
+  type: string
+long: |
+  Import other stuff into Hofstadter.
+
+  Stuff is...
+    - json/jsonl, yaml, xml, protobuf, taml
+    - swagger, goa.design
+    - golang type definitions
+name: Import
+parent: geb
+path: commands
+short: Import other stuff into Hofstadter
+usage: import <file or directory> <output file or directory>
+
+*/

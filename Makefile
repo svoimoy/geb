@@ -10,6 +10,14 @@ build:
 clone:
 	@cd contracrostipunctus && go build
 
+.Phont: poor
+poor:
+	@rm -rf profit
+
 .Phony: profit
 profit:
-	@ cp -R contracrostipunctus/cli/golang/* contracrostipunctus/profit
+	@find contracrostipunctus -type f \! -name "contracrostipunctus" -exec sed -i '' "s/geb\/contracrostipunctus/geb/g" {} \;
+	@rm -rf profit
+	@mkdir -p profit
+	@cp -R contracrostipunctus/* profit
+	@geb gen > /dev/null

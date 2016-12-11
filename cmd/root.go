@@ -1,69 +1,92 @@
 package cmd
 
 import (
+  // HOFSTADTER_START import
+  // HOFSTADTER_END   import
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.ibm.com/hofstadter-io/geb/cmd/dsl"
-	"github.ibm.com/hofstadter-io/geb/cmd/info"
-	"github.ibm.com/hofstadter-io/geb/cmd/project"
-	"github.ibm.com/hofstadter-io/geb/engine"
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework
+
+	"github.ibm.com/hofstadter-io/dotpath"
+	"github.ibm.com/hofstadter-io/geb/engine"
 )
 
 var (
-	FlagConfigFile    string
-	FlagDesignDir     string
-	FlagLogLevel      string
-	FlagOutputDir     string
-	FlagTemplatePaths string
+	ConfigPFlag string
+	DesignPFlag string
+	TemplatePathsPFlag string
+	OutputPFlag string
+)
 
-	logger = log.New()
+
+func init() {
+	RootCmd.PersistentFlags().StringVarP(&ConfigPFlag, "config", "c", "geb.yaml", "A geb project config file.")
+	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
+
+	RootCmd.PersistentFlags().StringVarP(&DesignPFlag, "design", "d", "design", "The design files directory.")
+	viper.BindPFlag("design", RootCmd.PersistentFlags().Lookup("design"))
+
+	RootCmd.PersistentFlags().StringVarP(&TemplatePathsPFlag, "template-paths", "t", "templates:~/.hofstadter/templates", "The search path for templates, reads from left to right, overriding along the way.")
+	viper.BindPFlag("template-paths", RootCmd.PersistentFlags().Lookup("template-paths"))
+
+	RootCmd.PersistentFlags().StringVarP(&OutputPFlag, "output", "o", "output", "The directory to output generated files to.")
+	viper.BindPFlag("output", RootCmd.PersistentFlags().Lookup("output"))
+
+}
+
+
+var (
+	FlagMergeConfigFile    string
+	FlagSetConfigFile    string
+	FlagLogLevel    string
 )
 
 func init() {
-	//	cobra.OnInitialize(initConfig)
-	RootCmd.PersistentFlags().StringVar(&FlagConfigFile, "merge-config", "", "merge a geb config file, overriding values.")
-	RootCmd.PersistentFlags().StringVarP(&FlagConfigFile, "set-config", "c", "", "reset the geb config file to the file specified.")
-	RootCmd.PersistentFlags().StringVarP(&FlagDesignDir, "design-dir", "d", "", "the design files directory. (default ./design)")
-	RootCmd.PersistentFlags().StringVarP(&FlagLogLevel, "log-level", "l", "", "geb logging level.")
-	RootCmd.PersistentFlags().StringVarP(&FlagOutputDir, "output-dir", "o", "", "the output files directory. (default ./output)")
-	RootCmd.PersistentFlags().StringVarP(&FlagTemplatePaths, "template-paths", "t", "", "base templates directory. (default ./templates:~/.hofstadter/templates)")
+	RootCmd.PersistentFlags().StringVarP(&FlagLogLevel, "log-level", "l", "", "reset the geb config file to the file specified.")
+	RootCmd.PersistentFlags().StringVar(&FlagMergeConfigFile, "merge-config", "", "merge a geb config file, overriding values.")
+	RootCmd.PersistentFlags().StringVar(&FlagSetConfigFile, "set-config", "", "reset the geb config file to the file specified.")
 
+	viper.BindPFlag("log-level", RootCmd.PersistentFlags().Lookup("log-level"))
 	viper.BindPFlag("merge-config", RootCmd.PersistentFlags().Lookup("merge-config"))
 	viper.BindPFlag("set-config", RootCmd.PersistentFlags().Lookup("set-config"))
-	viper.BindPFlag("design-dir", RootCmd.PersistentFlags().Lookup("design-dir"))
-	viper.BindPFlag("log-level", RootCmd.PersistentFlags().Lookup("log-level"))
-	viper.BindPFlag("output-dir", RootCmd.PersistentFlags().Lookup("output-dir"))
-	viper.BindPFlag("template-paths", RootCmd.PersistentFlags().Lookup("template-paths"))
 
-	viper.SetDefault("design-dir", "design")
 	viper.SetDefault("log-level", "warn")
-	viper.SetDefault("output-dir", "output")
-	viper.SetDefault("template-paths", "$HOME/.hofstadter/templates:templates")
-
-	viper.SetConfigType("yaml")
-	viper.SetConfigName("geb")
 
 }
 
 var (
+	logger = log.New()
+	
 	RootCmd = &cobra.Command{
 		Use:   "geb",
-		Short: "geb is a data centric code generator",
-		Long: `geb is hofstadter = data + templates = profit
-A data centric code generator which
-combines yaml and handlebar templates
-to genereate all of the things.`,
+		Short: "geb is the Hofstadter framework CLI tool",
+		Long:  `Hofstadter is a Framework
+for building data-centric
+Platforms. geb is the tool.
+`,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			read_config()
 			config_logger()
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			// Argument Parsing
+			
+
+			// HOFSTADTER_START root_cmd_func
+			// Do Stuff Here
+			fmt.Println("dostuff")
+			// HOFSTADTER_END   root_cmd_func
 		},
 	}
 )
 
 func read_config() {
-	viper.AddConfigPath("$HOME/.hofstadter")
-	viper.ReadInConfig()
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("geb")
+	viper.AddConfigPath("$HOME/.geb")
+	viper.MergeInConfig()
 	viper.AddConfigPath(".")
 	viper.MergeInConfig()
 
@@ -76,7 +99,7 @@ func read_config() {
 	cfg = viper.GetString("set-config")
 	if cfg != "" {
 		viper.SetConfigFile(cfg)
-		viper.MergeInConfig()
+		viper.ReadInConfig()
 	}
 }
 
@@ -87,23 +110,28 @@ func config_logger() {
 		panic(err)
 	}
 
-	/*
-		term_stack := log.CallerStackHandler("%+v", log.StdoutHandler)
-		term_caller := log.CallerFuncHandler(log.CallerFileHandler(term_stack))
-		termlog := log.LvlFilterHandler(term_level, term_caller)
-	*/
+	// term_stack := log.CallerStackHandler("%+v", log.StdoutHandler)
+	// term_caller := log.CallerFuncHandler(log.CallerFileHandler(term_stack))
+	// termlog := log.LvlFilterHandler(term_level, term_caller)
 
-	term_caller := log.CallerFuncHandler(log.CallerFileHandler(log.StdoutHandler))
-	termlog := log.LvlFilterHandler(term_level, term_caller)
-
-	//	termlog := log.LvlFilterHandler(term_level, log.StdoutHandler)
+	termlog := log.LvlFilterHandler(term_level, log.StdoutHandler)
 	logger.SetHandler(termlog)
+	dotpath.SetLogger(logger)
 	engine.SetLogger(logger)
 
 }
 
+
+// HOFSTADTER_BELOW
+
 func init() {
-	RootCmd.AddCommand(cmd_dsl.DslCmd)
-	RootCmd.AddCommand(cmd_proj.ProjectCmd)
-	RootCmd.AddCommand(cmd_info.InfoCmd)
+	read_config()
+	config_logger()
+}
+
+// HOFSTADTER_BELOW
+
+func init() {
+	read_config()
+	config_logger()
 }
