@@ -36,7 +36,7 @@ var FileCmd = &cobra.Command {
 		//     help:   Path to the input design file.
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("not enough args supplied")
+			cmd.Usage()
 			return
 		}
 		var designFile string
@@ -48,7 +48,7 @@ var FileCmd = &cobra.Command {
 		//     help:   Path to the template file.
 		//     req'd:  true
 		if 1 >= len(args) {
-			fmt.Println("not enough args supplied")
+			cmd.Usage()
 			return
 		}
 		var templateFile string
@@ -60,7 +60,7 @@ var FileCmd = &cobra.Command {
 		//     help:   Path to the output file. Can also be 'stdout'.
 		//     req'd:  true
 		if 2 >= len(args) {
-			fmt.Println("not enough args supplied")
+			cmd.Usage()
 			return
 		}
 		var outputFile string

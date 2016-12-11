@@ -54,7 +54,7 @@ var ImportCmd = &cobra.Command {
 		//     help:   Path to the file or folder. Can also be 'stdin'.
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("not enough args supplied")
+			cmd.Usage()
 			return
 		}
 		var input string
@@ -66,7 +66,7 @@ var ImportCmd = &cobra.Command {
 		//     help:   Path to the output file or folder. Can also be 'stdout'.
 		//     req'd:  true
 		if 1 >= len(args) {
-			fmt.Println("not enough args supplied")
+			cmd.Usage()
 			return
 		}
 		var output string

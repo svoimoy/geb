@@ -42,7 +42,7 @@ var CreateCmd = &cobra.Command {
 		//     help:   The name of the new project to create
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("not enough args supplied")
+			cmd.Usage()
 			return
 		}
 		var name string

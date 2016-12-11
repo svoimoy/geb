@@ -52,7 +52,7 @@ var MiCmd = &cobra.Command {
 		//     help:   The rule to apply [r# or rule-#]
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("not enough args supplied")
+			cmd.Usage()
 			return
 		}
 		var rule string

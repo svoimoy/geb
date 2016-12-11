@@ -7,7 +7,7 @@
 //     req'd:  {{arg.required}}
 {{#if arg.required}}
 if {{@index}} >= len(args) {
-	fmt.Println("not enough args supplied")
+	cmd.Usage()
 	return
 }
 {{/if}}
