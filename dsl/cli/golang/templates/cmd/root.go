@@ -11,22 +11,32 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework
+
+	"github.ibm.com/hofstadter-io/dotpath"
+	"github.ibm.com/hofstadter-io/geb/engine"
 )
 
 {{> "flag-var.go" CLI }}
 
 {{> "flag-init.go" CLI }}
+
 var (
 	FlagMergeConfigFile    string
 	FlagSetConfigFile    string
+	FlagLogLevel    string
 )
 
 func init() {
+	RootCmd.PersistentFlags().StringVarP(&FlagLogLevel, "log-level", "l", "", "reset the geb config file to the file specified.")
 	RootCmd.PersistentFlags().StringVar(&FlagMergeConfigFile, "merge-config", "", "merge a geb config file, overriding values.")
 	RootCmd.PersistentFlags().StringVar(&FlagSetConfigFile, "set-config", "", "reset the geb config file to the file specified.")
 
+	viper.BindPFlag("log-level", RootCmd.PersistentFlags().Lookup("log-level"))
 	viper.BindPFlag("merge-config", RootCmd.PersistentFlags().Lookup("merge-config"))
 	viper.BindPFlag("set-config", RootCmd.PersistentFlags().Lookup("set-config"))
+
+	viper.SetDefault("log-level", "warn")
+
 }
 
 var (
@@ -36,8 +46,14 @@ var (
 		Use:   "{{ CLI.name }}",
 		Short: "{{ CLI.short }}",
 		Long:  `{{ CLI.long }}`,
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			read_config()
+			config_logger()
+		},
 		{{#unless CLI.omit-root-run}}
 		Run: func(cmd *cobra.Command, args []string) {
+			{{> args-parse.go CLI }}
+
 			// HOFSTADTER_START root_cmd_func
 			// Do Stuff Here
 			fmt.Println("dostuff")
@@ -51,7 +67,7 @@ func read_config() {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("{{CLI.name}}")
 	viper.AddConfigPath("$HOME/.{{CLI.name}}")
-	viper.ReadInConfig()
+	viper.MergeInConfig()
 	viper.AddConfigPath(".")
 	viper.MergeInConfig()
 
@@ -64,7 +80,7 @@ func read_config() {
 	cfg = viper.GetString("set-config")
 	if cfg != "" {
 		viper.SetConfigFile(cfg)
-		viper.MergeInConfig()
+		viper.ReadInConfig()
 	}
 }
 
@@ -81,6 +97,8 @@ func config_logger() {
 
 	termlog := log.LvlFilterHandler(term_level, log.StdoutHandler)
 	logger.SetHandler(termlog)
+	dotpath.SetLogger(logger)
+	engine.SetLogger(logger)
 
 }
 

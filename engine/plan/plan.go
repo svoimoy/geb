@@ -41,6 +41,12 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 			for t_key, T := range G.Templates {
 				t_ray := (*raymond.Template)(T)
 
+				G_key := filepath.Join(d_key, g_key)
+				if G.Config.OutputDir != "" {
+					G_key = G.Config.OutputDir
+				}
+				outfile := filepath.Join(G_key, t_key)
+
 				// build up the plan data struct
 				p := Plan{
 					Dsl:      d_key,
@@ -48,7 +54,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 					File:     t_key,
 					Template: t_ray,
 					Data:     design_data,
-					Outfile:  filepath.Join(d_key, g_key, t_key),
+					Outfile:  outfile,
 				}
 				logger.Info("        template file: "+t_key, "plan", p)
 
@@ -84,6 +90,8 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				logger.Info("Processing Repeated Field: '" + R.Name + "'")
 
 				// look up field
+				// lookup := R.Field + "." + strings.ToLower(R.Name)
+				// logger.Info("    lookup: "+lookup, "R", R)
 				collection, err := dotpath.Get(R.Field, data)
 				if err != nil {
 					return nil, errors.Wrapf(err, "looking up by path:  repeat(%s)  path(%s) in data:\n%+v\n\n", R.Name, R.Field, data)
@@ -94,7 +102,22 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 					return nil, errors.New("Collection is not a list: " + R.Field)
 				}
 
-				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
+				// flattern c_slice
+				// ....
+				// ....
+				tmp_c_slice := []interface{}{}
+				for _, elem := range c_slice {
+					if A, ok := elem.([]interface{}); ok {
+						for _, a := range A {
+							tmp_c_slice = append(tmp_c_slice, a)
+						}
+					} else {
+						tmp_c_slice = append(tmp_c_slice, elem)
+					}
+				}
+				c_slice = tmp_c_slice
+
+				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "collection_data", collection)
 				for _, t_pair := range R.Templates {
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
 
@@ -116,6 +139,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 						if err != nil {
 							return nil, errors.Wrap(err, "in MakePlans\n")
 						}
+						logger.Debug("       tpair:", "tpair", t_pair, "val", val)
 
 						templates.AddHelpers(tpl)
 						OF_name, err := tpl.Exec(val)
@@ -125,7 +149,13 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 
 						OF_name = strings.ToLower(OF_name)
 						logger.Info("OFNAME", "name", OF_name)
-						outfile := filepath.Join(d_key, g_key, OF_name)
+
+						G_key := filepath.Join(d_key, g_key)
+						if G.Config.OutputDir != "" {
+							G_key = G.Config.OutputDir
+						}
+
+						outfile := filepath.Join(G_key, OF_name)
 
 						// build up the plan data struct
 						fgd := Plan{

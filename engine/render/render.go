@@ -39,14 +39,27 @@ func RenderPlan(plan plan.Plan, output_dir string) error {
 	p_dir := filepath.Join(cwd, output_dir)
 	logger.Debug("o_dir: " + p_dir)
 	plan.Data["proj_outdir"] = p_dir
+
+	plan.Data["dsl_reldir"] = plan.Dsl
 	d_dir := filepath.Join(p_dir, plan.Dsl)
-	plan.Data["dsl_basedir"] = d_dir
+	plan.Data["dsl_fulldir"] = d_dir
+
+	g_rel := filepath.Join(plan.Dsl, plan.Gen)
+	plan.Data["gen_reldir"] = g_rel
 	g_dir := filepath.Join(d_dir, plan.Gen)
-	plan.Data["gen_basedir"] = g_dir
+	plan.Data["gen_fulldir"] = g_dir
 
 	// get file basedir
-	f_dir := filepath.Dir(plan.Outfile)
-	plan.Data["file_basedir"] = f_dir
+	f_tmp := filepath.Dir(plan.Outfile)
+	f_name, f_ddir := filepath.Split(f_tmp)
+	plan.Data["file_name"] = f_name
+	plan.Data["file_ddir"] = f_ddir
+	f_rel := filepath.Join(g_rel, f_name)
+	plan.Data["file_reldir"] = f_rel
+	// f_dir := filepath.Dir(filepath.Join(p_dir, plan.Outfile))
+	f_tdir := filepath.Join(p_dir, plan.Outfile)
+	f_dir := filepath.Dir(f_tdir)
+	plan.Data["file_fulldir"] = f_dir
 
 	env_vars := make(map[string]string)
 	vars := os.Environ()

@@ -24,8 +24,9 @@ type DslConfig struct {
 }
 
 type GenPair struct {
-	Dsl string   `yaml:"dsl"`
-	Gen []string `yaml:"gen"`
+	Dsl       string   `yaml:"dsl"`
+	Gen       []string `yaml:"gen"`
+	OutputDir string   `yaml:"output-dir"`
 }
 
 func NewConfig() *Config {

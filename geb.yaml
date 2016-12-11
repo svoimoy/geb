@@ -19,7 +19,5 @@ dsl-config:
     - dsl: cli
       gen:
         - golang
-
-
-log-level: info
+      output-dir: "."
 

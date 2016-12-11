@@ -5,6 +5,27 @@ import (
 	"os"
 )
 
+var known_file_types = []string{
+	"geb.yml",
+	"geb.yaml",
+	"geb-dsl.yml",
+	"geb-dsl.yaml",
+	"geb-gen.yml",
+	"geb-gen.yaml",
+}
+
+func LookForKnownFiles() string {
+	for _, file := range known_file_types {
+		// Does the file exist?
+		_, err := os.Lstat(file)
+		if err != nil {
+			continue
+		}
+		return file
+	}
+
+	return ""
+}
 func ResolvePath(path string) (string, error) {
 	// expand any environment vars in the path
 	path = os.ExpandEnv(path)

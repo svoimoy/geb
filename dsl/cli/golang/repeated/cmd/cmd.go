@@ -7,8 +7,8 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
-	{{#if sub-commands}}
-	"{{Proj.goimport_basedir}}/cmd/{{#lower RC.name}}{{/lower}}"
+	{{#if subcommands}}
+	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/{{lower RC.name}}"
 	{{/if}}
 
 	{{#if RC.flags}}
@@ -26,7 +26,7 @@ import (
 // Usage:  {{{RC.usage}}}
 // Parent: {{{RC.parent}}}
 
-var {{RC.name}}Long = `{{{long}}}`
+var {{RC.name}}Long = `{{{RC.long}}}`
 
 {{> "flag-var.go" RC }}
 
@@ -34,11 +34,19 @@ var {{RC.name}}Long = `{{{long}}}`
 
 var {{RC.name}}Cmd = &cobra.Command {
 	Use: "{{{RC.usage}}}",
+	{{#if RC.aliases}}
+	Aliases: []string{ 
+		{{#each RC.aliases}}"{{.}}",
+		{{/each}}
+	},
+	{{/if}}
 	Short: "{{{RC.short}}}",
 	Long: {{RC.name}}Long,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("In {{RC.name}}Cmd", args)
+		{{> args-parse.go RC }}
+
 		// HOFSTADTER_START cmd_run
-		fmt.Println("In {{RC.name}}Cmd")
 		// HOFSTADTER_END   cmd_run
 	},
 }
@@ -51,10 +59,16 @@ func init() {
 	{{RC.parent}}Cmd.AddCommand({{RC.name}}Cmd)
 	{{/if}}
 
-	{{#each sub-commands}}
-	{{RC.name}}Cmd.AddCommand({{#lower RC.name}}{{/lower}}.{{name}}Cmd)
+	{{#each subcommands}}
+	{{RC.name}}Cmd.AddCommand({{lower RC.name}}.{{name}}Cmd)
 	{{/each}}
 }
 
 {{/with}}
 {{/with}}
+
+/*
+Repeated Context
+----------------
+{{{yaml RepeatedContext}}}
+*/

@@ -170,6 +170,10 @@ func (P *Project) LoadDefaultGenerators() error {
 					if err != nil {
 						return err
 					}
+
+					if gp.OutputDir != "" {
+						G.Config.OutputDir = gp.OutputDir
+					}
 					D.Generators[s_gen] = G
 
 					orig, ok := P.DslMap[s_dsl]

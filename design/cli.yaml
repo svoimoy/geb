@@ -6,25 +6,27 @@ cli:
     for building data-centric
     Platforms. geb is the tool.
   pflags:
-    - name: config
+    - name: Config
+      long: config
       short: c
       default: geb.yaml
       help: A geb project config file.
-    - name: design
+    - name: Design
+      long: design
       short: d
       default: design
       help: The design files directory.
-    - name: template-paths
+    - name: TemplatePaths
+      long: template-paths
       short: t
       default: templates:~/.hofstadter/templates
       help: The search path for templates, reads from left to right, overriding along the way.
-    - name: output
+    - name: Output
+      long: output
       short: o
       default: output
       help: The directory to output generated files to.
   commands:
-    - name: Geb
-      usage: geb
     - name: Init
       usage: init
       short: Initialize the geb tool and files
@@ -47,7 +49,7 @@ cli:
           help: The name of the new project to create
         - name: dsls_n_gens
           rest: true
-          type: array[string]
+          type: array:string
           help: The starting list of DSLs and generators by path.
     - name: View
       usage: view
@@ -57,27 +59,59 @@ cli:
       subcommands:
         - name: Geb
           usage: geb <dotpaths>...
-          short: View information about the global geb config
+          short: View information about Global geb config
           long: View information about the global geb config
           args:
-            - name: path
-              type: string
+            - name: paths
+              type: array:string
+              rest: true
               help: one ore more dotpaths for indexing into the data
         - name: Dsl
           usage: dsl <dotpath>...
           short: View information about DSLs
           long: View information about DSLs known from the current path
           args:
-            - name: path
-              type: string
+            - name: paths
+              type: array:string
+              rest: true
+              help: one ore more dotpaths for indexing into the data
+        - name: Gen
+          usage: gen <dotpaths>...
+          short: View information about Generators
+          long: View information about generators known from the current path
+          args:
+            - name: paths
+              type: array:string
+              rest: true
+              help: one ore more dotpaths for indexing into the data
+        - name: Project
+          usage: project <dotpath>...
+          aliases:
+            - proj
+          short: View information about a Project
+          long: View information about a Project known from the current path
+          args:
+            - name: paths
+              type: array:string
+              rest: true
               help: one ore more dotpaths for indexing into the data
         - name: Design
           usage: design <dotpath>...
           short: View information about Designs
           long: View information about Designs known from the current path
           args:
-            - name: path
-              type: string
+            - name: paths
+              type: array:string
+              rest: true
+              help: one ore more dotpaths for indexing into the data
+        - name: Plans
+          usage: plans <dotpath>...
+          short: View information about a Project's Plans
+          long: View information about a Project's Plans known from the current path
+          args:
+            - name: paths
+              type: array:string
+              rest: true
               help: one ore more dotpaths for indexing into the data
     - name: Gen
       usage: gen
@@ -102,3 +136,28 @@ cli:
               required: true
               help: Path to the output file. Can also be 'stdout'.
 
+    - name: Import
+      usage: import <file or directory> <output file or directory>
+      short: Import other stuff into Hofstadter
+      long: |
+        Import other stuff into Hofstadter.
+
+        Stuff is...
+          - json/jsonl, yaml, xml, protobuf, taml
+          - swagger, goa.design
+          - golang type definitions
+      flags:
+        - name: Type
+          type: string
+          long: type
+          short: T
+          help: The type of input data to force geb to use a certain format
+      args:
+        - name: input
+          type: string
+          required: true
+          help: Path to the file or folder. Can also be 'stdin'.
+        - name: output
+          type: string
+          required: true
+          help: Path to the output file or folder. Can also be 'stdout'.

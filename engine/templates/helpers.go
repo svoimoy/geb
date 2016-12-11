@@ -1,11 +1,14 @@
 package templates
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.com/kr/pretty"
+	"gopkg.in/yaml.v2"
 )
 
 func (template *Template) Render(design interface{}) (string, error) {
@@ -33,6 +36,9 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("join4", helper_join4)
 	tpl.RegisterHelper("join5", helper_join5)
 
+	tpl.RegisterHelper("yaml", helper_yaml)
+	tpl.RegisterHelper("json", helper_json)
+	tpl.RegisterHelper("pretty", helper_pretty)
 	tpl.RegisterHelper("lwidth", helper_lwidth)
 	tpl.RegisterHelper("rwidth", helper_rwidth)
 	tpl.RegisterHelper("printf", helper_printf)
@@ -79,6 +85,26 @@ func helper_join4(sep, s1, s2, s3, s4 string) string {
 }
 func helper_join5(sep, s1, s2, s3, s4, s5 string) string {
 	return strings.Join([]string{s1, s2, s3, s4, s5}, sep)
+}
+
+func helper_pretty(value interface{}) string {
+	return fmt.Sprintf("%# v", pretty.Formatter(value))
+}
+
+func helper_yaml(value interface{}) string {
+	bytes, err := yaml.Marshal(value)
+	if err != nil {
+		return err.Error()
+	}
+	return string(bytes)
+}
+
+func helper_json(value interface{}) string {
+	bytes, err := json.MarshalIndent(value, "", "\t")
+	if err != nil {
+		return err.Error()
+	}
+	return string(bytes)
 }
 
 func helper_lwidth(width string, value string) string {
