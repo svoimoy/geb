@@ -10,7 +10,6 @@ func SetLogger(l log.Logger) {
 	logger = l
 }
 
-
 /*
 Repeated Context
 ----------------

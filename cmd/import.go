@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
-
 )
 
 // Tool:   geb
@@ -25,11 +24,9 @@ Stuff is...
   - golang type definitions
 `
 
-
 var (
 	TypeFlag string
 )
-
 
 func init() {
 	ImportCmd.Flags().StringVarP(&TypeFlag, "type", "T", "", "The type of input data to force geb to use a certain format")
@@ -37,16 +34,16 @@ func init() {
 
 }
 
-var ImportCmd = &cobra.Command {
+var ImportCmd = &cobra.Command{
 	Use: "import <file or directory> <output file or directory>",
-	Aliases: []string{ 
+	Aliases: []string{
 		"i",
-"convert",
-"eat",
+		"convert",
+		"eat",
 	},
 	Short: "Import other stuff into Hofstadter",
-	Long: ImportLong,
-		
+	Long:  ImportLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In ImportCmd", "args", args)
 		// Argument Parsing
@@ -61,7 +58,7 @@ var ImportCmd = &cobra.Command {
 		if 0 < len(args) {
 			input = args[0]
 		}
-		
+
 		// [1]name:   output
 		//     help:   Path to the output file or folder. Can also be 'stdout'.
 		//     req'd:  true
@@ -73,22 +70,18 @@ var ImportCmd = &cobra.Command {
 		if 1 < len(args) {
 			output = args[1]
 		}
-		
-		
 
 		// HOFSTADTER_START cmd_run
 		typ := viper.GetString("type")
 		fmt.Printf("In ImportCmd:  %s (%s) -> %s\n", input, typ, output)
 		// HOFSTADTER_END   cmd_run
 	},
-		}
-
+}
 
 func init() {
 	RootCmd.AddCommand(ImportCmd)
 
 }
-
 
 /*
 Repeated Context

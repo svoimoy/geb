@@ -7,16 +7,14 @@ import (
 
 	"fmt"
 
-	
 	"github.com/spf13/cobra"
-
 )
 
 // Tool:   geb
 // Name:   Mi
 // Usage:  mi
 // Parent: Gebberish
-// ParentPath: 
+// ParentPath:
 
 var MiLong = `Welcome to the MI game
 
@@ -36,15 +34,11 @@ Notes:
  - use 'reset' to restore mi-string to 'MI'
 `
 
-
-
-
-
-var MiCmd = &cobra.Command {
-	Use: "mi",
+var MiCmd = &cobra.Command{
+	Use:   "mi",
 	Short: "View information about a Project's Plans",
-	Long: MiLong,
-		
+	Long:  MiLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In MiCmd", "args", args)
 		// Argument Parsing
@@ -59,17 +53,15 @@ var MiCmd = &cobra.Command {
 		if 0 < len(args) {
 			rule = args[0]
 		}
-		
+
 		// [1]name:   extra
 		//     help:   optional args to rules 3 and 4
-		//     req'd:  
+		//     req'd:
 		var extra []string
-			
+
 		if 1 < len(args) {
 			extra = args[1:]
 		}
-		
-		
 
 		// HOFSTADTER_START cmd_run
 		rule = strings.Replace(rule, "-", "", 1)
@@ -78,13 +70,11 @@ var MiCmd = &cobra.Command {
 		fmt.Printf("MI: (%s) [%v]\n", rule, extra)
 		// HOFSTADTER_END   cmd_run
 	},
-		}
-
+}
 
 func init() {
 
 }
-
 
 /*
 Repeated Context

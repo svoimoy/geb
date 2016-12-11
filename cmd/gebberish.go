@@ -4,8 +4,6 @@ import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 
-
-	
 	"github.com/spf13/cobra"
 
 	"github.ibm.com/hofstadter-io/geb/cmd/gebberish"
@@ -18,28 +16,22 @@ import (
 
 var GebberishLong = `Games, shenanigans, and other gebberish.`
 
-
-
-
-
-var GebberishCmd = &cobra.Command {
+var GebberishCmd = &cobra.Command{
 	Hidden: true,
-	Use: "gebberish",
-	Aliases: []string{ 
+	Use:    "gebberish",
+	Aliases: []string{
 		"games",
-"G",
+		"G",
 	},
 	Short: "it's a puzzle?!",
-	Long: GebberishLong,
-				}
-
+	Long:  GebberishLong,
+}
 
 func init() {
 	RootCmd.AddCommand(GebberishCmd)
 
 	GebberishCmd.AddCommand(gebberish.MiCmd)
 }
-
 
 /*
 Repeated Context

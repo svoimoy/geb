@@ -7,28 +7,22 @@ import (
 
 	"fmt"
 
-	
 	"github.com/spf13/cobra"
-
 )
 
 // Tool:   geb
 // Name:   File
 // Usage:  file <designFile> <templateFile> <outputFile>
 // Parent: Gen
-// ParentPath: 
+// ParentPath:
 
 var FileLong = `Generate a file from design and a template.`
 
-
-
-
-
-var FileCmd = &cobra.Command {
-	Use: "file <designFile> <templateFile> <outputFile>",
+var FileCmd = &cobra.Command{
+	Use:   "file <designFile> <templateFile> <outputFile>",
 	Short: "Generate a file.",
-	Long: FileLong,
-		
+	Long:  FileLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In FileCmd", "args", args)
 		// Argument Parsing
@@ -43,7 +37,7 @@ var FileCmd = &cobra.Command {
 		if 0 < len(args) {
 			designFile = args[0]
 		}
-		
+
 		// [1]name:   templateFile
 		//     help:   Path to the template file.
 		//     req'd:  true
@@ -55,7 +49,7 @@ var FileCmd = &cobra.Command {
 		if 1 < len(args) {
 			templateFile = args[1]
 		}
-		
+
 		// [2]name:   outputFile
 		//     help:   Path to the output file. Can also be 'stdout'.
 		//     req'd:  true
@@ -67,8 +61,6 @@ var FileCmd = &cobra.Command {
 		if 2 < len(args) {
 			outputFile = args[2]
 		}
-		
-		
 
 		// HOFSTADTER_START cmd_run
 		err := engine.GenerateFile(designFile, templateFile, outputFile)
@@ -77,13 +69,11 @@ var FileCmd = &cobra.Command {
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-		}
-
+}
 
 func init() {
 
 }
-
 
 /*
 Repeated Context

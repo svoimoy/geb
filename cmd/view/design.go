@@ -9,41 +9,36 @@ import (
 
 	"fmt"
 
-	
 	"github.com/spf13/cobra"
-
 )
 
 // Tool:   geb
 // Name:   Design
 // Usage:  design <dotpath>...
 // Parent: View
-// ParentPath: 
+// ParentPath:
 
 var DesignLong = `View information about Designs known from the current path`
 
-
-
-
-
-var DesignCmd = &cobra.Command {
+var DesignCmd = &cobra.Command{
 	Use: "design <dotpath>...",
+	Aliases: []string{
+		"D",
+	},
 	Short: "View information about Designs",
-	Long: DesignLong,
-		
+	Long:  DesignLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In DesignCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   paths
 		//     help:   one ore more dotpaths for indexing into the data
-		//     req'd:  
+		//     req'd:
 		var paths []string
-			
+
 		if 0 < len(args) {
 			paths = args[0:]
 		}
-		
-		
 
 		// HOFSTADTER_START cmd_run
 		cwd, err := os.Getwd()
@@ -59,17 +54,17 @@ var DesignCmd = &cobra.Command {
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-		}
-
+}
 
 func init() {
 
 }
 
-
 /*
 Repeated Context
 ----------------
+aliases:
+- D
 args:
 - help: one ore more dotpaths for indexing into the data
   name: paths

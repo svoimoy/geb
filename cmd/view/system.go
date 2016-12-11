@@ -7,41 +7,39 @@ import (
 
 	"fmt"
 
-	
 	"github.com/spf13/cobra"
-
 )
 
 // Tool:   geb
-// Name:   Geb
-// Usage:  geb <dotpaths>...
+// Name:   System
+// Usage:  sys <dotpaths>...
 // Parent: View
-// ParentPath: 
+// ParentPath:
 
-var GebLong = `View information about the global geb config`
+var SystemLong = `View information about the global geb config`
 
-
-
-
-
-var GebCmd = &cobra.Command {
-	Use: "geb <dotpaths>...",
+var SystemCmd = &cobra.Command{
+	Use: "sys <dotpaths>...",
+	Aliases: []string{
+		"s",
+		"system",
+		"geb",
+		"config",
+	},
 	Short: "View information about Global geb config",
-	Long: GebLong,
-		
+	Long:  SystemLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In GebCmd", "args", args)
+		logger.Debug("In SystemCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   paths
 		//     help:   one ore more dotpaths for indexing into the data
-		//     req'd:  
+		//     req'd:
 		var paths []string
-			
+
 		if 0 < len(args) {
 			paths = args[0:]
 		}
-		
-		
 
 		// HOFSTADTER_START cmd_run
 		ret, err := engine.ViewGeb(paths)
@@ -52,27 +50,30 @@ var GebCmd = &cobra.Command {
 		fmt.Println(ret)
 		// HOFSTADTER_END   cmd_run
 	},
-		}
-
+}
 
 func init() {
 
 }
 
-
 /*
 Repeated Context
 ----------------
+aliases:
+- s
+- system
+- geb
+- config
 args:
 - help: one ore more dotpaths for indexing into the data
   name: paths
   rest: true
   type: array:string
 long: View information about the global geb config
-name: Geb
+name: System
 parent: View
 path: commands.subcommands
 short: View information about Global geb config
-usage: geb <dotpaths>...
+usage: sys <dotpaths>...
 
 */

@@ -4,8 +4,6 @@ import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 
-
-	
 	"github.com/spf13/cobra"
 
 	"github.ibm.com/hofstadter-io/geb/cmd/system"
@@ -18,19 +16,15 @@ import (
 
 var SystemLong = `Manage the geb system and congiuration`
 
-
-
-
-
-var SystemCmd = &cobra.Command {
+var SystemCmd = &cobra.Command{
 	Use: "system",
-	Aliases: []string{ 
+	Aliases: []string{
 		"sys",
+		"s",
 	},
 	Short: "Manage the geb system and congiuration",
-	Long: SystemLong,
-				}
-
+	Long:  SystemLong,
+}
 
 func init() {
 	RootCmd.AddCommand(SystemCmd)
@@ -41,12 +35,12 @@ func init() {
 	SystemCmd.AddCommand(system.ViewCmd)
 }
 
-
 /*
 Repeated Context
 ----------------
 aliases:
 - sys
+- s
 long: Manage the geb system and congiuration
 name: System
 omit-run: true

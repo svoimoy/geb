@@ -1,29 +1,27 @@
 package cmd
 
 import (
-  // HOFSTADTER_START import
-  // HOFSTADTER_END   import
+	// HOFSTADTER_START import
+	// HOFSTADTER_END   import
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
 	"github.ibm.com/hofstadter-io/dotpath"
-	"github.ibm.com/hofstadter-io/geb/engine"
+	"github.ibm.com/hofstadter-io/geb/cmd/gebberish"
+	"github.ibm.com/hofstadter-io/geb/cmd/gen"
 	"github.ibm.com/hofstadter-io/geb/cmd/system"
-			"github.ibm.com/hofstadter-io/geb/cmd/view"
-		"github.ibm.com/hofstadter-io/geb/cmd/gen"
-			"github.ibm.com/hofstadter-io/geb/cmd/gebberish"
-	
+	"github.ibm.com/hofstadter-io/geb/cmd/view"
+	"github.ibm.com/hofstadter-io/geb/engine"
 )
 
 var (
-	ConfigPFlag string
-	DesignPFlag string
+	ConfigPFlag        string
+	DesignPFlag        string
 	TemplatePathsPFlag string
-	OutputPFlag string
+	OutputPFlag        string
 )
-
 
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&ConfigPFlag, "config", "c", "geb.yaml", "A geb project config file.")
@@ -40,11 +38,10 @@ func init() {
 
 }
 
-
 var (
-	FlagMergeConfigFile    string
-	FlagSetConfigFile    string
-	FlagLogLevel    string
+	FlagMergeConfigFile string
+	FlagSetConfigFile   string
+	FlagLogLevel        string
 )
 
 func init() {
@@ -62,11 +59,11 @@ func init() {
 
 var (
 	logger = log.New()
-	
+
 	RootCmd = &cobra.Command{
 		Use:   "geb",
 		Short: "geb is the Hofstadter framework CLI tool",
-		Long:  `Hofstadter is a Framework
+		Long: `Hofstadter is a Framework
 for building data-centric
 Platforms. geb is the tool.
 `,
@@ -75,12 +72,11 @@ Platforms. geb is the tool.
 			config_logger()
 			logger.Debug("In PersistentPreRun Cmd", "args", args)
 			// Argument Parsing
-			
 
 			// HOFSTADTER_START cmd_persistent_prerun
 			// HOFSTADTER_END   cmd_persistent_prerun
 		},
-							}
+	}
 )
 
 func read_config() {
@@ -121,12 +117,8 @@ func config_logger() {
 	engine.SetLogger(logger)
 
 	system.SetLogger(logger)
-			view.SetLogger(logger)
-		gen.SetLogger(logger)
-			gebberish.SetLogger(logger)
-	
+	view.SetLogger(logger)
+	gen.SetLogger(logger)
+	gebberish.SetLogger(logger)
 
 }
-
-
-

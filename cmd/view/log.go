@@ -10,10 +10,11 @@ func SetLogger(l log.Logger) {
 	logger = l
 }
 
-
 /*
 Repeated Context
 ----------------
+aliases:
+- P
 args:
 - help: one ore more dotpaths for indexing into the data
   name: paths

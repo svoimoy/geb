@@ -32,6 +32,7 @@ cli:
       usage: system
       aliases:
         - sys
+        - s
       short: Manage the geb system and congiuration
       long: Manage the geb system and congiuration
       omit-run: true
@@ -64,8 +65,13 @@ cli:
       long: View information known to the geb tool.
       omit-run: true
       subcommands:
-        - name: Geb
-          usage: geb <dotpaths>...
+        - name: System
+          usage: sys <dotpaths>...
+          aliases:
+            - s
+            - system
+            - geb
+            - config
           short: View information about Global geb config
           long: View information about the global geb config
           args:
@@ -75,6 +81,8 @@ cli:
               help: one ore more dotpaths for indexing into the data
         - name: Dsl
           usage: dsl <dotpath>...
+          aliases:
+            - d
           short: View information about DSLs
           long: View information about DSLs known from the current path
           args:
@@ -84,6 +92,8 @@ cli:
               help: one ore more dotpaths for indexing into the data
         - name: Gen
           usage: gen <dotpaths>...
+          aliases:
+            - g
           short: View information about Generators
           long: View information about generators known from the current path
           args:
@@ -94,6 +104,7 @@ cli:
         - name: Project
           usage: project <dotpath>...
           aliases:
+            - p
             - proj
           short: View information about a Project
           long: View information about a Project known from the current path
@@ -104,6 +115,8 @@ cli:
               help: one ore more dotpaths for indexing into the data
         - name: Design
           usage: design <dotpath>...
+          aliases:
+            - D
           short: View information about Designs
           long: View information about Designs known from the current path
           args:
@@ -113,6 +126,8 @@ cli:
               help: one ore more dotpaths for indexing into the data
         - name: Plans
           usage: plans <dotpath>...
+          aliases:
+            - P
           short: View information about a Project's Plans
           long: View information about a Project's Plans known from the current path
           args:

@@ -6,6 +6,11 @@ all:
 build:
 	@go build
 
+.Phony: gen
+gen:
+	@geb gen
+	@find contracrostipunctus -type f \! -name "contracrostipunctus" -exec gofmt -w {} \;
+
 .Phony: clone
 clone:
 	@cd contracrostipunctus && go build

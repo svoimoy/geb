@@ -4,8 +4,6 @@ import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 
-
-	
 	"github.com/spf13/cobra"
 
 	"github.ibm.com/hofstadter-io/geb/cmd/view"
@@ -18,31 +16,25 @@ import (
 
 var ViewLong = `View information known to the geb tool.`
 
-
-
-
-
-var ViewCmd = &cobra.Command {
+var ViewCmd = &cobra.Command{
 	Use: "view",
-	Aliases: []string{ 
+	Aliases: []string{
 		"v",
 	},
 	Short: "View information known to the geb tool.",
-	Long: ViewLong,
-				}
-
+	Long:  ViewLong,
+}
 
 func init() {
 	RootCmd.AddCommand(ViewCmd)
 
-	ViewCmd.AddCommand(view.GebCmd)
+	ViewCmd.AddCommand(view.SystemCmd)
 	ViewCmd.AddCommand(view.DslCmd)
 	ViewCmd.AddCommand(view.GenCmd)
 	ViewCmd.AddCommand(view.ProjectCmd)
 	ViewCmd.AddCommand(view.DesignCmd)
 	ViewCmd.AddCommand(view.PlansCmd)
 }
-
 
 /*
 Repeated Context
@@ -56,18 +48,25 @@ parent: geb
 path: commands
 short: View information known to the geb tool.
 subcommands:
-- args:
+- aliases:
+  - s
+  - system
+  - geb
+  - config
+  args:
   - help: one ore more dotpaths for indexing into the data
     name: paths
     rest: true
     type: array:string
   long: View information about the global geb config
-  name: Geb
+  name: System
   parent: View
   path: commands.subcommands
   short: View information about Global geb config
-  usage: geb <dotpaths>...
-- args:
+  usage: sys <dotpaths>...
+- aliases:
+  - d
+  args:
   - help: one ore more dotpaths for indexing into the data
     name: paths
     rest: true
@@ -78,7 +77,9 @@ subcommands:
   path: commands.subcommands
   short: View information about DSLs
   usage: dsl <dotpath>...
-- args:
+- aliases:
+  - g
+  args:
   - help: one ore more dotpaths for indexing into the data
     name: paths
     rest: true
@@ -90,6 +91,7 @@ subcommands:
   short: View information about Generators
   usage: gen <dotpaths>...
 - aliases:
+  - p
   - proj
   args:
   - help: one ore more dotpaths for indexing into the data
@@ -102,7 +104,9 @@ subcommands:
   path: commands.subcommands
   short: View information about a Project
   usage: project <dotpath>...
-- args:
+- aliases:
+  - D
+  args:
   - help: one ore more dotpaths for indexing into the data
     name: paths
     rest: true
@@ -113,7 +117,9 @@ subcommands:
   path: commands.subcommands
   short: View information about Designs
   usage: design <dotpath>...
-- args:
+- aliases:
+  - P
+  args:
   - help: one ore more dotpaths for indexing into the data
     name: paths
     rest: true
