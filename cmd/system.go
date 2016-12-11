@@ -32,7 +32,6 @@ func init() {
 	SystemCmd.AddCommand(system.InitCmd)
 	SystemCmd.AddCommand(system.DevCopyInCmd)
 	SystemCmd.AddCommand(system.UpdateCmd)
-	SystemCmd.AddCommand(system.ViewCmd)
 }
 
 /*
