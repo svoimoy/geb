@@ -1,0 +1,23 @@
+#!/bin/bash
+
+pushing_files=(
+	"design"
+	"templates"
+	"Makefile"
+	"profit"
+)
+
+function push() {
+	local dir=${1:-contracrostipunctus}
+
+	for file in ${pushing_files[@]}; do
+		cp -R $file ${dir}
+	done
+	cd ${dir} && make
+}
+
+function pop() {
+	local dir=${1:-contracrostipunctus}
+	rm -rf ${dir}
+	cd ..
+}

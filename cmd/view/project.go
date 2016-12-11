@@ -2,14 +2,15 @@ package view
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
 	"github.ibm.com/hofstadter-io/geb/engine"
 	"os"
 	// HOFSTADTER_END   import
 
+	"fmt"
 
 	
 	"github.com/spf13/cobra"
+
 )
 
 // Tool:   geb
@@ -31,8 +32,15 @@ var ProjectCmd = &cobra.Command {
 	},
 	Short: "View information about a Project",
 	Long: ProjectLong,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.Debug("In PersistentPreRun ProjectCmd", "args", args)
+
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
+	},
+	
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("In ProjectCmd", args)
+		logger.Debug("In ProjectCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   paths
 		//     help:   one ore more dotpaths for indexing into the data
@@ -42,8 +50,6 @@ var ProjectCmd = &cobra.Command {
 		if 0 < len(args) {
 			paths = args[0:]
 		}
-		
-		fmt.Println("arg[0] = ", paths)
 		
 		
 
@@ -62,10 +68,11 @@ var ProjectCmd = &cobra.Command {
 		fmt.Println(ret)
 		// HOFSTADTER_END   cmd_run
 	},
-}
+		}
 
 
 func init() {
+
 }
 
 

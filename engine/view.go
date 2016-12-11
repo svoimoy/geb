@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
+	"github.com/spf13/viper"
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine/design"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
@@ -16,7 +17,35 @@ import (
 func ViewGeb(args []string) (string, error) {
 	fmt.Println("ViewGeb:", args)
 
-	return "This command is still TBD", nil
+	// file := utils.LookForKnownFiles()
+
+	data := viper.AllSettings()
+
+	if len(args) == 0 {
+		bytes, err := yaml.Marshal(data)
+		if err != nil {
+			return "", errors.Wrap(err, "in engine.ViewGen")
+		}
+		return string(bytes), nil
+	}
+
+	logger.Info("DATA", "data", data)
+	ret := ""
+	for _, path := range args {
+		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
+		val, err := dotpath.Get(path, data)
+		if err != nil {
+			return ret, errors.Wrap(err, "in engine.ViewGen")
+		}
+
+		bytes, err := yaml.Marshal(val)
+		if err != nil {
+			return ret, errors.Wrap(err, "in engine.ViewGen")
+		}
+		ret += string(bytes)
+	}
+
+	return ret, nil
 }
 
 func ViewDsl(folder string, args []string) (string, error) {

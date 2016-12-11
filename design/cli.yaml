@@ -5,6 +5,7 @@ cli:
     Hofstadter is a Framework
     for building data-centric
     Platforms. geb is the tool.
+  omit-run: true
   pflags:
     - name: Config
       long: config
@@ -27,14 +28,37 @@ cli:
       default: output
       help: The directory to output generated files to.
   commands:
-    - name: Init
-      usage: init
-      short: Initialize the geb tool and files
-      long: Intializes the geb tool and the ~/.hofstadter dotfolder
+    - name: System
+      usage: system
       aliases:
-        - setup
+        - sys
+      short: Manage the geb system and congiuration
+      long: Manage the geb system and congiuration
+      omit-run: true
+      subcommands:
+        - name: Init
+          usage: init
+          aliases:
+            - initialize
+            - setup
+          short: Initialize the geb tool and files
+          long: Intializes the geb tool and the ~/.hofstadter dot folder.
+        - name: DevCopyIn
+          usage: dev-copy-in
+          short: Copy development files to the dot folder
+          long: Copy development files to the dot folder
+        - name: Update
+          usage: update
+          short: Update the geb library and dot folder
+          long: Update the geb library DSLs, designs, and other files in the dot folder.
+        - name: View
+          usage: view
+          short: View the geb system configuration
+          long: View the geb system configuration
     - name: Create
       usage: create <name> <dsl/gen>...
+      aliases:
+        - new
       short: Create a new project
       long: |
         Create a new project with the given name.
@@ -53,9 +77,11 @@ cli:
           help: The starting list of DSLs and generators by path.
     - name: View
       usage: view
+      aliases:
+        - v
       short: View information known to the geb tool.
       long: View information known to the geb tool.
-      run: false
+      omit-run: true
       subcommands:
         - name: Geb
           usage: geb <dotpaths>...
@@ -138,6 +164,10 @@ cli:
 
     - name: Import
       usage: import <file or directory> <output file or directory>
+      aliases:
+        - i
+        - convert
+        - eat
       short: Import other stuff into Hofstadter
       long: |
         Import other stuff into Hofstadter.
@@ -161,3 +191,44 @@ cli:
           type: string
           required: true
           help: Path to the output file or folder. Can also be 'stdout'.
+
+    - name: Gebberish
+      hidden: true
+      omit-run: true
+      usage: gebberish
+      aliases:
+        - games
+        - G
+      short: "it's a puzzle?!"
+      long: Games, shenanigans, and other gebberish.
+      subcommands:
+        - name: Mi
+          usage: mi
+          short: View information about a Project's Plans
+          long: |
+            Welcome to the MI game
+
+            start with mi-string = 'MI'
+
+            mi-rule-1:    if mi-string ends in 'I',        you may add a 'U'
+            mi-rule-2:    suppose mi-string = 'Mx',          then you may make it 'Mxx'
+            mi-rule-3:    if mi-string contains an 'III',  you may replace it with 'U'
+            mi-rule-4:    if mi-string contains a 'UU',    you may drop it (remove it)
+
+            Goal: Try to get 'MU'
+
+            Input: r1,r2,r3,r4 or reset
+
+            Notes:
+             - rules 3 and 4 require a zero-indexed postional argument to determine the occurance to remove
+             - use 'reset' to restore mi-string to 'MI'
+
+          args:
+            - name: rule
+              type: string
+              required: true
+              help: The rule to apply [r# or rule-#]
+            - name: extra
+              type: array:string
+              rest: true
+              help: optional args to rules 3 and 4

@@ -4,13 +4,13 @@ package cmd
 import (
   // HOFSTADTER_START import
   // HOFSTADTER_END   import
-	{{#unless CLI.omit-root-run}}
+	{{#unless CLI.omit-run}}
 	"fmt"
 	{{/unless}}
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	log "gopkg.in/inconshreveable/log15.v2" // logging framework
+	log "gopkg.in/inconshreveable/log15.v2"
 
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine"
@@ -47,19 +47,50 @@ var (
 		Short: "{{ CLI.short }}",
 		Long:  `{{ CLI.long }}`,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			logger.Debug("In PersistentPreRun {{RC.name}}Cmd", "args", args)
+
 			read_config()
 			config_logger()
-		},
-		{{#unless CLI.omit-root-run}}
-		Run: func(cmd *cobra.Command, args []string) {
-			{{> args-parse.go CLI }}
 
-			// HOFSTADTER_START root_cmd_func
-			// Do Stuff Here
-			fmt.Println("dostuff")
-			// HOFSTADTER_END   root_cmd_func
+			// HOFSTADTER_START cmd_persistent_prerun
+			// HOFSTADTER_END   cmd_persistent_prerun
+		},
+		{{#if CLI.prerun}}
+		PreRun: func(cmd *cobra.Command, args []string) {
+			logger.Debug("In PreRun {{RC.name}}Cmd", "args", args)
+			{{> args-parse.go RC }}
+
+			// HOFSTADTER_START cmd_prerun
+			// HOFSTADTER_END   cmd_prerun
+		},
+		{{/if}}
+		{{#unless CLI.omit-run}}
+		Run: func(cmd *cobra.Command, args []string) {
+			logger.Debug("In {{RC.name}}Cmd", "args", args)
+			{{> args-parse.go RC }}
+
+			// HOFSTADTER_START cmd_run
+			// HOFSTADTER_END   cmd_run
 		},
 		{{/unless}}
+		{{#if CLI.persistent-postrun}}
+		PersistentPostRun: func(cmd *cobra.Command, args []string) {
+			logger.Debug("In PersistentPostRun {{RC.name}}Cmd", "args", args)
+			{{> args-parse.go RC }}
+
+			// HOFSTADTER_START cmd_persistent_postrun
+			// HOFSTADTER_END   cmd_persistent_postrun
+		},
+		{{/if}}
+		{{#if CLI.postrun}}
+		PostRun: func(cmd *cobra.Command, args []string) {
+			logger.Debug("In PostRun {{RC.name}}Cmd", "args", args)
+			{{> args-parse.go RC }}
+
+			// HOFSTADTER_START cmd_postrun
+			// HOFSTADTER_END   cmd_postrun
+		},
+		{{/if}}
 	}
 )
 

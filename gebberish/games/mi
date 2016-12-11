@@ -1,0 +1,79 @@
+#!/bin/bash
+
+MIPUZZLE=${MIPUZZLE:-MI}
+MIOUTDIR=${MIOUTDIR:-MI}
+
+function mi-string() {
+	echo "${MIPUZZLE}"
+}
+
+function mi-rule-1() {
+	pos=$((${#MIPUZZLE}-1))
+	last="${MIPUZZLE:$pos:1}"
+	if [[ "${last}" == "I" ]]; then
+		export MIPUZZLE="${MIPUZZLE}U"
+		mi-string
+	else
+		print "does not apply, MIPUZZLE does not end in 'I'."
+	fi
+}
+
+function mi-rule-2() {
+	export MIPUZZLE="${MIPUZZLE}${MIPUZZLE:1}"
+	mi-string
+}
+
+function mi-rule-3() {
+	if [[ -z "$1" ]]; then
+		print "needs positional agrument"
+		return
+	fi
+	TEST=${MIPUZZLE:$1:3}
+	echo "TEST = $TEST"
+	if [[ "$TEST" != "III" ]]; then
+		print "'III' not at position $1, rather '$TEST' is."
+		return
+	fi
+	export MIPUZZLE=$(echo "${MIPUZZLE}" | sed -e "s/./U/$(($1+1))" | sed -e "s/.//$(($1+2))" | sed -e "s/.//$(($1+3))")
+	mi-string
+}
+
+function mi-rule-4() {
+	if [[ -z "$1" ]]; then
+		print "needs positional agrument"
+		return
+	fi
+	TEST=${MIPUZZLE:$1:2}
+	echo "TEST = $TEST"
+	if [[ "$TEST" != "UU" ]]; then
+		print "'UU' not at position $1, rather $TEST is."
+		return
+	fi
+	export MIPUZZLE=$(echo "${MIPUZZLE}" | sed -e "s/.//$(($1+1))" | sed -e "s/.//$(($1+2))")
+	mi-string
+}
+
+function mi-reset() {
+	export MIPUZZLE="MI"
+	mi-string
+}
+
+function mi-help() {
+
+	echo "Welcome to the MI game"
+	echo ""
+	echo "start with mi-string = MI"
+	echo ""
+	echo "mi-rule-1:    if mi-string ends in 'I',        you may add a U "
+	echo "mi-rule-2:    suppose mi-string = Mx,          then you may make it Mxx "
+	echo "mi-rule-3:    if mi-string contains an 'III',  you may replace it with 'U' "
+	echo "mi-rule-4:    if mi-string contains a 'UU',    you may drop it"
+	echo ""
+	echo "Goal: Try to get 'MU'"
+	echo ""
+	echo "Notes:"
+	echo " - rules 3 and 4 require a zero-indexed postional argument to determine the occurance to remove"
+	echo " - use mi-reset to restore mi-string to 'MI'"
+	echo ""
+
+}

@@ -2,13 +2,13 @@ package cmd
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
 	// HOFSTADTER_END   import
 
-	"github.ibm.com/hofstadter-io/geb/cmd/view"
 
 	
 	"github.com/spf13/cobra"
+
+	"github.ibm.com/hofstadter-io/geb/cmd/view"
 )
 
 // Tool:   geb
@@ -24,18 +24,19 @@ var ViewLong = `View information known to the geb tool.`
 
 var ViewCmd = &cobra.Command {
 	Use: "view",
+	Aliases: []string{ 
+		"v",
+	},
 	Short: "View information known to the geb tool.",
 	Long: ViewLong,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("In ViewCmd", args)
-		// Argument Parsing
-		
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		view.SetLogger(logger)
+		logger.Debug("In PersistentPreRun ViewCmd", "args", args)
 
-		// HOFSTADTER_START cmd_run
-		fmt.Println("In ViewCmd")
-		// HOFSTADTER_END   cmd_run
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
 	},
-}
+			}
 
 
 func init() {
@@ -47,17 +48,21 @@ func init() {
 	ViewCmd.AddCommand(view.ProjectCmd)
 	ViewCmd.AddCommand(view.DesignCmd)
 	ViewCmd.AddCommand(view.PlansCmd)
+
+	view.SetLogger(logger)
 }
 
 
 /*
 Repeated Context
 ----------------
+aliases:
+- v
 long: View information known to the geb tool.
 name: View
+omit-run: true
 parent: geb
 path: commands
-run: false
 short: View information known to the geb tool.
 subcommands:
 - args:

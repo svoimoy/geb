@@ -3,11 +3,10 @@ package cmd
 import (
   // HOFSTADTER_START import
   // HOFSTADTER_END   import
-	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	log "gopkg.in/inconshreveable/log15.v2" // logging framework
+	log "gopkg.in/inconshreveable/log15.v2"
 
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine"
@@ -67,19 +66,15 @@ for building data-centric
 Platforms. geb is the tool.
 `,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			logger.Debug("In PersistentPreRun Cmd", "args", args)
+
 			read_config()
 			config_logger()
-		},
-		Run: func(cmd *cobra.Command, args []string) {
-			// Argument Parsing
-			
 
-			// HOFSTADTER_START root_cmd_func
-			// Do Stuff Here
-			fmt.Println("dostuff")
-			// HOFSTADTER_END   root_cmd_func
+			// HOFSTADTER_START cmd_persistent_prerun
+			// HOFSTADTER_END   cmd_persistent_prerun
 		},
-	}
+							}
 )
 
 func read_config() {

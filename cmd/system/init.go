@@ -1,21 +1,22 @@
-package cmd
+package system
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
 	// HOFSTADTER_END   import
 
 
 	
 	"github.com/spf13/cobra"
+
 )
 
 // Tool:   geb
 // Name:   Init
 // Usage:  init
-// Parent: geb
+// Parent: System
+// ParentPath: 
 
-var InitLong = `Intializes the geb tool and the ~/.hofstadter dotfolder`
+var InitLong = `Intializes the geb tool and the ~/.hofstadter dot folder.`
 
 
 
@@ -24,7 +25,8 @@ var InitLong = `Intializes the geb tool and the ~/.hofstadter dotfolder`
 var InitCmd = &cobra.Command {
 	Use: "init",
 	Aliases: []string{ 
-		"setup",
+		"initialize",
+"setup",
 	},
 	Short: "Initialize the geb tool and files",
 	Long: InitLong,
@@ -41,15 +43,12 @@ var InitCmd = &cobra.Command {
 		
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("In InitCmd")
 		// HOFSTADTER_END   cmd_run
 	},
 		}
 
 
 func init() {
-	RootCmd.AddCommand(InitCmd)
-
 
 }
 
@@ -58,11 +57,12 @@ func init() {
 Repeated Context
 ----------------
 aliases:
+- initialize
 - setup
-long: Intializes the geb tool and the ~/.hofstadter dotfolder
+long: Intializes the geb tool and the ~/.hofstadter dot folder.
 name: Init
-parent: geb
-path: commands
+parent: System
+path: commands.subcommands
 short: Initialize the geb tool and files
 usage: init
 

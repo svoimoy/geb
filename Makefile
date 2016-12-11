@@ -15,9 +15,8 @@ poor:
 	@rm -rf profit
 
 .Phony: profit
-profit:
+profit: poor
 	@find contracrostipunctus -type f \! -name "contracrostipunctus" -exec sed -i '' "s/geb\/contracrostipunctus/geb/g" {} \;
-	@rm -rf profit
 	@mkdir -p profit
 	@cp -R contracrostipunctus/* profit
 	@geb gen > /dev/null

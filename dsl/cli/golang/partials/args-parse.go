@@ -23,8 +23,6 @@ if {{@index}} < len(args) {
 }
 {{/if}}
 
-fmt.Println("arg[{{@index}}] = ", {{arg.name}})
-
 {{/with}}
 {{/each}}
 {{/with}}

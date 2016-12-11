@@ -7,10 +7,11 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
 
-	"github.ibm.com/hofstadter-io/geb/cmd/gen"
 
 	
 	"github.com/spf13/cobra"
+
+	"github.ibm.com/hofstadter-io/geb/cmd/gen"
 )
 
 // Tool:   geb
@@ -28,8 +29,16 @@ var GenCmd = &cobra.Command {
 	Use: "gen",
 	Short: "Generate a project.",
 	Long: GenLong,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		gen.SetLogger(logger)
+		logger.Debug("In PersistentPreRun GenCmd", "args", args)
+
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
+	},
+	
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("In GenCmd", args)
+		logger.Debug("In GenCmd", "args", args)
 		// Argument Parsing
 		
 
@@ -42,13 +51,15 @@ var GenCmd = &cobra.Command {
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-}
+		}
 
 
 func init() {
 	RootCmd.AddCommand(GenCmd)
 
 	GenCmd.AddCommand(gen.FileCmd)
+
+	gen.SetLogger(logger)
 }
 
 

@@ -2,12 +2,13 @@ package cmd
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
 	// HOFSTADTER_END   import
 
+	"fmt"
 
 	
 	"github.com/spf13/cobra"
+
 )
 
 // Tool:   geb
@@ -28,10 +29,20 @@ unless overridden by the output flag.
 
 var CreateCmd = &cobra.Command {
 	Use: "create <name> <dsl/gen>...",
+	Aliases: []string{ 
+		"new",
+	},
 	Short: "Create a new project",
 	Long: CreateLong,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.Debug("In PersistentPreRun CreateCmd", "args", args)
+
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
+	},
+	
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("In CreateCmd", args)
+		logger.Debug("In CreateCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:   The name of the new project to create
@@ -45,8 +56,6 @@ var CreateCmd = &cobra.Command {
 			name = args[0]
 		}
 		
-		fmt.Println("arg[0] = ", name)
-		
 		// [1]name:   dsls_n_gens
 		//     help:   The starting list of DSLs and generators by path.
 		//     req'd:  
@@ -56,19 +65,18 @@ var CreateCmd = &cobra.Command {
 			dsls_n_gens = args[1:]
 		}
 		
-		fmt.Println("arg[1] = ", dsls_n_gens)
-		
 		
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("In CreateCmd")
+		fmt.Printf("In CreateCmd (TBD): %s %v\n", name, dsls_n_gens)
 		// HOFSTADTER_END   cmd_run
 	},
-}
+		}
 
 
 func init() {
 	RootCmd.AddCommand(CreateCmd)
+
 
 }
 
@@ -76,6 +84,8 @@ func init() {
 /*
 Repeated Context
 ----------------
+aliases:
+- new
 args:
 - help: The name of the new project to create
   name: name

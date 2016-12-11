@@ -9,7 +9,7 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine/render"
 	"github.ibm.com/hofstadter-io/geb/engine/templates"
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
-	log "gopkg.in/inconshreveable/log15.v2" // logging framework
+	log "gopkg.in/inconshreveable/log15.v2"
 )
 
 var logger log.Logger

@@ -2,14 +2,14 @@ package gen
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
-
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
 
+	"fmt"
 
 	
 	"github.com/spf13/cobra"
+
 )
 
 // Tool:   geb
@@ -28,8 +28,15 @@ var FileCmd = &cobra.Command {
 	Use: "file <designFile> <templateFile> <outputFile>",
 	Short: "Generate a file.",
 	Long: FileLong,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.Debug("In PersistentPreRun FileCmd", "args", args)
+
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
+	},
+	
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("In FileCmd", args)
+		logger.Debug("In FileCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   designFile
 		//     help:   Path to the input design file.
@@ -43,8 +50,6 @@ var FileCmd = &cobra.Command {
 			designFile = args[0]
 		}
 		
-		fmt.Println("arg[0] = ", designFile)
-		
 		// [1]name:   templateFile
 		//     help:   Path to the template file.
 		//     req'd:  true
@@ -56,8 +61,6 @@ var FileCmd = &cobra.Command {
 		if 1 < len(args) {
 			templateFile = args[1]
 		}
-		
-		fmt.Println("arg[1] = ", templateFile)
 		
 		// [2]name:   outputFile
 		//     help:   Path to the output file. Can also be 'stdout'.
@@ -71,8 +74,6 @@ var FileCmd = &cobra.Command {
 			outputFile = args[2]
 		}
 		
-		fmt.Println("arg[2] = ", outputFile)
-		
 		
 
 		// HOFSTADTER_START cmd_run
@@ -82,10 +83,11 @@ var FileCmd = &cobra.Command {
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-}
+		}
 
 
 func init() {
+
 }
 
 

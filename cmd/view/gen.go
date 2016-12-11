@@ -2,14 +2,15 @@ package view
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
 	"github.ibm.com/hofstadter-io/geb/engine"
 	"os"
 	// HOFSTADTER_END   import
 
+	"fmt"
 
 	
 	"github.com/spf13/cobra"
+
 )
 
 // Tool:   geb
@@ -28,8 +29,15 @@ var GenCmd = &cobra.Command {
 	Use: "gen <dotpaths>...",
 	Short: "View information about Generators",
 	Long: GenLong,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.Debug("In PersistentPreRun GenCmd", "args", args)
+
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
+	},
+	
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("In GenCmd", args)
+		logger.Debug("In GenCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   paths
 		//     help:   one ore more dotpaths for indexing into the data
@@ -39,8 +47,6 @@ var GenCmd = &cobra.Command {
 		if 0 < len(args) {
 			paths = args[0:]
 		}
-		
-		fmt.Println("arg[0] = ", paths)
 		
 		
 
@@ -59,10 +65,11 @@ var GenCmd = &cobra.Command {
 		fmt.Println(ret)
 		// HOFSTADTER_END   cmd_run
 	},
-}
+		}
 
 
 func init() {
+
 }
 
 

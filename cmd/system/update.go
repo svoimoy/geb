@@ -1,0 +1,62 @@
+package system
+
+import (
+	// HOFSTADTER_START import
+	// HOFSTADTER_END   import
+
+
+	
+	"github.com/spf13/cobra"
+
+)
+
+// Tool:   geb
+// Name:   Update
+// Usage:  update
+// Parent: System
+// ParentPath: 
+
+var UpdateLong = `Update the geb library DSLs, designs, and other files in the dot folder.`
+
+
+
+
+
+var UpdateCmd = &cobra.Command {
+	Use: "update",
+	Short: "Update the geb library and dot folder",
+	Long: UpdateLong,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.Debug("In PersistentPreRun UpdateCmd", "args", args)
+
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
+	},
+	
+	Run: func(cmd *cobra.Command, args []string) {
+		logger.Debug("In UpdateCmd", "args", args)
+		// Argument Parsing
+		
+
+		// HOFSTADTER_START cmd_run
+		// HOFSTADTER_END   cmd_run
+	},
+		}
+
+
+func init() {
+
+}
+
+
+/*
+Repeated Context
+----------------
+long: Update the geb library DSLs, designs, and other files in the dot folder.
+name: Update
+parent: System
+path: commands.subcommands
+short: Update the geb library and dot folder
+usage: update
+
+*/

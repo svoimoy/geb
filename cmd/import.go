@@ -2,13 +2,14 @@ package cmd
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
 	// HOFSTADTER_END   import
 
+	"fmt"
 
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
+
 )
 
 // Tool:   geb
@@ -38,10 +39,22 @@ func init() {
 
 var ImportCmd = &cobra.Command {
 	Use: "import <file or directory> <output file or directory>",
+	Aliases: []string{ 
+		"i",
+"convert",
+"eat",
+	},
 	Short: "Import other stuff into Hofstadter",
 	Long: ImportLong,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.Debug("In PersistentPreRun ImportCmd", "args", args)
+
+		// HOFSTADTER_START cmd_persistent_prerun
+		// HOFSTADTER_END   cmd_persistent_prerun
+	},
+	
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("In ImportCmd", args)
+		logger.Debug("In ImportCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   input
 		//     help:   Path to the file or folder. Can also be 'stdin'.
@@ -55,8 +68,6 @@ var ImportCmd = &cobra.Command {
 			input = args[0]
 		}
 		
-		fmt.Println("arg[0] = ", input)
-		
 		// [1]name:   output
 		//     help:   Path to the output file or folder. Can also be 'stdout'.
 		//     req'd:  true
@@ -69,19 +80,19 @@ var ImportCmd = &cobra.Command {
 			output = args[1]
 		}
 		
-		fmt.Println("arg[1] = ", output)
-		
 		
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("In ImportCmd")
+		typ := viper.GetString("type")
+		fmt.Printf("In ImportCmd:  %s (%s) -> %s\n", input, typ, output)
 		// HOFSTADTER_END   cmd_run
 	},
-}
+		}
 
 
 func init() {
 	RootCmd.AddCommand(ImportCmd)
+
 
 }
 
@@ -89,6 +100,10 @@ func init() {
 /*
 Repeated Context
 ----------------
+aliases:
+- i
+- convert
+- eat
 args:
 - help: Path to the file or folder. Can also be 'stdin'.
   name: input
