@@ -52,10 +52,6 @@ cli:
           usage: update
           short: Update the geb library and dot folder
           long: Update the geb library DSLs, designs, and other files in the dot folder.
-        - name: View
-          usage: view
-          short: View the geb system configuration
-          long: View the geb system configuration
 
     - name: View
       usage: view
