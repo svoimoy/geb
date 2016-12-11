@@ -29,14 +29,7 @@ var ViewCmd = &cobra.Command {
 	},
 	Short: "View information known to the geb tool.",
 	Long: ViewLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		view.SetLogger(logger)
-		logger.Debug("In PersistentPreRun ViewCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-			}
+				}
 
 
 func init() {
@@ -48,8 +41,6 @@ func init() {
 	ViewCmd.AddCommand(view.ProjectCmd)
 	ViewCmd.AddCommand(view.DesignCmd)
 	ViewCmd.AddCommand(view.PlansCmd)
-
-	view.SetLogger(logger)
 }
 
 

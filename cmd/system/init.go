@@ -2,6 +2,7 @@ package system
 
 import (
 	// HOFSTADTER_START import
+	"github.ibm.com/hofstadter-io/geb/engine/system"
 	// HOFSTADTER_END   import
 
 
@@ -30,19 +31,14 @@ var InitCmd = &cobra.Command {
 	},
 	Short: "Initialize the geb tool and files",
 	Long: InitLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun InitCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In InitCmd", "args", args)
 		// Argument Parsing
 		
 
 		// HOFSTADTER_START cmd_run
+		system.Init()
 		// HOFSTADTER_END   cmd_run
 	},
 		}

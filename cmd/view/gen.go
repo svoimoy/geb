@@ -29,13 +29,7 @@ var GenCmd = &cobra.Command {
 	Use: "gen <dotpaths>...",
 	Short: "View information about Generators",
 	Long: GenLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun GenCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In GenCmd", "args", args)
 		// Argument Parsing

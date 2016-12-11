@@ -20,3 +20,8 @@ profit: poor
 	@mkdir -p profit
 	@cp -R contracrostipunctus/* profit
 	@geb gen > /dev/null
+
+.Phony: serious-profit
+serious-profit:
+	@rm profit/contracrostipunctus
+	@cp -fR profit/* .

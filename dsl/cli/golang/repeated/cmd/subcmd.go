@@ -49,18 +49,19 @@ var {{RC.name}}Cmd = &cobra.Command {
 	{{/if}}
 	Short: "{{{RC.short}}}",
 	Long: {{RC.name}}Long,
+	{{#if RC.persistent-prerun}}
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		{{#if subcommands}}
-		{{lower RC.name}}.SetLogger(logger)
-		{{/if}}
 		logger.Debug("In PersistentPreRun {{RC.name}}Cmd", "args", args)
+		{{> args-parse.go RC }}
 
 		// HOFSTADTER_START cmd_persistent_prerun
 		// HOFSTADTER_END   cmd_persistent_prerun
 	},
+	{{/if}}
 	{{#if RC.prerun}}
 	PreRun: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In PreRun {{RC.name}}Cmd", "args", args)
+		{{> args-parse.go RC }}
 
 		// HOFSTADTER_START cmd_prerun
 		// HOFSTADTER_END   cmd_prerun
@@ -78,6 +79,7 @@ var {{RC.name}}Cmd = &cobra.Command {
 	{{#if RC.persistent-postrun}}
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In PersistentPostRun {{RC.name}}Cmd", "args", args)
+		{{> args-parse.go RC }}
 
 		// HOFSTADTER_START cmd_persistent_postrun
 		// HOFSTADTER_END   cmd_persistent_postrun
@@ -86,6 +88,7 @@ var {{RC.name}}Cmd = &cobra.Command {
 	{{#if RC.postrun}}
 	PostRun: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In PostRun {{RC.name}}Cmd", "args", args)
+		{{> args-parse.go RC }}
 
 		// HOFSTADTER_START cmd_postrun
 		// HOFSTADTER_END   cmd_postrun

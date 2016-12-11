@@ -44,13 +44,7 @@ var MiCmd = &cobra.Command {
 	Use: "mi",
 	Short: "View information about a Project's Plans",
 	Long: MiLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun MiCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In MiCmd", "args", args)
 		// Argument Parsing

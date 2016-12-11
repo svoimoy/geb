@@ -34,13 +34,7 @@ var CreateCmd = &cobra.Command {
 	},
 	Short: "Create a new project",
 	Long: CreateLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun CreateCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In CreateCmd", "args", args)
 		// Argument Parsing
@@ -76,7 +70,6 @@ var CreateCmd = &cobra.Command {
 
 func init() {
 	RootCmd.AddCommand(CreateCmd)
-
 
 }
 

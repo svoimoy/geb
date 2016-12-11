@@ -26,13 +26,7 @@ var UpdateCmd = &cobra.Command {
 	Use: "update",
 	Short: "Update the geb library and dot folder",
 	Long: UpdateLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun UpdateCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In UpdateCmd", "args", args)
 		// Argument Parsing

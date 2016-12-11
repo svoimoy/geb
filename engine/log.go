@@ -7,6 +7,7 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine/plan"
 	"github.ibm.com/hofstadter-io/geb/engine/project"
 	"github.ibm.com/hofstadter-io/geb/engine/render"
+	"github.ibm.com/hofstadter-io/geb/engine/system"
 	"github.ibm.com/hofstadter-io/geb/engine/templates"
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 	log "gopkg.in/inconshreveable/log15.v2"
@@ -23,6 +24,7 @@ func SetLogger(l log.Logger) {
 	plan.SetLogger(l)
 	project.SetLogger(l)
 	render.SetLogger(l)
+	system.SetLogger(l)
 	templates.SetLogger(l)
 	utils.SetLogger(l)
 }

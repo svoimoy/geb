@@ -29,13 +29,7 @@ var DslCmd = &cobra.Command {
 	Use: "dsl <dotpath>...",
 	Short: "View information about DSLs",
 	Long: DslLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun DslCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In DslCmd", "args", args)
 		// Argument Parsing

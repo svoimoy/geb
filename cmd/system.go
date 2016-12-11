@@ -29,14 +29,7 @@ var SystemCmd = &cobra.Command {
 	},
 	Short: "Manage the geb system and congiuration",
 	Long: SystemLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		system.SetLogger(logger)
-		logger.Debug("In PersistentPreRun SystemCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-			}
+				}
 
 
 func init() {
@@ -46,8 +39,6 @@ func init() {
 	SystemCmd.AddCommand(system.DevCopyInCmd)
 	SystemCmd.AddCommand(system.UpdateCmd)
 	SystemCmd.AddCommand(system.ViewCmd)
-
-	system.SetLogger(logger)
 }
 
 

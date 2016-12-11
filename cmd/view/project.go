@@ -32,13 +32,7 @@ var ProjectCmd = &cobra.Command {
 	},
 	Short: "View information about a Project",
 	Long: ProjectLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun ProjectCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In ProjectCmd", "args", args)
 		// Argument Parsing

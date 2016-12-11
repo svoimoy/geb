@@ -26,13 +26,7 @@ var ViewCmd = &cobra.Command {
 	Use: "view",
 	Short: "View the geb system configuration",
 	Long: ViewLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun ViewCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In ViewCmd", "args", args)
 		// Argument Parsing

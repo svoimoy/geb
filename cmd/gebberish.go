@@ -31,22 +31,13 @@ var GebberishCmd = &cobra.Command {
 	},
 	Short: "it's a puzzle?!",
 	Long: GebberishLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		gebberish.SetLogger(logger)
-		logger.Debug("In PersistentPreRun GebberishCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-			}
+				}
 
 
 func init() {
 	RootCmd.AddCommand(GebberishCmd)
 
 	GebberishCmd.AddCommand(gebberish.MiCmd)
-
-	gebberish.SetLogger(logger)
 }
 
 

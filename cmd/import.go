@@ -46,13 +46,7 @@ var ImportCmd = &cobra.Command {
 	},
 	Short: "Import other stuff into Hofstadter",
 	Long: ImportLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun ImportCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In ImportCmd", "args", args)
 		// Argument Parsing
@@ -92,7 +86,6 @@ var ImportCmd = &cobra.Command {
 
 func init() {
 	RootCmd.AddCommand(ImportCmd)
-
 
 }
 

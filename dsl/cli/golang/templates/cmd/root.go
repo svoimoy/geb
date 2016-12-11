@@ -14,6 +14,11 @@ import (
 
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine"
+	{{#each CLI.commands as |Cmd|}}
+	{{#if Cmd.subcommands}}
+	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/{{lower Cmd.name}}"
+	{{/if}}
+	{{/each}}
 )
 
 {{> "flag-var.go" CLI }}
@@ -47,10 +52,10 @@ var (
 		Short: "{{ CLI.short }}",
 		Long:  `{{ CLI.long }}`,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			logger.Debug("In PersistentPreRun {{RC.name}}Cmd", "args", args)
-
 			read_config()
 			config_logger()
+			logger.Debug("In PersistentPreRun {{RC.name}}Cmd", "args", args)
+			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_persistent_prerun
 			// HOFSTADTER_END   cmd_persistent_prerun
@@ -58,7 +63,7 @@ var (
 		{{#if CLI.prerun}}
 		PreRun: func(cmd *cobra.Command, args []string) {
 			logger.Debug("In PreRun {{RC.name}}Cmd", "args", args)
-			{{> args-parse.go RC }}
+			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_prerun
 			// HOFSTADTER_END   cmd_prerun
@@ -67,7 +72,7 @@ var (
 		{{#unless CLI.omit-run}}
 		Run: func(cmd *cobra.Command, args []string) {
 			logger.Debug("In {{RC.name}}Cmd", "args", args)
-			{{> args-parse.go RC }}
+			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_run
 			// HOFSTADTER_END   cmd_run
@@ -76,7 +81,7 @@ var (
 		{{#if CLI.persistent-postrun}}
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			logger.Debug("In PersistentPostRun {{RC.name}}Cmd", "args", args)
-			{{> args-parse.go RC }}
+			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_persistent_postrun
 			// HOFSTADTER_END   cmd_persistent_postrun
@@ -85,7 +90,7 @@ var (
 		{{#if CLI.postrun}}
 		PostRun: func(cmd *cobra.Command, args []string) {
 			logger.Debug("In PostRun {{RC.name}}Cmd", "args", args)
-			{{> args-parse.go RC }}
+			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_postrun
 			// HOFSTADTER_END   cmd_postrun
@@ -131,8 +136,14 @@ func config_logger() {
 	dotpath.SetLogger(logger)
 	engine.SetLogger(logger)
 
+	{{#each CLI.commands as |Cmd|}}
+	{{#if Cmd.subcommands}}
+	{{lower Cmd.name}}.SetLogger(logger)
+	{{/if}}
+	{{/each}}
+
 }
+
 
 {{/with}}
 
-// HOFSTADTER_BELOW

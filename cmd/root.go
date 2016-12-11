@@ -10,6 +10,11 @@ import (
 
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine"
+	"github.ibm.com/hofstadter-io/geb/cmd/system"
+			"github.ibm.com/hofstadter-io/geb/cmd/view"
+		"github.ibm.com/hofstadter-io/geb/cmd/gen"
+			"github.ibm.com/hofstadter-io/geb/cmd/gebberish"
+	
 )
 
 var (
@@ -66,10 +71,11 @@ for building data-centric
 Platforms. geb is the tool.
 `,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			logger.Debug("In PersistentPreRun Cmd", "args", args)
-
 			read_config()
 			config_logger()
+			logger.Debug("In PersistentPreRun Cmd", "args", args)
+			// Argument Parsing
+			
 
 			// HOFSTADTER_START cmd_persistent_prerun
 			// HOFSTADTER_END   cmd_persistent_prerun
@@ -114,19 +120,13 @@ func config_logger() {
 	dotpath.SetLogger(logger)
 	engine.SetLogger(logger)
 
+	system.SetLogger(logger)
+			view.SetLogger(logger)
+		gen.SetLogger(logger)
+			gebberish.SetLogger(logger)
+	
+
 }
 
 
-// HOFSTADTER_BELOW
 
-func init() {
-	read_config()
-	config_logger()
-}
-
-// HOFSTADTER_BELOW
-
-func init() {
-	read_config()
-	config_logger()
-}

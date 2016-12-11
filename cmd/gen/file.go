@@ -28,13 +28,7 @@ var FileCmd = &cobra.Command {
 	Use: "file <designFile> <templateFile> <outputFile>",
 	Short: "Generate a file.",
 	Long: FileLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun FileCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In FileCmd", "args", args)
 		// Argument Parsing

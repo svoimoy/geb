@@ -30,13 +30,7 @@ var DesignCmd = &cobra.Command {
 	Use: "design <dotpath>...",
 	Short: "View information about Designs",
 	Long: DesignLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun DesignCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In DesignCmd", "args", args)
 		// Argument Parsing

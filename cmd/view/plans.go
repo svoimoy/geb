@@ -29,13 +29,7 @@ var PlansCmd = &cobra.Command {
 	Use: "plans <dotpath>...",
 	Short: "View information about a Project's Plans",
 	Long: PlansLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun PlansCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In PlansCmd", "args", args)
 		// Argument Parsing

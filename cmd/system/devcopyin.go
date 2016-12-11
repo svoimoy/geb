@@ -26,13 +26,7 @@ var DevCopyInCmd = &cobra.Command {
 	Use: "dev-copy-in",
 	Short: "Copy development files to the dot folder",
 	Long: DevCopyInLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun DevCopyInCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In DevCopyInCmd", "args", args)
 		// Argument Parsing

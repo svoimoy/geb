@@ -29,14 +29,7 @@ var GenCmd = &cobra.Command {
 	Use: "gen",
 	Short: "Generate a project.",
 	Long: GenLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		gen.SetLogger(logger)
-		logger.Debug("In PersistentPreRun GenCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In GenCmd", "args", args)
 		// Argument Parsing
@@ -58,8 +51,6 @@ func init() {
 	RootCmd.AddCommand(GenCmd)
 
 	GenCmd.AddCommand(gen.FileCmd)
-
-	gen.SetLogger(logger)
 }
 
 

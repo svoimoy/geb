@@ -28,13 +28,7 @@ var GebCmd = &cobra.Command {
 	Use: "geb <dotpaths>...",
 	Short: "View information about Global geb config",
 	Long: GebLong,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In PersistentPreRun GebCmd", "args", args)
-
-		// HOFSTADTER_START cmd_persistent_prerun
-		// HOFSTADTER_END   cmd_persistent_prerun
-	},
-	
+		
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In GebCmd", "args", args)
 		// Argument Parsing
