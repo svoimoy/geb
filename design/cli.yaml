@@ -231,11 +231,14 @@ cli:
 
             Goal: Try to get 'MU'
 
-            Input: r1,r2,r3,r4 or reset
-
-            Notes:
-             - rules 3 and 4 require a zero-indexed postional argument to determine the occurance to remove
-             - use 'reset' to restore mi-string to 'MI'
+            Input:
+              - rules, h, help
+              - c, curr, current, s, stat, status, get
+              - reset, give-up, giveup, start-over, startover
+              - 1, r1, rule1, rule-1
+              - 2, r2, rule2, rule-2
+              - 3, r3, rule3, rule-3 [pos]  (default is last pos)
+              - 4, r4, rule4, rule-4 [pos]  (default is last pos)
 
           args:
             - name: rule

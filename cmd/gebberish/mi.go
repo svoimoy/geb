@@ -2,7 +2,9 @@ package gebberish
 
 import (
 	// HOFSTADTER_START import
-	"strings"
+	"strconv"
+
+	"github.ibm.com/hofstadter-io/geb/gebberish"
 	// HOFSTADTER_END   import
 
 	"fmt"
@@ -27,11 +29,14 @@ mi-rule-4:    if mi-string contains a 'UU',    you may drop it (remove it)
 
 Goal: Try to get 'MU'
 
-Input: r1,r2,r3,r4 or reset
-
-Notes:
- - rules 3 and 4 require a zero-indexed postional argument to determine the occurance to remove
- - use 'reset' to restore mi-string to 'MI'
+Input:
+  - rules, h, help
+  - c, curr, current, s, stat, status, get
+  - reset, give-up, giveup, start-over, startover
+  - 1, r1, rule1, rule-1
+  - 2, r2, rule2, rule-2
+  - 3, r3, rule3, rule-3 [pos]  (default is last pos)
+  - 4, r4, rule4, rule-4 [pos]  (default is last pos)
 `
 
 var MiCmd = &cobra.Command{
@@ -64,10 +69,26 @@ var MiCmd = &cobra.Command{
 		}
 
 		// HOFSTADTER_START cmd_run
-		rule = strings.Replace(rule, "-", "", 1)
-		rule = strings.Replace(rule, "ule", "", 1)
-		rule = strings.Replace(rule, "R", "r", 1)
-		fmt.Printf("MI: (%s) [%v]\n", rule, extra)
+		switch rule {
+		case "rules", "help", "h":
+			fmt.Println(MiLong)
+			return
+		}
+		i_arg := -1
+		if len(extra) > 0 {
+			i, err := strconv.Atoi(extra[0])
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			i_arg = i
+		}
+		MI, err := gebberish.Mi(rule, i_arg)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		fmt.Printf("\nMI = %q\n\n", MI)
+
 		// HOFSTADTER_END   cmd_run
 	},
 }

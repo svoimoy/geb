@@ -14,7 +14,7 @@ func AccumErrs(existing, errs []error) []error {
 	return append(existing, errs...)
 }
 
-func FileExists(filename string) []error {
+func FileExists(filename string) error {
 	_, err := os.Lstat(filename)
-	return []error{err}
+	return err
 }
