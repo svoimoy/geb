@@ -10,15 +10,5 @@ script:
   - go build
   - go install
   - geb gen
-  - make clone
-  - make profit
-  - make serious-profit
-  - go build
-  - go install
-  - geb gen
-  - make clone
-  - make profit
-  - make serious-profit
-  - go build
-
+  - geb v p
 
