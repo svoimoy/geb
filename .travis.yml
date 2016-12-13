@@ -7,16 +7,18 @@ go:
 install: true
 
 script:
-  - go build main.go
+  - go build
+  - go install
   - geb gen
   - make clone
   - make profit
   - make serious-profit
-  - go build main.go
+  - go build
+  - go install
   - geb gen
   - make clone
   - make profit
   - make serious-profit
-  - go build main.go
+  - go build
 
 
