@@ -4,9 +4,6 @@ package cmd
 import (
   // HOFSTADTER_START import
   // HOFSTADTER_END   import
-	{{#unless CLI.omit-run}}
-	"fmt"
-	{{/unless}}
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -142,6 +139,8 @@ func config_logger() {
 	{{/if}}
 	{{/each}}
 
+	// HOFSTADTER_START config_logger
+	// HOFSTADTER_END   config_logger
 }
 
 
