@@ -1,6 +1,7 @@
 package design
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
@@ -116,6 +117,7 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
 		}
 		name = tmp
+
 	case map[interface{}]interface{}:
 		iname, ok := D["name"]
 		if !ok {
@@ -136,6 +138,59 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 	}
 
 	switch dsl {
+	case "type-list":
+		var t_list []interface{}
+		switch D := design.(type) {
+		case map[string]interface{}:
+			tmp_list, ok := D["list"].([]interface{})
+			if !ok {
+				return errors.New("Top-level type-list is not a list or has non-map objects '" + " design: " + fmt.Sprint(design))
+			}
+			t_list = tmp_list
+
+		case map[interface{}]interface{}:
+			tmp_list, ok := D["list"].([]interface{})
+			if !ok {
+				return errors.New("Top-level type-list is not a list or has non-map objects '" + " design: " + fmt.Sprint(design))
+			}
+			t_list = tmp_list
+
+		default:
+			return errors.New("Type-list definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
+
+		}
+		for _, elem := range t_list {
+			var iname interface{}
+			switch E := elem.(type) {
+
+			case map[string]interface{}:
+				_iname, ok := E["name"]
+				if !ok {
+					return errors.New("Type-list definition '" + dsl + "' missing required field 'name'.")
+				}
+				iname = _iname
+
+			case map[interface{}]interface{}:
+				_iname, ok := E["name"]
+				if !ok {
+					return errors.New("Type-list definition '" + dsl + "' missing required field 'name'.")
+				}
+				iname = _iname
+
+			default:
+				return errors.New("Type-list definition '" + dsl + "' is not a map[string]")
+
+			}
+
+			typ_name, ok := iname.(string)
+			if !ok {
+				return errors.New("Type-list definition '" + dsl + "' field 'name' is not a string.")
+			}
+			_, overwrite := d.Type[typ_name]
+			d.Type[typ_name] = elem
+			logger.Debug("    - storing type", "type", dsl, "name", name, "overwrite", overwrite)
+		}
+
 	case "type":
 		_, overwrite := d.Type[name]
 		d.Type[name] = design

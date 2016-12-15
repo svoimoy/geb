@@ -1,22 +1,24 @@
-type:
-  name: "project-config"
-  version: "0.0.1"
-  fields:
-    - name: name
-      type: string
-      required: true
-    - name: version
-      type: string
-      required: true
-    - name: about
-      type: string
-    - name: design-dir
-      type: string
-      default: "design"
-    - name: output-dir
-      type: string
-      default: "."
-    - name: dsl-config
-      type: dsl-config
-      required: true
+type-list:
+  name: proj
+  list:
+    - name: "config"
+      version: "0.0.1"
+      fields:
+        - name: name
+          type: string
+          required: true
+        - name: version
+          type: string
+          required: true
+        - name: about
+          type: string
+        - name: design-dir
+          type: string
+          default: "design"
+        - name: output-dir
+          type: string
+          default: "."
+        - name: dsl-config
+          type: dsl-config
+          required: true
 
