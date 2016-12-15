@@ -218,7 +218,7 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 }
 
 func add_parent_and_path(child interface{}, parent interface{}, path string) (interface{}, error) {
-	logger.Info("adding parent to child", "child", child, "parent", parent, "path", path)
+	logger.Debug("adding parent to child", "child", child, "parent", parent, "path", path)
 	parent_ref := "unknown-parent"
 	switch P := parent.(type) {
 
