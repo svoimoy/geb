@@ -165,8 +165,8 @@ func (D *Dsl) MergeSkipExisting(fresh *Dsl) {
 		existing, ok := D.Generators[path]
 		if ok {
 			logger.Info("Merging Gen")
-			G.MergeSkipExisting(existing)
-			D.Generators[path] = G
+			existing.MergeSkipExisting(G)
+			D.Generators[path] = existing
 		} else {
 			logger.Info("Adding Gen")
 			D.Generators[path] = G

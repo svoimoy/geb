@@ -179,7 +179,7 @@ func (P *Project) LoadDefaultGenerators() error {
 					orig, ok := P.DslMap[s_dsl]
 					logger.Debug("    ", "path", path, "s_dsl", s_dsl, "ok", ok)
 					if ok {
-						orig.MergeOverwrite(D)
+						orig.MergeSkipExisting(D)
 					} else {
 						P.DslMap[s_dsl] = D
 					}
@@ -274,7 +274,7 @@ func (P *Project) LoadGeneratorList(generators []string) error {
 					orig, ok := P.DslMap[s_dsl]
 					logger.Debug("    ", "path", path, "s_dsl", s_dsl, "ok", ok)
 					if ok {
-						orig.MergeOverwrite(D)
+						orig.MergeSkipExisting(D)
 					} else {
 						P.DslMap[s_dsl] = D
 					}

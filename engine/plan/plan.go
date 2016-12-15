@@ -68,8 +68,8 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 			//   when there are repeats
 			//
 			repeats := G.Config.Repeated
-			if D.Config.Type != "dsl" || len(repeats) == 0 {
-				logger.Debug("       skipping dsl repeat: "+D.Config.Type, "name", D.Config.Name)
+			if !(D.Config.Type == "dsl" || D.Config.Type == "type") || len(repeats) == 0 {
+				logger.Debug("       skipping dsl repeat: "+D.Config.Type, "name", D.Config.Name, "repeats", repeats)
 				continue
 			}
 			logger.Info("Repeated found in config:", "count", len(repeats), "repeats", repeats)
@@ -80,10 +80,23 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 			for k, _ := range dsl_map {
 				logger.Debug("       - dsl key: "+k, "key", k)
 			}
-			data, ok := design_data["dsl"].(map[string]interface{})[d_key]
-			if !ok {
-				logger.Error("Did not find DSL data", "d_key", d_key, "design_data", design_data)
-				return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
+			var data interface{}
+			switch D.Config.Type {
+			case "dsl":
+				d, ok := design_data["dsl"].(map[string]interface{})[d_key]
+				if !ok {
+					logger.Error("Did not find DSL data", "d_key", d_key, "design_data", design_data)
+					return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
+				}
+				data = d
+			case "type":
+				d, ok := design_data["type"].(map[string]interface{})
+				if !ok || len(d) == 0 {
+					logger.Error("Did not find any Type data", "design_data", design_data)
+					return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
+				}
+				data = d
+
 			}
 
 			for _, R := range repeats {
@@ -92,14 +105,27 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				// look up field
 				// lookup := R.Field + "." + strings.ToLower(R.Name)
 				// logger.Info("    lookup: "+lookup, "R", R)
-				collection, err := dotpath.Get(R.Field, data)
-				if err != nil {
-					return nil, errors.Wrapf(err, "looking up by path:  repeat(%s)  path(%s) in data:\n%+v\n\n", R.Name, R.Field, data)
-				}
+				var c_slice []interface{}
+				switch D.Config.Type {
+				case "dsl":
+					collection, err := dotpath.Get(R.Field, data)
+					if err != nil {
+						return nil, errors.Wrapf(err, "looking up by path:  repeat(%s)  path(%s) in data:\n%+v\n\n", R.Name, R.Field, data)
+					}
 
-				c_slice, ok := collection.([]interface{})
-				if !ok {
-					return nil, errors.New("Collection is not a list: " + R.Field)
+					tmp_c_slice, ok := collection.([]interface{})
+					if !ok {
+						return nil, errors.New("Collection is not a list: " + R.Field)
+					}
+					c_slice = tmp_c_slice
+
+				case "type":
+					for _, typ := range design_data["type"].(map[string]interface{}) {
+						local_typ := typ
+						logger.Info("Adding typ to c_slice", "typ", local_typ)
+						c_slice = append(c_slice, local_typ)
+					}
+					logger.Info("Done adding to c_slice", "c_slice", c_slice)
 				}
 
 				// flattern c_slice
@@ -117,7 +143,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				}
 				c_slice = tmp_c_slice
 
-				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "collection_data", collection)
+				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "c_slice", c_slice)
 				for _, t_pair := range R.Templates {
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
 

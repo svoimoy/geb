@@ -1,16 +1,23 @@
-package main
+{{#with RepeatedContext as |RC| }}
+package types
 
-{{#with type.count}}
-// Name:    {{name}}
-// Version: {{version}}
+// Name:    {{RC.name}}
+// Version: {{RC.version}}
 
-{{#each fields}}
-{{#if private}}
-private: '{{name}}'
-{{else}}
-public:  '{{name}}' {{> tags.go}}
-{{/if}}
+type {{camelT RC.name}} struct {
+
+{{#each RC.fields}}
+	{{>field.go .}}
 {{/each}}
+
+}
+
 
 
 {{/with}}
+
+/*
+
+{{{yaml .}}}
+
+*/

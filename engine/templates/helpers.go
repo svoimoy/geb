@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.com/codemodus/kace"
 	"github.com/kr/pretty"
 	"gopkg.in/yaml.v2"
 )
@@ -46,6 +47,13 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("upper", helper_upper)
 	tpl.RegisterHelper("title", helper_title)
 
+	tpl.RegisterHelper("camel", helper_camel)
+	tpl.RegisterHelper("camelT", helper_camelT)
+	tpl.RegisterHelper("snake", helper_snake)
+	tpl.RegisterHelper("snakeU", helper_snakeU)
+	tpl.RegisterHelper("kebab", helper_kebab)
+	tpl.RegisterHelper("kebabU", helper_kebabU)
+
 	tpl.RegisterHelper("contains", helper_contains)
 	tpl.RegisterHelper("split", helper_split)
 	tpl.RegisterHelper("replace", helper_replace)
@@ -54,6 +62,11 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("trimprefix", helper_trimprefix)
 	tpl.RegisterHelper("trimsuffix", helper_trimsuffix)
 	tpl.RegisterHelper("substr", helper_substr)
+	tpl.RegisterHelper("getprefix", helper_getprefix)
+	tpl.RegisterHelper("getsuffix", helper_getsuffix)
+	tpl.RegisterHelper("getbetween", helper_getbetween)
+
+	tpl.RegisterHelper("builtin", helper_builtin)
 
 	tpl.RegisterHelper("eq", helper_eq)
 	tpl.RegisterHelper("ne", helper_ne)
@@ -133,6 +146,30 @@ func helper_title(value string) string {
 	return strings.ToTitle(value)
 }
 
+func helper_camel(value string) string {
+	return kace.Camel(value, false)
+}
+
+func helper_camelT(value string) string {
+	return fmt.Sprint(kace.Camel(value, true))
+}
+
+func helper_snake(value string) string {
+	return kace.Snake(value)
+}
+
+func helper_snakeU(value string) string {
+	return kace.SnakeUpper(value)
+}
+
+func helper_kebab(value string) string {
+	return kace.Kebab(value)
+}
+
+func helper_kebabU(value string) string {
+	return kace.KebabUpper(value)
+}
+
 func helper_contains(str, srch string) string {
 	if strings.Contains(str, srch) {
 		return "true"
@@ -170,6 +207,49 @@ func helper_substr(str string, start, end int) string {
 		end = len(str)
 	}
 	return str[start:end]
+}
+
+func helper_getprefix(str, suf string) string {
+	pos := strings.Index(str, suf)
+	if pos >= 0 {
+		return str[:pos]
+	}
+	return str
+}
+
+func helper_getsuffix(str, suf string) string {
+	pos := strings.Index(str, suf)
+	if pos >= 0 {
+		return str[pos+1:]
+	}
+	return str
+}
+
+func helper_getbetween(str, lhs, rhs string) string {
+	lpos := strings.Index(str, lhs)
+	rpos := strings.LastIndex(str, rhs)
+	if lpos < 0 {
+		lpos = 0
+	}
+	if rpos < 0 {
+		rpos = len(str)
+	}
+	return str[lpos:rpos]
+}
+
+var known_builtins = map[string]struct{}{
+	"string": struct{}{},
+	"int":    struct{}{},
+	"bool":   struct{}{},
+	"float":  struct{}{},
+}
+
+func helper_builtin(str string) string {
+	_, ok := known_builtins[str]
+	if ok {
+		return "true"
+	}
+	return ""
 }
 
 func helper_eq(lhs, rhs string) string {

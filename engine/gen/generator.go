@@ -97,9 +97,9 @@ func (G *Generator) MergeOverwrite(fresh *Generator) {
 	}
 }
 
-func (G *Generator) MergeSkipExisting(stale *Generator) {
-	logger.Info("Merging GEN", "existing", G.SourcePath, "stale", stale.SourcePath)
-	for path, T := range stale.Templates {
+func (G *Generator) MergeSkipExisting(fresh *Generator) {
+	logger.Info("Merging GEN", "existing", G.SourcePath, "fresh", fresh.SourcePath)
+	for path, T := range fresh.Templates {
 		_, ok := G.Templates[path]
 		if ok {
 			logger.Info("Skipping template", "template", path)
@@ -108,7 +108,7 @@ func (G *Generator) MergeSkipExisting(stale *Generator) {
 			G.Templates[path] = T
 		}
 	}
-	for path, T := range stale.Repeated {
+	for path, T := range fresh.Repeated {
 		_, ok := G.Repeated[path]
 		if ok {
 			logger.Info("Skipping repeated", "repeated", path)
@@ -117,7 +117,7 @@ func (G *Generator) MergeSkipExisting(stale *Generator) {
 			G.Repeated[path] = T
 		}
 	}
-	for path, P := range stale.Partials {
+	for path, P := range fresh.Partials {
 		_, ok := G.Partials[path]
 		if ok {
 			logger.Info("Skipping partial", "partial", path)

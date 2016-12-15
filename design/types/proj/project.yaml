@@ -1,0 +1,8 @@
+type:
+  name: "project"
+  version: "0.0.1"
+  fields:
+    - name: config
+      type: project-config
+
+

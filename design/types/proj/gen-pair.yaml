@@ -1,0 +1,12 @@
+type:
+  name: gen-pair
+  version: "0.0.1"
+  fields:
+    - name: dsl
+      type: string
+      required: true
+    - name: gen
+      type: array:string
+    - name: output-dir
+      type: string
+

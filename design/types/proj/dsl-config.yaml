@@ -1,0 +1,10 @@
+type:
+  name: dsl-config
+  version: "0.0.1"
+  fields:
+    - name: paths
+      type: array:string
+      required: true
+    - name: default
+      type: array:gen-pair
+
