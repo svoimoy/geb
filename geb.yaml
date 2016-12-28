@@ -23,4 +23,4 @@ dsl-config:
     - dsl: types
       gen:
         - golang
-      output-dir: "types"
+      output-dir: "."

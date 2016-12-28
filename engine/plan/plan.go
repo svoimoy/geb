@@ -62,6 +62,13 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				plans = append(plans, p)
 			} // End of normal template processing
 
+			//
+			//
+			//
+			//
+			//
+			//
+			//
 			// Start of repeat processing section:
 			//
 			// only do repeats for actual dsls and
@@ -122,8 +129,91 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				case "type":
 					for _, typ := range design_data["type"].(map[string]interface{}) {
 						local_typ := typ
-						logger.Info("Adding typ to c_slice", "typ", local_typ)
-						c_slice = append(c_slice, local_typ)
+						logger.Crit("Adding typ to c_slice", "typ", local_typ)
+
+						// Recurse over type map here, looking for elements...
+						// which have both name and namespace set.
+						// This is so we can have nested directories and packages of types
+
+						var extract_elems func(interface{})
+
+						extract_elems = func(MAP interface{}) {
+							switch M := MAP.(type) {
+
+							case map[string]interface{}:
+								for _, elem := range M {
+									has_name, has_namespace := false, false
+
+									switch E := elem.(type) {
+									case map[string]interface{}:
+										if _, ok := E["name"]; ok {
+											has_name = true
+										}
+										if _, ok := E["namespace"]; ok {
+											has_namespace = true
+										}
+
+									case map[interface{}]interface{}:
+										if _, ok := E["name"]; ok {
+											has_name = true
+										}
+										if _, ok := E["namespace"]; ok {
+											has_namespace = true
+										}
+
+									default:
+										logger.Error("elem is not a mapSI", "elem", elem)
+										continue
+									}
+
+									if has_name && has_namespace {
+										c_slice = append(c_slice, elem)
+									} else {
+										extract_elems(elem)
+									}
+								}
+
+							case map[interface{}]interface{}:
+								for _, elem := range M {
+									has_name, has_namespace := false, false
+
+									switch E := elem.(type) {
+									case map[string]interface{}:
+										if _, ok := E["name"]; ok {
+											has_name = true
+										}
+										if _, ok := E["namespace"]; ok {
+											has_namespace = true
+										}
+
+									case map[interface{}]interface{}:
+										if _, ok := E["name"]; ok {
+											has_name = true
+										}
+										if _, ok := E["namespace"]; ok {
+											has_namespace = true
+										}
+
+									default:
+										logger.Error("elem is not a mapII", "elem", elem)
+										continue
+									}
+
+									if has_name && has_namespace {
+										c_slice = append(c_slice, elem)
+									} else {
+										extract_elems(elem)
+									}
+								}
+
+							default:
+								logger.Error("input is not a map", "input", MAP)
+
+							}
+
+						}
+
+						extract_elems(local_typ.(map[string]interface{}))
 					}
 					logger.Info("Done adding to c_slice", "c_slice", c_slice)
 				}
@@ -194,7 +284,8 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 
 							RepeatedContext: local_ctx,
 						}
-						logger.Info("        planned repeat file: "+t_key, "fgd", fgd, "index", idx)
+						// logger.Info("        planned repeat file: "+t_key, "index", idx)
+						// logger.Debug("          data...", "fgd", fgd, "index", idx)
 
 						// add the plan to a linear list to be rendered
 						plans = append(plans, fgd)

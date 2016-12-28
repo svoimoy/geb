@@ -62,7 +62,7 @@ func GetByPathSlice(path []string, data interface{}) (interface{}, error) {
 func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error) {
 	header := fmt.Sprintf("get_by_path:  %d  %v  in:\n%+v\n\n", IDX, paths, data)
 	// fmt.Println(header)
-	logger.Info(header)
+	logger.Debug(header)
 
 	P := paths[IDX]
 
@@ -79,11 +79,11 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 	has_le := strings.Contains(P, "<=")
 	has_lt := strings.Contains(P, "<")
 
-	logger.Info("Has: ", "idx", IDX, "curr", P, "paths", paths,
+	logger.Debug("Has: ", "idx", IDX, "curr", P, "paths", paths,
 		"lpos", lpos_index, "rpos", rpos_index, "slicing", pos_colon,
 		"listing", has_listing, "regex", pos_regex,
 	)
-	logger.Info("has bool",
+	logger.Debug("has bool",
 		"has_eq", has_eq, "has_ne", has_ne,
 		"has_ge", has_ge, "has_gt", has_gt,
 		"has_le", has_le, "has_lt", has_lt,
@@ -112,7 +112,7 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 		return elems, nil
 
 	case []interface{}:
-		logger.Info("Processing Slice", "paths", paths, "T", T)
+		logger.Debug("Processing Slice", "paths", paths, "T", T)
 		elems, err := get_from_slice_by_path(IDX, paths, T)
 		if err != nil {
 			return nil, errors.Wrap(err, "while extracting path from slice")
@@ -151,13 +151,13 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 			d := reflect.ValueOf(data)
 			data = reflect.Indirect(d).Interface()
 			typ = reflect.TypeOf(data)
-			logger.Info("pointer dereference", "data", data, "type", typ, "d", d)
+			logger.Debug("pointer dereference", "data", data, "type", typ, "d", d)
 		}
 
 		switch typ.Kind() {
 		case reflect.Map:
 			M := reflect.ValueOf(data)
-			logger.Info("Map: ", "map", M, "type", typ)
+			logger.Debug("Map: ", "map", M, "type", typ)
 			v := M.MapIndex(reflect.ValueOf(P))
 			if IDX+1 >= len(paths) {
 				return v.Interface(), nil
@@ -174,7 +174,7 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 
 		case reflect.Slice:
 			S := reflect.ValueOf(data)
-			logger.Info("Slice: ", "slice", S, "type", typ)
+			logger.Debug("Slice: ", "slice", S, "type", typ)
 			if IDX+1 >= len(paths) {
 				return S.Interface(), nil
 			}
@@ -190,7 +190,7 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 		case reflect.Struct:
 
 			S := reflect.ValueOf(data)
-			logger.Info("Struct: ", "struct", S, "type", typ)
+			logger.Debug("Struct: ", "struct", S, "type", typ)
 			F := S.FieldByName(P)
 			if IDX+1 >= len(paths) {
 				return F.Interface(), nil

@@ -1,0 +1,14 @@
+type:
+  name: "design"
+  namespace: "engine.design"
+  version: "0.0.1"
+  fields:
+    - name: proj
+      type: 'map:interface{}'
+    - name: type
+      type: 'map:interface{}'
+    - name: dsl
+      type: 'map:interface{}'
+    - name: custom
+      type: 'map:interface{}'
+

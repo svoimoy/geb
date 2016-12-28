@@ -1,0 +1,13 @@
+type:
+  name: "dsl"
+  namespace: "engine.dsl"
+  version: "0.0.1"
+  fields:
+    - name: config
+      type: '*engine.dsl.config'
+    - name: source-path
+      type: 'string'
+    - name: available-generators
+      type: 'map:string'
+    - name: generators
+      type: 'map:*engine.gen.Generator'

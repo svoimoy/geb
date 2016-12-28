@@ -1,0 +1,30 @@
+type:
+  name: "plan"
+  namespace: "engine.plan"
+  version: "0.0.1"
+  fields:
+    - name: dsl
+      type: string
+      required: true
+    - name: gen
+      type: string
+      required: true
+    - name: file
+      type: string
+      required: true
+    - name: data
+      type: map:interface{}
+      required: true
+    - name: template
+      type: '*raymond.Template'
+      required: true
+    - name: outfile
+      type: string
+      required: true
+    - name: repeated-context
+      type: interface{}
+
+  go-imports:
+    - 'github.com/aymerick/raymond'
+
+

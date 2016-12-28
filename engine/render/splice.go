@@ -56,11 +56,13 @@ func SpliceResults(existing, rendered string) (string, error) {
 	*/
 
 	// Merge files while processing NEW file
+	has_below := false
 	splice = ""
 	all_lines := [][]byte{}
 	for _, line := range new_lines {
 		if bytes.Contains(line, []byte("HOFSTADTER_")) {
 			if bytes.Contains(line, []byte("HOFSTADTER_BELOW")) {
+				has_below = true
 				if old_lpos > -1 {
 					all_lines = append(all_lines, line)
 					all_lines = append(all_lines, old_lines[old_lpos+1:]...)
@@ -89,8 +91,10 @@ func SpliceResults(existing, rendered string) (string, error) {
 
 	// If we foud the HOFSTADTER_BELOW line in the OLD file,
 	// respect it in the NEW file and put in back
-	if old_lpos > -1 {
+	if has_below && old_lpos > -1 {
 		all_lines = append(all_lines, old_lines[old_lpos:]...)
+	} else {
+		all_lines = append(all_lines, []byte("// HOFSTADTER_BELOW\n\n"))
 	}
 
 	// Rejoin the lines

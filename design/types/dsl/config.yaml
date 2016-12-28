@@ -1,6 +1,6 @@
 type:
   name: "config"
-  namespace: "engine.proj"
+  namespace: "engine.dsl"
   version: "0.0.1"
   fields:
     - name: name
@@ -11,13 +11,10 @@ type:
       required: true
     - name: about
       type: string
-    - name: design-dir
+    - name: type
       type: string
-      default: "design"
-    - name: output-dir
-      type: string
-      default: "."
-    - name: dsl-config
-      type: dsl-config
+      required: true
+    - name: spec
+      type: map:interface{}
       required: true
 

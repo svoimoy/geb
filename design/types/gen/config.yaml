@@ -1,0 +1,46 @@
+type-list:
+  name: "gen-config"
+  namespace: "engine.gen"
+  list:
+    - name: config
+      version: "0.0.1"
+      fields:
+        - name: name
+          type: string
+          required: true
+        - name: version
+          type: string
+          required: true
+        - name: about
+          type: string
+        - name: type
+          type: string
+          required: true
+        - name: language
+          type: string
+          required: true
+        - name: repeated
+          type: array:repeat-config
+        - name: output-dir
+          type: string
+    - name: repeat-config
+      version: "0.0.1"
+      fields:
+        - name: name
+          type: string
+          required: true
+        - name: field
+          type: string
+          required: true
+        - name: templates
+          type: array:repeated-template-pair
+    - name: repeated-template-pair
+      version: "0.0.1"
+      fields:
+        - name: in
+          type: string
+          required: true
+        - name: out
+          type: string
+          required: true
+

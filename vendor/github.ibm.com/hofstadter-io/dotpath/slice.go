@@ -12,7 +12,7 @@ import (
 func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interface{}, error) {
 	header := fmt.Sprintf("get_from_slice_by_path:  %d  %v  in:\n%+v\n\n", IDX, paths, data)
 	// fmt.Println(header)
-	logger.Info(header)
+	logger.Debug(header)
 
 	subs := []interface{}{}
 
@@ -103,7 +103,7 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 	} else {
 		// No inner indexing
 		for _, elem := range data {
-			logger.Info("    - elem", "elem", elem, "paths", paths, "P", P, "elem", elem)
+			logger.Debug("    - elem", "elem", elem, "paths", paths, "P", P, "elem", elem)
 			switch V := elem.(type) {
 
 			case map[string]interface{}:

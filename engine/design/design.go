@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/kr/pretty"
+	"github.ibm.com/hofstadter-io/geb/engine/utils"
 	"gopkg.in/yaml.v1"
 )
 
@@ -105,6 +107,7 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 
 	// Everything must have a name!
 	name := ""
+	NS := "" // namespace from type list
 	switch D := design.(type) {
 
 	case map[string]interface{}:
@@ -117,6 +120,10 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
 		}
 		name = tmp
+		ns, ok := D["namespace"].(string)
+		if ok {
+			NS = ns
+		}
 
 	case map[interface{}]interface{}:
 		iname, ok := D["name"]
@@ -128,11 +135,16 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
 		}
 		name = tmp
+		ns, ok := D["namespace"].(string)
+		if ok {
+			NS = ns
+		}
 
 	default:
 		return errors.New("Top-level definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
 
 	}
+
 	if name == "" {
 		return errors.New("Top-level definition '" + dsl + "' field 'name' is empty.")
 	}
@@ -160,46 +172,161 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 
 		}
 		for _, elem := range t_list {
-			var iname interface{}
+			ename := ""
 			switch E := elem.(type) {
 
 			case map[string]interface{}:
-				_iname, ok := E["name"]
-				if !ok {
-					return errors.New("Type-list definition '" + dsl + "' missing required field 'name'.")
+				if NS != "" {
+					E["namespace"] = NS
 				}
-				iname = _iname
+				iname, ok := E["name"]
+				if !ok {
+					return errors.New("Type-list definition '" + name + "' missing required field 'name'.")
+				}
+				tmp, ok := iname.(string)
+				if !ok {
+					return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
+				}
+				ename = tmp
 
 			case map[interface{}]interface{}:
-				_iname, ok := E["name"]
-				if !ok {
-					return errors.New("Type-list definition '" + dsl + "' missing required field 'name'.")
+				if NS != "" {
+					E["namespace"] = NS
 				}
-				iname = _iname
+				iname, ok := E["name"]
+				if !ok {
+					return errors.New("Type-list definition '" + name + "' missing required field 'name'.")
+				}
+				tmp, ok := iname.(string)
+				if !ok {
+					return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
+				}
+				ename = tmp
 
 			default:
 				return errors.New("Type-list definition '" + dsl + "' is not a map[string]")
 
 			}
 
-			typ_name, ok := iname.(string)
-			if !ok {
-				return errors.New("Type-list definition '" + dsl + "' field 'name' is not a string.")
+			logger.Info("      - storing type", "type", dsl, "ename", ename, "elem", elem, "NS", NS)
+			fields := strings.Split(NS, ".")
+			F0 := fields[0]
+			logger.Info("Fields", "fields", fields)
+
+			if L := len(fields); L > 0 {
+
+				insert := make(map[string]interface{})
+				dd_map := insert
+				if L > 1 {
+					for i, F := range fields {
+						tmp := make(map[string]interface{})
+						logger.Warn("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+						dd_map[F] = tmp
+						logger.Warn("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+						dd_map = tmp
+						logger.Warn("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+					}
+				}
+
+				dd_map[ename] = elem
+				logger.Info("Design", "ename", ename, "design", design, "map", dd_map, "insert", insert)
+
+				if curr, ok := d.Type[F0]; !ok {
+					d.Type[F0] = insert[F0]
+					logger.Error("d.TypeList new L>1", "data", d.Type)
+				} else {
+					logger.Crit("...", "curr", curr, "d.Type", d.Type, "update", insert)
+					merged, merr := utils.Merge(d.Type, insert)
+					if merr != nil {
+						return errors.Wrap(merr, "in store_design typelist.loop")
+					}
+					logger.Crit("result...", "merged", merged)
+					fmt.Printf("%# v", pretty.Formatter(merged))
+					d.Type[F0] = merged.(map[string]interface{})[F0]
+					logger.Error("d.TypeList merge L>1", "data", d.Type)
+				}
+				logger.Debug("       - " + F0)
+
+			} else {
+				if curr, ok := d.Type[name]; !ok {
+					d.Type[name] = elem
+					logger.Error("d.TypeList new L<2", "data", d.Type)
+				} else {
+					merged, merr := utils.Merge(curr, elem)
+					if merr != nil {
+						return errors.Wrap(merr, "in store_design typelist")
+					}
+					d.Type[name] = merged
+					logger.Error("d.TypeList merge L<2", "data", d.Type)
+				}
 			}
-			_, overwrite := d.Type[typ_name]
-			d.Type[typ_name] = elem
-			logger.Debug("    - storing type", "type", dsl, "name", name, "overwrite", overwrite)
 		}
 
 	case "type":
-		_, overwrite := d.Type[name]
-		d.Type[name] = design
-		logger.Debug("    - storing type", "type", dsl, "name", name, "overwrite", overwrite)
+
+		logger.Info("    - storing type", "type", dsl, "name", name, "design", design, "NS", NS)
+		fields := strings.Split(NS, ".")
+		F0 := fields[0]
+		// FL := fields[len(fields)-1]
+		logger.Info("Fields", "fields", fields)
+
+		if L := len(fields); L > 0 {
+
+			insert := make(map[string]interface{})
+			dd_map := insert
+			for i, F := range fields {
+				tmp := make(map[string]interface{})
+				logger.Warn("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+				dd_map[F] = tmp
+				logger.Warn("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+				dd_map = tmp
+				logger.Warn("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+			}
+
+			dd_map[name] = design
+			logger.Info("Design", "name", name, "design", design, "map", dd_map, "insert", insert)
+
+			if curr, ok := d.Type[F0]; !ok {
+				d.Type[F0] = insert[F0]
+				logger.Error("d.Type new L>1", "data", d.Type)
+			} else {
+				logger.Crit("merge...", "curr", curr, "d.Type", d.Type, "update", insert)
+				merged, merr := utils.Merge(d.Type, insert)
+				if merr != nil {
+					return errors.Wrap(merr, "in store_design type.loop")
+				}
+				logger.Crit("result...", "merged", merged)
+				fmt.Printf("%# v", pretty.Formatter(merged))
+				d.Type[F0] = merged.(map[string]interface{})[F0]
+				logger.Error("d.Type merge L>1", "data", d.Type)
+			}
+			logger.Debug("       - " + F0)
+
+		} else {
+			if curr, ok := d.Type[name]; !ok {
+				d.Type[name] = design
+				logger.Error("d.Type new L<2", "data", d.Type)
+			} else {
+				merged, merr := utils.Merge(curr, design)
+				if merr != nil {
+					return errors.Wrap(merr, "in store_design type")
+				}
+				d.Type[name] = merged
+				logger.Error("d.Type merge L<2", "data", d.Type)
+			}
+		}
 
 	case "custom":
-		_, overwrite := d.Custom[name]
-		d.Custom[name] = design
-		logger.Debug("    - storing custom", "type", dsl, "name", name, "overwrite", overwrite)
+		if curr, ok := d.Type[name]; !ok {
+			d.Custom[name] = design
+		} else {
+			merged, merr := utils.Merge(curr, design)
+			if merr != nil {
+				return errors.Wrap(merr, "in store_design custom")
+			}
+			d.Custom[name] = merged
+		}
+		logger.Debug("    - storing custom", "type", dsl, "name", name)
 
 	default:
 		logger.Debug("    - storing dsl", "type", dsl, "name", name)
@@ -219,11 +346,27 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 				dd_map = tmp_map
 			}
 
-			d.Dsl[fields[0]] = dd_map
+			if curr, ok := d.Dsl[fields[0]]; !ok {
+				d.Dsl[fields[0]] = dd_map
+			} else {
+				merged, merr := utils.Merge(curr, dd_map)
+				if merr != nil {
+					return errors.Wrap(merr, "in store_design dsl.loop (default)")
+				}
+				d.Dsl[fields[0]] = merged
+			}
 			logger.Debug("       - " + fields[0])
 
 		} else {
-			d.Dsl[dsl] = design
+			if curr, ok := d.Dsl[dsl]; !ok {
+				d.Dsl[dsl] = design
+			} else {
+				merged, merr := utils.Merge(curr, design)
+				if merr != nil {
+					return errors.Wrap(merr, "in store_design dsl (default)")
+				}
+				d.Dsl[dsl] = merged
+			}
 		}
 
 	}

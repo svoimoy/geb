@@ -8,4 +8,4 @@ repeated:
   - name: type
     templates:
       - in: "default.go"
-        out: "{{name}}.go"
+        out: "{{join2 '/' (replace namespace '.' '/' -1) name}}.go"

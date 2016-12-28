@@ -10,20 +10,24 @@ cli:
     - name: Config
       long: config
       short: c
+      type: string
       default: geb.yaml
       help: A geb project config file.
     - name: Design
       long: design
       short: d
+      type: string
       default: design
       help: The design files directory.
     - name: TemplatePaths
       long: template-paths
       short: t
+      type: string
       default: templates:~/.hofstadter/templates
       help: The search path for templates, reads from left to right, overriding along the way.
     - name: Output
       long: output
+      type: string
       short: o
       default: output
       help: The directory to output generated files to.

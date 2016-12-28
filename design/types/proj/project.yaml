@@ -1,8 +1,16 @@
 type:
   name: "project"
+  namespace: "engine.proj"
   version: "0.0.1"
   fields:
     - name: config
-      type: project-config
-
+      type: '*engine.proj.config'
+    - name: available
+      type: 'map:*engine.dsl.Dsl'
+    - name: design
+      type: '*engine.design.Design'
+    - name: dsl-map
+      type: 'map:*engine.dsl.Dsl'
+    - name: plans
+      type: 'array:engine.plan.Plan'
 

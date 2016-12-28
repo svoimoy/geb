@@ -21,12 +21,13 @@ func RenderPlans(plans []plan.Plan, output_dir string) []error {
 	for _, plan := range plans {
 		err := RenderPlan(plan, output_dir)
 		if err != nil {
+			logger.Error("while rendering plan", "err", err, "plan", plan)
 			err = errors.Wrapf(err, "in render.RenderPlans(), while render plan: %+v\n", plan)
 			errs = append(errs, err)
 		}
 	}
 
-	return nil
+	return errs
 }
 
 func RenderPlan(plan plan.Plan, output_dir string) error {

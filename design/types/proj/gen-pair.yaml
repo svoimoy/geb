@@ -1,5 +1,6 @@
 type:
-  name: gen-pair
+  name: "gen-pair"
+  namespace: "engine.proj"
   version: "0.0.1"
   fields:
     - name: dsl

@@ -1,19 +1,24 @@
 {{#with . as |T|}}
-{{#if (contains T "array:")}}
-	{{#if (builtin (getsuffix T ":"))}}
-	[]{{getsuffix T ":" ~}}
-	{{else}}
-		[]{{camelT (getsuffix T ":") ~}}
-	{{/if}}
-{{else if (contains T "map:")}}
-	{{#if (builtin T)}}
-		map[string]{{getsuffix T ":" ~}}
-	{{else}}
-		map[string]{{camelT (trimprefix T ":") ~}}
-	{{/if}}
-{{else if (builtin T)}}
-	{{ T ~}}
+{{#if (contains T "array:") ~}} []{{/if ~}}
+{{#if (contains T "map:") ~}} map[string]{{/if ~}}
+{{#if (contains T "*") ~}}*{{/if ~}}
+{{#with (getsuffix (getsuffix T ":") "*") as |TYP|}}
+{{#if (contains T ".") ~}}
+	{{#each (rsublist (split TYP ".") 0 2 ) ~}}
+    {{#if @last ~}}
+	{{#if (builtin .) ~}}
+		{{ . ~}}
+	{{else ~}}
+		{{camelT . ~}}
+	{{/if }}
+	  {{else ~}}{{.}}.{{/if ~}}
+	{{/each}}
 {{else}}
-	{{camelT T ~}}
-{{/if}}
+	{{#if (builtin TYP) ~}}
+		{{ TYP ~}}
+	{{else ~}}
+		{{camelT TYP ~}}
+	{{/if }}
+{{/if ~}}
+{{/with}}
 {{/with}}

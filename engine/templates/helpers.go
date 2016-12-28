@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
 	"strings"
 
 	"github.com/aymerick/raymond"
@@ -67,6 +68,13 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("getbetween", helper_getbetween)
 
 	tpl.RegisterHelper("builtin", helper_builtin)
+
+	tpl.RegisterHelper("length", helper_length)
+	tpl.RegisterHelper("identity", helper_identity)
+	tpl.RegisterHelper("thelist", helper_thelist)
+	tpl.RegisterHelper("sublist", helper_sublist)
+	tpl.RegisterHelper("rsublist", helper_rsublist)
+	tpl.RegisterHelper("reverse", helper_reverse)
 
 	tpl.RegisterHelper("eq", helper_eq)
 	tpl.RegisterHelper("ne", helper_ne)
@@ -238,10 +246,12 @@ func helper_getbetween(str, lhs, rhs string) string {
 }
 
 var known_builtins = map[string]struct{}{
-	"string": struct{}{},
-	"int":    struct{}{},
-	"bool":   struct{}{},
-	"float":  struct{}{},
+	"string":      struct{}{},
+	"int":         struct{}{},
+	"bool":        struct{}{},
+	"float":       struct{}{},
+	"object":      struct{}{},
+	"interface{}": struct{}{},
 }
 
 func helper_builtin(str string) string {
@@ -250,6 +260,60 @@ func helper_builtin(str string) string {
 		return "true"
 	}
 	return ""
+}
+
+func helper_length(list interface{}) interface{} {
+	val := reflect.ValueOf(list)
+	if val.Kind() == reflect.Slice || val.Kind() == reflect.Array {
+		return val.Len()
+	}
+	return "not an array"
+}
+
+func helper_identity(thing interface{}) interface{} {
+	return thing
+}
+
+func helper_thelist(thing interface{}) interface{} {
+	val := reflect.ValueOf(thing)
+	if val.Kind() == reflect.Slice || val.Kind() == reflect.Array {
+		return "IS an array!"
+	}
+	return "not an array"
+}
+
+func helper_sublist(list interface{}, start, count int) interface{} {
+	val := reflect.ValueOf(list)
+	if val.Kind() == reflect.Slice || val.Kind() == reflect.Array {
+		return val.Slice(start, start+count).Interface()
+	}
+	return "not an array"
+}
+
+func helper_rsublist(list interface{}, start, count int) interface{} {
+
+	val := reflect.ValueOf(list)
+	if val.Kind() == reflect.Slice || val.Kind() == reflect.Array {
+		L := val.Len()
+		last := L - start
+		first := L - start - count
+		return val.Slice(first, last).Interface()
+	}
+	return "not an array"
+}
+
+func helper_reverse(list interface{}) interface{} {
+	val := reflect.ValueOf(list)
+	if val.Kind() == reflect.Slice || val.Kind() == reflect.Array {
+		L := val.Len()
+		rev := make([]interface{}, 0, L)
+		for i := 0; i < L; i++ {
+			elem := val.Index(L - 1 - i)
+			rev = append(rev, elem)
+		}
+		return rev
+	}
+	return "not an array"
 }
 
 func helper_eq(lhs, rhs string) string {
