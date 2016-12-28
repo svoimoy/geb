@@ -20,6 +20,7 @@ func SpliceResults(existing, rendered string) (string, error) {
 	new_lines := bytes.Split([]byte(rendered), []byte("\n"))
 
 	// find HOFSTADTER tags and extract splices from the OLD file
+	has_below := false
 	old_lpos := -1
 	splices := map[string][][]byte{}
 	splice := ""
@@ -27,7 +28,9 @@ func SpliceResults(existing, rendered string) (string, error) {
 		if bytes.Contains(line, []byte("HOFSTADTER_")) {
 			// fmt.Println(string(line))
 			if bytes.Contains(line, []byte("HOFSTADTER_BELOW")) {
+				has_below = true
 				old_lpos = l
+				break
 			} else if bytes.Contains(line, []byte("HOFSTADTER_START")) {
 				// get last token
 				fields := bytes.Fields(line)
@@ -56,18 +59,12 @@ func SpliceResults(existing, rendered string) (string, error) {
 	*/
 
 	// Merge files while processing NEW file
-	has_below := false
 	splice = ""
 	all_lines := [][]byte{}
 	for _, line := range new_lines {
 		if bytes.Contains(line, []byte("HOFSTADTER_")) {
 			if bytes.Contains(line, []byte("HOFSTADTER_BELOW")) {
-				has_below = true
-				if old_lpos > -1 {
-					all_lines = append(all_lines, line)
-					all_lines = append(all_lines, old_lines[old_lpos+1:]...)
-					break
-				}
+				break
 			} else if bytes.Contains(line, []byte("HOFSTADTER_START")) {
 				all_lines = append(all_lines, line)
 				fields := bytes.Fields(line)
