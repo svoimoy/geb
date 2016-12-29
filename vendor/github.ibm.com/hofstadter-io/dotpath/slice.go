@@ -14,6 +14,10 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 	// fmt.Println(header)
 	logger.Debug(header)
 
+	if IDX >= len(paths) || len(paths) == 0 {
+		return nil, nil
+	}
+
 	subs := []interface{}{}
 
 	P := paths[IDX]
@@ -103,7 +107,7 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 	} else {
 		// No inner indexing
 		for _, elem := range data {
-			logger.Debug("    - elem", "elem", elem, "paths", paths, "P", P, "elem", elem)
+			logger.Debug("    - elem", "elem", elem, "paths", paths, "P", P)
 			switch V := elem.(type) {
 
 			case map[string]interface{}:
@@ -117,6 +121,7 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 				subs = append(subs, val)
 
 			case map[interface{}]interface{}:
+				logger.Debug("        map[iface]")
 				val, err := get_from_imap_by_path(IDX, paths, V)
 				if err != nil {
 					logger.Debug("could not find '" + P + "' in object")
