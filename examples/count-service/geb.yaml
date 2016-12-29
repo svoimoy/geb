@@ -8,9 +8,15 @@ design-dir: "design"
 dsl-config:
   paths:
     - "dsl"
-    - "$HOME/.hofstadter/dsl"
+    - "$GOPATH/src/github.ibm.com/hofstadter-io/geb/dsl"
   default:
     - dsl: types
+      gen:
+        - golang
+      output-dir: "."
     - dsl: api
+      gen:
+        - golang/echo
+      output-dir: "."
 
 log-level: info

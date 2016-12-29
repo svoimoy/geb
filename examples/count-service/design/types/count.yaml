@@ -1,0 +1,29 @@
+type:
+  name: count
+  namespace: "count-service"
+  version: "0.1"
+  fields:
+    - name: owner_id
+      type: string
+      validation:
+        - "length=40"
+        - "alphanum"
+    - name: redis_id
+      type: string
+      validation:
+        - "length=51"
+    - name: value
+      type: uint64
+  views:
+    - name: extern
+      fields:
+        - name: owner_id
+          type: local.owner_id
+        - name: value
+          type: local.value
+    - name: redis
+      fields:
+        - name: redis_id
+          type: local.redis_id
+        - name: value
+          type: local.value

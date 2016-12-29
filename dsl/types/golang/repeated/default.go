@@ -1,6 +1,6 @@
 {{#with RepeatedContext as |RC| }}
 {{#if namespace}}
-package {{#each (split RC.namespace ".")}}{{#if @last }}{{.}}{{/if}}{{/each}}
+package {{#each (split RC.namespace ".")}}{{#if @last }}{{snake .}}{{/if}}{{/each}}
 {{else}}
 package types
 {{/if}}
@@ -21,6 +21,37 @@ type {{camelT RC.name}} struct {
 {{/each}}
 
 }
+
+func New{{camelT RC.name}}() *{{camelT RC.name}} {
+	return &{{camelT RC.name}}{}
+	// loop over fields looking for pointers
+}
+
+{{#each RC.views}}
+{{#with . as |V|}}
+	/* View:
+		{{{V}}}
+	*/
+type {{camelT RC.name}}View_{{camelT V.name}} struct {
+
+{{#each V.fields}}{{#with . as |F|}}
+	{{#if (hasprefix F.type "local") }}
+		{{#dotpath (trimprefix F.type "local.") RC.fields }}
+		{{>field.go .}}
+		{{/dotpath}}
+	{{else}}
+		{{>field.go F}}
+	{{/if}}
+{{/with}}{{/each}}
+	
+}
+
+func New{{camelT RC.name}}View_{{camelT V.name}}() *{{camelT RC.name}}View_{{camelT V.name}} {
+	return &{{camelT RC.name}}View_{{camelT V.name}}{}
+	// loop over fields looking for pointers
+}
+{{/with}}
+{{/each}}
 
 
 /*

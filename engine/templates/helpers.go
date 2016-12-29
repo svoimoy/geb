@@ -40,6 +40,7 @@ func add_template_helpers(tpl *raymond.Template) {
 
 	tpl.RegisterHelper("yaml", helper_yaml)
 	tpl.RegisterHelper("json", helper_json)
+	tpl.RegisterHelper("pprint", helper_pretty)
 	tpl.RegisterHelper("pretty", helper_pretty)
 	tpl.RegisterHelper("lwidth", helper_lwidth)
 	tpl.RegisterHelper("rwidth", helper_rwidth)
@@ -246,10 +247,25 @@ func helper_getbetween(str, lhs, rhs string) string {
 }
 
 var known_builtins = map[string]struct{}{
-	"string":      struct{}{},
-	"int":         struct{}{},
 	"bool":        struct{}{},
+	"byte":        struct{}{},
 	"float":       struct{}{},
+	"float32":     struct{}{},
+	"float64":     struct{}{},
+	"complex64":   struct{}{},
+	"complex128":  struct{}{},
+	"int":         struct{}{},
+	"int8":        struct{}{},
+	"int16":       struct{}{},
+	"int32":       struct{}{},
+	"int64":       struct{}{},
+	"uint":        struct{}{},
+	"uint8":       struct{}{},
+	"uint16":      struct{}{},
+	"uint32":      struct{}{},
+	"uint64":      struct{}{},
+	"rune":        struct{}{},
+	"string":      struct{}{},
 	"object":      struct{}{},
 	"interface{}": struct{}{},
 }

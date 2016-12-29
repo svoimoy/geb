@@ -217,15 +217,13 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 
 				insert := make(map[string]interface{})
 				dd_map := insert
-				if L > 1 {
-					for i, F := range fields {
-						tmp := make(map[string]interface{})
-						logger.Warn("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
-						dd_map[F] = tmp
-						logger.Warn("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
-						dd_map = tmp
-						logger.Warn("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
-					}
+				for i, F := range fields {
+					tmp := make(map[string]interface{})
+					logger.Warn("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+					dd_map[F] = tmp
+					logger.Warn("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+					dd_map = tmp
+					logger.Warn("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
 				}
 
 				dd_map[ename] = elem

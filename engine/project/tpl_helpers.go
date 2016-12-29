@@ -2,6 +2,7 @@ package project
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/aymerick/raymond"
 	"github.ibm.com/hofstadter-io/dotpath"
@@ -16,22 +17,57 @@ func (P *Project) register_partials() {
 		for g_key, G := range D.Generators {
 			logger.Debug("      gen: "+g_key, "gen_cfg", G.Config)
 
-			// Register with the normal templates
+			// Register partials with the normal templates
 			for _, T := range G.Templates {
 				t_ray := (*raymond.Template)(T)
 				for p_key, partial := range G.Partials {
 					p_ray := (*raymond.Template)(partial)
 					t_ray.RegisterPartialTemplate(p_key, p_ray)
 				}
-			}
 
+				// This nasty for loop nesting is to add the global partials to the templates
+				// Loop over each generator in the current DSL
+				for d2_key, D2 := range P.DslMap {
+					// Loop over each generator in the current DSL
+					for g2_key, G2 := range D2.Generators {
+						for p2_key, partial2 := range G2.Partials {
+							p2_ray := (*raymond.Template)(partial2)
+							p2_tkey := strings.Join([]string{d2_key, g2_key, p2_key}, "/")
+							logger.Debug("adding global partial " + p2_tkey)
+							t_ray.RegisterPartialTemplate(p2_tkey, p2_ray)
+						}
+					}
+				}
+
+			} // end loop over normal templates
+
+			// Register partials with repeated templates
 			for _, R := range G.Repeated {
+				// the real template object
 				t_ray := (*raymond.Template)(R)
+
+				// register the local generator partials
 				for p_key, partial := range G.Partials {
 					p_ray := (*raymond.Template)(partial)
 					t_ray.RegisterPartialTemplate(p_key, p_ray)
 				}
-			}
+
+				// register the global partials
+				// This nasty for loop nesting is to add the global partials to the templates
+				// Loop over each DSL in the current Project
+				for d2_key, D2 := range P.DslMap {
+					// Loop over each generator in the current DSL
+					for g2_key, G2 := range D2.Generators {
+						for p2_key, partial2 := range G2.Partials {
+							p2_ray := (*raymond.Template)(partial2)
+							p2_tkey := strings.Join([]string{d2_key, g2_key, p2_key}, "/")
+							logger.Debug("adding global partial " + p2_tkey)
+							t_ray.RegisterPartialTemplate(p2_tkey, p2_ray)
+						}
+					}
+				}
+
+			} // end loop over repeated templates
 
 		}
 	}
@@ -122,12 +158,8 @@ func (P *Project) tpl_helper_get_elem_by_name(path, name string, options *raymon
 }
 
 // data optional argument defaults to DSL
-func (P *Project) tpl_helper_dotpath(path string, options *raymond.Options) interface{} {
-	hash := options.Hash()
-	data, ok := hash["data"]
-	if !ok {
-		data = P.Design
-	} else if data == nil {
+func (P *Project) tpl_helper_dotpath(path string, data interface{}, options *raymond.Options) interface{} {
+	if data == nil {
 		return options.FnWith("Nil data supplied" + path)
 	}
 

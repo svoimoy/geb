@@ -1,0 +1,13 @@
+type-list:
+  name: "response-list"
+  namespace: "count-service"
+  list:
+    - name: version-response
+      fields:
+        - name: version
+          type: string
+    - name: delete-response
+      fields:
+        - name: total-deleted
+          type: uint
+

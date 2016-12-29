@@ -122,14 +122,17 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 
 					tmp_c_slice, ok := collection.([]interface{})
 					if !ok {
-						return nil, errors.New("Collection is not a list: " + R.Field)
+						logger.Info("Collection not a slice", "collection", collection)
+						// return nil, errors.New("Collection is not a list: " + R.Field)
+						c_slice = []interface{}{collection}
+					} else {
+						c_slice = tmp_c_slice
 					}
-					c_slice = tmp_c_slice
 
 				case "type":
 					for _, typ := range design_data["type"].(map[string]interface{}) {
 						local_typ := typ
-						logger.Crit("Adding typ to c_slice", "typ", local_typ)
+						logger.Crit("Adding typ to c_slice", "typ", local_typ, "types", design_data["type"])
 
 						// Recurse over type map here, looking for elements...
 						// which have both name and namespace set.
@@ -213,7 +216,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 
 						}
 
-						extract_elems(local_typ.(map[string]interface{}))
+						extract_elems(local_typ)
 					}
 					logger.Info("Done adding to c_slice", "c_slice", c_slice)
 				}

@@ -1,5 +1,6 @@
 api:
   name: count-service
+  namespace: count-service
   version: "0.1"
   about: count-service for daily transaction counts.
   config:
@@ -10,17 +11,17 @@ api:
       method: GET
       return: VersionResponse
 
-    - name: clearCountByDate
-      route: count
+    - name: clearCountsByDate
+      route: clear-by-date
       method: DELETE
       params:
         - name: date
           type: string
           required: true
           validation:
-            min: 11
-            max: 11
-            regex: "[0-3][0-9]-[01][0-9]-20[12][0-9]"
+            - "len=11"
+            - "ascii"
+            #            regex: "[0-3][0-9]-[01][0-9]-20[12][0-9]"
       return: DeleteCount
 
   resources:
@@ -28,13 +29,13 @@ api:
       route: count
       resource: count
       methods:
-        list:
+        - method: list
           input:  none
-          output: list[count.views.extern]
-        get:
-          input:  count.fields.owner_id
-          output: count.views.extern
-        put:
-          input:  count.views.extern
-          output: count.views.extern
+          output: array:count-service.count.views.extern
+        - method: get
+          input:  count-service.count.fields.owner_id
+          output: count-service.count.views.extern
+        - method: put
+          input:  count-service.count.views.extern
+          output: count-service.count.views.extern
 
