@@ -92,14 +92,14 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 			case "dsl":
 				d, ok := design_data["dsl"].(map[string]interface{})[d_key]
 				if !ok {
-					logger.Error("Did not find DSL data", "d_key", d_key, "design_data", design_data)
+					logger.Info("Did not find DSL data", "d_key", d_key, "design_data", design_data)
 					return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
 				}
 				data = d
 			case "type":
 				d, ok := design_data["type"].(map[string]interface{})
 				if !ok || len(d) == 0 {
-					logger.Error("Did not find any Type data", "design_data", design_data)
+					logger.Debug("Did not find any Type data", "design_data", design_data)
 					return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
 				}
 				data = d
@@ -132,7 +132,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				case "type":
 					for _, typ := range design_data["type"].(map[string]interface{}) {
 						local_typ := typ
-						logger.Crit("Adding typ to c_slice", "typ", local_typ, "types", design_data["type"])
+						logger.Debug("Adding typ to c_slice", "typ", local_typ, "types", design_data["type"])
 
 						// Recurse over type map here, looking for elements...
 						// which have both name and namespace set.
@@ -165,7 +165,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 										}
 
 									default:
-										logger.Error("elem is not a mapSI", "elem", elem)
+										logger.Debug("elem is not a mapSI", "elem", elem)
 										continue
 									}
 
@@ -198,7 +198,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 										}
 
 									default:
-										logger.Error("elem is not a mapII", "elem", elem)
+										logger.Debug("elem is not a mapII", "elem", elem)
 										continue
 									}
 
@@ -210,7 +210,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 								}
 
 							default:
-								logger.Error("input is not a map", "input", MAP)
+								logger.Debug("input is not a map", "input", MAP)
 
 							}
 

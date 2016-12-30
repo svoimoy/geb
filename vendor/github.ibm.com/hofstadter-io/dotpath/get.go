@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework
 )
 
@@ -16,7 +17,26 @@ func init() {
 }
 
 func SetLogger(l log.Logger) {
-	logger = l
+	lcfg := viper.GetStringMap("log-config.dotpath.default")
+
+	if lcfg == nil || len(lcfg) == 0 {
+		logger = l
+	} else {
+		level_str := lcfg["level"].(string)
+		stack := lcfg["stack"].(bool)
+		level, err := log.LvlFromString(level_str)
+		if err != nil {
+			panic(err)
+		}
+
+		termlog := log.LvlFilterHandler(level, log.StdoutHandler)
+		if stack {
+			term_stack := log.CallerStackHandler("%+v", log.StdoutHandler)
+			termlog = log.LvlFilterHandler(level, term_stack)
+		}
+
+		logger.SetHandler(termlog)
+	}
 }
 
 func SetLogLevel(level string) {

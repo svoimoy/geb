@@ -20,7 +20,7 @@ func Merge(orig, update interface{}) (interface{}, error) {
 
 func merge(orig, update interface{}) (interface{}, error) {
 
-	logger.Warn("Merging", "orig", orig, "update", update)
+	logger.Info("Merging", "orig", orig, "update", update)
 
 	switch O := orig.(type) {
 
@@ -29,12 +29,12 @@ func merge(orig, update interface{}) (interface{}, error) {
 		if !ok {
 			return nil, errors.New("update is not mS like orig")
 		}
-		logger.Warn("mS entering")
+		logger.Info("mS entering")
 		for key, val := range U {
-			logger.Error("in merge mS-U", "key", key, "val", val, "curr", O[key])
+			logger.Debug("in merge mS-U", "key", key, "val", val, "curr", O[key])
 			if curr, exists := O[key]; exists {
 				tmp, err := merge(curr, val)
-				logger.Error("after merge mS", "tmp", tmp, "err", err)
+				logger.Debug("after merge mS", "tmp", tmp, "err", err)
 				if err != nil {
 					return nil, errors.Wrap(err, "in merge mS")
 				}
@@ -42,7 +42,7 @@ func merge(orig, update interface{}) (interface{}, error) {
 			}
 			O[key] = val
 		}
-		logger.Warn("mS returning", "O", O)
+		logger.Info("mS returning", "O", O)
 		return O, nil
 
 	case map[interface{}]interface{}:
@@ -50,12 +50,12 @@ func merge(orig, update interface{}) (interface{}, error) {
 		if !ok {
 			return nil, errors.New("update is not mI like orig")
 		}
-		logger.Warn("mI entering")
+		logger.Info("mI entering")
 		for key, val := range U {
-			logger.Error("in merge mI-U", "key", key, "val", val, "curr", O[key])
+			logger.Debug("in merge mI-U", "key", key, "val", val, "curr", O[key])
 			if curr, exists := O[key]; exists {
 				tmp, err := merge(curr, val)
-				logger.Error("after merge mI", "tmp", tmp, "err", err)
+				logger.Debug("after merge mI", "tmp", tmp, "err", err)
 				if err != nil {
 					return nil, errors.Wrap(err, "in merge mI")
 				}
@@ -63,7 +63,7 @@ func merge(orig, update interface{}) (interface{}, error) {
 			}
 			O[key] = val
 		}
-		logger.Warn("mI returning", "O", O)
+		logger.Info("mI returning", "O", O)
 		return O, nil
 
 	case []interface{}:
@@ -72,7 +72,7 @@ func merge(orig, update interface{}) (interface{}, error) {
 			return nil, errors.New("update is not aI like orig")
 		}
 
-		logger.Warn("aI entering")
+		logger.Info("aI entering")
 		// turn into maps
 		OM := map[string]interface{}{}
 		for i, elem := range O {
@@ -128,11 +128,11 @@ func merge(orig, update interface{}) (interface{}, error) {
 		}
 
 		// merge
-		logger.Warn("aI")
+		logger.Info("aI")
 		for key, val := range UM {
 			if curr, exists := OM[key]; exists {
 				tmp, err := merge(curr, val)
-				logger.Error("in merge MS", "key", key, "val", val, "curr", curr)
+				logger.Debug("in merge MS", "key", key, "val", val, "curr", curr)
 				if err != nil {
 					return nil, errors.Wrap(err, "in merge MS")
 				}
@@ -147,7 +147,7 @@ func merge(orig, update interface{}) (interface{}, error) {
 			OA = append(OA, val)
 		}
 
-		logger.Warn("aI returning", "OA", OA)
+		logger.Info("aI returning", "OA", OA)
 		return OA, nil
 
 	default:

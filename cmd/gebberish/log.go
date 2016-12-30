@@ -1,48 +1,41 @@
 package gebberish
 
 import (
-	log "gopkg.in/inconshreveable/log15.v2"
+	"github.com/spf13/viper"
+	log "gopkg.in/inconshreveable/log15.v2" // logging framework
 )
 
-var logger log.Logger
+var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	logger = l
+
+	lcfg := viper.GetStringMap("log-config.cmd.gebberish")
+
+	if lcfg == nil || len(lcfg) == 0 {
+		logger = l
+	} else {
+		// find the logging level
+		level_str := lcfg["level"].(string)
+		level, err := log.LvlFromString(level_str)
+		if err != nil {
+			panic(err)
+		}
+
+		// possibly find the stack switch
+		stack := false
+		stack_tmp := lcfg["stack"]
+		if stack_tmp != nil {
+			stack = stack_tmp.(bool)
+		}
+
+		// build the local logger
+		termlog := log.LvlFilterHandler(level, log.StdoutHandler)
+		if stack {
+			term_stack := log.CallerStackHandler("%+v", log.StdoutHandler)
+			termlog = log.LvlFilterHandler(level, term_stack)
+		}
+
+		// set the local logger
+		logger.SetHandler(termlog)
+	}
 }
-
-/*
-Repeated Context
-----------------
-args:
-- help: The rule to apply [r# or rule-#]
-  name: rule
-  required: true
-  type: string
-- help: optional args to rules 3 and 4
-  name: extra
-  rest: true
-  type: array:string
-long: |
-  Welcome to the MI game
-
-  start with mi-string = 'MI'
-
-  mi-rule-1:    if mi-string ends in 'I',        you may add a 'U'
-  mi-rule-2:    suppose mi-string = 'Mx',          then you may make it 'Mxx'
-  mi-rule-3:    if mi-string contains an 'III',  you may replace it with 'U'
-  mi-rule-4:    if mi-string contains a 'UU',    you may drop it (remove it)
-
-  Goal: Try to get 'MU'
-
-  Input: r1,r2,r3,r4 or reset
-
-  Notes:
-   - rules 3 and 4 require a zero-indexed postional argument to determine the occurance to remove
-   - use 'reset' to restore mi-string to 'MI'
-name: Mi
-parent: Gebberish
-path: commands.subcommands
-short: View information about a Project's Plans
-usage: mi
-
-*/

@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kr/pretty"
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 	"gopkg.in/yaml.v1"
 )
@@ -219,11 +218,11 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 				dd_map := insert
 				for i, F := range fields {
 					tmp := make(map[string]interface{})
-					logger.Warn("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+					logger.Info("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
 					dd_map[F] = tmp
-					logger.Warn("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+					logger.Info("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
 					dd_map = tmp
-					logger.Warn("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+					logger.Info("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
 				}
 
 				dd_map[ename] = elem
@@ -231,31 +230,30 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 
 				if curr, ok := d.Type[F0]; !ok {
 					d.Type[F0] = insert[F0]
-					logger.Error("d.TypeList new L>1", "data", d.Type)
+					logger.Debug("d.TypeList new L>1", "data", d.Type)
 				} else {
-					logger.Crit("...", "curr", curr, "d.Type", d.Type, "update", insert)
+					logger.Info("...", "curr", curr, "d.Type", d.Type, "update", insert)
 					merged, merr := utils.Merge(d.Type, insert)
 					if merr != nil {
 						return errors.Wrap(merr, "in store_design typelist.loop")
 					}
-					logger.Crit("result...", "merged", merged)
-					fmt.Printf("%# v", pretty.Formatter(merged))
+					logger.Info("result...", "merged", merged)
 					d.Type[F0] = merged.(map[string]interface{})[F0]
-					logger.Error("d.TypeList merge L>1", "data", d.Type)
+					logger.Debug("d.TypeList merge L>1", "data", d.Type)
 				}
 				logger.Debug("       - " + F0)
 
 			} else {
 				if curr, ok := d.Type[name]; !ok {
 					d.Type[name] = elem
-					logger.Error("d.TypeList new L<2", "data", d.Type)
+					logger.Debug("d.TypeList new L<2", "data", d.Type)
 				} else {
 					merged, merr := utils.Merge(curr, elem)
 					if merr != nil {
 						return errors.Wrap(merr, "in store_design typelist")
 					}
 					d.Type[name] = merged
-					logger.Error("d.TypeList merge L<2", "data", d.Type)
+					logger.Debug("d.TypeList merge L<2", "data", d.Type)
 				}
 			}
 		}
@@ -274,11 +272,11 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 			dd_map := insert
 			for i, F := range fields {
 				tmp := make(map[string]interface{})
-				logger.Warn("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+				logger.Info("FIELD_INDEX A", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
 				dd_map[F] = tmp
-				logger.Warn("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+				logger.Info("FIELD_INDEX B", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
 				dd_map = tmp
-				logger.Warn("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
+				logger.Info("FIELD_INDEX C", "i", i, "F", F, "map", dd_map, "tmp", tmp, "insert", insert)
 			}
 
 			dd_map[name] = design
@@ -286,31 +284,30 @@ func (d *Design) store_design(dsl string, design interface{}) error {
 
 			if curr, ok := d.Type[F0]; !ok {
 				d.Type[F0] = insert[F0]
-				logger.Error("d.Type new L>1", "data", d.Type)
+				logger.Debug("d.Type new L>1", "data", d.Type)
 			} else {
-				logger.Crit("merge...", "curr", curr, "d.Type", d.Type, "update", insert)
+				logger.Info("merge...", "curr", curr, "d.Type", d.Type, "update", insert)
 				merged, merr := utils.Merge(d.Type, insert)
 				if merr != nil {
 					return errors.Wrap(merr, "in store_design type.loop")
 				}
-				logger.Crit("result...", "merged", merged)
-				fmt.Printf("%# v", pretty.Formatter(merged))
+				logger.Info("result...", "merged", merged)
 				d.Type[F0] = merged.(map[string]interface{})[F0]
-				logger.Error("d.Type merge L>1", "data", d.Type)
+				logger.Debug("d.Type merge L>1", "data", d.Type)
 			}
 			logger.Debug("       - " + F0)
 
 		} else {
 			if curr, ok := d.Type[name]; !ok {
 				d.Type[name] = design
-				logger.Error("d.Type new L<2", "data", d.Type)
+				logger.Debug("d.Type new L<2", "data", d.Type)
 			} else {
 				merged, merr := utils.Merge(curr, design)
 				if merr != nil {
 					return errors.Wrap(merr, "in store_design type")
 				}
 				d.Type[name] = merged
-				logger.Error("d.Type merge L<2", "data", d.Type)
+				logger.Debug("d.Type merge L<2", "data", d.Type)
 			}
 		}
 
