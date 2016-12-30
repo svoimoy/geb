@@ -33,7 +33,7 @@ func Handle_{{RC.method}}_{{RC.name}}(ctx echo.Context) error {
 		{{camel P.name}} := ctx.QueryParam("{{P.name}}")
 		// Validate
 		{{camel P.name}}_tag := "required{{#each validation}},{{.}}{{/each}}"
-		err := validate.Var({{camel P.name}}, {{camel P.name}}_tag)
+		err := validator.New().Var({{camel P.name}}, {{camel P.name}}_tag)
 		if err != nil {
 			return err
 		}

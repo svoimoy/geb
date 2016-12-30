@@ -15,17 +15,13 @@ import (
 // Version:   {{RC.version}}
 
 type {{camelT RC.name}} struct {
-
-{{#each RC.fields}}
-	{{>field.go .}}
+{{#each RC.fields ~}}
+	{{> types/golang/field.go .}}
 {{/each}}
-
 }
 
-func New{{camelT RC.name}}() *{{camelT RC.name}} {
-	return &{{camelT RC.name}}{}
-	// loop over fields looking for pointers
-}
+{{> types/golang/type/new-func.go TYP=RC}}
+
 
 {{#each RC.views}}
 {{#with . as |V|}}
@@ -33,23 +29,18 @@ func New{{camelT RC.name}}() *{{camelT RC.name}} {
 		{{{V}}}
 	*/
 type {{camelT RC.name}}View_{{camelT V.name}} struct {
-
-{{#each V.fields}}{{#with . as |F|}}
-	{{#if (hasprefix F.type "local") }}
-		{{#dotpath (trimprefix F.type "local.") RC.fields }}
-		{{>field.go .}}
-		{{/dotpath}}
-	{{else}}
-		{{>field.go F}}
-	{{/if}}
-{{/with}}{{/each}}
-	
+{{#each V.fields}}{{#with . as |F|~}}
+{{#if (hasprefix F.type "local")}}
+{{#dotpath (trimprefix F.type "local.") RC.fields }}
+	{{> types/golang/field.go .}}
+{{/dotpath}}
+{{else}}
+	{{> types/golang/field.go F}}
+{{/if}}
+{{/with}}{{/each ~}}
 }
 
-func New{{camelT RC.name}}View_{{camelT V.name}}() *{{camelT RC.name}}View_{{camelT V.name}} {
-	return &{{camelT RC.name}}View_{{camelT V.name}}{}
-	// loop over fields looking for pointers
-}
+{{> types/golang/view/new-func.go TYP=RC VIEW=V}}
 {{/with}}
 {{/each}}
 

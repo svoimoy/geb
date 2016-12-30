@@ -3,7 +3,7 @@ json:"{{name}}"
 xml:"{{name}}"
 yaml:"{{name}}"
 form:"{{name}}"
-query:"{{name}}"
-{{> validate.go ~}}
+query:"{{name}}"{{! for formatting ~}}
+{{#if validation }}{{! end format fix}}
+{{> validate.go}}{{else~}}{{/if}}
 `
-
