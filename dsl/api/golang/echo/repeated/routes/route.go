@@ -24,7 +24,7 @@ Parent:  {{RC.parent}}
 
 // Should find a way to build up errors and return all
 // {{upper RC.method}}  {{RC.input}}  ->  {{RC.output}}
-func Handle_{{RC.method}}_{{RC.name}}(ctx echo.Context) error {
+func Handle_{{upper RC.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 	// Check params
 {{#params . as |P|}}
 
@@ -38,9 +38,17 @@ func Handle_{{RC.method}}_{{RC.name}}(ctx echo.Context) error {
 			return err
 		}
 	{{else}}
+			// Initialize
+			{{#if (contains TYP.path ".views")}}
+			// view
+			{{> types/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{else}}
+			// type
+			{{> types/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{/if}}
+
 			// Extract:
 			// need to import the type and call pkg.New...
-			input := new({{join2 "." (lower parent) (camelT name) }})
 			if err := ctx.Bind(input); err != nil {
 				return err
 			}

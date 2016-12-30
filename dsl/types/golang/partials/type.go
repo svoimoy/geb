@@ -1,7 +1,5 @@
 {{#with . as |T|}}
-{{#if (contains T "array:") ~}} []{{/if ~}}
-{{#if (contains T "map:") ~}} map[string]{{/if ~}}
-{{#if (contains T "*") ~}}*{{/if ~}}
+{{> types/golang/modifiers.go}}
 {{#with (getsuffix (getsuffix T ":") "*") as |TYP|}}
 {{#if (contains T ".") ~}}
 	{{#each (rsublist (split TYP ".") 0 2 ) ~}}

@@ -63,12 +63,15 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("hassuffix", helper_hassuffix)
 	tpl.RegisterHelper("trimprefix", helper_trimprefix)
 	tpl.RegisterHelper("trimsuffix", helper_trimsuffix)
+	tpl.RegisterHelper("trimto", helper_trimto)
+	tpl.RegisterHelper("trimfrom", helper_trimfrom)
 	tpl.RegisterHelper("substr", helper_substr)
 	tpl.RegisterHelper("getprefix", helper_getprefix)
 	tpl.RegisterHelper("getsuffix", helper_getsuffix)
 	tpl.RegisterHelper("getbetween", helper_getbetween)
 
 	tpl.RegisterHelper("builtin", helper_builtin)
+	tpl.RegisterHelper("ternary", helper_ternary)
 
 	tpl.RegisterHelper("length", helper_length)
 	tpl.RegisterHelper("identity", helper_identity)
@@ -211,6 +214,29 @@ func helper_trimprefix(str, pre string) string {
 func helper_trimsuffix(str, suf string) string {
 	return strings.TrimSuffix(str, suf)
 }
+
+func helper_trimto(str, pre string, keep bool) string {
+	pos := strings.Index(str, pre)
+	if pos >= 0 {
+		if keep {
+			return str[:pos-len(pre)]
+		}
+		return str[:pos]
+	}
+	return str
+}
+
+func helper_trimfrom(str, pre string, keep bool) string {
+	pos := strings.Index(str, pre)
+	if pos >= 0 {
+		if keep {
+			return str[pos+len(pre):]
+		}
+		return str[pos:]
+	}
+	return str
+}
+
 func helper_substr(str string, start, end int) string {
 	if end == -1 {
 		end = len(str)
@@ -276,6 +302,13 @@ func helper_builtin(str string) string {
 		return "true"
 	}
 	return ""
+}
+
+func helper_ternary(first, second string) string {
+	if first != "" {
+		return first
+	}
+	return second
 }
 
 func helper_length(list interface{}) interface{} {

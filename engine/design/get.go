@@ -20,16 +20,16 @@ func (D *Design) GetByPath(path string) (interface{}, error) {
 
 	switch P {
 	case "proj":
-		return dotpath.GetByPathSlice(rest, D.Proj)
+		return dotpath.GetByPathSlice(rest, D.Proj, true)
 
 	case "type":
-		return dotpath.GetByPathSlice(rest, D.Type)
+		return dotpath.GetByPathSlice(rest, D.Type, true)
 
 	case "dsl":
-		return dotpath.GetByPathSlice(rest, D.Dsl)
+		return dotpath.GetByPathSlice(rest, D.Dsl, true)
 
 	case "custom":
-		return dotpath.GetByPathSlice(rest, D.Custom)
+		return dotpath.GetByPathSlice(rest, D.Custom, true)
 
 	default:
 		return nil, errors.New("Unknown path start for design: " + P)

@@ -1,1 +1,1 @@
-G.{{upper method}}("/{{route}}", routes.Handle_{{method}}_{{name}})
+G.{{replace (upper method) "LIST" "GET" -1 }}("/{{route}}", routes.Handle_{{replace (upper method) "LIST" "GET" -1}}_{{camelT name}})

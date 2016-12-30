@@ -25,11 +25,11 @@ Parent:    {{RC.parent}}
 
 {{#with . as |M|}}
 // {{upper M.method}}  {{M.input}}  ->  {{M.output}}
-func Handle_{{upper M.method}}_{{RC.name}}(ctx echo.Context) error {
+func Handle_{{upper M.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 
 {{#if (ne M.input "none")}}
 	// input
-	{{#gettype M.input as |TYP|}}
+	{{#gettype M.input true as |TYP|}}
 		{{#if (builtin type)}}
 			// Extract:
 			input := ctx.QueryParam("{{name}}")
@@ -41,6 +41,15 @@ func Handle_{{upper M.method}}_{{RC.name}}(ctx echo.Context) error {
 			}
 
 		{{else}}
+			// Initialize
+			{{#if (contains TYP.path ".views")}}
+			// view
+			{{> types/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{else}}
+			// type
+			{{> types/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{/if}}
+
 			// Extract:
 			// need to import the type and call pkg.New...
 			// or add a field during prep to add package name
@@ -61,17 +70,20 @@ func Handle_{{upper M.method}}_{{RC.name}}(ctx echo.Context) error {
 
 {{#if (ne M.output "none")}}
 	// output
-	{{#gettype M.output as |TYP|}}
+	{{#gettype M.output true as |TYP|}}
 		{{#if (builtin type)}}
 			// builtin
 			var input {{type}}
 		{{else}}
 			// user-defined
 			{{#if (contains TYP.path ".views")}}
-			{{> types/golang/view/var-new.go NAME="output" TYP=.}}
+			// view
+			{{> types/golang/view/var-new.go NAME="output" TYP=. MOD=(ternary (trimsuffix M.output (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
 			{{else}}
-			// Its a straight up type
+			// type
+			{{> types/golang/type/var-new.go NAME="output" TYP=. MOD=(ternary (trimsuffix M.output (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
 			{{/if}}
+
 		{{/if}}
 	{{/gettype}}
 {{else}}

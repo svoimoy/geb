@@ -115,7 +115,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				var c_slice []interface{}
 				switch D.Config.Type {
 				case "dsl":
-					collection, err := dotpath.Get(R.Field, data)
+					collection, err := dotpath.Get(R.Field, data, false)
 					if err != nil {
 						return nil, errors.Wrapf(err, "looking up by path:  repeat(%s)  path(%s) in data:\n%+v\n\n", R.Name, R.Field, data)
 					}

@@ -136,7 +136,7 @@ func (P *Project) tpl_helper_get_obj_by_path(path string, options *raymond.Optio
 }
 
 // data optional argument defaults to DSL
-func (P *Project) tpl_helper_get_elem_by_name(path, name string, options *raymond.Options) interface{} {
+func (P *Project) tpl_helper_get_elem_by_name(path, name string, no_solo_array bool, options *raymond.Options) interface{} {
 	hash := options.Hash()
 	data, ok := hash["data"]
 	if !ok {
@@ -145,7 +145,7 @@ func (P *Project) tpl_helper_get_elem_by_name(path, name string, options *raymon
 		return options.FnWith("Nil data supplied" + path)
 	}
 
-	obj, err := dotpath.Get(path, data)
+	obj, err := dotpath.Get(path, data, no_solo_array)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}
@@ -158,12 +158,12 @@ func (P *Project) tpl_helper_get_elem_by_name(path, name string, options *raymon
 }
 
 // data optional argument defaults to DSL
-func (P *Project) tpl_helper_dotpath(path string, data interface{}, options *raymond.Options) interface{} {
+func (P *Project) tpl_helper_dotpath(path string, data interface{}, no_solo_array bool, options *raymond.Options) interface{} {
 	if data == nil {
 		return options.FnWith("Nil data supplied" + path)
 	}
 
-	obj, err := dotpath.Get(path, data)
+	obj, err := dotpath.Get(path, data, no_solo_array)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}
@@ -176,20 +176,13 @@ func (P *Project) tpl_helper_dotpath(path string, data interface{}, options *ray
 }
 
 // data optional argument defaults to DSL
-func (P *Project) tpl_helper_dotpath_type(path string, options *raymond.Options) interface{} {
-	hash := options.Hash()
-	data, ok := hash["data"]
-	if !ok {
-		data = P.Design.Type
-	} else if data == nil {
-		return options.FnWith("Nil data supplied" + path)
-	}
+func (P *Project) tpl_helper_dotpath_type(path string, no_solo_array bool, options *raymond.Options) interface{} {
+	data := P.Design.Type
 
-	obj, err := dotpath.Get(path, data)
+	obj, err := dotpath.Get(path, data, no_solo_array)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}
-	// obj := options.Eval(data, path)
 	if obj == nil {
 		return options.FnWith("Path not found: " + path + fmt.Sprintf("\n%+v", data))
 	}
@@ -198,20 +191,13 @@ func (P *Project) tpl_helper_dotpath_type(path string, options *raymond.Options)
 }
 
 // data optional argument defaults to DSL
-func (P *Project) tpl_helper_dotpath_dsl(path string, options *raymond.Options) interface{} {
-	hash := options.Hash()
-	data, ok := hash["data"]
-	if !ok {
-		data = P.Design.Dsl
-	} else if data == nil {
-		return options.FnWith("Nil data supplied" + path)
-	}
+func (P *Project) tpl_helper_dotpath_dsl(path string, no_solo_array bool, options *raymond.Options) interface{} {
+	data := P.Design.Dsl
 
-	obj, err := dotpath.Get(path, data)
+	obj, err := dotpath.Get(path, data, no_solo_array)
 	if err != nil {
 		return options.FnWith("Error during path search: " + err.Error())
 	}
-	// obj := options.Eval(data, path)
 	if obj == nil {
 		return options.FnWith("Path not found: " + path + fmt.Sprintf("\n%+v", data))
 	}

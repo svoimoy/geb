@@ -25,16 +25,20 @@ func main() {
 	E.Use(middleware.Logger())
 	E.Use(middleware.Recover())
 
-	// Routes
+	// Base API Group
 	G := E.Group("{{config.base-url}}")
-	{{#each routes}}
-	{{> router/route.go .}}
+
+	// Routes
+	{{#each routes as |R|}}
+	{{> router/route.go R ~}}
 	{{/each}}
 
 	// Resources
-	{{#each resources}}
-	{{> router/resource.go .}}
-	{{/each}}
+	{{#each resources as |R| ~}}
+		{{#each methods as |M| ~}}
+	{{> router/resource.go R ~}}
+		{{/each}}
+	{{/each }}
 
 	E.Logger.SetLevel(log.INFO)
 	E.Logger.Fatal(E.Start("localhost:1323"))

@@ -6,12 +6,12 @@ type:
     - name: owner_id
       type: string
       validation:
-        - "length=40"
+        - "len=40"
         - "alphanum"
     - name: redis_id
       type: string
       validation:
-        - "length=51"
+        - "len=51"
     - name: value
       type: uint64
   views:

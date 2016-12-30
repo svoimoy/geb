@@ -31,7 +31,7 @@ type {{camelT RC.name}} struct {
 type {{camelT RC.name}}View_{{camelT V.name}} struct {
 {{#each V.fields}}{{#with . as |F|~}}
 {{#if (hasprefix F.type "local")}}
-{{#dotpath (trimprefix F.type "local.") RC.fields }}
+{{#dotpath (trimprefix F.type "local.") RC.fields true }}
 	{{> types/golang/field.go .}}
 {{/dotpath}}
 {{else}}

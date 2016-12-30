@@ -33,7 +33,7 @@ func ViewGeb(args []string) (string, error) {
 	ret := ""
 	for _, path := range args {
 		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
-		val, err := dotpath.Get(path, data)
+		val, err := dotpath.Get(path, data, true)
 		if err != nil {
 			return ret, errors.Wrap(err, "in engine.ViewGen")
 		}
@@ -91,7 +91,7 @@ func ViewDsl(folder string, args []string) (string, error) {
 	ret := ""
 	for _, path := range args {
 		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
-		val, err := dotpath.Get(path, data)
+		val, err := dotpath.Get(path, data, true)
 		if err != nil {
 			return ret, errors.Wrap(err, "in engine.ViewGen")
 		}
@@ -154,7 +154,7 @@ func ViewGen(folder string, args []string) (string, error) {
 	ret := ""
 	for _, path := range args {
 		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
-		val, err := dotpath.Get(path, data)
+		val, err := dotpath.Get(path, data, true)
 		if err != nil {
 			return ret, errors.Wrap(err, "in engine.ViewGen")
 		}
@@ -233,7 +233,7 @@ func ViewProject(folder string, args []string) (string, error) {
 	ret := ""
 	for _, path := range args {
 		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
-		val, err := dotpath.Get(path, data)
+		val, err := dotpath.Get(path, data, true)
 		if err != nil {
 			return ret, errors.Wrap(err, "in engine.ViewGen")
 		}
@@ -282,7 +282,7 @@ func ViewPlans(folder string, args []string) (string, error) {
 	ret := ""
 	for _, path := range args {
 		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
-		val, err := dotpath.Get(path, data)
+		val, err := dotpath.Get(path, data, true)
 		if err != nil {
 			return ret, errors.Wrap(err, "in engine.ViewGen")
 		}

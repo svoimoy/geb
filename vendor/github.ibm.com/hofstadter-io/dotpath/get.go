@@ -64,10 +64,14 @@ func config_logger(level string) {
 
 }
 
-func Get(path string, data interface{}) (interface{}, error) {
+func Get(path string, data interface{}, no_solo_array bool) (interface{}, error) {
 	paths := strings.Split(path, ".")
 	if len(paths) < 1 {
 		return nil, errors.New("Bad path supplied: " + path)
+	}
+	if strings.Contains(paths[0], ":") {
+		pos := strings.Index(paths[0], ":")
+		paths[0] = paths[0][pos+1:]
 	}
 
 	// fmt.Println("GETPATH:", path, paths, data)
@@ -77,20 +81,24 @@ func Get(path string, data interface{}) (interface{}, error) {
 		return nil, err
 	}
 	if T, ok := ret.([]interface{}); ok {
-		if len(T) == 1 {
+		if no_solo_array && len(T) == 1 {
 			return T[0], nil
 		}
 	}
 	return ret, nil
 }
 
-func GetByPathSlice(path []string, data interface{}) (interface{}, error) {
+func GetByPathSlice(path []string, data interface{}, no_solo_array bool) (interface{}, error) {
+	if strings.Contains(path[0], ":") {
+		pos := strings.Index(path[0], ":")
+		path[0] = path[0][pos+1:]
+	}
 	ret, err := get_by_path(0, path, data)
 	if err != nil {
 		return nil, err
 	}
 	if T, ok := ret.([]interface{}); ok {
-		if len(T) == 1 {
+		if no_solo_array && len(T) == 1 {
 			return T[0], nil
 		}
 	}
