@@ -61,22 +61,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- p
-- proj
-args:
-- help: one ore more dotpaths for indexing into the data
-  name: paths
-  rest: true
-  type: array:string
-long: View information about a Project known from the current path
-name: Project
-parent: View
-path: commands.subcommands
-short: View information about a Project
-usage: project <dotpath>...
-
-*/
+// HOFSTADTER_BELOW

@@ -59,21 +59,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- d
-args:
-- help: one ore more dotpaths for indexing into the data
-  name: paths
-  rest: true
-  type: array:string
-long: View information about DSLs known from the current path
-name: Dsl
-parent: View
-path: commands.subcommands
-short: View information about DSLs
-usage: dsl <dotpath>...
-
-*/
+// HOFSTADTER_BELOW

@@ -75,27 +75,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-args:
-- help: Path to the input design file.
-  name: designFile
-  required: true
-  type: string
-- help: Path to the template file.
-  name: templateFile
-  required: true
-  type: string
-- help: Path to the output file. Can also be 'stdout'.
-  name: outputFile
-  required: true
-  type: string
-long: Generate a file from design and a template.
-name: File
-parent: Gen
-path: commands.subcommands
-short: Generate a file.
-usage: file <designFile> <templateFile> <outputFile>
-
-*/
+// HOFSTADTER_BELOW

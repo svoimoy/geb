@@ -66,14 +66,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-long: Copy development files to the dot folder
-name: DevCopyIn
-parent: System
-path: commands.subcommands
-short: Copy development files to the dot folder
-usage: dev-copy-in
-
-*/
+// HOFSTADTER_BELOW

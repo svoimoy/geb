@@ -77,8 +77,14 @@ func config_logger() {
 	// set package loggers
 	cmd.SetLogger(logger)
 
+	// IF using geb-engine dsl
+	// dotpath.SetLogger(logger)
+	// engine.SetLogger(logger)
+
 	// HOFSTADTER_START config-logger
 	dotpath.SetLogger(logger)
 	engine.SetLogger(logger)
 	// HOFSTADTER_END   config-logger
 }
+
+// HOFSTADTER_BELOW

@@ -29,51 +29,11 @@ var SystemCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(SystemCmd)
 
+	system.SetLogger(logger)
 	SystemCmd.AddCommand(system.InitCmd)
 	SystemCmd.AddCommand(system.DevCopyInCmd)
 	SystemCmd.AddCommand(system.UpdateCmd)
+
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- sys
-- s
-long: Manage the geb system and congiuration
-name: System
-omit-run: true
-parent: geb
-path: commands
-short: Manage the geb system and congiuration
-subcommands:
-- aliases:
-  - initialize
-  - setup
-  long: Intializes the geb tool and the ~/.hofstadter dot folder.
-  name: Init
-  parent: System
-  path: commands.subcommands
-  short: Initialize the geb tool and files
-  usage: init
-- long: Copy development files to the dot folder
-  name: DevCopyIn
-  parent: System
-  path: commands.subcommands
-  short: Copy development files to the dot folder
-  usage: dev-copy-in
-- long: Update the geb library DSLs, designs, and other files in the dot folder.
-  name: Update
-  parent: System
-  path: commands.subcommands
-  short: Update the geb library and dot folder
-  usage: update
-- long: View the geb system configuration
-  name: View
-  parent: System
-  path: commands.subcommands
-  short: View the geb system configuration
-  usage: view
-usage: system
-
-*/
+// HOFSTADTER_BELOW

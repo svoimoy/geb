@@ -56,24 +56,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- s
-- system
-- geb
-- config
-args:
-- help: one ore more dotpaths for indexing into the data
-  name: paths
-  rest: true
-  type: array:string
-long: View information about the global geb config
-name: System
-parent: View
-path: commands.subcommands
-short: View information about Global geb config
-usage: sys <dotpaths>...
-
-*/
+// HOFSTADTER_BELOW

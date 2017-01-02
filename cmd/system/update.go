@@ -33,14 +33,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-long: Update the geb library DSLs, designs, and other files in the dot folder.
-name: Update
-parent: System
-path: commands.subcommands
-short: Update the geb library and dot folder
-usage: update
-
-*/
+// HOFSTADTER_BELOW

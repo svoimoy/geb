@@ -168,30 +168,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- new
-args:
-- help: The name of the new project to create
-  name: name
-  required: true
-  type: string
-- help: The starting list of DSLs and generators by path.
-  name: dsls_n_gens
-  rest: true
-  type: array:string
-long: |
-  Create a new project with the given name.
-  Optionally specifiy the starting set of
-  DSLs and generators for the project.
-  The output directory defaults to the same name,
-  unless overridden by the output flag.
-name: Create
-parent: geb
-path: commands
-short: Create a new project
-usage: create <name> <dsl/gen>...
-
-*/
+// HOFSTADTER_BELOW

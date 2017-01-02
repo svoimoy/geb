@@ -2,13 +2,12 @@ package system
 
 import (
 	"github.com/spf13/viper"
-	log "gopkg.in/inconshreveable/log15.v2" // logging framework
+	log "gopkg.in/inconshreveable/log15.v2"
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-
 	lcfg := viper.GetStringMap("log-config.cmd.system")
 
 	if lcfg == nil || len(lcfg) == 0 {
@@ -38,4 +37,8 @@ func SetLogger(l log.Logger) {
 		// set the local logger
 		logger.SetHandler(termlog)
 	}
+
+	// set subcommand loggers
 }
+
+// HOFSTADTER_BELOW

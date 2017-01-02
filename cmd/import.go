@@ -83,39 +83,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- i
-- convert
-- eat
-args:
-- help: Path to the file or folder. Can also be 'stdin'.
-  name: input
-  required: true
-  type: string
-- help: Path to the output file or folder. Can also be 'stdout'.
-  name: output
-  required: true
-  type: string
-flags:
-- help: The type of input data to force geb to use a certain format
-  long: type
-  name: Type
-  short: T
-  type: string
-long: |
-  Import other stuff into Hofstadter.
-
-  Stuff is...
-    - json/jsonl, yaml, xml, protobuf, taml
-    - swagger, goa.design
-    - golang type definitions
-name: Import
-parent: geb
-path: commands
-short: Import other stuff into Hofstadter
-usage: import <file or directory> <output file or directory>
-
-*/
+// HOFSTADTER_BELOW

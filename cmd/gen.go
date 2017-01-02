@@ -42,37 +42,9 @@ var GenCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(GenCmd)
 
+	gen.SetLogger(logger)
 	GenCmd.AddCommand(gen.FileCmd)
+
 }
 
-/*
-Repeated Context
-----------------
-long: Generate a project from its working directory.
-name: Gen
-parent: geb
-path: commands
-short: Generate a project.
-subcommands:
-- args:
-  - help: Path to the input design file.
-    name: designFile
-    required: true
-    type: string
-  - help: Path to the template file.
-    name: templateFile
-    required: true
-    type: string
-  - help: Path to the output file. Can also be 'stdout'.
-    name: outputFile
-    required: true
-    type: string
-  long: Generate a file from design and a template.
-  name: File
-  parent: Gen
-  path: commands.subcommands
-  short: Generate a file.
-  usage: file <designFile> <templateFile> <outputFile>
-usage: gen
-
-*/
+// HOFSTADTER_BELOW

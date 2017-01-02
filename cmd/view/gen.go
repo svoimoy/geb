@@ -60,21 +60,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- g
-args:
-- help: one ore more dotpaths for indexing into the data
-  name: paths
-  rest: true
-  type: array:string
-long: View information about generators known from the current path
-name: Gen
-parent: View
-path: commands.subcommands
-short: View information about Generators
-usage: gen <dotpaths>...
-
-*/
+// HOFSTADTER_BELOW

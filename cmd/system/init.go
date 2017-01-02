@@ -39,17 +39,4 @@ func init() {
 
 }
 
-/*
-Repeated Context
-----------------
-aliases:
-- initialize
-- setup
-long: Intializes the geb tool and the ~/.hofstadter dot folder.
-name: Init
-parent: System
-path: commands.subcommands
-short: Initialize the geb tool and files
-usage: init
-
-*/
+// HOFSTADTER_BELOW

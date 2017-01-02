@@ -33,8 +33,6 @@ func init() {
 var (
 	FlagMergeConfigFile string
 	FlagSetConfigFile   string
-	FlagLogLevel        string
-	FlagLogStack        bool
 )
 
 func init() {
@@ -56,3 +54,5 @@ Platforms. geb is the tool.
 `,
 	}
 )
+
+// HOFSTADTER_BELOW

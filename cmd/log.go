@@ -3,11 +3,6 @@ package cmd
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.ibm.com/hofstadter-io/geb/cmd/gebberish"
-	"github.ibm.com/hofstadter-io/geb/cmd/gen"
-	"github.ibm.com/hofstadter-io/geb/cmd/system"
-	"github.ibm.com/hofstadter-io/geb/cmd/view"
 )
 
 var logger = log.New()
@@ -44,8 +39,6 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers
-	gebberish.SetLogger(logger)
-	gen.SetLogger(logger)
-	system.SetLogger(logger)
-	view.SetLogger(logger)
 }
+
+// HOFSTADTER_BELOW
