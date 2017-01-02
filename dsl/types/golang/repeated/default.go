@@ -25,9 +25,6 @@ type {{camelT RC.name}} struct {
 
 {{#each RC.views}}
 {{#with . as |V|}}
-	/* View:
-		{{{V}}}
-	*/
 type {{camelT RC.name}}View_{{camelT V.name}} struct {
 {{#each V.fields}}{{#with . as |F|~}}
 {{#if (hasprefix F.type "local")}}
@@ -44,12 +41,6 @@ type {{camelT RC.name}}View_{{camelT V.name}} struct {
 {{/with}}
 {{/each}}
 
-
-/*
-
-{{{yaml .}}}
-
-*/
 
 {{/with}}
 

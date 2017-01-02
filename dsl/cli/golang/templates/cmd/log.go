@@ -1,16 +1,20 @@
-{{#with RepeatedContext as |RC| }}
-{{#with dsl.cli as |CLI| }}
-package {{lower RC.parent}}
+package cmd
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
+
+	{{#each CLI.commands as |Cmd|}}
+	{{#if Cmd.subcommands}}
+	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/{{lower Cmd.name}}"
+	{{/if}}
+	{{/each}}
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	lcfg := viper.GetStringMap("log-config.cmd.{{lower RC.parent}}")
+	lcfg := viper.GetStringMap("log-config.cmd.default")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -39,13 +43,9 @@ func SetLogger(l log.Logger) {
 		// set the local logger
 		logger.SetHandler(termlog)
 	}
+
 	// set subcommand loggers
-	{{#each RC.subcommands as |Subcmd|}}
-	{{lower Subcmd.name}}.SetLogger(logger)
+	{{#each CLI.commands as |Cmd|}}
+	{{lower Cmd.name}}.SetLogger(logger)
 	{{/each}}
-
 }
-
-{{/with}}
-{{/with}}
-

@@ -103,16 +103,14 @@ func init() {
 	{{RC.parent}}Cmd.AddCommand({{RC.name}}Cmd)
 	{{/if}}
 
+	{{#if subcommands}}
+	{{lower RC.name}}.SetLogger(logger)
 	{{#each subcommands}}
 	{{RC.name}}Cmd.AddCommand({{lower RC.name}}.{{name}}Cmd)
 	{{/each}}
+	{{/if}}
 }
 
 {{/with}}
 {{/with}}
 
-/*
-Repeated Context
-----------------
-{{{yaml RepeatedContext}}}
-*/

@@ -33,7 +33,7 @@ func ResolvePath(path string) (string, error) {
 	// does the file exist
 	info, err := os.Lstat(path)
 	if err != nil {
-		return "", errors.Wrapf(err, "error lstat'n path in utils.ResolvePath\n")
+		return "", errors.Wrapf(err, "error lstat'n path in utils.ResolvePath:"+path+"\n")
 	}
 
 	// Is it a symlink? find the real directory

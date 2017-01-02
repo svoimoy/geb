@@ -1,6 +1,7 @@
 package design
 
 import (
+	// HOFSTADTER_START import
 	"fmt"
 	"github.com/pkg/errors"
 	"io/ioutil"
@@ -10,14 +11,27 @@ import (
 
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 	"gopkg.in/yaml.v1"
+	// HOFSTADTER_END   import
 )
 
+// Name:      design
+// Namespace: engine.design
+// Version:   0.0.1
+
 type Design struct {
-	Proj   map[string]interface{}
-	Type   map[string]interface{}
-	Dsl    map[string]interface{}
-	Custom map[string]interface{}
+	Proj   map[string]interface{} ` json:"proj" xml:"proj" yaml:"proj" form:"proj" query:"proj" `
+	Type   map[string]interface{} ` json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Dsl    map[string]interface{} ` json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
+	Custom map[string]interface{} ` json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
 }
+
+/*
+func NewDesign() *Design {
+	return &Design{}
+	// loop over fields looking for pointers
+}
+*/
+// HOFSTADTER_BELOW
 
 func New() *Design {
 	return NewDesign()
@@ -31,11 +45,12 @@ func NewDesign() *Design {
 		Custom: make(map[string]interface{}),
 	}
 }
+
 func CreateFromFolder(folder string) (*Design, error) {
 	d := NewDesign()
 	err := d.ImportDesignFolder(folder)
 	if err != nil {
-		return nil, errors.Wrap(err, "in design.CreateFromFolder")
+		return nil, errors.Wrap(err, "in design.CreateFromFolder: "+folder+"\n")
 	}
 	return d, nil
 }

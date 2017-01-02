@@ -1,20 +1,34 @@
 package dsl
 
 import (
+	// HOFSTADTER_START import
 	"github.com/pkg/errors"
 	"io/ioutil"
 
 	"gopkg.in/yaml.v1"
+	// HOFSTADTER_END   import
 )
 
-type Config struct {
-	Name    string
-	Version string
-	About   string
+// Name:      config
+// Namespace: engine.dsl
+// Version:   0.0.1
 
-	Type string
-	Spec map[string]interface{}
+type Config struct {
+	Name    string                 ` json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+	Version string                 ` json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
+	About   string                 ` json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
+	Type    string                 ` json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Spec    map[string]interface{} ` json:"spec" xml:"spec" yaml:"spec" form:"spec" query:"spec" `
 }
+
+/*
+func NewConfig() *Config {
+	return &Config{}
+	// loop over fields looking for pointers
+}
+*/
+
+// HOFSTADTER_BELOW
 
 func NewConfig() *Config {
 	return &Config{

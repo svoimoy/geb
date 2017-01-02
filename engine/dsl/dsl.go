@@ -1,22 +1,35 @@
 package dsl
 
 import (
+	// HOFSTADTER_START import
 	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.ibm.com/hofstadter-io/geb/engine/gen"
+	// HOFSTADTER_END   import
 )
 
+// Name:      dsl
+// Namespace: engine.dsl
+// Version:   0.0.1
+
 type Dsl struct {
-	Config     *Config
-	SourcePath string
-
-	AvailableGenerators map[string]string
-
-	Generators map[string]*gen.Generator
+	Config              *Config                   ` json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
+	SourcePath          string                    ` json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
+	AvailableGenerators map[string]string         ` json:"available-generators" xml:"available-generators" yaml:"available-generators" form:"available-generators" query:"available-generators" `
+	Generators          map[string]*gen.Generator ` json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
 }
+
+/*
+func NewDsl() *Dsl {
+	return &Dsl{}
+	// loop over fields looking for pointers
+}
+*/
+
+// HOFSTADTER_BELOW
 
 func New() *Dsl {
 	return NewDsl()

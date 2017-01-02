@@ -15,13 +15,13 @@ import (
 
 func (P *Project) Load(filename string, generators []string) error {
 
-	logger.Info("Reading config file", "filename", filename)
+	logger.Debug("Reading config file", "filename", filename)
 	c, err := ReadConfigFile(filename)
 	if err != nil {
 		return errors.Wrap(err, "while reading project config file: "+filename)
 	}
 	P.Config = c
-	logger.Debug("Project Config", "config", P.Config)
+	logger.Info("Project Config", "config", P.Config)
 
 	err = P.LoadGenerators(generators)
 	if err != nil {

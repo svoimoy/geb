@@ -107,8 +107,3 @@ func init() {
 {{/with}}
 {{/with}}
 
-/*
-Repeated Context
-----------------
-{{{yaml RepeatedContext}}}
-*/

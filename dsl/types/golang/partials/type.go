@@ -1,5 +1,5 @@
 {{#with . as |T|}}
-{{> types/golang/modifiers.go}}
+{{> types/golang/modifiers.go MOD=T }}
 {{#with (getsuffix (getsuffix T ":") "*") as |TYP|}}
 {{#if (contains T ".") ~}}
 	{{#each (rsublist (split TYP ".") 0 2 ) ~}}

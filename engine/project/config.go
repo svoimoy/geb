@@ -1,33 +1,36 @@
 package project
 
 import (
+	// HOFSTADTER_START import
 	"bytes"
 	"io"
 	"os"
 
 	"gopkg.in/yaml.v2"
+	// HOFSTADTER_END   import
 )
 
+// Name:      config
+// Namespace: engine.project
+// Version:   0.0.1
+
 type Config struct {
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	About   string `yaml:"about"`
-
-	DesignDir string    `yaml:"design-dir"`
-	OutputDir string    `yaml:"output-dir"`
-	DslConfig DslConfig `yaml:"dsl-config"`
+	Name      string    ` json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+	Version   string    ` json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
+	About     string    ` json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
+	DesignDir string    ` json:"design-dir" xml:"design-dir" yaml:"design-dir" form:"design-dir" query:"design-dir" `
+	OutputDir string    ` json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
+	DslConfig DslConfig ` json:"dsl-config" xml:"dsl-config" yaml:"dsl-config" form:"dsl-config" query:"dsl-config" `
 }
 
-type DslConfig struct {
-	Paths   []string  `yaml:"paths"`
-	Default []GenPair `yaml:"default"`
+/*
+func NewConfig() *Config {
+	return &Config{}
+	// loop over fields looking for pointers
 }
+*/
 
-type GenPair struct {
-	Dsl       string   `yaml:"dsl"`
-	Gen       []string `yaml:"gen"`
-	OutputDir string   `yaml:"output-dir"`
-}
+// HOFSTADTER_BELOW
 
 func NewConfig() *Config {
 	return &Config{

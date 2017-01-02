@@ -1,21 +1,35 @@
 package gen
 
 import (
+	// HOFSTADTER_START import
 	"path/filepath"
 
 	"github.com/pkg/errors"
 
 	"github.ibm.com/hofstadter-io/geb/engine/templates"
+	// HOFSTADTER_END   import
 )
 
-type Generator struct {
-	Config     *Config
-	SourcePath string
+// Name:      generator
+// Namespace: engine.gen
+// Version:   0.0.1
 
-	Templates templates.TemplateMap
-	Repeated  templates.TemplateMap
-	Partials  templates.TemplateMap
+type Generator struct {
+	Config     *Config               ` json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
+	SourcePath string                ` json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
+	Templates  templates.TemplateMap ` json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
+	Repeated   templates.TemplateMap ` json:"repeated" xml:"repeated" yaml:"repeated" form:"repeated" query:"repeated" `
+	Partials   templates.TemplateMap ` json:"partials" xml:"partials" yaml:"partials" form:"partials" query:"partials" `
 }
+
+/*
+func NewGenerator() *Generator {
+	return &Generator{}
+	// loop over fields looking for pointers
+}
+*/
+
+// HOFSTADTER_BELOW
 
 func New() *Generator {
 	return NewGenerator()
