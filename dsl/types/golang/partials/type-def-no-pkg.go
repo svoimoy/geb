@@ -1,10 +1,10 @@
-{{#with . as |T|}}
-{{#with (getsuffix (getsuffix T ":") "*") as |T1|}}
-{{#with (trimfrom_last T1 "." true) as |TYP|}}
-	{{#if (builtin TYP) ~}}
-		{{ TYP ~}}
+{{#with . as |TYP|}}
+{{#with (getsuffix (getsuffix TYP.type ":") "*") as |T1|}}
+{{#with (trimfrom_last T1 "." true) as |T|}}
+	{{#if (builtin T) ~}}
+		{{ T ~}}
 	{{else ~}}
-		{{camelT TYP ~}}
+		{{camelT T ~}}
 	{{/if }}
 {{/with}}
 {{/with}}

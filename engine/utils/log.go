@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2" // logging framework
 )
@@ -10,6 +11,7 @@ var logger = log.New()
 func SetLogger(l log.Logger) {
 
 	lcfg := viper.GetStringMap("log-config.engine.utils")
+	fmt.Println("setting engine.utils logger", lcfg)
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

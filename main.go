@@ -32,19 +32,20 @@ func read_config() {
 	viper.SetConfigName("geb")
 	viper.AddConfigPath("$HOME/.geb")
 	viper.MergeInConfig()
-	viper.AddConfigPath(".")
-	viper.MergeInConfig()
 
-	cfg := viper.GetString("add-config")
-	if cfg != "" {
-		viper.SetConfigFile(cfg)
-		viper.MergeInConfig()
+	// Hackery because viper only takes the first config file found... not merging, wtf does merge config mean then anyway
+	f, err := os.Open("geb.yml")
+	if err != nil {
+		f = nil
+		f2, err2 := os.Open("geb.yaml")
+		if err2 != nil {
+			f = nil
+		} else {
+			f = f2
+		}
 	}
-
-	cfg = viper.GetString("set-config")
-	if cfg != "" {
-		viper.SetConfigFile(cfg)
-		viper.ReadInConfig()
+	if f != nil {
+		viper.MergeConfig(f)
 	}
 }
 

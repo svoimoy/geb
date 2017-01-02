@@ -28,31 +28,6 @@ func NewConfig() *Config {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: name
-  required: true
-  type: string
-- name: version
-  required: true
-  type: string
-- name: about
-  type: string
-- default: design
-  name: design-dir
-  type: string
-- default: .
-  name: output-dir
-  type: string
-- name: dsl-config
-  required: true
-  type: dsl-config
-name: config
-namespace: engine.project
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW
 
 func ReadConfigFile(filename string) (*Config, error) {

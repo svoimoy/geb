@@ -31,19 +31,20 @@ func read_config() {
 	viper.SetConfigName("{{CLI.name}}")
 	viper.AddConfigPath("$HOME/.{{CLI.name}}")
 	viper.MergeInConfig()
-	viper.AddConfigPath(".")
-	viper.MergeInConfig()
 
-	cfg := viper.GetString("add-config")
-	if cfg != "" {
-		viper.SetConfigFile(cfg)
-		viper.MergeInConfig()
+	// Hackery because viper only takes the first config file found... not merging, wtf does merge config mean then anyway
+	f, err := os.Open("{{CLI.name}}.yml")
+	if err != nil {
+		f = nil
+		f2, err2 := os.Open("{{CLI.name}}.yaml")
+		if err2 != nil {
+			f = nil
+		} else {
+			f = f2
+		}
 	}
-
-	cfg = viper.GetString("set-config")
-	if cfg != "" {
-		viper.SetConfigFile(cfg)
-		viper.ReadInConfig()
+	if f != nil {
+		viper.MergeConfig(f)
 	}
 }
 

@@ -24,28 +24,14 @@ type Dsl struct {
 
 func NewDsl() *Dsl {
 	return &Dsl{
-		Config:              NewConfig(),
+
+		Config: NewConfig(),
+
 		AvailableGenerators: map[string]string{},
 		Generators:          map[string]*gen.Generator{},
 	}
 	// loop over fields looking for pointers
 }
-
-/*
-fields:
-- name: config
-  type: '*Config'
-- name: source-path
-  type: string
-- name: available-generators
-  type: map:string
-- name: generators
-  type: map:*engine.gen.Generator
-name: dsl
-namespace: engine.dsl
-version: 0.0.1
-
-*/
 
 // HOFSTADTER_BELOW
 

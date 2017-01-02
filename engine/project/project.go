@@ -26,32 +26,18 @@ type Project struct {
 
 func NewProject() *Project {
 	return &Project{
-		Config:    NewConfig(),
+
+		Config: NewConfig(),
+
 		Available: map[string]*dsl.Dsl{},
-		Design:    design.NewDesign(),
-		DslMap:    map[string]*dsl.Dsl{},
-		Plans:     []plan.Plan{},
+
+		Design: design.NewDesign(),
+
+		DslMap: map[string]*dsl.Dsl{},
+		Plans:  []plan.Plan{},
 	}
 	// loop over fields looking for pointers
 }
-
-/*
-fields:
-- name: config
-  type: '*Config'
-- name: available
-  type: map:*engine.dsl.Dsl
-- name: design
-  type: '*engine.design.Design'
-- name: dsl-map
-  type: map:*engine.dsl.Dsl
-- name: plans
-  type: array:engine.plan.Plan
-name: project
-namespace: engine.project
-version: 0.0.1
-
-*/
 
 // HOFSTADTER_BELOW
 

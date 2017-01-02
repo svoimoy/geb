@@ -5,8 +5,8 @@
 		{{#gettype (trimsuffix path ".views") true ~}}
 			{{#if namespace}}{{snake namespace}}.{{/if ~}}
 		{{/gettype ~}}
-	{{else if (containst TYP.type "/") ~}}
-		{{trimfrom_last TYP.type "/" true}}.  {{! this is just for formatting ~}}
+	{{else if (contains TYP.type "/") ~}}
+		{{getprefix (trimfrom_last TYP.type "/" true) "." }}.  {{! this is just for formatting ~}}
 	{{else if path ~}}
 		{{#gettype path true ~}}
 			{{#if namespace}}{{snake namespace}}.{{/if ~}}

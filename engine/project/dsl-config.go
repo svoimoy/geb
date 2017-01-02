@@ -22,17 +22,4 @@ func NewDslConfig() *DslConfig {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: paths
-  required: true
-  type: array:string
-- name: default
-  type: array:gen-pair
-name: dsl-config
-namespace: engine.project
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW

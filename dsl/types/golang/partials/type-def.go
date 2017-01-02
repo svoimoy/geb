@@ -1,21 +1,12 @@
-{{#with . as |T|}}
-{{#with (getsuffix (getsuffix T ":") "*") as |TYP|}}
-{{#if (contains T ".") ~}}
-	{{#each (rsublist (split TYP ".") 0 2 ) ~}}
-    {{#if @last ~}}
-	{{#if (builtin .) ~}}
-		{{ . ~}}
+{{#with . as |TYP|}}
+{{> types/golang/package.go TYP=TYP }}
+{{#with (getsuffix (getsuffix TYP.type ":") "*") as |T1|}}
+{{#with (trimfrom_last T1 "." true) as |T|}}
+	{{#if (builtin T) ~}}
+		{{ T ~}}
 	{{else ~}}
-		{{camelT . ~}}
+		{{camelT T ~}}
 	{{/if }}
-	  {{else ~}}{{.}}.{{/if ~}}
-	{{/each}}
-{{else}}
-	{{#if (builtin TYP) ~}}
-		{{ TYP ~}}
-	{{else ~}}
-		{{camelT TYP ~}}
-	{{/if }}
-{{/if ~}}
+{{/with}}
 {{/with}}
 {{/with}}

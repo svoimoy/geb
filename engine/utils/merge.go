@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
 )
 
@@ -151,7 +152,7 @@ func merge(orig, update interface{}) (interface{}, error) {
 		return OA, nil
 
 	default:
-		return nil, errors.New("unmergable original")
+		return nil, errors.New("unmergable original" + fmt.Sprintf("%+v", orig))
 
 	}
 

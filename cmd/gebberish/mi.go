@@ -2,12 +2,11 @@ package gebberish
 
 import (
 	// HOFSTADTER_START import
+	"fmt"
 	"strconv"
 
 	"github.ibm.com/hofstadter-io/geb/gebberish"
 	// HOFSTADTER_END   import
-
-	"fmt"
 
 	"github.com/spf13/cobra"
 )

@@ -23,14 +23,6 @@ dsl-config:
 
 log-config:
   default:
-    level: debug
+    level: warn
     stack: true
-  engine:
-    render:
-      level: info
-      stack: false
-  dotpath:
-    default:
-      level: debug
-      stack: false
 

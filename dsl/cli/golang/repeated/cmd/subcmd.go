@@ -6,10 +6,6 @@ import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 
-	{{#if RC.args}}
-	"fmt"
-	{{/if}}
-
 	{{#if RC.flags}}
 	"github.com/spf13/viper"
 	{{else}}

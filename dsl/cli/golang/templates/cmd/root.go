@@ -14,20 +14,6 @@ import (
 {{> "flag-init.go" CLI }}
 
 var (
-	FlagMergeConfigFile    string
-	FlagSetConfigFile    string
-)
-
-func init() {
-	RootCmd.PersistentFlags().StringVar(&FlagMergeConfigFile, "merge-config", "", "merge a geb config file, overriding values.")
-	RootCmd.PersistentFlags().StringVar(&FlagSetConfigFile, "set-config", "", "reset the geb config file to the file specified.")
-
-	viper.BindPFlag("merge-config", RootCmd.PersistentFlags().Lookup("merge-config"))
-	viper.BindPFlag("set-config", RootCmd.PersistentFlags().Lookup("set-config"))
-
-}
-
-var (
 	RootCmd = &cobra.Command{
 		Use:   "{{ CLI.name }}",
 		Short: "{{ CLI.short }}",

@@ -2,13 +2,11 @@ package cmd
 
 import (
 	// HOFSTADTER_START import
+	"fmt"
 	// HOFSTADTER_END   import
 
-	"fmt"
-
-	"github.com/spf13/viper"
-
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // Tool:   geb

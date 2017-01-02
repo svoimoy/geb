@@ -22,20 +22,4 @@ func NewRepeatConfig() *RepeatConfig {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: name
-  required: true
-  type: string
-- name: field
-  required: true
-  type: string
-- name: templates
-  type: array:repeated-template-pair
-name: repeat-config
-namespace: engine.gen
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW

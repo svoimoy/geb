@@ -22,19 +22,4 @@ func NewGenPair() *GenPair {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: dsl
-  required: true
-  type: string
-- name: gen
-  type: array:string
-- name: output-dir
-  type: string
-name: gen-pair
-namespace: engine.project
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW

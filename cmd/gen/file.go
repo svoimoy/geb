@@ -2,10 +2,10 @@ package gen
 
 import (
 	// HOFSTADTER_START import
+	"fmt"
+
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
-
-	"fmt"
 
 	"github.com/spf13/cobra"
 )

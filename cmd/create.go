@@ -2,6 +2,7 @@ package cmd
 
 import (
 	// HOFSTADTER_START import
+	"fmt"
 	"strings"
 
 	"github.com/ryanuber/go-glob"
@@ -9,8 +10,6 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine/project"
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
-
-	"fmt"
 
 	"github.com/spf13/cobra"
 )

@@ -35,36 +35,6 @@ func NewPlan() *Plan {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: dsl
-  required: true
-  type: string
-- name: gen
-  required: true
-  type: string
-- name: file
-  required: true
-  type: string
-- name: data
-  required: true
-  type: map:interface{}
-- name: template
-  required: true
-  type: '*raymond.Template'
-- name: outfile
-  required: true
-  type: string
-- name: repeated-context
-  type: interface{}
-go-imports:
-- github.com/aymerick/raymond
-name: plan
-namespace: engine.plan
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW
 
 func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {

@@ -19,18 +19,4 @@ func NewRepeatedTemplatePair() *RepeatedTemplatePair {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: in
-  required: true
-  type: string
-- name: out
-  required: true
-  type: string
-name: repeated-template-pair
-namespace: engine.gen
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW

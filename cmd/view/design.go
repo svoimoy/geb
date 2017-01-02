@@ -2,12 +2,12 @@ package view
 
 import (
 	// HOFSTADTER_START import
-	"github.ibm.com/hofstadter-io/geb/engine"
+	"fmt"
 	"os"
 	"path/filepath"
-	// HOFSTADTER_END   import
 
-	"fmt"
+	"github.ibm.com/hofstadter-io/geb/engine"
+	// HOFSTADTER_END   import
 
 	"github.com/spf13/cobra"
 )

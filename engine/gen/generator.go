@@ -24,28 +24,11 @@ type Generator struct {
 
 func NewGenerator() *Generator {
 	return &Generator{
+
 		Config: NewConfig(),
 	}
 	// loop over fields looking for pointers
 }
-
-/*
-fields:
-- name: config
-  type: '*Config'
-- name: source-path
-  type: string
-- name: templates
-  type: engine.templates.TemplateMap
-- name: repeated
-  type: engine.templates.TemplateMap
-- name: partials
-  type: engine.templates.TemplateMap
-name: generator
-namespace: engine.gen
-version: 0.0.1
-
-*/
 
 // HOFSTADTER_BELOW
 

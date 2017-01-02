@@ -28,28 +28,6 @@ func NewConfig() *Config {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: name
-  required: true
-  type: string
-- name: version
-  required: true
-  type: string
-- name: about
-  type: string
-- name: type
-  required: true
-  type: string
-- name: spec
-  required: true
-  type: map:interface{}
-name: config
-namespace: engine.dsl
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW
 
 func ReadConfigFile(filename string) (*Config, error) {

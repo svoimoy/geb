@@ -35,22 +35,6 @@ func NewDesign() *Design {
 	// loop over fields looking for pointers
 }
 
-/*
-fields:
-- name: proj
-  type: map:interface{}
-- name: type
-  type: map:interface{}
-- name: dsl
-  type: map:interface{}
-- name: custom
-  type: map:interface{}
-name: design
-namespace: engine.design
-version: 0.0.1
-
-*/
-
 // HOFSTADTER_BELOW
 
 func New() *Design {
