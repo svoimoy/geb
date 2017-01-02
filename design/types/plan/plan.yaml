@@ -16,7 +16,7 @@ type:
       type: map:interface{}
       required: true
     - name: template
-      type: '*raymond.Template'
+      type: '*gihub.com/aymerick/raymond.Template'
       required: true
     - name: outfile
       type: string
