@@ -14,19 +14,47 @@ import (
 // Version:   0.0.1
 
 type Config struct {
-	Name      string         ` json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
-	Version   string         ` json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
-	About     string         ` json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
-	Type      string         ` json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
-	Language  string         ` json:"language" xml:"language" yaml:"language" form:"language" query:"language" `
-	Repeated  []RepeatConfig ` json:"repeated" xml:"repeated" yaml:"repeated" form:"repeated" query:"repeated" `
-	OutputDir string         ` json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
+	Name      string         `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+	Version   string         `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
+	About     string         `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
+	Type      string         `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Language  string         `json:"language" xml:"language" yaml:"language" form:"language" query:"language" `
+	Repeated  []RepeatConfig `json:"repeated" xml:"repeated" yaml:"repeated" form:"repeated" query:"repeated" `
+	OutputDir string         `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
 }
 
 func NewConfig() *Config {
-	return &Config{}
+	return &Config{
+		Repeated: []RepeatConfig{},
+	}
 	// loop over fields looking for pointers
 }
+
+/*
+fields:
+- name: name
+  required: true
+  type: string
+- name: version
+  required: true
+  type: string
+- name: about
+  type: string
+- name: type
+  required: true
+  type: string
+- name: language
+  required: true
+  type: string
+- name: repeated
+  type: array:repeat-config
+- name: output-dir
+  type: string
+name: config
+namespace: engine.gen
+version: 0.0.1
+
+*/
 
 // HOFSTADTER_BELOW
 

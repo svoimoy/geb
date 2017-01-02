@@ -63,8 +63,12 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("hassuffix", helper_hassuffix)
 	tpl.RegisterHelper("trimprefix", helper_trimprefix)
 	tpl.RegisterHelper("trimsuffix", helper_trimsuffix)
-	tpl.RegisterHelper("trimto", helper_trimto)
-	tpl.RegisterHelper("trimfrom", helper_trimfrom)
+	tpl.RegisterHelper("trimto", helper_trimto_first)
+	tpl.RegisterHelper("trimfrom", helper_trimfrom_first)
+	tpl.RegisterHelper("trimto_first", helper_trimto_first)
+	tpl.RegisterHelper("trimfrom_first", helper_trimfrom_first)
+	tpl.RegisterHelper("trimto_last", helper_trimto_last)
+	tpl.RegisterHelper("trimfrom_last", helper_trimfrom_last)
 	tpl.RegisterHelper("substr", helper_substr)
 	tpl.RegisterHelper("getprefix", helper_getprefix)
 	tpl.RegisterHelper("getsuffix", helper_getsuffix)
@@ -215,7 +219,7 @@ func helper_trimsuffix(str, suf string) string {
 	return strings.TrimSuffix(str, suf)
 }
 
-func helper_trimto(str, pre string, keep bool) string {
+func helper_trimto_first(str, pre string, keep bool) string {
 	pos := strings.Index(str, pre)
 	if pos >= 0 {
 		if keep {
@@ -226,8 +230,30 @@ func helper_trimto(str, pre string, keep bool) string {
 	return str
 }
 
-func helper_trimfrom(str, pre string, keep bool) string {
+func helper_trimfrom_first(str, pre string, keep bool) string {
 	pos := strings.Index(str, pre)
+	if pos >= 0 {
+		if keep {
+			return str[pos+len(pre):]
+		}
+		return str[pos:]
+	}
+	return str
+}
+
+func helper_trimto_last(str, pre string, keep bool) string {
+	pos := strings.LastIndex(str, pre)
+	if pos >= 0 {
+		if keep {
+			return str[:pos-len(pre)]
+		}
+		return str[:pos]
+	}
+	return str
+}
+
+func helper_trimfrom_last(str, pre string, keep bool) string {
+	pos := strings.LastIndex(str, pre)
 	if pos >= 0 {
 		if keep {
 			return str[pos+len(pre):]

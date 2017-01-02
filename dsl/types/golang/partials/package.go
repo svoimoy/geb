@@ -1,6 +1,6 @@
 {{#if TYP.package ~}}
 	{{snake (TYP.package)}}.
-{{else ~}}
+{{else if (contains TYP.type ".") ~}}
 	{{#if (hassuffix path ".views") ~}}
 		{{#gettype (trimsuffix path ".views") true ~}}
 			{{#if namespace}}{{snake namespace}}.{{/if ~}}

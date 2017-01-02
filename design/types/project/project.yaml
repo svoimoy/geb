@@ -1,10 +1,10 @@
 type:
   name: "project"
-  namespace: "engine.proj"
+  namespace: "engine.project"
   version: "0.0.1"
   fields:
     - name: config
-      type: '*engine.proj.config'
+      type: '*Config'
     - name: available
       type: 'map:*engine.dsl.Dsl'
     - name: design

@@ -4,7 +4,7 @@ type:
   version: "0.0.1"
   fields:
     - name: config
-      type: '*engine.dsl.config'
+      type: '*Config'
     - name: source-path
       type: 'string'
     - name: available-generators

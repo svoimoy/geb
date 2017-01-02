@@ -19,31 +19,42 @@ import (
 // Version:   0.0.1
 
 type Design struct {
-	Proj   map[string]interface{} ` json:"proj" xml:"proj" yaml:"proj" form:"proj" query:"proj" `
-	Type   map[string]interface{} ` json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
-	Dsl    map[string]interface{} ` json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
-	Custom map[string]interface{} ` json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
-}
-
-/*
-func NewDesign() *Design {
-	return &Design{}
-	// loop over fields looking for pointers
-}
-*/
-// HOFSTADTER_BELOW
-
-func New() *Design {
-	return NewDesign()
+	Proj   map[string]interface{} `json:"proj" xml:"proj" yaml:"proj" form:"proj" query:"proj" `
+	Type   map[string]interface{} `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Dsl    map[string]interface{} `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
+	Custom map[string]interface{} `json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
 }
 
 func NewDesign() *Design {
 	return &Design{
-		Proj:   make(map[string]interface{}),
-		Type:   make(map[string]interface{}),
-		Dsl:    make(map[string]interface{}),
-		Custom: make(map[string]interface{}),
+		Proj:   map[string]interface{}{},
+		Type:   map[string]interface{}{},
+		Dsl:    map[string]interface{}{},
+		Custom: map[string]interface{}{},
 	}
+	// loop over fields looking for pointers
+}
+
+/*
+fields:
+- name: proj
+  type: map:interface{}
+- name: type
+  type: map:interface{}
+- name: dsl
+  type: map:interface{}
+- name: custom
+  type: map:interface{}
+name: design
+namespace: engine.design
+version: 0.0.1
+
+*/
+
+// HOFSTADTER_BELOW
+
+func New() *Design {
+	return NewDesign()
 }
 
 func CreateFromFolder(folder string) (*Design, error) {

@@ -37,8 +37,8 @@ func SetLogger(l log.Logger) {
 		// set the local logger
 		logger.SetHandler(termlog)
 	}
-
 	// set subcommand loggers
+
 }
 
 // HOFSTADTER_BELOW

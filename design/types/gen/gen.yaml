@@ -1,16 +1,16 @@
 type:
-  name: "gen"
+  name: "generator"
   namespace: "engine.gen"
   version: "0.0.1"
   fields:
     - name: config
-      type: '*engine.gen.config'
+      type: '*Config'
     - name: source-path
       type: 'string'
     - name: templates
-      type: 'map:*engine.templates.TemplateMap'
+      type: 'engine.templates.TemplateMap'
     - name: repeated
-      type: 'map:*engine.templates.TemplateMap'
+      type: 'engine.templates.TemplateMap'
     - name: partials
-      type: 'map:*engine.templates.TemplateMap'
+      type: 'engine.templates.TemplateMap'
 

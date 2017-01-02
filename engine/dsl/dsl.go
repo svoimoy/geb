@@ -16,23 +16,10 @@ import (
 // Version:   0.0.1
 
 type Dsl struct {
-	Config              *Config                   ` json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
-	SourcePath          string                    ` json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
-	AvailableGenerators map[string]string         ` json:"available-generators" xml:"available-generators" yaml:"available-generators" form:"available-generators" query:"available-generators" `
-	Generators          map[string]*gen.Generator ` json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
-}
-
-/*
-func NewDsl() *Dsl {
-	return &Dsl{}
-	// loop over fields looking for pointers
-}
-*/
-
-// HOFSTADTER_BELOW
-
-func New() *Dsl {
-	return NewDsl()
+	Config              *Config                   `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
+	SourcePath          string                    `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
+	AvailableGenerators map[string]string         `json:"available-generators" xml:"available-generators" yaml:"available-generators" form:"available-generators" query:"available-generators" `
+	Generators          map[string]*gen.Generator `json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
 }
 
 func NewDsl() *Dsl {
@@ -41,6 +28,29 @@ func NewDsl() *Dsl {
 		AvailableGenerators: map[string]string{},
 		Generators:          map[string]*gen.Generator{},
 	}
+	// loop over fields looking for pointers
+}
+
+/*
+fields:
+- name: config
+  type: '*Config'
+- name: source-path
+  type: string
+- name: available-generators
+  type: map:string
+- name: generators
+  type: map:*engine.gen.Generator
+name: dsl
+namespace: engine.dsl
+version: 0.0.1
+
+*/
+
+// HOFSTADTER_BELOW
+
+func New() *Dsl {
+	return NewDsl()
 }
 
 func CreateFromFolder(folder string) (*Dsl, error) {

@@ -18,21 +18,52 @@ import (
 // Version:   0.0.1
 
 type Plan struct {
-	Dsl             string                 ` json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
-	Gen             string                 ` json:"gen" xml:"gen" yaml:"gen" form:"gen" query:"gen" `
-	File            string                 ` json:"file" xml:"file" yaml:"file" form:"file" query:"file" `
-	Data            map[string]interface{} ` json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
-	Template        *raymond.Template      ` json:"template" xml:"template" yaml:"template" form:"template" query:"template" `
-	Outfile         string                 ` json:"outfile" xml:"outfile" yaml:"outfile" form:"outfile" query:"outfile" `
-	RepeatedContext interface{}            ` json:"repeated-context" xml:"repeated-context" yaml:"repeated-context" form:"repeated-context" query:"repeated-context" `
+	Dsl             string                 `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
+	Gen             string                 `json:"gen" xml:"gen" yaml:"gen" form:"gen" query:"gen" `
+	File            string                 `json:"file" xml:"file" yaml:"file" form:"file" query:"file" `
+	Data            map[string]interface{} `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
+	Template        *raymond.Template      `json:"template" xml:"template" yaml:"template" form:"template" query:"template" `
+	Outfile         string                 `json:"outfile" xml:"outfile" yaml:"outfile" form:"outfile" query:"outfile" `
+	RepeatedContext interface{}            `json:"repeated-context" xml:"repeated-context" yaml:"repeated-context" form:"repeated-context" query:"repeated-context" `
 }
 
 func NewPlan() *Plan {
 	return &Plan{
-		Data: map[string]interface{}{},
+		Data:     map[string]interface{}{},
+		Template: new(raymond.Template),
 	}
 	// loop over fields looking for pointers
 }
+
+/*
+fields:
+- name: dsl
+  required: true
+  type: string
+- name: gen
+  required: true
+  type: string
+- name: file
+  required: true
+  type: string
+- name: data
+  required: true
+  type: map:interface{}
+- name: template
+  required: true
+  type: '*raymond.Template'
+- name: outfile
+  required: true
+  type: string
+- name: repeated-context
+  type: interface{}
+go-imports:
+- github.com/aymerick/raymond
+name: plan
+namespace: engine.plan
+version: 0.0.1
+
+*/
 
 // HOFSTADTER_BELOW
 

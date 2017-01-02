@@ -15,33 +15,42 @@ import (
 // Version:   0.0.1
 
 type Generator struct {
-	Config     *Config               ` json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
-	SourcePath string                ` json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
-	Templates  templates.TemplateMap ` json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
-	Repeated   templates.TemplateMap ` json:"repeated" xml:"repeated" yaml:"repeated" form:"repeated" query:"repeated" `
-	Partials   templates.TemplateMap ` json:"partials" xml:"partials" yaml:"partials" form:"partials" query:"partials" `
+	Config     *Config               `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
+	SourcePath string                `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
+	Templates  templates.TemplateMap `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
+	Repeated   templates.TemplateMap `json:"repeated" xml:"repeated" yaml:"repeated" form:"repeated" query:"repeated" `
+	Partials   templates.TemplateMap `json:"partials" xml:"partials" yaml:"partials" form:"partials" query:"partials" `
+}
+
+func NewGenerator() *Generator {
+	return &Generator{
+		Config: NewConfig(),
+	}
+	// loop over fields looking for pointers
 }
 
 /*
-func NewGenerator() *Generator {
-	return &Generator{}
-	// loop over fields looking for pointers
-}
+fields:
+- name: config
+  type: '*Config'
+- name: source-path
+  type: string
+- name: templates
+  type: engine.templates.TemplateMap
+- name: repeated
+  type: engine.templates.TemplateMap
+- name: partials
+  type: engine.templates.TemplateMap
+name: generator
+namespace: engine.gen
+version: 0.0.1
+
 */
 
 // HOFSTADTER_BELOW
 
 func New() *Generator {
 	return NewGenerator()
-}
-
-func NewGenerator() *Generator {
-	return &Generator{
-		Config:    NewConfig(),
-		Templates: templates.NewTemplateMap(),
-		Repeated:  templates.NewTemplateMap(),
-		Partials:  templates.NewTemplateMap(),
-	}
 }
 
 func CreateFromFolder(folder string) (*Generator, error) {

@@ -14,27 +14,43 @@ import (
 // Version:   0.0.1
 
 type Config struct {
-	Name    string                 ` json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
-	Version string                 ` json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
-	About   string                 ` json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
-	Type    string                 ` json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
-	Spec    map[string]interface{} ` json:"spec" xml:"spec" yaml:"spec" form:"spec" query:"spec" `
+	Name    string                 `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+	Version string                 `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
+	About   string                 `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
+	Type    string                 `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Spec    map[string]interface{} `json:"spec" xml:"spec" yaml:"spec" form:"spec" query:"spec" `
 }
-
-/*
-func NewConfig() *Config {
-	return &Config{}
-	// loop over fields looking for pointers
-}
-*/
-
-// HOFSTADTER_BELOW
 
 func NewConfig() *Config {
 	return &Config{
 		Spec: map[string]interface{}{},
 	}
+	// loop over fields looking for pointers
 }
+
+/*
+fields:
+- name: name
+  required: true
+  type: string
+- name: version
+  required: true
+  type: string
+- name: about
+  type: string
+- name: type
+  required: true
+  type: string
+- name: spec
+  required: true
+  type: map:interface{}
+name: config
+namespace: engine.dsl
+version: 0.0.1
+
+*/
+
+// HOFSTADTER_BELOW
 
 func ReadConfigFile(filename string) (*Config, error) {
 	data, err := ioutil.ReadFile(filename)

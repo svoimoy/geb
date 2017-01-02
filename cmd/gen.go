@@ -42,6 +42,7 @@ var GenCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(GenCmd)
 
+	gen.SetLogger(logger)
 	GenCmd.AddCommand(gen.FileCmd)
 
 }

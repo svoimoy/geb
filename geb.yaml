@@ -6,16 +6,11 @@ about: "The geb command-line tool for making profit."
 output-dir: "."
 
 design-dir: "design"
-design-imports:
-  - "github.com:hofstadter-io/designs/webapp.backend"
-  - "github.com:hofstadter-io/designs/webapp.frontend"
-  - "github.com:hofstadter-io/designs/webapp.chat"
-  - "local-dir:$HOME/mydesigns/user/extended-profile.yaml"
 
 dsl-config:
   paths:
     - "dsl"
-    - "$HOME/.hofstadter/dsl"
+    - "$HOME/.geb/dsl"
   default:
     - dsl: cli
       gen:
@@ -28,7 +23,7 @@ dsl-config:
 
 log-config:
   default:
-    level: warn
+    level: debug
     stack: true
   engine:
     render:

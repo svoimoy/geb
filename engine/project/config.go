@@ -15,31 +15,45 @@ import (
 // Version:   0.0.1
 
 type Config struct {
-	Name      string    ` json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
-	Version   string    ` json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
-	About     string    ` json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
-	DesignDir string    ` json:"design-dir" xml:"design-dir" yaml:"design-dir" form:"design-dir" query:"design-dir" `
-	OutputDir string    ` json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
-	DslConfig DslConfig ` json:"dsl-config" xml:"dsl-config" yaml:"dsl-config" form:"dsl-config" query:"dsl-config" `
+	Name      string    `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+	Version   string    `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
+	About     string    `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
+	DesignDir string    `json:"design-dir" xml:"design-dir" yaml:"design-dir" form:"design-dir" query:"design-dir" `
+	OutputDir string    `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
+	DslConfig DslConfig `json:"dsl-config" xml:"dsl-config" yaml:"dsl-config" form:"dsl-config" query:"dsl-config" `
 }
 
-/*
 func NewConfig() *Config {
 	return &Config{}
 	// loop over fields looking for pointers
 }
+
+/*
+fields:
+- name: name
+  required: true
+  type: string
+- name: version
+  required: true
+  type: string
+- name: about
+  type: string
+- default: design
+  name: design-dir
+  type: string
+- default: .
+  name: output-dir
+  type: string
+- name: dsl-config
+  required: true
+  type: dsl-config
+name: config
+namespace: engine.project
+version: 0.0.1
+
 */
 
 // HOFSTADTER_BELOW
-
-func NewConfig() *Config {
-	return &Config{
-		DslConfig: DslConfig{
-			Paths:   []string{},
-			Default: []GenPair{},
-		},
-	}
-}
 
 func ReadConfigFile(filename string) (*Config, error) {
 	f, err := os.Open(filename)
