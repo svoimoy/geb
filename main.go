@@ -7,9 +7,12 @@ import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/cmd"
+
+	// HOFSTADTER_START import
+	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine"
+	// HOFSTADTER_END   import
 )
 
 var logger = log.New()
@@ -72,8 +75,10 @@ func config_logger() {
 	logger.SetHandler(termlog)
 
 	// set package loggers
-	dotpath.SetLogger(logger)
 	cmd.SetLogger(logger)
-	engine.SetLogger(logger)
 
+	// HOFSTADTER_START config-logger
+	dotpath.SetLogger(logger)
+	engine.SetLogger(logger)
+	// HOFSTADTER_END   config-logger
 }
