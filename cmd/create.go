@@ -64,7 +64,7 @@ var CreateCmd = &cobra.Command{
 		tpl_data["name"] = name
 		tpl_data["dsls"] = map[string]map[string]interface{}{}
 
-		rpath, err := utils.ResolvePath("$HOME/.hofstadter/dsl")
+		rpath, err := utils.ResolvePath("$HOME/.geb/dsl")
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
@@ -130,7 +130,7 @@ var CreateCmd = &cobra.Command{
 		P := project.New()
 		P.Config = project.NewConfig()
 		P.Config.OutputDir = name
-		P.Config.DslConfig.Paths = []string{"$HOME/.hofstadter/dsl"}
+		P.Config.DslConfig.Paths = []string{"$HOME/.geb/dsl"}
 		default_proj := project.GenPair{
 			Dsl:       "project/fresh",
 			Gen:       []string{"default"},
@@ -138,7 +138,7 @@ var CreateCmd = &cobra.Command{
 		}
 		P.Config.DslConfig.Default = []project.GenPair{default_proj}
 
-		err = P.FindAvailableGenerators([]string{"$HOME/.hofstadter/dsl"})
+		err = P.FindAvailableGenerators([]string{"$HOME/.geb/dsl"})
 		if err != nil {
 			fmt.Println("Error:", err)
 		}

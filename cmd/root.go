@@ -22,7 +22,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVarP(&DesignPFlag, "design", "d", "design", "The design files directory.")
 	viper.BindPFlag("design", RootCmd.PersistentFlags().Lookup("design"))
 
-	RootCmd.PersistentFlags().StringVarP(&TemplatePathsPFlag, "template-paths", "t", "templates:~/.hofstadter/templates", "The search path for templates, reads from left to right, overriding along the way.")
+	RootCmd.PersistentFlags().StringVarP(&TemplatePathsPFlag, "template-paths", "t", "templates:~/.geb/templates", "The search path for templates, reads from left to right, overriding along the way.")
 	viper.BindPFlag("template-paths", RootCmd.PersistentFlags().Lookup("template-paths"))
 
 	RootCmd.PersistentFlags().StringVarP(&OutputPFlag, "output", "o", "output", "The directory to output generated files to.")
