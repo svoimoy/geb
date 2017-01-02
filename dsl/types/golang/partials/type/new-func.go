@@ -6,7 +6,7 @@ func New{{camelT TYP.name}}() *{{camelT TYP.name}} {
 		{{else if (contains F.type "map") ~}}
 		{{camelT F.name}}: {{>types/golang/type.go F.type ~}}{},
 		{{else if (contains F.type "*") ~}}
-		{{camelT F.name}}: New{{>types/golang/type-def-no-pkg.go F.type ~}}(),
+		{{camelT F.name}}: {{> types/golang/package.go TYP=F ~}}New{{>types/golang/type-def-no-pkg.go F.type ~}}(),
 		{{/if ~}}
 		{{/each}}
 	}
