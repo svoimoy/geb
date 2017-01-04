@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
@@ -21,7 +20,6 @@ var logger = log.New()
 func SetLogger(l log.Logger) {
 
 	lcfg := viper.GetStringMap("log-config.engine.default")
-	fmt.Println("setting engine.default logger", lcfg)
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

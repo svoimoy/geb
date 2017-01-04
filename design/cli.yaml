@@ -159,6 +159,11 @@ cli:
 
     - name: Gen
       usage: gen
+      aliases:
+        - geb
+        - geberate
+        - generate
+        - g
       short: Generate a project.
       long: Generate a project from its working directory.
       subcommands:

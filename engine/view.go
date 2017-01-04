@@ -186,7 +186,11 @@ func ViewDesign(folder string, args []string) (string, error) {
 	}
 
 	ret := ""
-	for _, path := range args {
+	for i, path := range args {
+		if path == "" {
+			logger.Error("Empty path component in ViewDesign", "i", i, "args", args)
+			continue
+		}
 		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
 		val, err := D.GetByPath(path)
 		if err != nil {

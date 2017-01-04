@@ -1,14 +1,33 @@
 cli:
   name: frisby
   version: "0.0.0"
-  short: "frisby is an API testing and thrashing toolset"
-  long: "frisby is an API testing and thrashing toolset"
-  omit-root-run: true
+  short: "frisby is an API testing and thrashing framework"
+  long: "frisby is an API testing and thrashing framework"
+  omit-run: true
   config:
     auth:
       user: some-user-name
       apikey: some-api-key
   commands:
+
+    - name: Toss
+      usage: toss <request>
+      short: Make a request against a host.
+      long:  Make a against a host.
+      args:
+        - name: request
+          type: string
+          help: the request to be made
+          required: true
+      flags:
+        - name: method
+          long: method
+          short: M
+          type: string
+          default: "get"
+          help: the http method type
+
+
     - name: Test
       usage: test <file> <host>
       short: Run a frisby test file against a host.
@@ -37,11 +56,15 @@ cli:
           help: the host string to load against
           required: true
       flags:
-        - name: Workers
-          long: workers
-          short: w
+        - name: ReqPerSec
+          long: req-per-sec
+          short: r
           type: int
-          default: 8
-          help: the number of workers
+          default: 10
+          help: the number of requests per second
 
+    - name: Catch
+      usage: catch <request|file|directory>
+      short: turn requests into tests
+      long:  Convert a request and response into a frisby test
 

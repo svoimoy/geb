@@ -2,8 +2,8 @@ name: "geb"
 version: "0.1"
 about: "The geb command-line tool for making profit."
 
-# output-dir: "contracrostipunctus"
-output-dir: "."
+output-dir: "contracrostipunctus"
+# output-dir: "."
 
 design-dir: "design"
 

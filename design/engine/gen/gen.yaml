@@ -1,6 +1,5 @@
 type:
   name: "generator"
-  namespace: "engine.gen"
   version: "0.0.1"
   fields:
     - name: config

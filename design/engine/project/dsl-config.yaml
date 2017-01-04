@@ -1,6 +1,5 @@
 type:
   name: "dsl-config"
-  namespace: "engine.project"
   version: "0.0.1"
   fields:
     - name: paths

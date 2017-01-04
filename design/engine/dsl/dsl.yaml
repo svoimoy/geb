@@ -1,6 +1,5 @@
 type:
   name: "dsl"
-  namespace: "engine.dsl"
   version: "0.0.1"
   fields:
     - name: config

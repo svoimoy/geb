@@ -100,7 +100,6 @@ func init() {
 	{{/if}}
 
 	{{#if subcommands}}
-	{{lower RC.name}}.SetLogger(logger)
 	{{#each subcommands}}
 	{{RC.name}}Cmd.AddCommand({{lower RC.name}}.{{name}}Cmd)
 	{{/each}}

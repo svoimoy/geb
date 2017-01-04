@@ -13,7 +13,7 @@ import (
 var logger = log.New()
 
 func init() {
-	config_logger("warn")
+	config_logger("info")
 }
 
 func SetLogger(l log.Logger) {
@@ -23,7 +23,11 @@ func SetLogger(l log.Logger) {
 		logger = l
 	} else {
 		level_str := lcfg["level"].(string)
-		stack := lcfg["stack"].(bool)
+		stack := false
+		istack, ok := lcfg["stack"]
+		if ok {
+			stack = istack.(bool)
+		}
 		level, err := log.LvlFromString(level_str)
 		if err != nil {
 			panic(err)
@@ -65,6 +69,7 @@ func config_logger(level string) {
 }
 
 func Get(path string, data interface{}, no_solo_array bool) (interface{}, error) {
+	logger.Info("Get", "path", path, "data", data, "no_solo_array", no_solo_array)
 	paths := strings.Split(path, ".")
 	if len(paths) < 1 {
 		return nil, errors.New("Bad path supplied: " + path)
@@ -73,8 +78,6 @@ func Get(path string, data interface{}, no_solo_array bool) (interface{}, error)
 		pos := strings.Index(paths[0], ":")
 		paths[0] = paths[0][pos+1:]
 	}
-
-	// fmt.Println("GETPATH:", path, paths, data)
 
 	ret, err := get_by_path(0, paths, data)
 	if err != nil {
@@ -89,6 +92,7 @@ func Get(path string, data interface{}, no_solo_array bool) (interface{}, error)
 }
 
 func GetByPathSlice(path []string, data interface{}, no_solo_array bool) (interface{}, error) {
+	logger.Info("GetByPathSlice", "path", path, "data", data, "no_solo_array", no_solo_array)
 	if strings.Contains(path[0], ":") {
 		pos := strings.Index(path[0], ":")
 		path[0] = path[0][pos+1:]

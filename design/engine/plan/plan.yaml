@@ -1,6 +1,5 @@
 type:
   name: "plan"
-  namespace: "engine.plan"
   version: "0.0.1"
   fields:
     - name: dsl

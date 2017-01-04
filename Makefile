@@ -11,7 +11,7 @@ gen:
 	@geb gen
 	@find contracrostipunctus -type f \! -name "contracrostipunctus" -exec gofmt -w {} \;
 
-.Phony: gen
+.Phony: fmt
 fmt:
 	@gofmt -w main.go
 	@find cmd -type f -exec gofmt -w {} \;

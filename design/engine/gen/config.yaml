@@ -1,6 +1,5 @@
 type-list:
-  name: "gen-config"
-  namespace: "engine.gen"
+  name: "gen-config-types"
   list:
     - name: config
       version: "0.0.1"
