@@ -126,7 +126,7 @@ func (d *Design) store_design(relative_path, dsl string, design interface{}) err
 	logger.Info("store_design: " + dsl)
 
 	dname, err := dotpath.Get("name", design, true)
-	logger.Warn("dotpath for name", "dname", dname, "err", err, "design", design)
+	logger.Debug("dotpath for name", "dname", dname, "err", err, "design", design)
 
 	// Everything must have a name!
 	name := ""

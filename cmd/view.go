@@ -28,7 +28,6 @@ var ViewCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(ViewCmd)
 
-	view.SetLogger(logger)
 	ViewCmd.AddCommand(view.SystemCmd)
 	ViewCmd.AddCommand(view.DslCmd)
 	ViewCmd.AddCommand(view.GenCmd)

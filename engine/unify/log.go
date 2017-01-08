@@ -1,19 +1,15 @@
-package cmd
+package unify
 
 import (
 	"github.com/spf13/viper"
-	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.ibm.com/hofstadter-io/geb/cmd/gebberish"
-	"github.ibm.com/hofstadter-io/geb/cmd/gen"
-	"github.ibm.com/hofstadter-io/geb/cmd/system"
-	"github.ibm.com/hofstadter-io/geb/cmd/view"
+	log "gopkg.in/inconshreveable/log15.v2" // logging framework
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	lcfg := viper.GetStringMap("log-config.cmd.default")
+
+	lcfg := viper.GetStringMap("log-config.engine.unify")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -42,12 +38,4 @@ func SetLogger(l log.Logger) {
 		// set the local logger
 		logger.SetHandler(termlog)
 	}
-
-	// set subcommand loggers
-	gebberish.SetLogger(logger)
-	gen.SetLogger(logger)
-	system.SetLogger(logger)
-	view.SetLogger(logger)
 }
-
-// HOFSTADTER_BELOW

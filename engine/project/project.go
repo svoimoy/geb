@@ -56,6 +56,7 @@ func (P *Project) Plan() error {
 		"proj":   P.Design.Proj,
 		"type":   P.Design.Type,
 		"dsl":    P.Design.Dsl,
+		"pkg":    P.Design.Pkg,
 		"custom": P.Design.Custom,
 	}
 

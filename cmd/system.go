@@ -29,7 +29,6 @@ var SystemCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(SystemCmd)
 
-	system.SetLogger(logger)
 	SystemCmd.AddCommand(system.InitCmd)
 	SystemCmd.AddCommand(system.DevCopyInCmd)
 	SystemCmd.AddCommand(system.UpdateCmd)

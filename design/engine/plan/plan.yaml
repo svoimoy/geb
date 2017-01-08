@@ -20,6 +20,8 @@ type:
     - name: outfile
       type: string
       required: true
+    - name: dsl-context
+      type: interface{}
     - name: repeated-context
       type: interface{}
 

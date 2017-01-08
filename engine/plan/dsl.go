@@ -4,6 +4,7 @@ import (
 	// HOFSTADTER_START import
 	"github.com/pkg/errors"
 	"path/filepath"
+	"strings"
 
 	"github.com/aymerick/raymond"
 	"github.ibm.com/hofstadter-io/dotpath"
@@ -11,17 +12,33 @@ import (
 	// HOFSTADTER_END   import
 )
 
-func make_dsls(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {
-	logger.Info("Making Dsl plans")
+func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {
+
+	logger.Info("Making Dsl plan", "dsl_ctx", dsl_ctx)
+	// get the ctx path for later comparison against dsl
+	ictx_path, err := dotpath.Get("ctx_path", dsl_ctx, true)
+	if err != nil {
+		return nil, errors.New("ctx_path not found, in make_type")
+	}
+	ctx_path, ok := ictx_path.(string)
+	if !ok {
+		return nil, errors.New("ctx_path is not a string, in make_type")
+	}
+
+	// logger.Error("ctx_path", "ctx_path", ctx_path)
+	ctx_dsl := strings.Split(ctx_path, ".")[1]
 
 	plans := []Plan{}
 
+	logger.Info("Making Dsl plans")
+
 	// Loop over DSLs in the plans
 	for d_key, D := range dsl_map {
-		if !(D.Config.Type == "dsl") {
+		// ... comparing the dsl type to the design type
+		if d_key != ctx_dsl {
 			continue
 		}
-		logger.Info("    dsl: "+D.Config.Name, "key", d_key)
+		logger.Error("    dsl: "+D.Config.Name, "d_key", d_key, "ctx_dsl", ctx_dsl, "ctx_path", ctx_path)
 
 		// Loop over each generator in the current DSL
 		for g_key, G := range D.Generators {
@@ -32,6 +49,9 @@ func make_dsls(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				G_key = G.Config.OutputDir
 			}
 
+			//
+			//  NORMAL TEMPLATES
+			//
 			// Render the normal templates
 			for t_key, T := range G.Templates {
 				t_ray := (*raymond.Template)(T)
@@ -39,12 +59,13 @@ func make_dsls(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 
 				// build up the plan data struct
 				p := Plan{
-					Dsl:      d_key,
-					Gen:      g_key,
-					File:     t_key,
-					Template: t_ray,
-					Data:     design_data,
-					Outfile:  outfile,
+					Dsl:        d_key,
+					Gen:        g_key,
+					File:       t_key,
+					Template:   t_ray,
+					Data:       design_data,
+					Outfile:    outfile,
+					DslContext: dsl_ctx,
 				}
 				logger.Info("        template file: "+t_key, "plan", p)
 
@@ -52,6 +73,9 @@ func make_dsls(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 				plans = append(plans, p)
 			} // End of normal template processing
 
+			//
+			//  REPEAT TEMPLATES
+			//
 			// Start of repeat processing section:
 			repeats := G.Config.Repeated
 			if len(repeats) == 0 {
@@ -62,51 +86,59 @@ func make_dsls(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 			logger.Info("      doing dsl repeat: "+D.Config.Type, "name", D.Config.Name, "d_key", d_key)
 
 			// Render the repeated templates
-			var data interface{}
-			d, ok := design_data["dsl"].(map[string]interface{})[d_key]
-			if !ok {
-				logger.Info("Did not find DSL data", "d_key", d_key, "design_data", design_data)
-				return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
-			}
-			data = d
-
 			for _, R := range repeats {
-				logger.Info("Processing Repeated Field: '" + R.Name + "'")
+				logger.Info("Processing Repeated Field: '"+R.Name+"'", "field", R.Field, "dsl_ctx", dsl_ctx)
+
+				repeat_elems, err := dotpath.Get(R.Field, dsl_ctx, false)
+				if err != nil || repeat_elems == nil {
+					logger.Warn("Skipping Repeated Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
+
+					continue
+				}
+
+				logger.Error("Doing Repeated Field: '" + R.Name + "'")
 				var c_slice []interface{}
 
-				// look up field
-				collection, err := dotpath.Get(R.Field, data, false)
-				if err != nil {
-					return nil, errors.Wrapf(err, "looking up by path:  repeat(%s)  path(%s) in data:\n%+v\n\n", R.Name, R.Field, data)
-				}
+				switch M := repeat_elems.(type) {
 
-				// unsure c_slice is an actual slice
-				tmp_c_slice, ok := collection.([]interface{})
-				if !ok {
-					logger.Info("Collection not a slice", "collection", collection)
-					// return nil, errors.New("Collection is not a list: " + R.Field)
-					c_slice = []interface{}{collection}
-				} else {
-					c_slice = tmp_c_slice
-				}
+				case map[string]interface{}:
+					c_slice = append(c_slice, M)
 
-				// flattern c_slice
-				tmp_c_slice = []interface{}{}
-				for _, elem := range c_slice {
-					if A, ok := elem.([]interface{}); ok {
-						for _, a := range A {
-							tmp_c_slice = append(tmp_c_slice, a)
-						}
-					} else {
-						tmp_c_slice = append(tmp_c_slice, elem)
+				case map[interface{}]interface{}:
+					c_slice = append(c_slice, M)
+
+				case []interface{}:
+					for _, elem := range M {
+						c_slice = append(c_slice, elem)
 					}
+
+				default:
+					logger.Warn("input is not a map or slice", "input", M)
+
 				}
-				c_slice = tmp_c_slice
+
+				logger.Info("Done adding to c_slice", "c_slice", c_slice)
+
+				/*
+					// flattern c_slice
+					// ....
+					// ....
+					tmp_c_slice := []interface{}{}
+					for _, elem := range c_slice {
+						if A, ok := elem.([]interface{}); ok {
+							for _, a := range A {
+								tmp_c_slice = append(tmp_c_slice, a)
+							}
+						} else {
+							tmp_c_slice = append(tmp_c_slice, elem)
+						}
+					}
+					c_slice = tmp_c_slice
+				*/
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "c_slice", c_slice)
 				for _, t_pair := range R.Templates {
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
-
 					t_key := t_pair.In
 
 					T, ok := G.Repeated[t_key]
@@ -139,6 +171,7 @@ func make_dsls(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 							Data:     design_data,
 							Outfile:  outfile,
 
+							DslContext:      dsl_ctx,
 							RepeatedContext: local_ctx,
 						}
 						// logger.Info("        planned repeat file: "+t_key, "index", idx)
@@ -152,8 +185,7 @@ func make_dsls(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 
 				}
 
-			}
-			// End of repeated template processing
+			} // End of repeated template processing
 
 		} // End Generator loop
 

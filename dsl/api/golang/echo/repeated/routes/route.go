@@ -41,10 +41,10 @@ func Handle_{{upper RC.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 			// Initialize
 			{{#if (contains TYP.path ".views")}}
 			// view
-			{{> types/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{> type/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
 			{{else}}
 			// type
-			{{> types/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{> type/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
 			{{/if}}
 
 			// Extract:

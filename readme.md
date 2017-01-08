@@ -1,13 +1,13 @@
 # geb - The data-centric, output-agnostic generation framework.
 
 __geb__ is the command-line tool for the hofstadter
-framework for data-centric design and _stuff_ generation.
+framework for data-centric design and output-agnostic generation.
 
 With it, you can:
 
-- Create designs and generate code
-- Modify code and regenerate without disruption
-- Customize templates and extend generators for your particular use-case
+- Create designs and generate code in multiple languages in parallel
+- Modify code and designs, regenerate without disruption
+- Customize and extend templates, generators, and dsls.
 - Share designs and templates across your applications and organization.
 - Contribute to the ecosystem by sharing your designs, templates, generators, or complete applications.
 

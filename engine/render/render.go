@@ -76,6 +76,10 @@ func RenderPlan(plan plan.Plan, output_dir string) error {
 		plan.Data["RepeatedContext"] = plan.RepeatedContext
 	}
 
+	if plan.DslContext != nil {
+		plan.Data["DslContext"] = plan.DslContext
+	}
+
 	// Render the template
 	tpl := (*raymond.Template)(plan.Template)
 	result, err := tpl.Exec(plan.Data)

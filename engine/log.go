@@ -12,6 +12,7 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine/render"
 	"github.ibm.com/hofstadter-io/geb/engine/system"
 	"github.ibm.com/hofstadter-io/geb/engine/templates"
+	"github.ibm.com/hofstadter-io/geb/engine/unify"
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
@@ -57,5 +58,6 @@ func SetLogger(l log.Logger) {
 	render.SetLogger(logger)
 	system.SetLogger(logger)
 	templates.SetLogger(logger)
+	unify.SetLogger(logger)
 	utils.SetLogger(logger)
 }

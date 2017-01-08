@@ -1,8 +1,8 @@
-var {{NAME}} {{> types/golang/modifiers.go MOD=MOD ~}}
+var {{NAME}} {{> type/golang/modifiers.go MOD=MOD ~}}
 {{#if IMPORT~}}
 	{{IMPORT}}.
 {{else ~}}
-	{{> types/golang/package.go TYP ~}}
+	{{> type/golang/package.go TYP ~}}
 {{/if~}}
 
 {{camelT TYP.name ~}}

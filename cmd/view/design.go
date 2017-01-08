@@ -29,7 +29,7 @@ var DesignCmd = &cobra.Command{
 	Long:  DesignLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In DesignCmd", "args", args)
+		// logger.Debug("In DesignCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   paths
 		//     help:   one ore more dotpaths for indexing into the data

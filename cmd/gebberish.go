@@ -30,7 +30,6 @@ var GebberishCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(GebberishCmd)
 
-	gebberish.SetLogger(logger)
 	GebberishCmd.AddCommand(gebberish.MiCmd)
 
 }

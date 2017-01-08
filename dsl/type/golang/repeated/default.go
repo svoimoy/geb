@@ -16,11 +16,11 @@ import (
 
 type {{camelT RC.name}} struct {
 {{#each RC.fields ~}}
-	{{> types/golang/field.go .}}
+	{{> type/golang/field.go .}}
 {{/each}}
 }
 
-{{> types/golang/type/new-func.go TYP=RC}}
+{{> type/golang/type/new-func.go TYP=RC}}
 
 
 {{#each RC.views}}
@@ -29,15 +29,15 @@ type {{camelT RC.name}}View_{{camelT V.name}} struct {
 {{#each V.fields}}{{#with . as |F|~}}
 {{#if (hasprefix F.type "local")}}
 {{#dotpath (trimprefix F.type "local.") RC.fields true }}
-	{{> types/golang/field.go .}}
+	{{> type/golang/field.go .}}
 {{/dotpath}}
 {{else}}
-	{{> types/golang/field.go F}}
+	{{> type/golang/field.go F}}
 {{/if}}
 {{/with}}{{/each ~}}
 }
 
-{{> types/golang/view/new-func.go TYP=RC VIEW=V}}
+{{> type/golang/view/new-func.go TYP=RC VIEW=V}}
 {{/with}}
 {{/each}}
 

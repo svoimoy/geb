@@ -15,7 +15,7 @@ import (
 )
 
 func ViewGeb(args []string) (string, error) {
-	fmt.Println("ViewGeb:", args)
+	// fmt.Println("ViewGeb:", args)
 
 	// file := utils.LookForKnownFiles()
 
@@ -49,7 +49,7 @@ func ViewGeb(args []string) (string, error) {
 }
 
 func ViewDsl(folder string, args []string) (string, error) {
-	fmt.Println("ViewDsl:", args)
+	// fmt.Println("ViewDsl:", args)
 
 	file := utils.LookForKnownFiles()
 
@@ -107,7 +107,7 @@ func ViewDsl(folder string, args []string) (string, error) {
 }
 
 func ViewGen(folder string, args []string) (string, error) {
-	fmt.Println("ViewGen:", args)
+	// 	fmt.Println("ViewGen:", args)
 	file := utils.LookForKnownFiles()
 
 	var data interface{}
@@ -170,7 +170,7 @@ func ViewGen(folder string, args []string) (string, error) {
 }
 
 func ViewDesign(folder string, args []string) (string, error) {
-	fmt.Println("ViewDesign:", folder, args)
+	// fmt.Println("ViewDesign:", folder, args)
 
 	D, err := design.CreateFromFolder(folder)
 	if err != nil {
@@ -208,7 +208,7 @@ func ViewDesign(folder string, args []string) (string, error) {
 }
 
 func ViewProject(folder string, args []string) (string, error) {
-	fmt.Println("ViewProject:", args)
+	// fmt.Println("ViewProject:", args)
 
 	file := utils.LookForKnownFiles()
 
@@ -253,7 +253,7 @@ func ViewProject(folder string, args []string) (string, error) {
 }
 
 func ViewPlans(folder string, args []string) (string, error) {
-	fmt.Println("ViewProject:", args)
+	// fmt.Println("ViewProject:", args)
 
 	file := utils.LookForKnownFiles()
 

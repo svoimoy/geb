@@ -1,0 +1,12 @@
+name: golang-pkg
+version: "0.1"
+language: golang
+type: pkg
+about: A golang package dsl
+
+repeated:
+  - name: package
+    field: "."
+    templates:
+      - in: "default.go"
+        out: "{{ pkg_path }}/{{name}}-pkg.go"

@@ -6,6 +6,7 @@ type: "types"
 
 repeated:
   - name: type
+    field: "."
     templates:
       - in: "default.go"
-        out: "{{join2 '/' (replace namespace '.' '/' -1) name}}.go"
+        out: "{{ pkg_path }}/{{name}}.go"

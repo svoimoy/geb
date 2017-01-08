@@ -4,24 +4,40 @@ import (
 	// HOFSTADTER_START import
 	"github.com/pkg/errors"
 	"path/filepath"
+	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	// HOFSTADTER_END   import
 )
 
-func make_types(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {
+func make_type(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {
+
+	logger.Info("Making Type plan")
+	// get the ctx path for later comparison against dsl
+	ictx_path, err := dotpath.Get("ctx_path", dsl_ctx, true)
+	if err != nil {
+		return nil, errors.New("ctx_path not found, in make_type")
+	}
+	ctx_path, ok := ictx_path.(string)
+	if !ok {
+		return nil, errors.New("ctx_path is not a string, in make_type")
+	}
+
+	ctx_dsl := strings.Split(ctx_path, ".")[0]
 
 	plans := []Plan{}
 
-	logger.Info("Making Type plans")
+	logger.Info("Making Type plan")
 
 	// Loop over DSLs in the plans
 	for d_key, D := range dsl_map {
-		if !(D.Config.Type == "type") {
+		// ... comparing the dsl type to the design type
+		if d_key != ctx_dsl {
 			continue
 		}
-		logger.Info("    type: "+D.Config.Name, "key", d_key)
+		logger.Error("    dsl: "+D.Config.Name, "d_key", d_key, "ctx_dsl", ctx_dsl, "ctx_path", ctx_path)
 
 		// Loop over each generator in the current DSL
 		for g_key, G := range D.Generators {
@@ -32,6 +48,9 @@ func make_types(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{})
 				G_key = G.Config.OutputDir
 			}
 
+			//
+			//  NORMAL TEMPLATES
+			//
 			// Render the normal templates
 			for t_key, T := range G.Templates {
 				t_ray := (*raymond.Template)(T)
@@ -39,12 +58,13 @@ func make_types(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{})
 
 				// build up the plan data struct
 				p := Plan{
-					Dsl:      d_key,
-					Gen:      g_key,
-					File:     t_key,
-					Template: t_ray,
-					Data:     design_data,
-					Outfile:  outfile,
+					Dsl:        d_key,
+					Gen:        g_key,
+					File:       t_key,
+					Template:   t_ray,
+					Data:       design_data,
+					Outfile:    outfile,
+					DslContext: dsl_ctx,
 				}
 				logger.Info("        template file: "+t_key, "plan", p)
 
@@ -52,6 +72,9 @@ func make_types(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{})
 				plans = append(plans, p)
 			} // End of normal template processing
 
+			//
+			//  REPEAT TEMPLATES
+			//
 			// Start of repeat processing section:
 			repeats := G.Config.Repeated
 			if len(repeats) == 0 {
@@ -61,128 +84,60 @@ func make_types(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{})
 			logger.Info("Repeated found in config:", "count", len(repeats), "repeats", repeats)
 			logger.Info("      doing dsl repeat: "+D.Config.Type, "name", D.Config.Name, "d_key", d_key)
 
-			d, ok := design_data["type"].(map[string]interface{})
-			if !ok || len(d) == 0 {
-				logger.Debug("Did not find any Type data", "design_data", design_data)
-				return nil, errors.Errorf("Did not find design data in your project for dsl: " + d_key)
-			}
-
 			// Render the repeated templates
 			for _, R := range repeats {
-				logger.Info("Processing Repeated Field: '" + R.Name + "'")
+				logger.Info("Processing Repeated Field: '"+R.Name+"'", "field", R.Field, "dsl_ctx", dsl_ctx)
 
+				repeat_elems, err := dotpath.Get(R.Field, dsl_ctx, false)
+				if err != nil || repeat_elems == nil {
+					logger.Warn("Skipping Repeated Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
+
+					continue
+				}
+
+				logger.Error("Doing Repeated Field: '" + R.Name + "'")
 				var c_slice []interface{}
-				// look up field
 
-				for _, typ := range design_data["type"].(map[string]interface{}) {
-					local_typ := typ
-					logger.Debug("Adding typ to c_slice", "typ", local_typ)
+				switch M := repeat_elems.(type) {
 
-					// Recurse over type map here, looking for elements...
-					// which have both name and namespace set.
-					// This is so we can have nested directories and packages of types
+				case map[string]interface{}:
+					c_slice = append(c_slice, M)
 
-					var extract_elems func(interface{})
+				case map[interface{}]interface{}:
+					c_slice = append(c_slice, M)
 
-					extract_elems = func(MAP interface{}) {
-						switch M := MAP.(type) {
-
-						case map[string]interface{}:
-							for _, elem := range M {
-								has_name, has_namespace := false, false
-
-								switch E := elem.(type) {
-								case map[string]interface{}:
-									if _, ok := E["name"]; ok {
-										has_name = true
-									}
-									if _, ok := E["namespace"]; ok {
-										has_namespace = true
-									}
-
-								case map[interface{}]interface{}:
-									if _, ok := E["name"]; ok {
-										has_name = true
-									}
-									if _, ok := E["namespace"]; ok {
-										has_namespace = true
-									}
-
-								default:
-									logger.Debug("elem is not a mapSI", "elem", elem)
-									continue
-								}
-
-								if has_name && has_namespace {
-									c_slice = append(c_slice, elem)
-								} else {
-									extract_elems(elem)
-								}
-							}
-
-						case map[interface{}]interface{}:
-							for _, elem := range M {
-								has_name, has_namespace := false, false
-
-								switch E := elem.(type) {
-								case map[string]interface{}:
-									if _, ok := E["name"]; ok {
-										has_name = true
-									}
-									if _, ok := E["namespace"]; ok {
-										has_namespace = true
-									}
-
-								case map[interface{}]interface{}:
-									if _, ok := E["name"]; ok {
-										has_name = true
-									}
-									if _, ok := E["namespace"]; ok {
-										has_namespace = true
-									}
-
-								default:
-									logger.Debug("elem is not a mapII", "elem", elem)
-									continue
-								}
-
-								if has_name && has_namespace {
-									c_slice = append(c_slice, elem)
-								} else {
-									extract_elems(elem)
-								}
-							}
-
-						default:
-							logger.Debug("input is not a map", "input", MAP)
-
-						}
-
+				case []interface{}:
+					for _, elem := range M {
+						c_slice = append(c_slice, elem)
 					}
 
-					extract_elems(local_typ)
+				default:
+					logger.Warn("input is not a map or slice", "input", M)
+
 				}
+
 				logger.Info("Done adding to c_slice", "c_slice", c_slice)
 
-				// flattern c_slice
-				// ....
-				// ....
-				tmp_c_slice := []interface{}{}
-				for _, elem := range c_slice {
-					if A, ok := elem.([]interface{}); ok {
-						for _, a := range A {
-							tmp_c_slice = append(tmp_c_slice, a)
+				/*
+					// flattern c_slice
+					// ....
+					// ....
+					tmp_c_slice := []interface{}{}
+					for _, elem := range c_slice {
+						if A, ok := elem.([]interface{}); ok {
+							for _, a := range A {
+								tmp_c_slice = append(tmp_c_slice, a)
+							}
+						} else {
+							tmp_c_slice = append(tmp_c_slice, elem)
 						}
-					} else {
-						tmp_c_slice = append(tmp_c_slice, elem)
 					}
-				}
-				c_slice = tmp_c_slice
+					c_slice = tmp_c_slice
+				*/
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "c_slice", c_slice)
 				for _, t_pair := range R.Templates {
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Repeated)
-
 					t_key := t_pair.In
 
 					T, ok := G.Repeated[t_key]
@@ -215,6 +170,7 @@ func make_types(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{})
 							Data:     design_data,
 							Outfile:  outfile,
 
+							DslContext:      dsl_ctx,
 							RepeatedContext: local_ctx,
 						}
 						// logger.Info("        planned repeat file: "+t_key, "index", idx)
@@ -228,11 +184,11 @@ func make_types(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{})
 
 				}
 
-			}
-			// End of repeated template processing
+			} // End of repeated template processing
 
 		} // End Generator loop
 
 	} // End DSL loop
+
 	return plans, nil
 }
