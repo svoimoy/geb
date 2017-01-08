@@ -1,0 +1,15 @@
+type:
+  name: toss
+  fields:
+    - name: request
+      type: string
+      validation:
+        - "required"
+        - "url"
+        - "uri"
+    - name: method
+      type: string
+    - name: headers
+      type: array:string
+    - name: query-params
+      type: array:string

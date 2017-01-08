@@ -1,0 +1,41 @@
+pkg:
+  name: discs
+  version: "0.0.1"
+  short: The package implementing frisby tasks.
+  long: The package implementing frisby tasks toss, test, and load.
+  public-funcs:
+    - name: toss
+      args:
+        - name: request
+          type: string
+        - name: options
+          type: map:interface{}
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+    - name: test
+      args:
+        - name: file
+          type: string
+        - name: host
+          type: string
+      return:
+        - name: report
+          type: string
+        - name: err
+          type: error
+    - name: load
+      args:
+        - name: file
+          type: string
+        - name: host
+          type: string
+      return:
+        - name: report
+          type: string
+        - name: err
+          type: error
+
+
