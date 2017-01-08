@@ -1,6 +1,5 @@
 type-list:
   name: "response-list"
-  namespace: "count-service"
   list:
     - name: version-response
       fields:

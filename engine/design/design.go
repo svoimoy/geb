@@ -189,7 +189,7 @@ func (d *Design) store_design(relative_path, dsl string, design interface{}) err
 			ename := ""
 			// check that we have a name, and possibly overwrite namespace
 			dname, err := dotpath.Get("name", elem, true)
-			logger.Warn("dotpath for name", "dname", dname, "err", err, "elem", elem)
+			logger.Debug("dotpath for name", "dname", dname, "err", err, "elem", elem)
 
 			switch E := elem.(type) {
 

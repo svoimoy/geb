@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
+	"github.com/kr/pretty"
+
 	"github.ibm.com/hofstadter-io/geb/engine/design"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	"github.ibm.com/hofstadter-io/geb/engine/plan"
@@ -59,6 +61,8 @@ func (P *Project) Plan() error {
 		"pkg":    P.Design.Pkg,
 		"custom": P.Design.Custom,
 	}
+
+	fmt.Printf("\n\n%# v\n\n", pretty.Formatter(data))
 
 	// call the planning module
 	plans, err := plan.MakePlans(P.DslMap, data)

@@ -20,16 +20,12 @@ import (
 //
 //
 func Unify(parent, path, parent_path string, design_data map[string]interface{}) error {
-	logger.Crit("Unifying", "design_data", design_data)
-
 	err := unify(parent, path, parent_path, design_data)
-	logger.Crit("Post-unify", "design_data", design_data)
-
 	return err
 }
 
 func unify(parent, path, parent_path string, design_data interface{}) error {
-	logger.Error("unify", "parent", parent, "path", path, "data", design_data)
+	logger.Info("unify", "parent", parent, "path", path, "data", design_data)
 	path_flds := strings.Split(path, ".")
 	path_len := len(path_flds)
 
@@ -37,14 +33,15 @@ func unify(parent, path, parent_path string, design_data interface{}) error {
 	iname, err := dotpath.Get("name", design_data, true)
 	if err != nil {
 		if !strings.Contains(err.Error(), "could not find 'name' in object") {
-			return errors.Wrap(err, "in unify: "+path)
+			return nil
+			// return errors.Wrap(err, "in unify: "+path)
 		}
 	}
 
 	name := ""
 
 	if iname != nil {
-		logger.Warn("Found a Name", "name", iname)
+		logger.Debug("Found a Name", "name", iname)
 		// If we found a name, we found an object
 		tname, ok := iname.(string)
 		if !ok {
@@ -74,7 +71,7 @@ func unify(parent, path, parent_path string, design_data interface{}) error {
 
 	}
 
-	logger.Warn("Now inspecting obj", "data", design_data)
+	logger.Debug("Now inspecting obj", "data", design_data)
 
 	r_parent := parent
 	r_parent_path := parent_path
@@ -87,108 +84,111 @@ func unify(parent, path, parent_path string, design_data interface{}) error {
 		}
 	}
 
-	logger.Crit("PARENT", "parent", parent, "r_parent", r_parent, "name", name)
+	logger.Debug("PARENT", "parent", parent, "r_parent", r_parent, "name", name)
 	// now recurse
 	switch D := design_data.(type) {
 	case map[string]interface{}:
 		for key, val := range D {
-			logger.Warn("  - inspecting...", "key", key, "val", val)
+			logger.Debug("  - inspecting...", "key", key, "val", val)
 			r_path := strings.Join([]string{path, key}, ".")
 
 			switch V := val.(type) {
 			case map[string]interface{}:
-				logger.Warn("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
+				logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, r_parent_path, val)
 				if err != nil {
-					logger.Crit("returning " + key)
+					logger.Debug("returning " + key)
 					return errors.Wrap(err, "in unify: "+key)
 				}
 			case map[interface{}]interface{}:
-				logger.Warn("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
+				logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, r_parent_path, val)
 				if err != nil {
-					logger.Crit("returning " + key)
+					logger.Debug("returning " + key)
 					return errors.Wrap(err, "in unify: "+key)
 				}
 			case []interface{}:
 				for idx, elem := range V {
 					sidx := fmt.Sprint(idx)
 					i_path := strings.Join([]string{r_path, sidx}, ".")
-					logger.Warn("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
+					logger.Debug("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
 					err := unify(r_parent, i_path, r_parent_path, elem)
 					if err != nil {
-						logger.Crit("returning " + sidx)
+						logger.Debug("returning " + sidx)
 						return errors.Wrap(err, "in unify: "+sidx)
 					}
 				}
 			}
+			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}
 
 	case map[interface{}]interface{}:
 		for key, val := range D {
-			logger.Warn("  - inspecting...", "key", key, "val", val)
+			logger.Debug("  - inspecting...", "key", key, "val", val)
 			skey := fmt.Sprint(key)
 			r_path := strings.Join([]string{path, skey}, ".")
 
 			switch V := val.(type) {
 			case map[string]interface{}:
-				logger.Warn("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
+				logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, r_parent_path, val)
 				if err != nil {
-					logger.Crit("returning " + skey)
+					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 			case map[interface{}]interface{}:
-				logger.Warn("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
+				logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, r_parent_path, val)
 				if err != nil {
-					logger.Crit("returning " + skey)
+					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 			case []interface{}:
 				for idx, elem := range V {
 					sidx := fmt.Sprint(idx)
 					i_path := strings.Join([]string{r_path, sidx}, ".")
-					logger.Warn("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
+					logger.Debug("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
 					err := unify(r_parent, i_path, r_parent_path, elem)
 					if err != nil {
-						logger.Crit("returning " + sidx)
+						logger.Debug("returning " + sidx)
 						return errors.Wrap(err, "in unify: "+sidx)
 					}
 				}
 			}
+			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}
 
 	case []interface{}:
 		for key, val := range D {
-			logger.Warn("  - inspecting...", "key", key, "val", val)
+			logger.Debug("  - inspecting...", "key", key, "val", val)
 			skey := fmt.Sprint(key)
 			r_path := strings.Join([]string{path, skey}, ".")
 
 			switch val.(type) {
 			case map[string]interface{}:
-				logger.Warn("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
+				logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, r_parent_path, val)
 				if err != nil {
-					logger.Crit("returning " + skey)
+					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 			case map[interface{}]interface{}:
-				logger.Warn("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
+				logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, r_parent_path, val)
 				if err != nil {
-					logger.Crit("returning " + skey)
+					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 			}
+			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}
 
 	default:
-		logger.Warn("Not Recursing", "path", path)
+		logger.Debug("Not Recursing", "path", path)
 
 		//	return errors.New("in unify, data is not a map")
 	}
 
-	logger.Error(" -- unify")
+	logger.Info(" -- unify", "path", path)
 	return nil
 }

@@ -1,6 +1,5 @@
 api:
   name: count-service
-  namespace: count-service
   version: "0.1"
   about: count-service for daily transaction counts.
   config:

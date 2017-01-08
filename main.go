@@ -67,8 +67,6 @@ func config_logger() {
 		level = level_local
 	}
 
-	fmt.Println("Main Log Level", level)
-
 	termlog := log.LvlFilterHandler(level, log.StdoutHandler)
 	if stack {
 		term_stack := log.CallerStackHandler("%+v", log.StdoutHandler)
@@ -78,7 +76,6 @@ func config_logger() {
 	logger.SetHandler(termlog)
 
 	// set package loggers
-	fmt.Println("Setting Cmd Logger")
 	cmd.SetLogger(logger)
 
 	// IF using geb-engine dsl

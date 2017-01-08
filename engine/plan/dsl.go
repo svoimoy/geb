@@ -25,7 +25,6 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 		return nil, errors.New("ctx_path is not a string, in make_type")
 	}
 
-	// logger.Error("ctx_path", "ctx_path", ctx_path)
 	ctx_dsl := strings.Split(ctx_path, ".")[1]
 
 	plans := []Plan{}
@@ -38,7 +37,7 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 		if d_key != ctx_dsl {
 			continue
 		}
-		logger.Error("    dsl: "+D.Config.Name, "d_key", d_key, "ctx_dsl", ctx_dsl, "ctx_path", ctx_path)
+		logger.Info("    dsl: "+D.Config.Name, "d_key", d_key, "ctx_dsl", ctx_dsl, "ctx_path", ctx_path)
 
 		// Loop over each generator in the current DSL
 		for g_key, G := range D.Generators {
@@ -91,12 +90,12 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 
 				repeat_elems, err := dotpath.Get(R.Field, dsl_ctx, false)
 				if err != nil || repeat_elems == nil {
-					logger.Warn("Skipping Repeated Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
+					logger.Debug("Skipping Repeated Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
 
 					continue
 				}
 
-				logger.Error("Doing Repeated Field: '" + R.Name + "'")
+				logger.Debug("Doing Repeated Field: '" + R.Name + "'")
 				var c_slice []interface{}
 
 				switch M := repeat_elems.(type) {
@@ -113,7 +112,7 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 					}
 
 				default:
-					logger.Warn("input is not a map or slice", "input", M)
+					logger.Info("input is not a map or slice", "input", M)
 
 				}
 

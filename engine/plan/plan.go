@@ -2,12 +2,10 @@ package plan
 
 import (
 	// HOFSTADTER_START import
-	"fmt"
 	"github.com/pkg/errors"
 	"strings"
 
 	"github.com/aymerick/raymond"
-	"github.com/kr/pretty"
 
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
@@ -99,7 +97,7 @@ func flatten_design_data(base_outpath string, design_data interface{}) (map[stri
 func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {
 	logger.Info("Planning Project")
 	logger.Info("    with...", "dsl_map", dsl_map)
-	fmt.Printf("%#  v", pretty.Formatter(design_data))
+	// fmt.Printf("%#  v", pretty.Formatter(design_data))
 
 	var (
 		ret, plans []Plan
@@ -111,7 +109,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 		return plans, errors.Wrap(err, "in MakePlans\n")
 	}
 	logger.Debug("    and...  flatland!!")
-	fmt.Printf("%#  v", pretty.Formatter(flatland))
+	// fmt.Printf("%#  v", pretty.Formatter(flatland))
 
 	for ctx_path, design := range flatland {
 		ps := strings.Split(ctx_path, "/")
@@ -149,7 +147,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 }
 
 func determine_outfile_name(of_tpl_value string, tpl_data interface{}) (string, error) {
-	logger.Crit("outfile_name", "in", of_tpl_value, "data", tpl_data)
+	logger.Debug("outfile_name", "in", of_tpl_value, "data", tpl_data)
 	tpl, err := raymond.Parse(of_tpl_value)
 	if err != nil {
 		return "", errors.Wrap(err, "in determine_outfile_name\n")

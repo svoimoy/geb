@@ -10,7 +10,7 @@ dsl-config:
     - "dsl"
     - "$GOPATH/src/github.ibm.com/hofstadter-io/geb/dsl"
   default:
-    - dsl: types
+    - dsl: type
       gen:
         - golang
       output-dir: "."
@@ -19,4 +19,7 @@ dsl-config:
         - golang/echo
       output-dir: "."
 
-# log-config:
+log-config:
+  engine:
+    unify:
+      level: debug

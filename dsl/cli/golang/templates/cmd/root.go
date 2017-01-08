@@ -6,7 +6,6 @@ import (
   // HOFSTADTER_END   import
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 {{> "flag-var.go" CLI }}
