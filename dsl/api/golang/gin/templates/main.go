@@ -1,4 +1,4 @@
-{{#with dsl.api}}
+{{#with DslContext as |API| }}
 package main
 
 import (

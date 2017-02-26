@@ -1,4 +1,4 @@
-{{#with dsl.cli as |CLI| }}
+{{#with DslContext as |CLI| }}
 package cmd
 
 import (

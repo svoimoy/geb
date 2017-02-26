@@ -19,6 +19,8 @@ func SpliceResults(existing, rendered string) (string, error) {
 	old_lines := bytes.Split([]byte(existing), []byte("\n"))
 	new_lines := bytes.Split([]byte(rendered), []byte("\n"))
 
+	logger.Debug("Splice lengths", "old_lines", len(old_lines), "new_lines", len(new_lines))
+
 	// find HOFSTADTER tags and extract splices from the OLD file
 	has_below := false
 	old_lpos := -1
@@ -94,6 +96,7 @@ func SpliceResults(existing, rendered string) (string, error) {
 		all_lines = append(all_lines, []byte("// HOFSTADTER_BELOW\n\n"))
 	}
 
+	logger.Debug("   result length", "all_lines", len(all_lines))
 	// Rejoin the lines
 	all_data := bytes.Join(all_lines, []byte("\n"))
 	real_template := string(all_data)

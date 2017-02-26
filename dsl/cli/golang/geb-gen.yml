@@ -15,7 +15,7 @@ repeated:
     field: commands.subcommands
     templates:
       - in: "cmd/subcmd.go"
-        out: "{{ pkg_path }}/cmd/{{parent}}/{{name}}.go"
+        out: "cmd/{{parent}}/{{name}}.go"
       - in: "cmd/log.go"
-        out: "{{ pkg_path }}/cmd/{{parent}}/log.go"
+        out: "cmd/{{parent}}/log.go"
 

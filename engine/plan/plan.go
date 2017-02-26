@@ -108,8 +108,7 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 	if err != nil {
 		return plans, errors.Wrap(err, "in MakePlans\n")
 	}
-	logger.Debug("    and...  flatland!!")
-	// fmt.Printf("%#  v", pretty.Formatter(flatland))
+	logger.Debug("    and...  flatland!!", "flatland", flatland)
 
 	for ctx_path, design := range flatland {
 		ps := strings.Split(ctx_path, "/")

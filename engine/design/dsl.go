@@ -10,7 +10,7 @@ import (
 )
 
 func (d *Design) store_dsl_design(relative_path, dsl, name string, design interface{}) error {
-	logger.Info("    - storing dsl", "name", name, "rel_path", relative_path)
+	logger.Info("    - storing dsl", "dsl", dsl, "name", name, "rel_path", relative_path)
 	logger.Debug("          with", "design", design)
 
 	fields := strings.Split(relative_path, "/")
@@ -37,7 +37,7 @@ func (d *Design) store_dsl_design(relative_path, dsl, name string, design interf
 	dd_map[dsl] = design
 	logger.Info("Design", "name", name, "design", design, "map", dd_map, "insert", insert)
 
-	if _, ok := d.Dsl[dsl]; !ok {
+	if _, ok := d.Dsl[F0]; !ok {
 		d.Dsl[F0] = insert[F0]
 		logger.Info("new dsl stored", "d.Dsl", d.Dsl)
 	} else {

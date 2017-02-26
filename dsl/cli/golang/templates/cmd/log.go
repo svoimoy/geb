@@ -1,3 +1,4 @@
+{{#with DslContext as |CLI| }}
 package cmd
 
 import (
@@ -49,3 +50,4 @@ func SetLogger(l log.Logger) {
 	{{lower Cmd.name}}.SetLogger(logger)
 	{{/each}}
 }
+{{/with}}

@@ -1,5 +1,5 @@
 {{#with RepeatedContext as |RC| }}
-{{#with dsl.api as |API| }}
+{{#with DslContext as |API| }}
 package routes
 
 import (

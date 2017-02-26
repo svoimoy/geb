@@ -1,4 +1,4 @@
-{{#with dsl.api as |API| }}
+{{#with DslContext as |API| }}
 package main
 
 /*

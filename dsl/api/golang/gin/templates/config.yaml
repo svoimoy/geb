@@ -1,4 +1,4 @@
-{{#with dsl.api}}
+{{#with DslContext as |API| }}
 name: "{{name}}"
 version: "{{version}}"
 

@@ -1,12 +1,15 @@
 package project
 
 import (
+	// "fmt"
 	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
 	"strings"
 
+	// "github.com/kr/pretty"
 	"github.com/ryanuber/go-glob"
+
 	"github.ibm.com/hofstadter-io/geb/engine/design"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	"github.ibm.com/hofstadter-io/geb/engine/gen"
@@ -44,6 +47,9 @@ func (P *Project) Load(filename string, generators []string) error {
 		return errors.Wrapf(err, "While unifying design in proj.Load: %s\n", d_dir)
 	}
 	P.Design = d
+
+	// dstr := fmt.Sprintf("%# v\n\n", pretty.Formatter(P.Design))
+	// fmt.Println(dstr)
 	logger.Debug("Project Design", "design", P.Design)
 
 	return nil

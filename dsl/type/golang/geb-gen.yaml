@@ -1,7 +1,7 @@
 name: "types/golang"
 version: "0.1"
 about: "generator for golang types"
-type: "types"
+type: "type"
 
 
 repeated:
@@ -9,4 +9,4 @@ repeated:
     field: "."
     templates:
       - in: "default.go"
-        out: "{{ pkg_path }}/{{name}}.go"
+        out: "{{name}}.go"

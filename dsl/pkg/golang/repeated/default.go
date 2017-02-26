@@ -7,5 +7,6 @@ package something
 ---
 
 {{{yaml DslContext}}}
+{{{yaml RepeatedContext}}}
 
 */

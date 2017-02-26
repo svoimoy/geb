@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/aymerick/raymond"
+
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	// HOFSTADTER_END   import
@@ -14,7 +15,9 @@ import (
 
 func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) ([]Plan, error) {
 
-	logger.Info("Making Dsl plan", "dsl_ctx", dsl_ctx)
+	logger.Info("Making Dsl plan")
+	logger.Debug("  context", "dsl_ctx", dsl_ctx)
+
 	// get the ctx path for later comparison against dsl
 	ictx_path, err := dotpath.Get("ctx_path", dsl_ctx, true)
 	if err != nil {
@@ -25,11 +28,17 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 		return nil, errors.New("ctx_path is not a string, in make_type")
 	}
 
-	ctx_dsl := strings.Split(ctx_path, ".")[1]
+	// For DSLs, we need the last field to know which dsl it is
+	ctx_flds := strings.Split(ctx_path, ".")
+	ctx_dir := ""
+	if len(ctx_flds) > 2 {
+		ctx_dir = filepath.Join(ctx_flds[1 : len(ctx_flds)-1]...)
+	}
+	ctx_dsl := ctx_flds[len(ctx_flds)-1]
 
 	plans := []Plan{}
 
-	logger.Info("Making Dsl plans")
+	logger.Debug("Making Dsl plan", "dsl_map", dsl_map, "ctx_dsl", ctx_dsl, "ctx_dir", ctx_dir)
 
 	// Loop over DSLs in the plans
 	for d_key, D := range dsl_map {
@@ -54,17 +63,18 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 			// Render the normal templates
 			for t_key, T := range G.Templates {
 				t_ray := (*raymond.Template)(T)
-				outfile := filepath.Join(G_key, t_key)
+				outfile := filepath.Join(ctx_dir, G_key, t_key)
 
 				// build up the plan data struct
 				p := Plan{
-					Dsl:        d_key,
-					Gen:        g_key,
-					File:       t_key,
-					Template:   t_ray,
-					Data:       design_data,
-					Outfile:    outfile,
-					DslContext: dsl_ctx,
+					Dsl:             d_key,
+					Gen:             g_key,
+					File:            t_key,
+					Template:        t_ray,
+					Data:            design_data,
+					Outfile:         outfile,
+					DslContext:      dsl_ctx,
+					RepeatedContext: "",
 				}
 				logger.Info("        template file: "+t_key, "plan", p)
 
@@ -159,7 +169,7 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 						}
 						logger.Info("OFNAME", "name", OF_name)
 
-						outfile := filepath.Join(G_key, OF_name)
+						outfile := filepath.Join(ctx_dir, G_key, OF_name)
 
 						// build up the plan data struct
 						fgd := Plan{
