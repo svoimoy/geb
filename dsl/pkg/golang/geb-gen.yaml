@@ -9,4 +9,4 @@ repeated:
     field: "."
     templates:
       - in: "default.go"
-        out: "{{ pkg_path }}/{{name}}-pkg.go"
+        out: "/{{name}}-pkg.go"

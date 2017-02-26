@@ -47,7 +47,9 @@ func SetLogger(l log.Logger) {
 
 	// set subcommand loggers
 	{{#each CLI.commands as |Cmd|}}
+	{{#if Cmd.subcommands}}
 	{{lower Cmd.name}}.SetLogger(logger)
+	{{/if}}
 	{{/each}}
 }
 {{/with}}
