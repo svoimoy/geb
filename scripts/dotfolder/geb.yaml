@@ -1,0 +1,13 @@
+max-concurrency: 8
+
+design-dir: "design"
+
+dsl-config:
+  paths:
+    - "dsl"
+    - "$HOME/.geb/dsl"
+
+log-config:
+  default:
+    level: warn
+    stack: true
