@@ -1,6 +1,7 @@
 {{#with RepeatedContext as |RC| }}
 {{#with DslContext as |API| }}
 package subresourcename
+// package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 /*
 API:       {{API.name}}

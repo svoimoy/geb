@@ -1,9 +1,5 @@
 {{#with RepeatedContext as |RC| }}
-{{#if namespace}}
-package {{#each (split RC.namespace ".")}}{{#if @last }}{{snake .}}{{/if}}{{/each}}
-{{else}}
-package types
-{{/if}}
+package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
 	// HOFSTADTER_START import
@@ -41,6 +37,9 @@ type {{camelT RC.name}}View_{{camelT V.name}} struct {
 {{/with}}
 {{/each}}
 
+/*
+{{{yaml RC}}}
+*/
 
 {{/with}}
 

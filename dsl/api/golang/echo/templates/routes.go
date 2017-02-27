@@ -4,7 +4,7 @@ package main
 /*
 	This is a test for dotpath indexing enhancement:
 
-	Path: dsl.api.[???]
+	Path: DslContext.[???]
 
 	??? = routes.version
 	---
@@ -12,12 +12,12 @@ package main
 	{{name}}
 	{{/get_elem_by_name}}
 	---
-	{{#dotpath "api.routes.version" @root.dsl true}}
+	{{#dotpath "api.routes.version" @root.DslContext true}}
 	{{name}}
 	{{/dotpath}}
 	---
 	{{#dotpath "routes.version" API true}}
-	{{name}}
+	{{{.}}}
 	{{/dotpath}}
   ---
 	{{#getdsl "api.routes.[0]" true}}
@@ -34,3 +34,6 @@ package main
 
 {{/with}}
 
+/*
+{{{yaml .}}}
+*/

@@ -30,11 +30,11 @@ api:
       methods:
         - method: list
           input:  none
-          output: array:count-service.count.views.extern
+          output: array:types.count.views.extern
         - method: get
-          input:  count-service.count.fields.owner_id
-          output: count-service.count.views.extern
+          input:  types.count.fields.owner_id
+          output: types.count.views.extern
         - method: put
-          input:  count-service.count.views.extern
-          output: count-service.count.views.extern
+          input:  types.count.views.extern
+          output: types.count.views.extern
 

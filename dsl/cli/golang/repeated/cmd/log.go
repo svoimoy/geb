@@ -1,6 +1,7 @@
 {{#with RepeatedContext as |RC| }}
 {{#with DslContext as |CLI| }}
-package {{lower RC.parent}}
+package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
+// package {{lower RC.parent}}
 
 import (
 	"github.com/spf13/viper"

@@ -1,6 +1,7 @@
 {{#with RepeatedContext as |RC| }}
 {{#with DslContext as |API| }}
 package resources
+// package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
 	"net/http"
@@ -18,6 +19,8 @@ Route:     {{RC.route}}
 Resource:  {{RC.resource}}
 Path:      {{RC.path}}
 Parent:    {{RC.parent}}
+
+{{{yaml RC}}}
 */
 
 
@@ -31,6 +34,7 @@ func Handle_{{upper M.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 	// input
 	{{#gettype M.input true as |TYP|}}
 		{{#if (builtin type)}}
+		  // builtin
 			// Extract:
 			input := ctx.QueryParam("{{name}}")
 			// Validate:
@@ -44,10 +48,10 @@ func Handle_{{upper M.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 			// Initialize
 			{{#if (contains TYP.path ".views")}}
 			// view
-			{{> type/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{> type/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.input "*" true)) (trimsuffix M.input (trimfrom M.input ":" true))) }}
 			{{else}}
 			// type
-			{{> type/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
+			{{> type/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.input "*" true)) (trimsuffix M.input (trimfrom M.input ":" true))) }}
 			{{/if}}
 
 			// Extract:

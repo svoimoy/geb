@@ -1,6 +1,7 @@
 {{#with RepeatedContext as |RC| }}
 {{#with DslContext as |CLI| }}
 package cmd
+// package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
 	// HOFSTADTER_START import

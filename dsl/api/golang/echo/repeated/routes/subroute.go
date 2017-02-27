@@ -1,6 +1,7 @@
 {{#with RepeatedContext as |RC| }}
 {{#with DslContext as |API| }}
 package routes
+// package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
 	"net/http"
