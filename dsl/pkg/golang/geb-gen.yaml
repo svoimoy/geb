@@ -9,9 +9,11 @@ repeated:
     field: "."
     templates:
       - in: "default.go"
-        out: "/{{name}}.go"
+        out: "{{name}}.go"
+      - in: "log.go"
+        out: "log.go"
   - name: private-funcs
     field: "private-functions"
     templates:
       - in: "private.go"
-        out: "/{{name}}.go"
+        out: "{{name}}.go"

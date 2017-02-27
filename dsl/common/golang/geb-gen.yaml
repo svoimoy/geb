@@ -1,0 +1,6 @@
+name: golang-common
+version: "0.1"
+language: golang
+type: dsl
+about: A golang dsl providing common partial templates
+
