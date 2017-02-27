@@ -12,5 +12,9 @@ func {{camel name}}({{#if CTX.args}}{{> pkg/golang/func-args.go CTX.args ~}}{{/i
 	// HOFSTADTER_END   {{camel CTX.name}}
 }
 
+/*
+{{{yaml CTX}}}
+*/
+
 {{/with}}
 

@@ -65,6 +65,9 @@ func config_logger(level string) {
 }
 
 func Get(path string, data interface{}, no_solo_array bool) (interface{}, error) {
+	if path == "." {
+		return data, nil
+	}
 	paths := strings.Split(path, ".")
 	if len(paths) < 1 {
 		return nil, errors.New("Bad path supplied: " + path)
@@ -89,6 +92,9 @@ func Get(path string, data interface{}, no_solo_array bool) (interface{}, error)
 }
 
 func GetByPathSlice(path []string, data interface{}, no_solo_array bool) (interface{}, error) {
+	if path[0] == "." {
+		return data, nil
+	}
 	if strings.Contains(path[0], ":") {
 		pos := strings.Index(path[0], ":")
 		path[0] = path[0][pos+1:]
