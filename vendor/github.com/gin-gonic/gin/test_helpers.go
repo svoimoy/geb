@@ -1,11 +1,10 @@
 package gin
 
 import (
-	"net/http/httptest"
+	"net/http"
 )
 
-func CreateTestContext() (c *Context, w *httptest.ResponseRecorder, r *Engine) {
-	w = httptest.NewRecorder()
+func CreateTestContext(w http.ResponseWriter) (c *Context, r *Engine) {
 	r = New()
 	c = r.allocateContext()
 	c.reset()

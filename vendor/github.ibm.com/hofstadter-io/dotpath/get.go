@@ -23,11 +23,7 @@ func SetLogger(l log.Logger) {
 		logger = l
 	} else {
 		level_str := lcfg["level"].(string)
-		stack := false
-		istack, ok := lcfg["stack"]
-		if ok {
-			stack = istack.(bool)
-		}
+		stack := lcfg["stack"].(bool)
 		level, err := log.LvlFromString(level_str)
 		if err != nil {
 			panic(err)
@@ -69,28 +65,21 @@ func config_logger(level string) {
 }
 
 func Get(path string, data interface{}, no_solo_array bool) (interface{}, error) {
-	logger.Info("Get", "path", path, "data", data, "no_solo_array", no_solo_array)
-	var ret interface{}
-	var err error
-
-	if path == "." {
-		ret = data
-	} else {
-		paths := strings.Split(path, ".")
-		if len(paths) < 1 {
-			return nil, errors.New("Bad path supplied: " + path)
-		}
-		if strings.Contains(paths[0], ":") {
-			pos := strings.Index(paths[0], ":")
-			paths[0] = paths[0][pos+1:]
-		}
-
-		ret, err = get_by_path(0, paths, data)
-		if err != nil {
-			return nil, err
-		}
+	paths := strings.Split(path, ".")
+	if len(paths) < 1 {
+		return nil, errors.New("Bad path supplied: " + path)
+	}
+	if strings.Contains(paths[0], ":") {
+		pos := strings.Index(paths[0], ":")
+		paths[0] = paths[0][pos+1:]
 	}
 
+	// fmt.Println("GETPATH:", path, paths, data)
+
+	ret, err := get_by_path(0, paths, data)
+	if err != nil {
+		return nil, err
+	}
 	if T, ok := ret.([]interface{}); ok {
 		if no_solo_array && len(T) == 1 {
 			return T[0], nil
@@ -100,13 +89,6 @@ func Get(path string, data interface{}, no_solo_array bool) (interface{}, error)
 }
 
 func GetByPathSlice(path []string, data interface{}, no_solo_array bool) (interface{}, error) {
-	logger.Info("GetByPathSlice", "path", path, "data", data, "no_solo_array", no_solo_array)
-	if len(path) < 1 {
-		return nil, errors.New("No path elements specified")
-	}
-	if len(path) == 1 && path[0] == "." {
-		return data, nil
-	}
 	if strings.Contains(path[0], ":") {
 		pos := strings.Index(path[0], ":")
 		path[0] = path[0][pos+1:]
