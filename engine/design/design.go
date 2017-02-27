@@ -82,7 +82,7 @@ func (d *Design) ImportDesignFolder(folder string) error {
 	// Walk the directory
 	err = filepath.Walk(folder, import_design_walk_func)
 	if err != nil {
-		return errors.Wrap(err, "in design.CreateFromFolder")
+		return errors.Wrap(err, "in design.CreateFromFolder: "+folder+"\n")
 	}
 	return nil
 }
@@ -93,16 +93,16 @@ func (d *Design) import_design(base_folder, path string) error {
 	top_level := make(map[string]interface{})
 	raw_data, err := ioutil.ReadFile(path)
 	if err != nil {
-		return errors.Wrap(err, "in design.import_design")
+		return errors.Wrap(err, "in design.import_design (read file): "+path+"\n")
 	}
 	err = yaml.Unmarshal([]byte(raw_data), &top_level)
 	if err != nil {
-		return errors.Wrap(err, "in design.import_design")
+		return errors.Wrap(err, "in design.import_design (yaml unmarshal): "+path+"\n")
 	}
 
 	rel_file, err := filepath.Rel(base_folder, path)
 	if err != nil {
-		return errors.Wrap(err, "in design.import_design")
+		return errors.Wrap(err, "in design.import_design (rel filepath): "+path+"\n")
 	}
 
 	rel_path := filepath.Dir(rel_file)
@@ -115,7 +115,7 @@ func (d *Design) import_design(base_folder, path string) error {
 		data := val.(map[interface{}]interface{})
 		err = d.store_design(rel_path, dsl, data)
 		if err != nil {
-			return errors.Wrap(err, "in design.import_design")
+			return errors.Wrap(err, "in design.import_design (store design): "+path+"\n")
 		}
 	}
 
