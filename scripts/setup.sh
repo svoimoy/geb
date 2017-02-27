@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-HOF_DIR="${HOME}/.hofstadter"
+HOF_DIR="${HOME}/.geb"
 
 mkdir ${HOF_DIR}
 ln -s $(pwd)/dsl ${HOF_DIR}/dsl
