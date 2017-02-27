@@ -15,8 +15,4 @@ func {{camelT name}}({{#if args}}{{> pkg/golang/func-args.go args ~}}{{/if}} ) {
 
 {{/each}}
 
-/*
-{{{yaml CTX}}}
-*/
-
 {{/with}}

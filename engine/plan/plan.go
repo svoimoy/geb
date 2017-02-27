@@ -158,5 +158,5 @@ func determine_outfile_name(of_tpl_value string, tpl_data interface{}) (string, 
 		return "", errors.Wrap(err, "in determine_outfile_name\n")
 	}
 
-	return strings.ToLower(of_name), nil
+	return of_name, nil
 }
