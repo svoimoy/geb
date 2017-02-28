@@ -5,6 +5,13 @@ import (
   // HOFSTADTER_START import
   // HOFSTADTER_END   import
 
+	{{#if CLI.flags}}
+	"github.com/spf13/viper"
+	{{else}}
+		{{#if CLI.pflags}}
+	"github.com/spf13/viper"
+		{{/if}}
+	{{/if}}
 	"github.com/spf13/cobra"
 )
 

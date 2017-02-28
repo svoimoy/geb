@@ -128,22 +128,20 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 
 				logger.Info("Done adding to c_slice", "c_slice", c_slice)
 
-				/*
-					// flattern c_slice
-					// ....
-					// ....
-					tmp_c_slice := []interface{}{}
-					for _, elem := range c_slice {
-						if A, ok := elem.([]interface{}); ok {
-							for _, a := range A {
-								tmp_c_slice = append(tmp_c_slice, a)
-							}
-						} else {
-							tmp_c_slice = append(tmp_c_slice, elem)
+				// flattern c_slice
+				// ....
+				// ....
+				tmp_c_slice := []interface{}{}
+				for _, elem := range c_slice {
+					if A, ok := elem.([]interface{}); ok {
+						for _, a := range A {
+							tmp_c_slice = append(tmp_c_slice, a)
 						}
+					} else {
+						tmp_c_slice = append(tmp_c_slice, elem)
 					}
-					c_slice = tmp_c_slice
-				*/
+				}
+				c_slice = tmp_c_slice
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "c_slice", c_slice)
 				for _, t_pair := range R.Templates {

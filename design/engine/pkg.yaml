@@ -1,0 +1,4 @@
+pkg:
+  name: "engine"
+  version: "0.0.1"
+  about: "The Hofstadter engine package"

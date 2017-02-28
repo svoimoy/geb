@@ -9,4 +9,4 @@ repeated:
     field: "."
     templates:
       - in: "default.go"
-        out: "{{name}}.go"
+        out: "{{camel name}}.go"

@@ -10,13 +10,20 @@ design-dir: "design"
 dsl-config:
   paths:
     - "dsl"
-    - "$HOME/.geb/dsl"
   default:
-    - dsl: cli
+    - dsl: common
       gen:
         - golang
       output-dir: "."
-    - dsl: types
+    - dsl: type
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: pkg
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: cli
       gen:
         - golang
       output-dir: "."
@@ -25,4 +32,3 @@ log-config:
   default:
     level: warn
     stack: true
-

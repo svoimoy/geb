@@ -3,9 +3,9 @@
 func init() {
 {{#each Cmd.pflags}}
 {{#if Cmd.parent}}
-	{{> cli/golang/flag-def.go FLAG=. CMDNAME=(camelT Cmd.name) PERSIST="Persitent"}}
+	{{> cli/golang/flag-def.go FLAG=. CMDNAME=(camelT Cmd.name) PERSIST="Persistent"}}
 {{else}}
-	{{> cli/golang/flag-def.go FLAG=. CMDNAME="Root" PERSIST="Persitent"}}
+	{{> cli/golang/flag-def.go FLAG=. CMDNAME="Root" PERSIST="Persistent"}}
 {{/if}}
 
 {{/each}}

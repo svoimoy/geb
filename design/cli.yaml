@@ -7,32 +7,32 @@ cli:
     Platforms. geb is the tool.
   omit-run: true
   pflags:
-    - name: Config
+    - name: config
       long: config
       short: c
       type: string
       default: geb.yaml
       help: A geb project config file.
-    - name: Design
+    - name: design
       long: design
       short: d
       type: string
       default: design
       help: The design files directory.
-    - name: TemplatePaths
+    - name: template-paths
       long: template-paths
       short: t
       type: string
       default: templates:~/.hofstadter/templates
       help: The search path for templates, reads from left to right, overriding along the way.
-    - name: Output
+    - name: output
       long: output
       type: string
       short: o
       default: output
       help: The directory to output generated files to.
   commands:
-    - name: System
+    - name: system
       usage: system
       aliases:
         - sys
@@ -41,23 +41,23 @@ cli:
       long: Manage the geb system and congiuration
       omit-run: true
       subcommands:
-        - name: Init
+        - name: init
           usage: init
           aliases:
             - initialize
             - setup
           short: Initialize the geb tool and files
           long: Intializes the geb tool and the ~/.hofstadter dot folder.
-        - name: DevCopyIn
+        - name: dev-copy-in
           usage: dev-copy-in
           short: Copy development files to the dot folder
           long: Copy development files to the dot folder
-        - name: Update
+        - name: update
           usage: update
           short: Update the geb library and dot folder
           long: Update the geb library DSLs, designs, and other files in the dot folder.
 
-    - name: View
+    - name: view
       usage: view
       aliases:
         - v
@@ -65,7 +65,7 @@ cli:
       long: View information known to the geb tool.
       omit-run: true
       subcommands:
-        - name: System
+        - name: system
           usage: sys <dotpaths>...
           aliases:
             - s
@@ -79,7 +79,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
-        - name: Dsl
+        - name: dsl
           usage: dsl <dotpath>...
           aliases:
             - d
@@ -90,7 +90,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
-        - name: Gen
+        - name: gen
           usage: gen <dotpaths>...
           aliases:
             - g
@@ -101,7 +101,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
-        - name: Project
+        - name: project
           usage: project <dotpath>...
           aliases:
             - p
@@ -113,7 +113,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
-        - name: Design
+        - name: design
           usage: design <dotpath>...
           aliases:
             - D
@@ -124,7 +124,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
-        - name: Plans
+        - name: plans
           usage: plans <dotpath>...
           aliases:
             - P
@@ -136,7 +136,7 @@ cli:
               rest: true
               help: one ore more dotpaths for indexing into the data
 
-    - name: Create
+    - name: create
       usage: create <name> <dsl/gen>...
       aliases:
         - new
@@ -157,7 +157,7 @@ cli:
           type: array:string
           help: The starting list of DSLs and generators by path.
 
-    - name: Gen
+    - name: gen
       usage: gen
       aliases:
         - geb
@@ -167,7 +167,7 @@ cli:
       short: Generate a project.
       long: Generate a project from its working directory.
       subcommands:
-        - name: File
+        - name: file
           usage: file <designFile> <templateFile> <outputFile>
           short: Generate a file.
           long: Generate a file from design and a template.
@@ -185,7 +185,7 @@ cli:
               required: true
               help: Path to the output file. Can also be 'stdout'.
 
-    - name: Import
+    - name: import
       usage: import <file or directory> <output file or directory>
       aliases:
         - i
@@ -215,7 +215,7 @@ cli:
           required: true
           help: Path to the output file or folder. Can also be 'stdout'.
 
-    - name: Gebberish
+    - name: gebberish
       hidden: true
       omit-run: true
       usage: gebberish
@@ -225,7 +225,7 @@ cli:
       short: "it's a puzzle?!"
       long: Games, shenanigans, and other gebberish.
       subcommands:
-        - name: Mi
+        - name: mi
           usage: mi
           short: View information about a Project's Plans
           long: |

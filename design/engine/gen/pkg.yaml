@@ -1,0 +1,5 @@
+pkg:
+  name: "gen"
+  version: "0.0.1"
+  about: "the Hofstadter engine generator package"
+

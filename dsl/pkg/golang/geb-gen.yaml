@@ -9,7 +9,7 @@ repeated:
     field: "."
     templates:
       - in: "default.go"
-        out: "{{camelT name}}.go"
+        out: "{{camelT name}}Pkg.go"
       - in: "log.go"
         out: "log.go"
   - name: private-funcs
