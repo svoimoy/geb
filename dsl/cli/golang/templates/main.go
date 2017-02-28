@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/' )}}}/cmd"
+	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/' )}}}/commands"
 
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
@@ -20,7 +20,7 @@ func main() {
 	read_config()
 	config_logger()
 
-	if err := cmd.RootCmd.Execute(); err != nil {
+	if err := commands.RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
 	}
@@ -75,7 +75,7 @@ func config_logger() {
 	logger.SetHandler(termlog)
 
 	// set package loggers
-	cmd.SetLogger(logger)
+	commands.SetLogger(logger)
 
 	// IF using geb-engine dsl
 	// dotpath.SetLogger(logger)

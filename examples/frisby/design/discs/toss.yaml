@@ -10,6 +10,8 @@ type:
     - name: method
       type: string
     - name: headers
-      type: array:string
+      type: map:string
     - name: query-params
-      type: array:string
+      type: map:string
+    - name: body
+      type: array:byte

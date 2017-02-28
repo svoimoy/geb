@@ -22,12 +22,3 @@ dsl-config:
       gen:
         - golang
       output-dir: "."
-
-log-config:
-  engine:
-    plan:
-      level: info
-    render:
-      level: info
-    unify:
-      level: debug

@@ -1,5 +1,5 @@
 {{#with DslContext as |CLI| }}
-package cmd
+package commands
 
 import (
   // HOFSTADTER_START import

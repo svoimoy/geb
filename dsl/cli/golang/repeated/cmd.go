@@ -1,7 +1,7 @@
 {{#with RepeatedContext as |RC| }}
 {{#with DslContext as |CLI| }}
 {{#if (eq RC.parent CLI.name) }}
-package cmd
+package commands
 {{else}}
 package {{lower RC.parent}}
 {{/if}}

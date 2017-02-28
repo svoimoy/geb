@@ -9,13 +9,13 @@ repeated:
     field: commands
     templates:
       - in: "cmd.go"
-        out: "cmd/{{camel name}}.go"
+        out: "commands/{{camel name}}.go"
 
   - name: sub-command
     field: commands.subcommands
     templates:
       - in: "cmd.go"
-        out: "cmd/{{parent}}/{{camel name}}.go"
+        out: "commands/{{parent}}/{{camel name}}.go"
       - in: "log.go"
-        out: "cmd/{{parent}}/log.go"
+        out: "commands/{{parent}}/log.go"
 

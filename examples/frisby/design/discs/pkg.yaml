@@ -6,10 +6,8 @@ pkg:
   public-funcs:
     - name: toss
       args:
-        - name: request
-          type: string
-        - name: options
-          type: map:interface{}
+        - name: data
+          type: discs.toss
       return:
         - name: output
           type: string
@@ -19,6 +17,7 @@ pkg:
       args:
         - name: file
           type: string
+          help: a frisby test file
         - name: host
           type: string
       return:
