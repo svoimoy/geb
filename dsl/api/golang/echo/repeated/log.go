@@ -1,5 +1,9 @@
-{{#with DslContext as |CTX| }}
+{{#with RepeatedContext as |CTX| }}
 package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
+
+// The following line in the template needs fixing, it's probably related to the tree traversal and adding information
+// go unification improvements!!
+// package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
 	"github.com/spf13/viper"
@@ -78,4 +82,9 @@ func SetLogger(l log.Logger) {
 	}
 
 }
+
+/*
+{{{yaml CTX}}}
+*/
 {{/with}}
+

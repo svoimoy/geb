@@ -4,8 +4,6 @@ package routes
 // package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
-	"net/http"
-
 	"github.com/labstack/echo"
 
 	// HOFSTADTER_START import
@@ -21,6 +19,15 @@ Path:    {{RC.path}}
 Parent:  {{RC.parent}}
 */
 
+
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
+
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
+
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
 
 
 // Should find a way to build up errors and return all
@@ -40,13 +47,7 @@ func Handle_{{upper RC.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 		}
 	{{else}}
 			// Initialize
-			{{#if (contains TYP.path ".views")}}
-			// view
-			{{> type/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
-			{{else}}
-			// type
-			{{> type/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
-			{{/if}}
+			{{> type/golang/var-new.go M.input }}
 
 			// Extract:
 			// need to import the type and call pkg.New...
@@ -65,6 +66,8 @@ func Handle_{{upper RC.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 
 	// HOFSTADTER_START handler
 	// HOFSTADTER_END   handler
+
+	return nil
 }
 
 {{/with}}

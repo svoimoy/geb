@@ -7,6 +7,3 @@ var {{NAME}} {{> type/golang/modifiers.go MOD=MOD ~}}
 
 {{camelT TYP.name ~}}
 
-/*
-{{{yaml .}}}
-*/

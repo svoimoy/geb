@@ -20,8 +20,17 @@ Resource:  {{RC.resource}}
 Path:      {{RC.path}}
 Parent:    {{RC.parent}}
 
-{{{yaml RC}}}
 */
+
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
+
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
+
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
+
 
 
 {{#each methods}}
@@ -30,78 +39,63 @@ Parent:    {{RC.parent}}
 // {{upper M.method}}  {{M.input}}  ->  {{M.output}}
 func Handle_{{upper M.method}}_{{camelT RC.name}}(ctx echo.Context) error {
 
-{{#if (ne M.input "none")}}
 	// input
-	{{#gettype M.input true as |TYP|}}
-		{{#if (builtin type)}}
-		  // builtin
-			// Extract:
-			input := ctx.QueryParam("{{name}}")
-			// Validate:
-			tag := "required{{#each validation}},{{.}}{{/each}}"
-			err := validator.New().Var(input, tag)
-			if err != nil {
-				return err
-			}
+	{{#if M.path-params}}
+	// path param
+		{{> api/golang/echo/input/path-params.go PARAMS=M.path-params }}
+	{{/if}}
 
-		{{else}}
-			// Initialize
-			{{#if (contains TYP.path ".views")}}
-			// view
-			{{> type/golang/view/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.input "*" true)) (trimsuffix M.input (trimfrom M.input ":" true))) }}
-			{{else}}
-			// type
-			{{> type/golang/type/var-new.go NAME="input" TYP=. MOD=(ternary (trimsuffix M.input (trimfrom M.input "*" true)) (trimsuffix M.input (trimfrom M.input ":" true))) }}
-			{{/if}}
+	{{#if M.input}}
+	// START binding input to query/form/body params
+	// Initialize
+	{{> type/golang/var-new.go typename=M.input }}
 
-			// Extract:
-			// need to import the type and call pkg.New...
-			// or add a field during prep to add package name
-			if err := ctx.Bind(input); err != nil {
-				return err
-			}
-			// Validate:
-			// need to import the type and call pkg.New...
-			if err := ctx.Validate(input); err != nil {
-				return err
-			}
-		{{/if}}
-	{{/gettype}}
+	// END binding input to query/form/body params
+	{{/if}}
+
+	{{#if M.params}}
+	// START indep query/form params
+
+	{{#params . as |P|}}
+	{{#if (builtin P.type)}}
+		// Extract {{P.name}}
+		{{camel P.name}} := ctx.QueryParam("{{P.name}}")
+
+		// Validate {{p.name}} 
+		{{camel P.name}}_tag := "required{{#each validation}},{{.}}{{/each}}"
+		err := validator.New().Var({{camel P.name}}, {{camel P.name}}_tag)
+		if err != nil {
+			return err
+		}
+	{{else}}
+	   // Only built in types are supported in query/form params. Use 'input' option on the resource.method
+	{{/if}}
+
+	{{/params}}
+	// END query/form/body params
+	{{/if}}
+
+
+{{#if M.output}}
+	// OUTPUT
+	{{> type/golang/var-new.go typename=M.output }}
 {{else}}
-	// no input
+	// NO OUTPUT
 {{/if}}
 
-
-{{#if (ne M.output "none")}}
-	// output
-	{{#gettype M.output true as |TYP|}}
-		{{#if (builtin type)}}
-			// builtin
-			var input {{type}}
-		{{else}}
-			// user-defined
-			{{#if (contains TYP.path ".views")}}
-			// view
-			{{> type/golang/view/var-new.go NAME="output" TYP=. MOD=(ternary (trimsuffix M.output (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
-			{{else}}
-			// type
-			{{> type/golang/type/var-new.go NAME="output" TYP=. MOD=(ternary (trimsuffix M.output (trimfrom M.output "*" true)) (trimsuffix M.output (trimfrom M.output ":" true))) }}
-			{{/if}}
-
-		{{/if}}
-	{{/gettype}}
-{{else}}
-	// no output
-{{/if}}
 	// HOFSTADTER_START {{lower M.method}}
 	// HOFSTADTER_END   {{lower M.method}}
+
+	// return the output response
 
 	return ctx.JSON(http.StatusOK, output)
 
 }
 {{/with}}
 
-{{/each}}
+{{/each}} // End resource.methods
+
+
 {{/with}}
 {{/with}}
 

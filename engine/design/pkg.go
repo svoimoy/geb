@@ -44,6 +44,7 @@ func (d *Design) store_pkg_design(relative_path, name string, design interface{}
 
 		merged, merr := utils.Merge(d.Pkg, insert)
 		if merr != nil {
+			logger.Warn("Error merging", "error", merr)
 			return errors.Wrap(merr, "in store_pkg_design")
 		}
 		logger.Info("result...", "merged", merged)

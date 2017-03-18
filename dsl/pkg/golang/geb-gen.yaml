@@ -5,6 +5,7 @@ type: pkg
 about: A golang package dsl
 
 repeated:
+
   - name: package
     field: "."
     templates:
@@ -12,6 +13,7 @@ repeated:
         out: "{{camelT name}}Pkg.go"
       - in: "log.go"
         out: "log.go"
+
   - name: private-funcs
     field: "private-functions"
     templates:

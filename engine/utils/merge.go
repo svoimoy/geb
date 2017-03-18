@@ -151,8 +151,11 @@ func merge(orig, update interface{}) (interface{}, error) {
 		logger.Info("aI returning", "OA", OA)
 		return OA, nil
 
+	case string:
+		return update, nil
+
 	default:
-		return nil, errors.New("unmergable original" + fmt.Sprintf("%+v", orig))
+		return nil, errors.New("unmergable original" + fmt.Sprintf("%t, %+v", orig, orig))
 
 	}
 

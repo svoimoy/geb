@@ -30,6 +30,16 @@ import (
 // Usage:  {{{RC.usage}}}
 // Parent: {{{RC.parent}}}
 
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
+
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
+
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
+
+
 var {{camelT RC.name}}Long = `{{{RC.long}}}`
 
 {{> "flag-var.go" RC }}

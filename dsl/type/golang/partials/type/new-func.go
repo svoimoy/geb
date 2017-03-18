@@ -1,9 +1,13 @@
 func New{{camelT TYP.name}}() *{{camelT TYP.name}} {
 	return &{{camelT TYP.name}}{
 		{{#each TYP.fields as |F|}}
-		{{#if (contains F.type "array") ~}}
+		{{#if F.new-func}}
+			{{camelT F.name}}: {{ F.new-func }},
+		{{else if (contains F.type "array") ~}}
 		{{camelT F.name}}: {{>type/golang/type.go F ~}}{},
 		{{else if (contains F.type "map") ~}}
+		{{camelT F.name}}: {{>type/golang/type.go F ~}}{},
+		{{else if (contains F.type "channel") ~}}
 		{{camelT F.name}}: {{>type/golang/type.go F ~}}{},
 		{{else if (contains F.type "*") ~}}
 		{{#with (getsuffix (getsuffix F.type ":") "*") as |T| ~}}

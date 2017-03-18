@@ -28,6 +28,15 @@ Params:
 
 */
 
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
+
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
+
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
+
 
 
 // Should find a way to build up errors and return all

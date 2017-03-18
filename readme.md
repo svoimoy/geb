@@ -13,7 +13,7 @@ With it, you can:
 
 ### Installation
 
-1. Clone this repository to: `$GOPATH/github.com/hofstadter-io/geb`
+1. Clone this repository to: `$GOPATH/github.ibm.com/hofstadter-io/geb`
 2. Change to that directory and run: `go install`
 
 Then do the initial setup:
@@ -21,8 +21,6 @@ Then do the initial setup:
 See the Developing section on tips (making symlinks).
 You can copy if you do not plan to develop geb.
 
-
-### Documentation
 
 
 ### Developing
@@ -78,11 +76,75 @@ Make the following symlinks,
 from the development folder:
 
 1. the `geb` binary to `/usr/local/bin/geb`
-1. the `dsl` folder go `~/.hofstadter/dsl`
+1. the `dsl` folder go `~/.geb/dsl`
 
 This will keep you defaulting to
 the latest build and templates,
 when working in any directory
 and letting you override
 locally while still developing.
+
+
+
+### Documentation
+
+Coming soon:
+
+- Getting started
+  - Installing
+  - Generating your first file
+  - Overview
+
+- Concepts
+  - Data centric design
+  - Designs
+  - DSLs
+  - Generators
+  - Projects
+  - Merging, layering, overriding
+
+- Project Walkthrough
+  - Starting an API
+  - Adding types
+  - Adding routes and resources
+  - The `geb.yaml` project file
+    - main configuration
+    - generators
+    - build pipeline 
+
+- Designs
+  - Overview
+  - Organization
+  - Output
+  - Main DSLs
+    - types
+    - pkg
+    - api
+    - cli
+
+- Exploring the DSLs
+  - common
+  - configuration
+  - validation
+  - testing
+  - databases
+  - binding and ETL
+  - calls, sequences, map-reduce, parallel
+
+- Additional Topics
+  - refactoring
+  - overriding a template
+    
+- The Library
+  - DSLs and Generators
+  - Designs
+  - Project starter packs
+
+- Hofstadter Developers Corner
+  - Implementing Generators
+  - Creating DSLs and the accompanying design
+
+- Playbooks and Guides
+  - gebbifying an existing project
+  - importing types, swagger, and other specs
 

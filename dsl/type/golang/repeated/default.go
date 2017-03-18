@@ -6,10 +6,17 @@ import (
 	// HOFSTADTER_END   import
 )
 
-// Name:      {{RC.name}}
-// Namespace: {{RC.namespace}}
-// Version:   {{RC.version}}
+/*
+Name:      {{RC.name}}
+About:     {{RC.about}}
+*/
 
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
+
+/*
+{{#if documentation}}{{ documentation }}{{else}}Where's your docs doc?!{{/if}}
+*/
 type {{camelT RC.name}} struct {
 {{#each RC.fields ~}}
 	{{> type/golang/field.go .}}
@@ -21,6 +28,9 @@ type {{camelT RC.name}} struct {
 
 {{#each RC.views}}
 {{#with . as |V|}}
+/*
+{{#if documentation}}{{ documentation }}{{else}}Where's your docs doc?!{{/if}}
+*/
 type {{camelT RC.name}}View_{{camelT V.name}} struct {
 {{#each V.fields}}{{#with . as |F|~}}
 {{#if (hasprefix F.type "local")}}
@@ -36,10 +46,6 @@ type {{camelT RC.name}}View_{{camelT V.name}} struct {
 {{> type/golang/view/new-func.go TYP=RC VIEW=V}}
 {{/with}}
 {{/each}}
-
-/*
-{{{yaml RC}}}
-*/
 
 {{/with}}
 
