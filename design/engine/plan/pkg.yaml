@@ -1,5 +1,60 @@
 pkg:
   name: "plan"
-  version: "0.0.1"
   about: "the Hofstadter engine planning package"
+
+  public-functions:
+
+    - name: make-plans
+      args:
+        - name: dsl-map
+          type: "map:*engine.dsl.Dsl"
+        - name: design-data
+          type: "map:interface{}"
+      return:
+        - name: plans
+          type: "array:Plan"
+        - name: err
+          type: error
+
+
+  private-functions:
+
+    # this will replace the 4 different planning methods which exist today
+    # see engine/plan/todo.md
+    - name: make-plans
+      args:
+        - name: dsl-map
+          type: "map:*engine.dsl.Dsl"
+        - name: design-data
+          type: "map:interface{}"
+      return:
+        - name: plans
+          type: "array:Plan"
+        - name: err
+          type: error
+
+    - name: flatten-design-data
+      args:
+        - name: base-output-path
+          type: string
+        - name: design-data
+          type: "interface{}"
+      return:
+        - name: flattened
+          type: "map:interface{}"
+        - name: err
+          type: error
+
+    - name: determine-outfile-name
+      args:
+        - name: outfile-template-string
+          type: string
+        - name: rendering-data
+          type: "interface{}"
+      return:
+        - name: output-filename
+          type: string
+        - name: err
+          type: error
+
 

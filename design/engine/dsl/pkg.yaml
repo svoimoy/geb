@@ -1,5 +1,27 @@
 pkg:
   name: "dsl"
-  version: "0.0.1"
   about: "the Hofstadter engine dsl package"
+
+  public-functions:
+
+    - name: create-from-folder
+      args:
+        - name: folder
+          type: string
+      return:
+        - name: d
+          type: "*Dsl"
+        - name: err
+          type: error
+
+    - name: find-available
+      args:
+        - name: folder
+          type: string
+      return:
+        - name: ds
+          type: "map:*Dsl"
+        - name: err
+          type: error
+
 

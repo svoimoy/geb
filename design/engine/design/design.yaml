@@ -13,3 +13,122 @@ type:
     - name: type
       type: 'map:interface{}'
 
+  public-functions:
+
+    - name: import-design-file
+      args:
+        - name: filepath
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: import-design-folder
+      args:
+        - name: folder
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: get
+      args:
+        - name: path
+          type: string
+      return:
+        - name: object
+          type: "interface{}"
+        - name: err
+          type: error
+
+    - name: get-by-path
+      args:
+        - name: path
+          type: string
+      return:
+        - name: object
+          type: "interface{}"
+        - name: err
+          type: error
+
+    - name: validate
+      return:
+        - name: errorReport
+          type: "map:error"
+
+
+  private-functions:
+
+    - name: import-design
+      args:
+        - name: base-path
+          type: string
+        - name: design-path
+          type: string
+      return:
+        - name: err
+          type: error
+      
+    - name: store-design
+      args:
+        - name: relative-path
+          type: string
+        - name: dsl
+          type: string
+        - name: design
+          type: "interface{}"
+      return:
+        - name: err
+          type: error
+      
+    - name: store-dsl-design
+      args:
+        - name: relative-path
+          type: string
+        - name: dsl
+          type: string
+        - name: name
+          type: string
+        - name: design
+          type: "interface{}"
+      return:
+        - name: err
+          type: error
+      
+    - name: store-type-design
+      args:
+        - name: relative-path
+          type: string
+        - name: name
+          type: string
+        - name: design
+          type: "interface{}"
+      return:
+        - name: err
+          type: error
+      
+    - name: store-package-design
+      args:
+        - name: relative-path
+          type: string
+        - name: name
+          type: string
+        - name: design
+          type: "interface{}"
+      return:
+        - name: err
+          type: error
+      
+    - name: store-custom-design
+      args:
+        - name: relative-path
+          type: string
+        - name: name
+          type: string
+        - name: design
+          type: "interface{}"
+      return:
+        - name: err
+          type: error
+      
+      

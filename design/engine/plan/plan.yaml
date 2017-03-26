@@ -1,6 +1,5 @@
 type:
   name: "plan"
-  version: "0.0.1"
   fields:
     - name: dsl
       type: string
@@ -12,20 +11,16 @@ type:
       type: string
       required: true
     - name: data
-      type: map:interface{}
+      type: "map:interface{}"
       required: true
     - name: template
-      type: '*gihub.com/aymerick/raymond.Template'
+      type: '*engine.template.Template'
       required: true
     - name: outfile
       type: string
       required: true
     - name: dsl-context
-      type: interface{}
+      type: "interface{}"
     - name: repeated-context
-      type: interface{}
-
-  go-imports:
-    - 'github.com/aymerick/raymond'
-
+      type: "interface{}"
 

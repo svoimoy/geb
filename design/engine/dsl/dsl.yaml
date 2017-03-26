@@ -1,6 +1,5 @@
 type:
   name: "dsl"
-  version: "0.0.1"
   fields:
     - name: config
       type: '*Config'
@@ -10,3 +9,25 @@ type:
       type: 'map:string'
     - name: generators
       type: 'map:*engine.gen.Generator'
+
+  public-functions:
+
+    - name: merge-available
+      args:
+        - name: incoming
+          type: "*Dsl"
+
+    - name: merge-overwrite
+      args:
+        - name: incoming
+          type: "*Dsl"
+
+    - name: merge-skip-existing
+      args:
+        - name: incoming
+          type: "*Dsl"
+
+    - name: validate
+      return:
+        - name: errorReport
+          type: "map:error"

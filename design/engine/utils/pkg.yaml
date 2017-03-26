@@ -1,5 +1,76 @@
 pkg:
   name: "utils"
-  version: "0.0.1"
   about: "the Hofstadter engine utils package"
+
+  public-functions:
+
+    - name: copy-file
+      args:
+        - name: source
+          type: string
+        - name: destination
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: copy-dir
+      args:
+        - name: source
+          type: string
+        - name: destination
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: merge
+      args:
+        - name: original
+          type: "interface{}"
+        - name: update
+          type: "interface{}"
+      return:   
+        - name: merged
+          type: "interface{}"
+        - name: err
+          type: error
+
+    - name: look-for-known-files
+      return:
+        - name: filename
+          type: string
+
+    - name: resolve-path
+      args:
+        - name: path
+          type: string
+      return:
+        - name: resolved-path
+          type: string
+        - name: err
+          type: error
+
+    - name: file-exists
+      args:
+        - name: filename
+          type: string
+      return:
+        - name: err
+          type: error
+
+
+  private-functions:
+
+    - name: merge
+      args:
+        - name: original
+          type: "interface{}"
+        - name: update
+          type: "interface{}"
+      return:   
+        - name: merged
+          type: "interface{}"
+        - name: err
+          type: error
 

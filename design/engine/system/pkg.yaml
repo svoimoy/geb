@@ -1,5 +1,12 @@
 pkg:
   name: "system"
-  version: "0.0.1"
   about: "the Hofstadter engine system package"
+
+  public-functions:
+
+    - name: check-for-dotpath
+    - name: init-dotpath
+    - name: update-dotpath
+    - name: update-library-dsls
+    - name: update-library-designs
 

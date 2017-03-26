@@ -1,4 +1,16 @@
 pkg:
   name: "design"
-  version: "0.0.1"
   about: "the Hofstadter engine design package"
+
+  public-functions:
+
+    - name: create-from-folder
+      args:
+        - name: folder
+          type: string
+      return:
+        - name: d
+          type: "*Design"
+        - name: err
+          type: error
+

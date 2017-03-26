@@ -1,6 +1,5 @@
 type:
   name: "generator"
-  version: "0.0.1"
   fields:
     - name: config
       type: '*Config'
@@ -10,12 +9,20 @@ type:
       type: 'engine.templates.TemplateMap'
     - name: partials
       type: 'engine.templates.TemplateMap'
+
   public-functions:
+
     - name: merge-overwrite
       args:
         - name: incoming
           type: "*Generator"
+
     - name: merge-skip-existing
       args:
         - name: incoming
           type: "*Generator"
+
+    - name: validate
+      return:
+        - name: errorReport
+          type: "map:error"

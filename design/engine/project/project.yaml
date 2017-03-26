@@ -1,6 +1,5 @@
 type:
   name: "project"
-  version: "0.0.1"
   fields:
     - name: config
       type: '*Config'
@@ -12,4 +11,68 @@ type:
       type: 'map:*engine.dsl.Dsl'
     - name: plans
       type: 'array:engine.plan.Plan'
+
+  public-functions:
+
+    - name: load
+      args:
+        - name: filename
+          type: string
+        - name: generators
+          type: "array:string"
+      return:
+        - name: err
+          type: error
+
+    - name: unify
+      return:
+        - name: errorReport
+          type: "array:error"
+
+    - name: plan
+      return:
+        - name: err
+          type: error
+
+    - name: render
+      return:
+        - name: err
+          type: error
+
+    - name: find-available-generators
+      args:
+        - name: paths
+          type: "array:string"
+      return:
+        - name: err
+          type: error
+
+    - name: load-default-generators
+      return:
+        - name: err
+          type: error
+
+    - name: load-generators
+      args:
+        - name: generators
+          type: "array:string"
+      return:
+        - name: err
+          type: error
+
+
+    - name: load-generator-list
+      args:
+        - name: generators
+          type: "array:string"
+      return:
+        - name: err
+          type: error
+
+
+  private-functions:
+
+    - name: register-partials
+    - name: add-template-helpers
+
 

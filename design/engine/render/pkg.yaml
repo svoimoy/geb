@@ -1,5 +1,51 @@
 pkg:
   name: "render"
-  version: "0.0.1"
   about: "the Hofstadter engine rendering package"
+
+  public-functions:
+
+    - name: render-plans
+      args:
+        - name: plans
+          type: "array:engine.plan.Plan"
+        - name: output-dir
+          type: string
+      return:
+        - name: errorReport
+          type: "array:error"
+
+    - name: render-plan
+      args:
+        - name: plan
+          type: "engine.plan.Plan"
+        - name: output-dir
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: splice-results
+      args:
+        - name: existing
+          type: string
+        - name: rendered
+          type: string
+      return:
+        - name: spliced
+          type: string
+        - name: err
+          type: error
+
+    - name: write-results
+      args:
+        - name: filename
+          type: string
+        - name: content
+          type: string
+      return:
+        - name: err
+          type: error
+
+
+
 

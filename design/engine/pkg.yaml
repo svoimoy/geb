@@ -1,4 +1,123 @@
 pkg:
   name: "engine"
-  version: "0.0.1"
   about: "The Hofstadter engine package"
+
+  public-functions:
+
+    - name: generate-project
+      args:
+        - name: filename
+          type: string
+        - name: generators
+          type: "array:string"
+      return:
+        - name: err
+          type: error
+
+    - name: generate-folder
+      args:
+        - name: design-folder
+          type: string
+        - name: template-folder
+          type: string
+        - name: output-folder
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: generate-file
+      args:
+        - name: design-file
+          type: string
+        - name: template-file
+          type: string
+        - name: output-file
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: get-project-data
+      args:
+        - name: filename
+          type: string
+        - name: generators
+          type: "array:string"
+      return:
+        - name: proj
+          type: "*engine.project.Project"
+        - name: err
+          type: error
+
+
+    - name: view-geb
+      args:
+        - name: args
+          type: "array:string"
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+
+    - name: view-dsl
+      args:
+        - name: folder
+          type: string
+        - name: args
+          type: "array:string"
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+
+    - name: view-gen
+      args:
+        - name: folder
+          type: string
+        - name: args
+          type: "array:string"
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+
+    - name: view-design
+      args:
+        - name: folder
+          type: string
+        - name: args
+          type: "array:string"
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+
+    - name: view-project
+      args:
+        - name: folder
+          type: string
+        - name: args
+          type: "array:string"
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+
+    - name: view-plans
+      args:
+        - name: folder
+          type: string
+        - name: args
+          type: "array:string"
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+
