@@ -16,16 +16,12 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-{{#each CTX.public-functions}}
-/*
-{{#if documentation}}{{ documentation }}{{else}}Where's your docs doc?!{{/if}}
-*/
-func {{camelT name}}({{#if args}}{{> pkg/golang/func-args.go args ~}}{{/if}} ) {{#if return}}{{> pkg/golang/func-return.go return ~}}{{/if ~}} {
-	// HOFSTADTER_START {{camelT name}}
-
-	// HOFSTADTER_END   {{camelT name}}
-	return
-}
-
+{{#each CTX.public-functions as |F|}}
+{{> common/golang/func/def.go FUNC=F}}
 {{/each}}
+
+{{#each CTX.private-functions as |F|}}
+{{> common/golang/func/def.go PRIVATE="true" FUNC=F}}
+{{/each}}
+
 {{/with}}

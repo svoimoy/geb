@@ -8,6 +8,18 @@ package {{#if parent}}{{lower CTX.parent}}{{else}}commands{{/if}}
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
+
+	{{#each CTX.commands as |Cmd|}}
+	{{#if Cmd.subcommands}}
+	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/{{lower Cmd.name}}"
+	{{/if}}
+	{{/each}}
+
+	{{#each CTX.subcommands as |Cmd|}}
+	{{#if Cmd.subcommands}}
+	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/{{lower Cmd.name}}"
+	{{/if}}
+	{{/each}}
 )
 
 var logger = log.New()

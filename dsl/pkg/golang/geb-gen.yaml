@@ -9,13 +9,26 @@ repeated:
   - name: package
     field: "."
     templates:
-      - in: "default.go"
-        out: "{{camelT name}}Pkg.go"
       - in: "log.go"
         out: "log.go"
+      - in: "package.go"
+        out: "{{camelT name}}PubPkg.go"
+        
+      #- in: "public-pkg-funcs.go"
+      #  out: "{{camelT name}}PubPkg.go"
+      #  when: "public-functions"
+      #- in: "private-pkg-funcs.go"
+      #  out: "{{camel name}}PrivPkg.go"
+      #  when: "private-functions"
 
-  - name: private-funcs
-    field: "private-functions"
+  - name: public-files
+    field: "public-files"
     templates:
-      - in: "private.go"
+      - in: "public-file.go"
+        out: "{{camelT name}}.go"
+
+  - name: private-files
+    field: "private-files"
+    templates:
+      - in: "private-file.go"
         out: "{{camel name}}.go"

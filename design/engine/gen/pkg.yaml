@@ -14,18 +14,6 @@ pkg:
         - name: err
           type: error
 
-    - name: merge-in-folder
-      args:
-        - name: folder
-          type: string
-        - name: skip-existing
-          type: bool
-      return:
-        - name: g
-          type: "*Generator"
-        - name: err
-          type: error
-
   private-functions:
 
     - name: read-config-file
@@ -37,4 +25,19 @@ pkg:
           type: "*Config"
         - name: err
           type: error
+
+  public-files:
+    - name: merge
+      functions:
+        - name: merge-in-folder
+          args:
+            - name: folder
+              type: string
+            - name: skip-existing
+              type: bool
+          return:
+            - name: g
+              type: "*Generator"
+            - name: err
+              type: error
 

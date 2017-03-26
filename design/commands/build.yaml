@@ -8,7 +8,7 @@ cli:
       short: Run the build pipeline for a project.
       long: |
         Run the build pipeline specified in your project.
-        Use this to run pre and post steps around `gen gen`.
+        Use this to run pre and post steps around 'gen gen'.
         Pipelines are also used by generators.
         See [...] for more information.
       args:
