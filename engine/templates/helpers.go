@@ -14,17 +14,18 @@ import (
 )
 
 func (template *Template) Render(design interface{}) (string, error) {
-	tpl := (*raymond.Template)(template)
+	tpl := (*raymond.Template)(template.Template)
 	return tpl.Exec(design)
 }
 
 func RenderTemplate(template *Template, design interface{}) (string, error) {
-	tpl := (*raymond.Template)(template)
+	tpl := (*raymond.Template)(template.Template)
 	return tpl.Exec(design)
 }
 
-func AddHelpers(tpl *raymond.Template) {
-	add_template_helpers(tpl)
+func AddHelpers(tpl *Template) {
+	rtpl := (*raymond.Template)(tpl.Template)
+	add_template_helpers(rtpl)
 }
 
 func add_template_helpers(tpl *raymond.Template) {
@@ -301,6 +302,7 @@ func helper_getbetween(str, lhs, rhs string) string {
 var known_builtins = map[string]struct{}{
 	"bool":        struct{}{},
 	"byte":        struct{}{},
+	"error":       struct{}{},
 	"float":       struct{}{},
 	"float32":     struct{}{},
 	"float64":     struct{}{},

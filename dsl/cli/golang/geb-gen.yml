@@ -4,7 +4,22 @@ language: golang
 type: cli
 about: A golang viper/cobra cli dsl
 
+dependencies:
+  generators:
+    - type/golang
+    - pkg/golang
+
 repeated:
+  - name: once-files
+    field: "."
+    templates:
+      - in: "main.go"
+        out: "main.go"
+      - in: "root.go"
+        out: "commands/root.go"
+      - in: "log.go"
+        out: "commands/log.go"
+
   - name: command
     field: commands
     templates:

@@ -1,0 +1,47 @@
+cli:
+  name: geb
+  commands:
+
+    - name: gebberish
+      hidden: true
+      omit-run: true
+      usage: gebberish
+      aliases:
+        - games
+        - G
+      short: "it's a puzzle?!"
+      long: Games, shenanigans, and other gebberish.
+      subcommands:
+        - name: mi
+          usage: mi
+          short: View information about a Project's Plans
+          long: |
+            Welcome to the MI game
+
+            start with mi-string = 'MI'
+
+            mi-rule-1:    if mi-string ends in 'I',        you may add a 'U'
+            mi-rule-2:    suppose mi-string = 'Mx',          then you may make it 'Mxx'
+            mi-rule-3:    if mi-string contains an 'III',  you may replace it with 'U'
+            mi-rule-4:    if mi-string contains a 'UU',    you may drop it (remove it)
+
+            Goal: Try to get 'MU'
+
+            Input:
+              - rules, h, help
+              - c, curr, current, s, stat, status, get
+              - reset, give-up, giveup, start-over, startover
+              - 1, r1, rule1, rule-1
+              - 2, r2, rule2, rule-2
+              - 3, r3, rule3, rule-3 [pos]  (default is last pos)
+              - 4, r4, rule4, rule-4 [pos]  (default is last pos)
+
+          args:
+            - name: rule
+              type: string
+              required: true
+              help: The rule to apply [r# or rule-#]
+            - name: extra
+              type: array:string
+              rest: true
+              help: optional args to rules 3 and 4

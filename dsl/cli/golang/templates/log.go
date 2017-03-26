@@ -1,21 +1,19 @@
-{{#with DslContext as |CLI| }}
-package commands
+{{#with RepeatedContext as |CTX| }}
+package {{#if parent}}{{lower CTX.parent}}{{else}}commands{{/if}}
+
+// The following line in the template needs fixing, it's probably related to the tree traversal and adding information
+// go unification improvements!!
+// package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	{{#each CLI.commands as |Cmd|}}
-	{{#if Cmd.subcommands}}
-	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/{{lower Cmd.name}}"
-	{{/if}}
-	{{/each}}
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.cmd.default")
+	ldcfg := viper.GetStringMap("log-config.{{replace CTX.pkg_path '/' '.' -1 }}.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -45,7 +43,7 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers before possibly overriding locally next
-	{{#each CLI.commands as |Cmd|}}
+	{{#each CTX.commands as |Cmd|}}
 	{{#if Cmd.subcommands}}
 	{{lower Cmd.name}}.SetLogger(logger)
 	{{/if}}
@@ -53,7 +51,7 @@ func SetLogger(l log.Logger) {
 
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.cmd")
+	lcfg := viper.GetStringMap("log-config.{{replace CTX.pkg_path '/' '.' -1 }}")
 
 	if lcfg == nil || len(lcfg) == 0  {
 		logger = l
@@ -84,4 +82,10 @@ func SetLogger(l log.Logger) {
 	}
 
 }
+
+/*
+
+{{{yaml CTX}}}
+*/
 {{/with}}
+

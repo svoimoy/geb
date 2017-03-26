@@ -1,0 +1,28 @@
+cli:
+  name: geb
+  commands:
+    - name: system
+      usage: system
+      aliases:
+        - sys
+        - s
+      short: Manage the geb system and congiuration
+      long: Manage the geb system and congiuration
+      omit-run: true
+      subcommands:
+        - name: init
+          usage: init
+          aliases:
+            - initialize
+            - setup
+          short: Initialize the geb tool and files
+          long: Intializes the geb tool and the ~/.hofstadter dot folder.
+        - name: dev-copy-in
+          usage: dev-copy-in
+          short: Copy development files to the dot folder
+          long: Copy development files to the dot folder
+        - name: update
+          usage: update
+          short: Update the geb library and dot folder
+          long: Update the geb library DSLs, designs, and other files in the dot folder.
+

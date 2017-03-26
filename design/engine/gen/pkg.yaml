@@ -1,5 +1,40 @@
 pkg:
   name: "gen"
-  version: "0.0.1"
   about: "the Hofstadter engine generator package"
+
+  public-functions:
+
+    - name: create-from-folder
+      args:
+        - name: folder
+          type: string
+      return:
+        - name: g
+          type: "*Generator"
+        - name: err
+          type: error
+
+    - name: merge-in-folder
+      args:
+        - name: folder
+          type: string
+        - name: skip-existing
+          type: bool
+      return:
+        - name: g
+          type: "*Generator"
+        - name: err
+          type: error
+
+  private-functions:
+
+    - name: read-config-file
+      args:
+        - name: filename
+          type: string
+      return:
+        - name: c
+          type: "*Config"
+        - name: err
+          type: error
 

@@ -19,9 +19,9 @@ func (P *Project) register_partials() {
 
 			// Register partials with the normal templates
 			for _, T := range G.Templates {
-				t_ray := (*raymond.Template)(T)
+				t_ray := (*raymond.Template)(T.Template)
 				for p_key, partial := range G.Partials {
-					p_ray := (*raymond.Template)(partial)
+					p_ray := (*raymond.Template)(partial.Template)
 					t_ray.RegisterPartialTemplate(p_key, p_ray)
 				}
 
@@ -31,7 +31,7 @@ func (P *Project) register_partials() {
 					// Loop over each generator in the current DSL
 					for g2_key, G2 := range D2.Generators {
 						for p2_key, partial2 := range G2.Partials {
-							p2_ray := (*raymond.Template)(partial2)
+							p2_ray := (*raymond.Template)(partial2.Template)
 							p2_tkey := strings.Join([]string{d2_key, g2_key, p2_key}, "/")
 							logger.Debug("adding global partial " + p2_tkey)
 							t_ray.RegisterPartialTemplate(p2_tkey, p2_ray)
@@ -44,11 +44,11 @@ func (P *Project) register_partials() {
 			// Register partials with repeated templates
 			for _, R := range G.Repeated {
 				// the real template object
-				t_ray := (*raymond.Template)(R)
+				t_ray := (*raymond.Template)(R.Template)
 
 				// register the local generator partials
 				for p_key, partial := range G.Partials {
-					p_ray := (*raymond.Template)(partial)
+					p_ray := (*raymond.Template)(partial.Template)
 					t_ray.RegisterPartialTemplate(p_key, p_ray)
 				}
 
@@ -59,7 +59,7 @@ func (P *Project) register_partials() {
 					// Loop over each generator in the current DSL
 					for g2_key, G2 := range D2.Generators {
 						for p2_key, partial2 := range G2.Partials {
-							p2_ray := (*raymond.Template)(partial2)
+							p2_ray := (*raymond.Template)(partial2.Template)
 							p2_tkey := strings.Join([]string{d2_key, g2_key, p2_key}, "/")
 							logger.Debug("adding global partial " + p2_tkey)
 							t_ray.RegisterPartialTemplate(p2_tkey, p2_ray)
@@ -86,16 +86,16 @@ func (P *Project) add_template_helpers() {
 
 			// Register with the normal templates
 			for _, template := range G.Templates {
-				ray := (*raymond.Template)(template)
+				ray := (*raymond.Template)(template.Template)
 				P.register_template_helpers(ray)
 			}
 
 			for _, repeated := range G.Repeated {
-				ray := (*raymond.Template)(repeated)
+				ray := (*raymond.Template)(repeated.Template)
 				P.register_template_helpers(ray)
 			}
 			for _, partial := range G.Partials {
-				ray := (*raymond.Template)(partial)
+				ray := (*raymond.Template)(partial.Template)
 				P.register_template_helpers(ray)
 			}
 

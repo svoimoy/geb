@@ -28,7 +28,17 @@ dsl-config:
         - golang
       output-dir: "."
 
+
+build-pipeline:
+  stages:
+    - name: generate
+      cmd: "geb gen"
+    - name: format
+      cmd: "gofmt -w {{config.output-dir}}"
+    - name: build
+      cmd: "go build -o {{config.output-dir}} {{config.output-dir}}"
+
 log-config:
   default:
     level: warn
-    stack: true
+    stack: false

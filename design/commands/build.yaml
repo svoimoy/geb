@@ -1,0 +1,19 @@
+cli:
+  name: geb
+  commands:
+    - name: build
+      usage: build
+      aliases:
+        - b
+      short: Run the build pipeline for a project.
+      long: |
+        Run the build pipeline specified in your project.
+        Use this to run pre and post steps around `gen gen`.
+        Pipelines are also used by generators.
+        See [...] for more information.
+      args:
+        - name: stages
+          type: array:string
+          rest: true
+          help: The stages to run in order. Used to override the pipeline in the project file.
+

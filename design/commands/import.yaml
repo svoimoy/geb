@@ -1,0 +1,35 @@
+cli:
+  name: geb
+  commands:
+
+    - name: import
+      usage: import <file or directory> <output file or directory>
+      aliases:
+        - i
+        - convert
+        - eat
+      short: Import other stuff into Hofstadter
+      long: |
+        Import other stuff into Hofstadter.
+
+        Stuff is...
+          - json/jsonl, yaml, xml, protobuf, taml
+          - swagger, goa.design
+          - golang type definitions
+      flags:
+        - name: Type
+          type: string
+          long: type
+          short: T
+          help: The type of input data to force geb to use a certain format
+      args:
+        - name: input
+          type: string
+          required: true
+          help: Path to the file or folder. Can also be 'stdin'.
+        - name: output
+          type: string
+          required: true
+          help: Path to the output file or folder. Can also be 'stdout'.
+
+

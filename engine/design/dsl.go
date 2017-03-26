@@ -5,6 +5,8 @@ import (
 	"github.com/pkg/errors"
 	"strings"
 
+	"github.ibm.com/hofstadter-io/dotpath"
+
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
 )
@@ -27,11 +29,37 @@ func (d *Design) store_dsl_design(relative_path, dsl, name string, design interf
 	// - and finally the design itself
 	insert := make(map[string]interface{})
 	dd_map := insert
-	for _, F := range fields {
+	curr_path := []string{}
+	for i, F := range fields {
+		foundSameDsl := false
+
+		sameDslPath := append(curr_path, dsl, name)
+		dsl_path := strings.Join(sameDslPath, ".")
+
+		no_solo_array := true
+		obj, err := dotpath.Get(dsl_path, d.Dsl, no_solo_array)
+		if err != nil {
+			logger.Debug("in store_dsl_design", "error", err)
+			// return errors.Wrap(err, "Error during path search in store_dsl_design.")
+		}
+		if obj != nil {
+			// we found a same dsl
+			foundSameDsl = true
+			F0 = strings.Split(dsl_path, ".")[0]
+		}
+
+		logger.Info("store_dsl_design", "curr_path", curr_path, "dsl_path", dsl_path, "i", i, "rel_path", relative_path, "dsl", dsl, "name", name, "match", foundSameDsl)
+
+		cmap := make(map[string]interface{})
+		if foundSameDsl {
+			// short circuit insertion path
+			break	
+		}
+
+		// add the current path part to the insert path
 		if F != "" {
-			tmp := make(map[string]interface{})
-			dd_map[F] = tmp
-			dd_map = tmp
+			dd_map[F] = cmap
+			dd_map = cmap
 		}
 	}
 	dd_map[dsl] = design
@@ -55,3 +83,4 @@ func (d *Design) store_dsl_design(relative_path, dsl, name string, design interf
 
 	return nil
 }
+

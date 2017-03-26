@@ -81,7 +81,7 @@ func RenderPlan(plan plan.Plan, output_dir string) error {
 	}
 
 	// Render the template
-	tpl := (*raymond.Template)(plan.Template)
+	tpl := (*raymond.Template)(plan.Template.Template)
 	result, err := tpl.Exec(plan.Data)
 	if err != nil {
 		return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)

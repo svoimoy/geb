@@ -9,7 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-type Template raymond.Template
+type Template struct {
+	*raymond.Template
+}
+
 type TemplateMap map[string]*Template
 
 func NewMap() TemplateMap {
@@ -83,6 +86,6 @@ func (M TemplateMap) import_template(base_path, path string) error {
 
 	add_template_helpers(tpl)
 
-	M[tpl_name] = (*Template)(tpl)
+	M[tpl_name] = &Template{tpl}
 	return nil
 }

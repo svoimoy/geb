@@ -1,0 +1,25 @@
+cli:
+  name: geb
+  commands:
+
+    - name: create
+      usage: create <name> <dsl/gen>...
+      aliases:
+        - new
+      short: Create a new project
+      long: |
+        Create a new project with the given name.
+        Optionally specifiy the starting set of
+        DSLs and generators for the project.
+        The output directory defaults to the same name,
+        unless overridden by the output flag.
+      args:
+        - name: name
+          type: string
+          required: true
+          help: The name of the new project to create
+        - name: dsls_n_gens
+          rest: true
+          type: array:string
+          help: The starting list of DSLs and generators by path.
+

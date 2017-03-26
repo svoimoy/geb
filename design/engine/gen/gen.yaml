@@ -8,8 +8,14 @@ type:
       type: 'string'
     - name: templates
       type: 'engine.templates.TemplateMap'
-    - name: repeated
-      type: 'engine.templates.TemplateMap'
     - name: partials
       type: 'engine.templates.TemplateMap'
-
+  public-functions:
+    - name: merge-overwrite
+      args:
+        - name: incoming
+          type: "*Generator"
+    - name: merge-skip-existing
+      args:
+        - name: incoming
+          type: "*Generator"

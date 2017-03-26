@@ -1,0 +1,32 @@
+cli:
+  name: geb
+  commands:
+    - name: gen
+      usage: gen
+      aliases:
+        - geb
+        - geberate
+        - generate
+        - g
+      short: Generate a project.
+      long: Generate a project from its working directory.
+      subcommands:
+        - name: file
+          usage: file <designFile> <templateFile> <outputFile>
+          short: Generate a file.
+          long: Generate a file from design and a template.
+          args:
+            - name: designFile
+              type: string
+              required: true
+              help: Path to the input design file.
+            - name: templateFile
+              type: string
+              required: true
+              help: Path to the template file.
+            - name: outputFile
+              type: string
+              required: true
+              help: Path to the output file. Can also be 'stdout'.
+
+

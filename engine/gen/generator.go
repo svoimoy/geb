@@ -57,13 +57,15 @@ func CreateFromFolder(folder string) (*Generator, error) {
 	}
 	g.Partials = p
 
-	t, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
-	if err != nil {
-		return nil, errors.Wrapf(err, "while reading 'templates' folder in: %s\n", folder)
-	}
-	g.Templates = t
+	/*
+		t, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
+		if err != nil {
+			return nil, errors.Wrapf(err, "while reading 'templates' folder in: %s\n", folder)
+		}
+		g.Templates = t
+	*/
 
-	r, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "repeated"))
+	r, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
 	if err != nil {
 		return nil, errors.Wrapf(err, "while reading 'repeated' folder in: %s\n", folder)
 	}

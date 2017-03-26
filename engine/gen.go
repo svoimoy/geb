@@ -18,14 +18,14 @@ func GenerateProject(filename string, generators []string) error {
 		return errors.Wrapf(err, "While generating project: %s %v\n", filename, generators)
 	}
 
-	fmt.Println("Validating...   (temporary unification hack) DOOOOOOO THIS")
-	/*
-	errReport, err = proj.Unify()
-	if err != nil {
+	fmt.Println("Unifying...")
+	
+	errReport := proj.Unify()
+	if len(errReport) > 0 {
 		fmt.Println(errReport)
-		return errors.Wrapf(err, "While planing project: %s %v\n", filename, generators)
+		return errors.Wrapf(nil, "While planing project: %s %v\n", filename, generators)
 	}
-	*/
+	
 
 	fmt.Println("Planning...")
 	err = proj.Plan()

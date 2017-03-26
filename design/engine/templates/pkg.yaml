@@ -1,5 +1,58 @@
 pkg:
   name: "templates"
-  version: "0.0.1"
   about: "the Hofstadter engine templates package"
+
+  public-functions:
+
+    - name: RenderTemplate
+      args:
+        - name: template
+          type: "*Template"
+        - name: design
+          type: "interface{}"
+      return:
+        - name: output
+          type: string
+        - name: err
+          type: error
+
+    - name: AddHelpersToRaymond
+      args:
+        - name: tpl
+          type: "*Template"
+
+    - name: AddHelpersToTemplate
+      args:
+        - name: tpl
+          type: "*Template"
+
+    - name: CreateTemplateFromFile
+      args:
+        - name: filename
+          type: string
+      return:
+        - name: tpl
+          type: "*Template"
+        - name: err
+          type: error
+
+    - name: CreateTemplateMapFromFolder
+      args:
+        - name: folder
+          type: string
+      return:
+        - name: tplMap
+          type: TemplateMap
+        - name: err
+          type: error
+
+
+
+  private-functions:
+
+    - name: add-template-helpers
+      args:
+        - name: tpl
+          type: "*raymond.Template"
+
 

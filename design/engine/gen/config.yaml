@@ -18,11 +18,12 @@ type-list:
         - name: language
           type: string
           required: true
-        - name: repeated
-          type: array:repeat-config
+        - name: template-configs
+          type: array:template-config
         - name: output-dir
           type: string
-    - name: repeat-config
+
+    - name: template-config
       version: "0.0.1"
       fields:
         - name: name
@@ -32,8 +33,9 @@ type-list:
           type: string
           required: true
         - name: templates
-          type: array:repeated-template-pair
-    - name: repeated-template-pair
+          type: array:template-render-pair
+
+    - name: template-render-pair
       version: "0.0.1"
       fields:
         - name: in

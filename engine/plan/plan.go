@@ -22,7 +22,7 @@ type Plan struct {
 	Gen             string                 `json:"gen" xml:"gen" yaml:"gen" form:"gen" query:"gen" `
 	File            string                 `json:"file" xml:"file" yaml:"file" form:"file" query:"file" `
 	Data            map[string]interface{} `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
-	Template        *raymond.Template      `json:"template" xml:"template" yaml:"template" form:"template" query:"template" `
+	Template        *templates.Template      `json:"template" xml:"template" yaml:"template" form:"template" query:"template" `
 	Outfile         string                 `json:"outfile" xml:"outfile" yaml:"outfile" form:"outfile" query:"outfile" `
 	DslContext      interface{}            `json:"dsl-context" xml:"dsl-context" yaml:"dsl-context" form:"dsl-context" query:"dsl-context" `
 	RepeatedContext interface{}            `json:"repeated-context" xml:"repeated-context" yaml:"repeated-context" form:"repeated-context" query:"repeated-context" `
@@ -31,7 +31,7 @@ type Plan struct {
 func NewPlan() *Plan {
 	return &Plan{
 		Data:     map[string]interface{}{},
-		Template: new(raymond.Template),
+		Template: new(templates.Template),
 	}
 	// loop over fields looking for pointers
 }
@@ -147,11 +147,12 @@ func MakePlans(dsl_map map[string]*dsl.Dsl, design_data map[string]interface{}) 
 
 func determine_outfile_name(of_tpl_value string, tpl_data interface{}) (string, error) {
 	logger.Debug("outfile_name", "in", of_tpl_value, "data", tpl_data)
-	tpl, err := raymond.Parse(of_tpl_value)
+	rtpl, err := raymond.Parse(of_tpl_value)
 	if err != nil {
 		return "", errors.Wrap(err, "in determine_outfile_name\n")
 	}
 
+	tpl := &templates.Template{rtpl}
 	templates.AddHelpers(tpl)
 	of_name, err := tpl.Exec(tpl_data)
 	if err != nil {

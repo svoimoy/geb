@@ -13,7 +13,6 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine/design"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	"github.ibm.com/hofstadter-io/geb/engine/gen"
-	"github.ibm.com/hofstadter-io/geb/engine/unify"
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
 
@@ -37,14 +36,6 @@ func (P *Project) Load(filename string, generators []string) error {
 	d, err := design.CreateFromFolder(d_dir)
 	if err != nil {
 		return errors.Wrapf(err, "While reading design folder: %s\n", d_dir)
-	}
-	err = unify.Unify("", "proj", "", d.Proj)
-	err = unify.Unify("", "pkg", "", d.Pkg)
-	err = unify.Unify("", "type", "", d.Type)
-	err = unify.Unify("", "dsl", "", d.Dsl)
-	err = unify.Unify("", "custom", "", d.Custom)
-	if err != nil {
-		return errors.Wrapf(err, "While unifying design in proj.Load: %s\n", d_dir)
 	}
 	P.Design = d
 

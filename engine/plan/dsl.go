@@ -6,8 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/aymerick/raymond"
-
 	"github.ibm.com/hofstadter-io/dotpath"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	// HOFSTADTER_END   import
@@ -62,7 +60,8 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 			//
 			// Render the normal templates
 			for t_key, T := range G.Templates {
-				t_ray := (*raymond.Template)(T)
+				t_ray := T
+				// t_ray := (*raymond.Template)(T)
 				outfile := filepath.Join(ctx_dir, G_key, t_key)
 
 				// build up the plan data struct
@@ -152,7 +151,8 @@ func make_dsl(dsl_ctx interface{}, dsl_map map[string]*dsl.Dsl, design_data map[
 					if !ok {
 						return nil, errors.New("Unknown repeat template: " + t_key)
 					}
-					t_ray := (*raymond.Template)(T)
+					// t_ray := (*raymond.Template)(T)
+					t_ray := T
 					logger.Debug("        found repeat template: ", "repeat", R.Name, "in", t_key)
 
 					for idx, val := range c_slice {
