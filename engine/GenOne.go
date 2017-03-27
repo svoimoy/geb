@@ -1,4 +1,5 @@
 package engine
+
 // package publicFiles
 
 import (
@@ -25,16 +26,17 @@ import (
 /*
 Where's your docs doc?!
 */
-func GenerateFolder(designFolder string,templateFolder string,outputFolder string) (err error) {
+func GenerateFolder(designFolder string, templateFolder string, outputFolder string) (err error) {
 	// HOFSTADTER_START GenerateFolder
 
 	// HOFSTADTER_END   GenerateFolder
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func GenerateFile(designFile string,templateFile string,outputFile string) (err error) {
+func GenerateFile(designFile string, templateFile string, outputFile string) (err error) {
 	// HOFSTADTER_START GenerateFile
 	fmt.Printf("%s + %s => %s\n", designFile, templateFile, outputFile)
 
@@ -69,7 +71,5 @@ func GenerateFile(designFile string,templateFile string,outputFile string) (err 
 	// HOFSTADTER_END   GenerateFile
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

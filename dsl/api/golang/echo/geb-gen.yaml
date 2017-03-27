@@ -55,7 +55,7 @@ dependencies:
     - client/golang
     - client/js
 
-repeated:
+template-configs:
 
   - name: root
     field: "."

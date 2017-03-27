@@ -7,10 +7,6 @@ package gebberish
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-
-
-
 )
 
 var logger = log.New()
@@ -47,13 +43,10 @@ func SetLogger(l log.Logger) {
 
 	// set subcommand loggers before possibly overriding locally next
 
-
-
-
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.cli.commands.1.subcommands")
 
-	if lcfg == nil || len(lcfg) == 0  {
+	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
 	} else {
 		// find the logging level
@@ -131,6 +124,5 @@ short: View information about a Project's Plans
 usage: mi
 
 */
-
 
 // HOFSTADTER_BELOW

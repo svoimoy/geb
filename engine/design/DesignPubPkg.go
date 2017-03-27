@@ -1,5 +1,6 @@
 package design
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
@@ -19,7 +20,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func CreateFromFolder(folder string) (d *Design,err error) {
+func CreateFromFolder(folder string) (d *Design, err error) {
 	// HOFSTADTER_START CreateFromFolder
 	d = NewDesign()
 	err = d.ImportDesignFolder(folder)
@@ -29,7 +30,5 @@ func CreateFromFolder(folder string) (d *Design,err error) {
 	// HOFSTADTER_END   CreateFromFolder
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

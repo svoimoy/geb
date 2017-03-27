@@ -1,4 +1,5 @@
 package engine
+
 // package publicFiles
 
 import (
@@ -22,7 +23,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func GenerateProject(filename string,generators []string) (err error) {
+func GenerateProject(filename string, generators []string) (err error) {
 	// HOFSTADTER_START GenerateProject
 	proj := project.NewProject()
 
@@ -33,11 +34,10 @@ func GenerateProject(filename string,generators []string) (err error) {
 	}
 
 	fmt.Println("Unifying...")
-
 	errReport := proj.Unify()
 	if len(errReport) > 0 {
 		fmt.Println(errReport)
-		return errors.Wrapf(nil, "While planing project: %s %v\n", filename, generators)
+		return errors.Wrapf(nil, "While unifying project: %s %v\n", filename, generators)
 	}
 
 	fmt.Println("Planning...")
@@ -56,7 +56,5 @@ func GenerateProject(filename string,generators []string) (err error) {
 	// HOFSTADTER_END   GenerateProject
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

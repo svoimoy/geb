@@ -1,4 +1,5 @@
 package templates
+
 // package privateFiles
 
 import (
@@ -28,7 +29,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func addTemplateHelpers(tpl *raymond.  Template)  {
+func addTemplateHelpers(tpl *raymond.Template) {
 	// HOFSTADTER_START addTemplateHelpers
 	tpl.RegisterHelper("concat2", helper_concat2)
 	tpl.RegisterHelper("concat3", helper_concat3)
@@ -93,8 +94,6 @@ func addTemplateHelpers(tpl *raymond.  Template)  {
 	// HOFSTADTER_END   addTemplateHelpers
 	return
 }
-
-
 
 // HOFSTADTER_BELOW
 

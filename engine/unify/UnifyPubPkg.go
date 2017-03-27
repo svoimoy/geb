@@ -1,5 +1,6 @@
 package unify
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
@@ -23,7 +24,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func Unify(parent string,path string,parentPath string,designData map[string]interface{}) (err error) {
+func Unify(parent string, path string, parentPath string, designData map[string]interface{}) (err error) {
 	// HOFSTADTER_START Unify
 	err = unify(parent, path, parentPath, designData)
 	return err
@@ -34,7 +35,7 @@ func Unify(parent string,path string,parentPath string,designData map[string]int
 /*
 Where's your docs doc?!
 */
-func unify(parent string,path string,parentPath string,designData interface{}) (err error) {
+func unify(parent string, path string, parentPath string, designData interface{}) (err error) {
 	// HOFSTADTER_START unify
 	logger.Info("unify", "parent", parent, "path", path, "data", designData)
 	path_flds := strings.Split(path, ".")
@@ -205,6 +206,5 @@ func unify(parent string,path string,parentPath string,designData interface{}) (
 	// HOFSTADTER_END   unify
 	return
 }
-
 
 // HOFSTADTER_BELOW

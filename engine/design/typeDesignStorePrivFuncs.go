@@ -1,4 +1,5 @@
 package design
+
 // package privateFiles
 
 import (
@@ -14,7 +15,7 @@ import (
 
 /*
 Name:      store
-About:     
+About:
 */
 
 // HOFSTADTER_START const
@@ -23,7 +24,7 @@ About:
 /*
 Where's your docs doc?!
 */
-func (D *Design) storeDslDesign(relativePath string,dsl string,name string,design interface{}) (err error) {
+func (D *Design) storeDslDesign(relativePath string, dsl string, name string, design interface{}) (err error) {
 	// HOFSTADTER_START storeDslDesign
 	logger.Info("    - storing dsl", "dsl", dsl, "name", name, "rel_path", relativePath)
 	logger.Debug("          with", "design", design)
@@ -52,11 +53,12 @@ func (D *Design) storeDslDesign(relativePath string,dsl string,name string,desig
 		no_solo_array := true
 		obj, err := dotpath.Get(dsl_path, D.Dsl, no_solo_array)
 		if err != nil {
-			logger.Debug("in store_dsl_design", "error", err)
+			logger.Debug("in store_dsl_design", "error", err, "dsl_path", dsl_path, "curr_path", curr_path)
 			// return errors.Wrap(err, "Error during path search in store_dsl_design.")
 		}
 		if obj != nil {
 			// we found a same dsl
+			logger.Info("Found same dsl", "dsl", dsl)
 			foundSameDsl = true
 			F0 = strings.Split(dsl_path, ".")[0]
 		}
@@ -98,10 +100,11 @@ func (D *Design) storeDslDesign(relativePath string,dsl string,name string,desig
 	// HOFSTADTER_END   storeDslDesign
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func (D *Design) storeTypeDesign(relativePath string,name string,design interface{}) (err error) {
+func (D *Design) storeTypeDesign(relativePath string, name string, design interface{}) (err error) {
 	// HOFSTADTER_START storeTypeDesign
 	logger.Info("    - storing type", "name", name, "rel_path", relativePath)
 	logger.Debug("          with", "design", design)
@@ -150,10 +153,11 @@ func (D *Design) storeTypeDesign(relativePath string,name string,design interfac
 	// HOFSTADTER_END   storeTypeDesign
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func (D *Design) storePackageDesign(relativePath string,name string,design interface{}) (err error) {
+func (D *Design) storePackageDesign(relativePath string, name string, design interface{}) (err error) {
 	// HOFSTADTER_START storePackageDesign
 	logger.Info("    - storing pkg", "name", name, "rel_path", relativePath)
 	logger.Debug("          with", "design", design)
@@ -202,10 +206,11 @@ func (D *Design) storePackageDesign(relativePath string,name string,design inter
 	// HOFSTADTER_END   storePackageDesign
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func (D *Design) storeCustomDesign(relativePath string,name string,design interface{}) (err error) {
+func (D *Design) storeCustomDesign(relativePath string, name string, design interface{}) (err error) {
 	// HOFSTADTER_START storeCustomDesign
 	logger.Info("    - storing custom", "name", name, "rel_path", relativePath)
 	logger.Debug("          with", "design", design)

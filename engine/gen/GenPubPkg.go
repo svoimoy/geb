@@ -1,5 +1,6 @@
 package gen
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
@@ -25,7 +26,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func CreateFromFolder(folder string) (g *Generator,err error) {
+func CreateFromFolder(folder string) (g *Generator, err error) {
 	// HOFSTADTER_START CreateFromFolder
 	g = NewGenerator()
 
@@ -47,14 +48,6 @@ func CreateFromFolder(folder string) (g *Generator,err error) {
 	}
 	g.Partials = p
 
-	/*
-		t, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
-		if err != nil {
-			return nil, errors.Wrapf(err, "while reading 'templates' folder in: %s\n", folder)
-		}
-		g.Templates = t
-	*/
-
 	r, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
 	if err != nil {
 		return nil, errors.Wrapf(err, "while reading 'repeated' folder in: %s\n", folder)
@@ -69,7 +62,7 @@ func CreateFromFolder(folder string) (g *Generator,err error) {
 /*
 Where's your docs doc?!
 */
-func readConfigFile(filename string) (c *Config,err error) {
+func readConfigFile(filename string) (c *Config, err error) {
 	// HOFSTADTER_START readConfigFile
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -86,6 +79,5 @@ func readConfigFile(filename string) (c *Config,err error) {
 	// HOFSTADTER_END   readConfigFile
 	return
 }
-
 
 // HOFSTADTER_BELOW

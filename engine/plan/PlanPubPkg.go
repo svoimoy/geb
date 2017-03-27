@@ -1,5 +1,6 @@
 package plan
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
@@ -28,11 +29,10 @@ import (
 /*
 Where's your docs doc?!
 */
-func MakePlans(dslMap map[string]*dsl.  Dsl,designData map[string]interface{}) (ret []Plan,err error) {
+func MakePlans(dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (ret []Plan, err error) {
 	// HOFSTADTER_START MakePlans
 	logger.Info("Planning Project")
 	logger.Info("    with...", "dslMap", dslMap)
-	// fmt.Printf("%#  v", pretty.Formatter(design_data))
 
 	flatland, err := flattenDesignData("", designData)
 	if err != nil {
@@ -44,22 +44,8 @@ func MakePlans(dslMap map[string]*dsl.  Dsl,designData map[string]interface{}) (
 		ps := strings.Split(ctx_path, "/")
 		f0 := ps[0]
 		switch f0 {
-		case "type":
-			plans, err := makePlans(design, dslMap, designData)
-			if err != nil {
-				return ret, errors.Wrap(err, "in MakePlans\n")
-			}
-			ret = append(ret, plans...)
-
-		case "pkg":
-			plans, err := makePlans(design, dslMap, designData)
-			if err != nil {
-				return ret, errors.Wrap(err, "in MakePlans\n")
-			}
-			ret = append(ret, plans...)
-
-		case "dsl":
-			plans, err := makePlans(design, dslMap, designData)
+		case "type", "pkg", "dsl":
+			plans, err := makePlans(f0, design, dslMap, designData)
 			if err != nil {
 				return ret, errors.Wrap(err, "in MakePlans\n")
 			}
@@ -70,6 +56,7 @@ func MakePlans(dslMap map[string]*dsl.  Dsl,designData map[string]interface{}) (
 
 		}
 
+		logger.Debug("in MakingPlans", "ctx_path", ctx_path, "plans", ret)
 	}
 
 	return ret, nil
@@ -80,9 +67,9 @@ func MakePlans(dslMap map[string]*dsl.  Dsl,designData map[string]interface{}) (
 /*
 Where's your docs doc?!
 */
-func makePlans(dslCtx interface{},dslMap map[string]*dsl.  Dsl,designData map[string]interface{}) (plans []Plan,err error) {
+func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (plans []Plan, err error) {
 	// HOFSTADTER_START makePlans
-	logger.Info("Making plans")
+	logger.Info("makePlans")
 	logger.Debug("  context", "dsl_ctx", dslCtx)
 
 	// get the ctx path for later comparison against dsl
@@ -101,7 +88,10 @@ func makePlans(dslCtx interface{},dslMap map[string]*dsl.  Dsl,designData map[st
 	if len(ctx_flds) > 2 {
 		ctx_dir = filepath.Join(ctx_flds[1 : len(ctx_flds)-1]...)
 	}
-	ctx_dsl := ctx_flds[len(ctx_flds)-1]
+	ctx_dsl := ctx_flds[0]
+	if dslType == "dsl" {
+		ctx_dsl = ctx_flds[len(ctx_flds)-1]
+	}
 
 	logger.Debug("Making Dsl plan", "dslMap", dslMap, "ctx_dsl", ctx_dsl, "ctx_dir", ctx_dir)
 
@@ -240,17 +230,20 @@ func makePlans(dslCtx interface{},dslMap map[string]*dsl.  Dsl,designData map[st
 
 	} // End DSL loop
 
+	logger.Debug("return from makePlans", "plans", plans)
+
 	return plans, nil
 
 	// HOFSTADTER_END   makePlans
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func flattenDesignData(baseOutputPath string,designData interface{}) (flattened map[string]interface{},err error) {
+func flattenDesignData(baseOutputPath string, designData interface{}) (flattened map[string]interface{}, err error) {
 	// HOFSTADTER_START flattenDesignData
-	flat := map[string]interface{}{}
+	flattened = map[string]interface{}{}
 
 	switch D := designData.(type) {
 	case map[string]interface{}:
@@ -277,10 +270,10 @@ func flattenDesignData(baseOutputPath string,designData interface{}) (flattened 
 
 				switch vmap := val.(type) {
 				case map[string]interface{}:
-					flat[dsl_key] = vmap
+					flattened[dsl_key] = vmap
 
 				case map[interface{}]interface{}:
-					flat[dsl_key] = vmap
+					flattened[dsl_key] = vmap
 
 				default:
 					return nil, errors.New("in flatten_design, named data is not a map")
@@ -293,7 +286,7 @@ func flattenDesignData(baseOutputPath string,designData interface{}) (flattened 
 					return nil, errors.Wrap(err, "in flatten_design: "+key)
 				}
 				for k, v := range fs {
-					flat[k] = v
+					flattened[k] = v
 				}
 			}
 		}
@@ -302,14 +295,15 @@ func flattenDesignData(baseOutputPath string,designData interface{}) (flattened 
 		return nil, errors.New("in flatten_design, data is not a map")
 	}
 
-	return flat, nil
+	return flattened, nil
 	// HOFSTADTER_END   flattenDesignData
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func determineOutfileName(outfileTemplateString string,renderingData interface{}) (outputFilename string,err error) {
+func determineOutfileName(outfileTemplateString string, renderingData interface{}) (outputFilename string, err error) {
 	// HOFSTADTER_START determineOutfileName
 	logger.Debug("outfile_name", "in", outfileTemplateString, "data", renderingData)
 	rtpl, err := raymond.Parse(outfileTemplateString)
@@ -328,6 +322,5 @@ func determineOutfileName(outfileTemplateString string,renderingData interface{}
 	// HOFSTADTER_END   determineOutfileName
 	return
 }
-
 
 // HOFSTADTER_BELOW

@@ -25,7 +25,6 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-
 var logger = log.New()
 
 func main() {
@@ -98,6 +97,5 @@ func config_logger() {
 	engine.SetLogger(logger)
 	// HOFSTADTER_END   config-logger
 }
-
 
 // HOFSTADTER_BELOW

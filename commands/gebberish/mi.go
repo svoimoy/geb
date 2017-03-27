@@ -1,4 +1,5 @@
 package gebberish
+
 // package subcommands
 
 import (
@@ -9,9 +10,7 @@ import (
 	"github.ibm.com/hofstadter-io/geb/gebberish"
 	// HOFSTADTER_END   import
 
-	
 	"github.com/spf13/cobra"
-
 )
 
 // Tool:   geb
@@ -27,7 +26,6 @@ import (
 
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
-
 
 var MiLong = `Welcome to the MI game
 
@@ -50,16 +48,11 @@ Input:
   - 4, r4, rule4, rule-4 [pos]  (default is last pos)
 `
 
-
-
-
-
-
-var MiCmd = &cobra.Command {
-	Use: "mi",
+var MiCmd = &cobra.Command{
+	Use:   "mi",
 	Short: "View information about a Project's Plans",
-	Long: MiLong,
-		
+	Long:  MiLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In miCmd", "args", args)
 		// Argument Parsing
@@ -74,17 +67,15 @@ var MiCmd = &cobra.Command {
 		if 0 < len(args) {
 			rule = args[0]
 		}
-		
+
 		// [1]name:   extra
 		//     help:   optional args to rules 3 and 4
-		//     req'd:  
+		//     req'd:
 		var extra []string
-			
+
 		if 1 < len(args) {
 			extra = args[1:]
 		}
-		
-		
 
 		// HOFSTADTER_START cmd_run
 		switch rule {
@@ -108,14 +99,10 @@ var MiCmd = &cobra.Command {
 		fmt.Printf("\nMI = %q\n\n", MI)
 		// HOFSTADTER_END   cmd_run
 	},
-		}
-
+}
 
 func init() {
 
-
 }
-
-
 
 // HOFSTADTER_BELOW

@@ -1,4 +1,5 @@
 package project
+
 // package publicFiles
 
 import (
@@ -18,12 +19,11 @@ import (
 
 /*
 Name:      load
-About:     
+About:
 */
 
 // HOFSTADTER_START const
 // HOFSTADTER_END   const
-
 
 /*
 Where's your docs doc?!
@@ -118,6 +118,7 @@ func (P *Project) LoadDefaultGenerators() (err error) {
 	// HOFSTADTER_END   LoadDefaultGenerators
 	return
 }
+
 /*
 Where's your docs doc?!
 */
@@ -135,6 +136,7 @@ func (P *Project) LoadGenerators(generators []string) (err error) {
 	// HOFSTADTER_END   LoadGenerators
 	return
 }
+
 /*
 Where's your docs doc?!
 */

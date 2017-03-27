@@ -17,7 +17,7 @@ import (
 
 /*
 Name:      design
-About:     
+About:
 */
 
 // HOFSTADTER_START const
@@ -28,25 +28,22 @@ Where's your docs doc?!
 */
 type Design struct {
 	Custom map[string]interface{} `json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
-	Dsl map[string]interface{} `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
-	Pkg map[string]interface{} `json:"pkg" xml:"pkg" yaml:"pkg" form:"pkg" query:"pkg" `
-	Proj map[string]interface{} `json:"proj" xml:"proj" yaml:"proj" form:"proj" query:"proj" `
-	Type map[string]interface{} `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Dsl    map[string]interface{} `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
+	Pkg    map[string]interface{} `json:"pkg" xml:"pkg" yaml:"pkg" form:"pkg" query:"pkg" `
+	Proj   map[string]interface{} `json:"proj" xml:"proj" yaml:"proj" form:"proj" query:"proj" `
+	Type   map[string]interface{} `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
 }
 
 func NewDesign() *Design {
 	return &Design{
-Custom: map[string]interface{}{},
-		Dsl: map[string]interface{}{},
-		Pkg: map[string]interface{}{},
-		Proj: map[string]interface{}{},
-		Type: map[string]interface{}{},
-			}
+		Custom: map[string]interface{}{},
+		Dsl:    map[string]interface{}{},
+		Pkg:    map[string]interface{}{},
+		Proj:   map[string]interface{}{},
+		Type:   map[string]interface{}{},
+	}
 	// loop over fields looking for pointers
 }
-
-
-
 
 /*
 Where's your docs doc?!
@@ -58,6 +55,7 @@ func (D *Design) ImportDesignFile(filename string) (err error) {
 	// HOFSTADTER_END   ImportDesignFile
 	return
 }
+
 /*
 Where's your docs doc?!
 */
@@ -93,19 +91,21 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 	// HOFSTADTER_END   ImportDesignFolder
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func (D *Design) Get(path string) (object interface{},err error) {
+func (D *Design) Get(path string) (object interface{}, err error) {
 	// HOFSTADTER_START Get
 	return D.GetByPath(path)
 	// HOFSTADTER_END   Get
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func (D *Design) GetByPath(path string) (object interface{},err error) {
+func (D *Design) GetByPath(path string) (object interface{}, err error) {
 	// HOFSTADTER_START GetByPath
 	paths := strings.Split(path, ".")
 	if len(paths) < 1 {
@@ -159,6 +159,7 @@ func (D *Design) GetByPath(path string) (object interface{},err error) {
 	// HOFSTADTER_END   GetByPath
 	return
 }
+
 /*
 Where's your docs doc?!
 */
@@ -172,7 +173,7 @@ func (D *Design) Validate() (errorReport map[string]error) {
 /*
 Where's your docs doc?!
 */
-func (D *Design) importDesign(basePath string,designPath string) (err error) {
+func (D *Design) importDesign(basePath string, designPath string) (err error) {
 	// HOFSTADTER_START importDesign
 	logger.Info("  - file: " + designPath)
 	// fmt.Println(" -", designPath)
@@ -209,10 +210,11 @@ func (D *Design) importDesign(basePath string,designPath string) (err error) {
 	// HOFSTADTER_END   importDesign
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func (D *Design) storeDesign(relativePath string,dsl string,design interface{}) (err error) {
+func (D *Design) storeDesign(relativePath string, dsl string, design interface{}) (err error) {
 	// HOFSTADTER_START storeDesign
 	logger.Info("store_design: " + dsl)
 
@@ -330,7 +332,5 @@ func (D *Design) storeDesign(relativePath string,dsl string,design interface{}) 
 	// HOFSTADTER_END   storeDesign
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

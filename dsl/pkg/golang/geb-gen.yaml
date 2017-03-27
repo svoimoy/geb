@@ -4,7 +4,7 @@ language: golang
 type: pkg
 about: A golang package dsl
 
-repeated:
+template-configs:
 
   - name: package
     field: "."

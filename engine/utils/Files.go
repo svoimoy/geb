@@ -1,4 +1,5 @@
 package utils
+
 // package publicFiles
 
 import (
@@ -44,10 +45,11 @@ func LookForKnownFiles() (filename string) {
 	// HOFSTADTER_END   LookForKnownFiles
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func ResolvePath(path string) (resolvedPath string,err error) {
+func ResolvePath(path string) (resolvedPath string, err error) {
 	// HOFSTADTER_START ResolvePath
 	// expand any environment vars in the path
 	path = os.ExpandEnv(path)
@@ -70,6 +72,7 @@ func ResolvePath(path string) (resolvedPath string,err error) {
 	// HOFSTADTER_END   ResolvePath
 	return
 }
+
 /*
 Where's your docs doc?!
 */
@@ -80,8 +83,6 @@ func FileExists(filename string) (err error) {
 	// HOFSTADTER_END   FileExists
 	return
 }
-
-
 
 // HOFSTADTER_BELOW
 func AccumErrs(existing, errs []error) []error {

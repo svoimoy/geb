@@ -1,4 +1,5 @@
 package project
+
 // package privateFiles
 
 import (
@@ -13,7 +14,7 @@ import (
 
 /*
 Name:      template-helpers
-About:     
+About:
 */
 
 // HOFSTADTER_START const
@@ -22,7 +23,7 @@ About:
 /*
 Where's your docs doc?!
 */
-func (P *Project) registerPartials()  {
+func (P *Project) registerPartials() {
 	// HOFSTADTER_START registerPartials
 	logger.Debug("Registering partials with templates and repeats")
 	for d_key, D := range P.DslMap {
@@ -66,10 +67,11 @@ func (P *Project) registerPartials()  {
 	// HOFSTADTER_END   registerPartials
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func (P *Project) addTemplateHelpers()  {
+func (P *Project) addTemplateHelpers() {
 	// HOFSTADTER_START addTemplateHelpers
 	logger.Debug("Registering partials with templates and repeats")
 	for d_key, D := range P.DslMap {

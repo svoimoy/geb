@@ -20,7 +20,6 @@ import (
 
 // hello world
 
-
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
@@ -68,11 +67,10 @@ func SetLogger(l log.Logger) {
 	utils.SetLogger(logger)
 	// HOFSTADTER_END logging-config
 
-
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.engine")
 
-	if lcfg == nil || len(lcfg) == 0  {
+	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
 	} else {
 		// hack because of default override (should look for both upfront)
@@ -84,7 +82,7 @@ func SetLogger(l log.Logger) {
 		if ok {
 			level_str = level_iface.(string)
 		}
-	
+
 		level, err := log.LvlFromString(level_str)
 		if err != nil {
 			panic(err)

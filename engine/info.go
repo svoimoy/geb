@@ -1,4 +1,5 @@
 package engine
+
 // package publicFiles
 
 import (
@@ -22,7 +23,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func GetProjectData(filename string,generators []string) (proj *project.  Project,err error) {
+func GetProjectData(filename string, generators []string) (proj *project.Project, err error) {
 	// HOFSTADTER_START GetProjectData
 	proj = project.NewProject()
 
@@ -42,7 +43,5 @@ func GetProjectData(filename string,generators []string) (proj *project.  Projec
 	// HOFSTADTER_END   GetProjectData
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

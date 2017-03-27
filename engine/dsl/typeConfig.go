@@ -11,7 +11,7 @@ import (
 
 /*
 Name:      config
-About:     
+About:
 */
 
 // HOFSTADTER_START const
@@ -21,26 +21,19 @@ About:
 Where's your docs doc?!
 */
 type Config struct {
-	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
-	Version string `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
-	About string `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
-	Type string `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
-	Spec map[string]interface{} `json:"spec" xml:"spec" yaml:"spec" form:"spec" query:"spec" `
+	Name    string                 `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+	Version string                 `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
+	About   string                 `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
+	Type    string                 `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Spec    map[string]interface{} `json:"spec" xml:"spec" yaml:"spec" form:"spec" query:"spec" `
 }
 
 func NewConfig() *Config {
 	return &Config{
-Spec: map[string]interface{}{},
-			}
+		Spec: map[string]interface{}{},
+	}
 	// loop over fields looking for pointers
 }
-
-
-
-
-
-
-
 
 // HOFSTADTER_BELOW
 

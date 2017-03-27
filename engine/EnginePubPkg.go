@@ -1,9 +1,10 @@
 package engine
-// package 
+
+// package
 
 import (
-	// HOFSTADTER_START import
-	// HOFSTADTER_END   import
+// HOFSTADTER_START import
+// HOFSTADTER_END   import
 )
 
 // HOFSTADTER_START const
@@ -14,8 +15,5 @@ import (
 
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
-
-
-
 
 // HOFSTADTER_BELOW

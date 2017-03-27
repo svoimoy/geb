@@ -1,4 +1,5 @@
 package engine
+
 // package publicFiles
 
 import (
@@ -30,7 +31,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func ViewGeb(args []string) (output string,err error) {
+func ViewGeb(args []string) (output string, err error) {
 	// HOFSTADTER_START ViewGeb
 	data := viper.AllSettings()
 
@@ -62,10 +63,11 @@ func ViewGeb(args []string) (output string,err error) {
 	// HOFSTADTER_END   ViewGeb
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func ViewDsl(folder string,args []string) (output string,err error) {
+func ViewDsl(folder string, args []string) (output string, err error) {
 	// HOFSTADTER_START ViewDsl
 	file := utils.LookForKnownFiles()
 
@@ -123,10 +125,11 @@ func ViewDsl(folder string,args []string) (output string,err error) {
 	// HOFSTADTER_END   ViewDsl
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func ViewGen(folder string,args []string) (output string,err error) {
+func ViewGen(folder string, args []string) (output string, err error) {
 	// HOFSTADTER_START ViewGen
 	file := utils.LookForKnownFiles()
 
@@ -190,10 +193,11 @@ func ViewGen(folder string,args []string) (output string,err error) {
 	// HOFSTADTER_END   ViewGen
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func ViewDesign(folder string,args []string) (output string,err error) {
+func ViewDesign(folder string, args []string) (output string, err error) {
 	// HOFSTADTER_START ViewDesign
 	D, err := design.CreateFromFolder(folder)
 	if err != nil {
@@ -231,10 +235,11 @@ func ViewDesign(folder string,args []string) (output string,err error) {
 	// HOFSTADTER_END   ViewDesign
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func ViewProject(folder string,args []string) (output string,err error) {
+func ViewProject(folder string, args []string) (output string, err error) {
 	// HOFSTADTER_START ViewProject
 
 	file := utils.LookForKnownFiles()
@@ -246,6 +251,10 @@ func ViewProject(folder string,args []string) (output string,err error) {
 		err := P.Load(file, nil)
 		if err != nil {
 			return "", errors.Wrap(err, "in engine.ViewGen")
+		}
+		errR := P.Unify()
+		if len(errR) > 0 {
+			return "", errors.Wrap(errR[0], "in engine.ViewGen")
 		}
 		data = P
 
@@ -280,10 +289,11 @@ func ViewProject(folder string,args []string) (output string,err error) {
 	// HOFSTADTER_END   ViewProject
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func ViewPlans(folder string,args []string) (output string,err error) {
+func ViewPlans(folder string, args []string) (output string, err error) {
 	// HOFSTADTER_START ViewPlans
 
 	file := utils.LookForKnownFiles()
@@ -295,6 +305,10 @@ func ViewPlans(folder string,args []string) (output string,err error) {
 		err := P.Load(file, nil)
 		if err != nil {
 			return "", errors.Wrap(err, "in engine.ViewGen")
+		}
+		errR := P.Unify()
+		if len(errR) > 0 {
+			return "", errors.Wrap(errR[0], "in engine.ViewGen")
 		}
 		err = P.Plan()
 		if err != nil {
@@ -333,7 +347,5 @@ func ViewPlans(folder string,args []string) (output string,err error) {
 	// HOFSTADTER_END   ViewPlans
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

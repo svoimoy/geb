@@ -1,4 +1,5 @@
 package gen
+
 // package subcommands
 
 import (
@@ -8,9 +9,7 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
 
-	
 	"github.com/spf13/cobra"
-
 )
 
 // Tool:   geb
@@ -27,19 +26,13 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-
 var FileLong = `Generate a file from design and a template.`
 
-
-
-
-
-
-var FileCmd = &cobra.Command {
-	Use: "file <designFile> <templateFile> <outputFile>",
+var FileCmd = &cobra.Command{
+	Use:   "file <designFile> <templateFile> <outputFile>",
 	Short: "Generate a file.",
-	Long: FileLong,
-		
+	Long:  FileLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In fileCmd", "args", args)
 		// Argument Parsing
@@ -54,7 +47,7 @@ var FileCmd = &cobra.Command {
 		if 0 < len(args) {
 			designFile = args[0]
 		}
-		
+
 		// [1]name:   templateFile
 		//     help:   Path to the template file.
 		//     req'd:  true
@@ -66,7 +59,7 @@ var FileCmd = &cobra.Command {
 		if 1 < len(args) {
 			templateFile = args[1]
 		}
-		
+
 		// [2]name:   outputFile
 		//     help:   Path to the output file. Can also be 'stdout'.
 		//     req'd:  true
@@ -78,8 +71,6 @@ var FileCmd = &cobra.Command {
 		if 2 < len(args) {
 			outputFile = args[2]
 		}
-		
-		
 
 		// HOFSTADTER_START cmd_run
 		err := engine.GenerateFile(designFile, templateFile, outputFile)
@@ -88,14 +79,10 @@ var FileCmd = &cobra.Command {
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-		}
-
+}
 
 func init() {
 
-
 }
-
-
 
 // HOFSTADTER_BELOW

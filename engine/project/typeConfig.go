@@ -12,7 +12,7 @@ import (
 
 /*
 Name:      config
-About:     
+About:
 */
 
 // HOFSTADTER_START const
@@ -22,26 +22,18 @@ About:
 Where's your docs doc?!
 */
 type Config struct {
-	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
-	Version string `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
-	About string `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
-	DesignDir string `json:"design-dir" xml:"design-dir" yaml:"design-dir" form:"design-dir" query:"design-dir" `
-	OutputDir string `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
+	Name      string    `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+	Version   string    `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
+	About     string    `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
+	DesignDir string    `json:"design-dir" xml:"design-dir" yaml:"design-dir" form:"design-dir" query:"design-dir" `
+	OutputDir string    `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
 	DslConfig DslConfig `json:"dsl-config" xml:"dsl-config" yaml:"dsl-config" form:"dsl-config" query:"dsl-config" `
 }
 
 func NewConfig() *Config {
-	return &Config{
-	}
+	return &Config{}
 	// loop over fields looking for pointers
 }
-
-
-
-
-
-
-
 
 // HOFSTADTER_BELOW
 

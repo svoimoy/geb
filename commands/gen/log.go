@@ -7,10 +7,6 @@ package gen
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-
-
-
 )
 
 var logger = log.New()
@@ -47,13 +43,10 @@ func SetLogger(l log.Logger) {
 
 	// set subcommand loggers before possibly overriding locally next
 
-
-
-
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.cli.commands.5.subcommands")
 
-	if lcfg == nil || len(lcfg) == 0  {
+	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
 	} else {
 		// find the logging level
@@ -120,6 +113,5 @@ short: Generate a file.
 usage: file <designFile> <templateFile> <outputFile>
 
 */
-
 
 // HOFSTADTER_BELOW

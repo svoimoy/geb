@@ -1,5 +1,6 @@
 package templates
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
@@ -47,46 +48,50 @@ func NewTemplateMap() TemplateMap {
 /*
 Where's your docs doc?!
 */
-func RenderTemplate(template *Template,design interface{}) (output string,err error) {
+func RenderTemplate(template *Template, design interface{}) (output string, err error) {
 	// HOFSTADTER_START RenderTemplate
 	tpl := (*raymond.Template)(template.Template)
 	return tpl.Exec(design)
 	// HOFSTADTER_END   RenderTemplate
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func AddHelpersToRaymond(tpl *Template)  {
+func AddHelpersToRaymond(tpl *Template) {
 	// HOFSTADTER_START AddHelpersToRaymond
 	rtpl := (*raymond.Template)(tpl.Template)
 	addTemplateHelpers(rtpl)
 	// HOFSTADTER_END   AddHelpersToRaymond
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func AddHelpersToTemplate(tpl *Template)  {
+func AddHelpersToTemplate(tpl *Template) {
 	// HOFSTADTER_START AddHelpersToTemplate
 	rtpl := (*raymond.Template)(tpl.Template)
 	addTemplateHelpers(rtpl)
 	// HOFSTADTER_END   AddHelpersToTemplate
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func CreateTemplateFromFile(filename string) (tpl *Template,err error) {
+func CreateTemplateFromFile(filename string) (tpl *Template, err error) {
 	// HOFSTADTER_START CreateTemplateFromFile
 
 	// HOFSTADTER_END   CreateTemplateFromFile
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func CreateTemplateMapFromFolder(folder string) (tplMap TemplateMap,err error) {
+func CreateTemplateMapFromFolder(folder string) (tplMap TemplateMap, err error) {
 	// HOFSTADTER_START CreateTemplateMapFromFolder
 	tplMap = NewTemplateMap()
 	err = tplMap.ImportFromFolder(folder)
@@ -97,8 +102,6 @@ func CreateTemplateMapFromFolder(folder string) (tplMap TemplateMap,err error) {
 	// HOFSTADTER_END   CreateTemplateMapFromFolder
 	return
 }
-
-
 
 // HOFSTADTER_BELOW
 

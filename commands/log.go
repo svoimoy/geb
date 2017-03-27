@@ -2,19 +2,16 @@ package commands
 
 // The following line in the template needs fixing, it's probably related to the tree traversal and adding information
 // go unification improvements!!
-// package 
+// package
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-		"github.ibm.com/hofstadter-io/geb/commands/gebberish"
-			"github.ibm.com/hofstadter-io/geb/commands/system"
-		"github.ibm.com/hofstadter-io/geb/commands/view"
-		"github.ibm.com/hofstadter-io/geb/commands/gen"
-		
-
-
+	"github.ibm.com/hofstadter-io/geb/commands/gebberish"
+	"github.ibm.com/hofstadter-io/geb/commands/gen"
+	"github.ibm.com/hofstadter-io/geb/commands/system"
+	"github.ibm.com/hofstadter-io/geb/commands/view"
 )
 
 var logger = log.New()
@@ -50,18 +47,15 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers before possibly overriding locally next
-		gebberish.SetLogger(logger)
-			system.SetLogger(logger)
-		view.SetLogger(logger)
-		gen.SetLogger(logger)
-		
-
-
+	gebberish.SetLogger(logger)
+	system.SetLogger(logger)
+	view.SetLogger(logger)
+	gen.SetLogger(logger)
 
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.")
 
-	if lcfg == nil || len(lcfg) == 0  {
+	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
 	} else {
 		// find the logging level
@@ -542,6 +536,5 @@ pkg_path: ""
 short: geb is the Hofstadter framework CLI tool
 
 */
-
 
 // HOFSTADTER_BELOW

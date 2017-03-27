@@ -9,6 +9,7 @@ package {{lower RC.parent}}
 
 import (
 	// HOFSTADTER_START import
+	"fmt"
 	// HOFSTADTER_END   import
 
 	{{#if RC.flags}}
@@ -83,6 +84,7 @@ var {{camelT RC.name}}Cmd = &cobra.Command {
 		{{> args-parse.go RC }}
 
 		// HOFSTADTER_START cmd_run
+		fmt.Println("Got Here")
 		// HOFSTADTER_END   cmd_run
 	},
 	{{/unless}}

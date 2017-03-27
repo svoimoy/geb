@@ -1,11 +1,11 @@
 package utils
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
 	"fmt"
 	"github.com/pkg/errors"
-
 	// HOFSTADTER_END   import
 )
 
@@ -18,11 +18,10 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-
 /*
 Where's your docs doc?!
 */
-func merge(original interface{},update interface{}) (merged interface{},err error) {
+func merge(original interface{}, update interface{}) (merged interface{}, err error) {
 	// HOFSTADTER_START merge
 	logger.Info("Merging", "original", original, "update", update)
 
@@ -166,6 +165,5 @@ func merge(original interface{},update interface{}) (merged interface{},err erro
 	// HOFSTADTER_END   merge
 	return
 }
-
 
 // HOFSTADTER_BELOW

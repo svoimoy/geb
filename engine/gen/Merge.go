@@ -1,9 +1,10 @@
 package gen
+
 // package publicFiles
 
 import (
-	// HOFSTADTER_START import
-	// HOFSTADTER_END   import
+// HOFSTADTER_START import
+// HOFSTADTER_END   import
 )
 
 // HOFSTADTER_START const
@@ -18,13 +19,12 @@ import (
 /*
 Where's your docs doc?!
 */
-func MergeInFolder(folder string,skipExisting bool) (g *Generator,err error) {
+func MergeInFolder(folder string, skipExisting bool) (g *Generator, err error) {
 	// HOFSTADTER_START MergeInFolder
+	logger.Error("Got Here, gen.MergeInFolder")
 
 	// HOFSTADTER_END   MergeInFolder
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

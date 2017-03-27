@@ -1,11 +1,11 @@
 package commands
+
 // package commands
 
 import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 
-	
 	"github.com/spf13/cobra"
 
 	"github.ibm.com/hofstadter-io/geb/commands/view"
@@ -25,23 +25,16 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-
 var ViewLong = `View information known to the geb tool.`
 
-
-
-
-
-
-var ViewCmd = &cobra.Command {
+var ViewCmd = &cobra.Command{
 	Use: "view",
-	Aliases: []string{ 
+	Aliases: []string{
 		"v",
 	},
 	Short: "View information known to the geb tool.",
-	Long: ViewLong,
-				}
-
+	Long:  ViewLong,
+}
 
 func init() {
 	RootCmd.AddCommand(ViewCmd)
@@ -52,9 +45,7 @@ func init() {
 	ViewCmd.AddCommand(view.ProjectCmd)
 	ViewCmd.AddCommand(view.DesignCmd)
 	ViewCmd.AddCommand(view.PlansCmd)
-	
+
 }
-
-
 
 // HOFSTADTER_BELOW

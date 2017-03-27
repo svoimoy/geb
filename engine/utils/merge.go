@@ -1,9 +1,10 @@
 package utils
+
 // package publicFiles
 
 import (
-	// HOFSTADTER_START import
-	// HOFSTADTER_END   import
+// HOFSTADTER_START import
+// HOFSTADTER_END   import
 )
 
 // HOFSTADTER_START const
@@ -18,7 +19,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func Merge(original interface{},update interface{}) (merged interface{},err error) {
+func Merge(original interface{}, update interface{}) (merged interface{}, err error) {
 	// HOFSTADTER_START Merge
 	if original == nil {
 		return update, nil
@@ -33,7 +34,5 @@ func Merge(original interface{},update interface{}) (merged interface{},err erro
 	// HOFSTADTER_END   Merge
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

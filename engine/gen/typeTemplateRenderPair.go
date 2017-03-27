@@ -1,13 +1,13 @@
 package gen
 
 import (
-	// HOFSTADTER_START import
-	// HOFSTADTER_END   import
+// HOFSTADTER_START import
+// HOFSTADTER_END   import
 )
 
 /*
 Name:      template-render-pair
-About:     
+About:
 */
 
 // HOFSTADTER_START const
@@ -17,21 +17,13 @@ About:
 Where's your docs doc?!
 */
 type TemplateRenderPair struct {
-	In string `json:"in" xml:"in" yaml:"in" form:"in" query:"in" `
+	In  string `json:"in" xml:"in" yaml:"in" form:"in" query:"in" `
 	Out string `json:"out" xml:"out" yaml:"out" form:"out" query:"out" `
 }
 
 func NewTemplateRenderPair() *TemplateRenderPair {
-	return &TemplateRenderPair{
-	}
+	return &TemplateRenderPair{}
 	// loop over fields looking for pointers
 }
-
-
-
-
-
-
-
 
 // HOFSTADTER_BELOW

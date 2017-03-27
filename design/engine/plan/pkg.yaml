@@ -23,6 +23,8 @@ pkg:
     # see engine/plan/todo.md
     - name: make-plans
       args:
+        - name: dsl-type
+          type: string
         - name: dsl-ctx
           type: "interface{}"
         - name: dsl-map

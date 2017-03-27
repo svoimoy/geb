@@ -4,7 +4,8 @@ about: "generator for golang types"
 type: "type"
 
 
-repeated:
+template-configs:
+
   - name: type
     field: "."
     templates:

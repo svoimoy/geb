@@ -1,5 +1,6 @@
 package render
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
@@ -30,7 +31,7 @@ const COMMENT = "//"
 /*
 Where's your docs doc?!
 */
-func RenderPlans(plans []plan.  Plan,outputDir string) (errorReport []error) {
+func RenderPlans(plans []plan.Plan, outputDir string) (errorReport []error) {
 	// HOFSTADTER_START RenderPlans
 	logger.Info("RenderPlans", "outputDir", outputDir)
 
@@ -48,10 +49,11 @@ func RenderPlans(plans []plan.  Plan,outputDir string) (errorReport []error) {
 	// HOFSTADTER_END   RenderPlans
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func RenderPlan(plan plan.  Plan,outputDir string) (err error) {
+func RenderPlan(plan plan.Plan, outputDir string) (err error) {
 	// HOFSTADTER_START RenderPlan
 
 	cwd, err := os.Getwd()
@@ -126,10 +128,11 @@ func RenderPlan(plan plan.  Plan,outputDir string) (err error) {
 	// HOFSTADTER_END   RenderPlan
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func SpliceResults(existing string,rendered string) (spliced string,err error) {
+func SpliceResults(existing string, rendered string) (spliced string, err error) {
 	// HOFSTADTER_START SpliceResults
 
 	// get each by lines
@@ -222,10 +225,11 @@ func SpliceResults(existing string,rendered string) (spliced string,err error) {
 	// HOFSTADTER_END   SpliceResults
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func WriteResults(filename string,content string) (err error) {
+func WriteResults(filename string, content string) (err error) {
 	// HOFSTADTER_START WriteResults
 	dir := filepath.Dir(filename)
 	err = os.MkdirAll(dir, 0755)
@@ -270,7 +274,5 @@ func WriteResults(filename string,content string) (err error) {
 	// HOFSTADTER_END   WriteResults
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

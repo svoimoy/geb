@@ -1,5 +1,6 @@
 package dsl
-// package 
+
+// package
 
 import (
 	// HOFSTADTER_START import
@@ -22,7 +23,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func CreateFromFolder(folder string) (d *Dsl,err error) {
+func CreateFromFolder(folder string) (d *Dsl, err error) {
 	// HOFSTADTER_START CreateFromFolder
 	d = NewDsl()
 
@@ -35,18 +36,21 @@ func CreateFromFolder(folder string) (d *Dsl,err error) {
 			err2 = errors.Wrap(err, "error reading geb-dsl.yaml, giving up.\n")
 			return nil, errors.Wrapf(err2, "Error in dsl.CreateFromFolder with 'geb-dsl.yaml' file in folder: %s\n", folder)
 		}
+		err = nil
 		C = C2
 	}
 	d.Config = C
 
 	d.SourcePath = folder
+	return d, nil
 	// HOFSTADTER_END   CreateFromFolder
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func FindAvailable(folder string) (ds map[string]*Dsl,err error) {
+func FindAvailable(folder string) (ds map[string]*Dsl, err error) {
 	// HOFSTADTER_START FindAvailable
 	logger.Info("Searching for DSLs", "folder", folder)
 	dsls := map[string]*Dsl{}
@@ -146,7 +150,5 @@ func FindAvailable(folder string) (ds map[string]*Dsl,err error) {
 	// HOFSTADTER_END   FindAvailable
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

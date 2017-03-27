@@ -9,7 +9,8 @@ dependencies:
     - type/golang
     - pkg/golang
 
-repeated:
+template-configs:
+
   - name: once-files
     field: "."
     templates:

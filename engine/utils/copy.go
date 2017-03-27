@@ -1,4 +1,5 @@
 package utils
+
 // package publicFiles
 
 import (
@@ -22,7 +23,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func CopyFile(source string,destination string) (err error) {
+func CopyFile(source string, destination string) (err error) {
 	// HOFSTADTER_START CopyFile
 	sf, err := os.Open(source)
 	if err != nil {
@@ -45,10 +46,11 @@ func CopyFile(source string,destination string) (err error) {
 	// HOFSTADTER_END   CopyFile
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func CopyDir(source string,destination string) (err error) {
+func CopyDir(source string, destination string) (err error) {
 	// HOFSTADTER_START CopyDir
 	// get properties of source dir
 	fi, err := os.Stat(source)
@@ -98,7 +100,5 @@ func CopyDir(source string,destination string) (err error) {
 	// HOFSTADTER_END   CopyDir
 	return
 }
-
-
 
 // HOFSTADTER_BELOW
