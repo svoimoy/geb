@@ -1,4 +1,4 @@
-# geb - data-centric design, output-agnostic creation
+# geb: data-centric design, output-agnostic creation
 
 __geb__ is the command-line tool for the hofstadter
 framework for data-centric design and output-agnostic creation
