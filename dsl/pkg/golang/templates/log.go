@@ -2,8 +2,6 @@
 package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (
-	"fmt"
-
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
@@ -56,7 +54,6 @@ func SetLogger(l log.Logger) {
 
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.{{replace CTX.pkg_path '/' '.' -1 }}")
-	fmt.Println(lcfg)
 
 	if lcfg == nil || len(lcfg) == 0  {
 		logger = l

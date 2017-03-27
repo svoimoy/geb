@@ -1,24 +1,37 @@
 package engine
+// package publicFiles
 
 import (
+	// HOFSTADTER_START import
 	"fmt"
 	"github.com/pkg/errors"
 
 	"github.com/spf13/viper"
 	"github.ibm.com/hofstadter-io/dotpath"
+	"gopkg.in/yaml.v2"
+
 	"github.ibm.com/hofstadter-io/geb/engine/design"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
 	"github.ibm.com/hofstadter-io/geb/engine/gen"
 	"github.ibm.com/hofstadter-io/geb/engine/project"
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
-	"gopkg.in/yaml.v2"
+	// HOFSTADTER_END   import
 )
 
-func ViewGeb(args []string) (string, error) {
-	// fmt.Println("ViewGeb:", args)
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
 
-	// file := utils.LookForKnownFiles()
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
 
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
+
+/*
+Where's your docs doc?!
+*/
+func ViewGeb(args []string) (output string,err error) {
+	// HOFSTADTER_START ViewGeb
 	data := viper.AllSettings()
 
 	if len(args) == 0 {
@@ -46,11 +59,14 @@ func ViewGeb(args []string) (string, error) {
 	}
 
 	return ret, nil
+	// HOFSTADTER_END   ViewGeb
+	return
 }
-
-func ViewDsl(folder string, args []string) (string, error) {
-	// fmt.Println("ViewDsl:", args)
-
+/*
+Where's your docs doc?!
+*/
+func ViewDsl(folder string,args []string) (output string,err error) {
+	// HOFSTADTER_START ViewDsl
 	file := utils.LookForKnownFiles()
 
 	var data interface{}
@@ -104,10 +120,14 @@ func ViewDsl(folder string, args []string) (string, error) {
 	}
 
 	return ret, nil
+	// HOFSTADTER_END   ViewDsl
+	return
 }
-
-func ViewGen(folder string, args []string) (string, error) {
-	// 	fmt.Println("ViewGen:", args)
+/*
+Where's your docs doc?!
+*/
+func ViewGen(folder string,args []string) (output string,err error) {
+	// HOFSTADTER_START ViewGen
 	file := utils.LookForKnownFiles()
 
 	var data interface{}
@@ -167,11 +187,14 @@ func ViewGen(folder string, args []string) (string, error) {
 	}
 
 	return ret, nil
+	// HOFSTADTER_END   ViewGen
+	return
 }
-
-func ViewDesign(folder string, args []string) (string, error) {
-	// fmt.Println("ViewDesign:", folder, args)
-
+/*
+Where's your docs doc?!
+*/
+func ViewDesign(folder string,args []string) (output string,err error) {
+	// HOFSTADTER_START ViewDesign
 	D, err := design.CreateFromFolder(folder)
 	if err != nil {
 		return "", errors.Wrap(err, "in engine.ViewDesign")
@@ -205,10 +228,14 @@ func ViewDesign(folder string, args []string) (string, error) {
 	}
 
 	return ret, nil
+	// HOFSTADTER_END   ViewDesign
+	return
 }
-
-func ViewProject(folder string, args []string) (string, error) {
-	// fmt.Println("ViewProject:", args)
+/*
+Where's your docs doc?!
+*/
+func ViewProject(folder string,args []string) (output string,err error) {
+	// HOFSTADTER_START ViewProject
 
 	file := utils.LookForKnownFiles()
 
@@ -250,10 +277,14 @@ func ViewProject(folder string, args []string) (string, error) {
 	}
 
 	return ret, nil
+	// HOFSTADTER_END   ViewProject
+	return
 }
-
-func ViewPlans(folder string, args []string) (string, error) {
-	// fmt.Println("ViewProject:", args)
+/*
+Where's your docs doc?!
+*/
+func ViewPlans(folder string,args []string) (output string,err error) {
+	// HOFSTADTER_START ViewPlans
 
 	file := utils.LookForKnownFiles()
 
@@ -299,4 +330,10 @@ func ViewPlans(folder string, args []string) (string, error) {
 	}
 
 	return ret, nil
+	// HOFSTADTER_END   ViewPlans
+	return
 }
+
+
+
+// HOFSTADTER_BELOW

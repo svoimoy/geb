@@ -47,32 +47,36 @@ type:
         - name: err
           type: error
 
-    - name: load-default-generators
-      return:
-        - name: err
-          type: error
+  public-files:
+    - name: load
+      functions:
 
-    - name: load-generators
-      args:
-        - name: generators
-          type: "array:string"
-      return:
-        - name: err
-          type: error
+        - name: load-default-generators
+          return:
+            - name: err
+              type: error
+
+        - name: load-generators
+          args:
+            - name: generators
+              type: "array:string"
+          return:
+            - name: err
+              type: error
+
+        - name: load-generator-list
+          args:
+            - name: generators
+              type: "array:string"
+          return:
+            - name: err
+              type: error
 
 
-    - name: load-generator-list
-      args:
-        - name: generators
-          type: "array:string"
-      return:
-        - name: err
-          type: error
-
-
-  private-functions:
-
-    - name: register-partials
-    - name: add-template-helpers
+  private-files:
+    - name: template-helpers
+      functions:
+        - name: register-partials
+        - name: add-template-helpers
 
 

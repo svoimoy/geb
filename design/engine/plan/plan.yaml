@@ -14,12 +14,14 @@ type:
       type: "map:interface{}"
       required: true
     - name: template
-      type: '*engine.template.Template'
+      type: '*engine.templates.Template'
       required: true
     - name: outfile
       type: string
       required: true
     - name: dsl-context
+      type: "interface{}"
+    - name: template-context
       type: "interface{}"
     - name: repeated-context
       type: "interface{}"

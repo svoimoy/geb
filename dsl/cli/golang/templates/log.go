@@ -60,6 +60,11 @@ func SetLogger(l log.Logger) {
 	{{lower Cmd.name}}.SetLogger(logger)
 	{{/if}}
 	{{/each}}
+	{{#each CTX.subcommands as |Cmd|}}
+	{{#if Cmd.subcommands}}
+	{{lower Cmd.name}}.SetLogger(logger)
+	{{/if}}
+	{{/each}}
 
 
 	// possibly override locally
@@ -96,7 +101,6 @@ func SetLogger(l log.Logger) {
 }
 
 /*
-
 {{{yaml CTX}}}
 */
 {{/with}}

@@ -17,7 +17,7 @@ type:
 
     - name: import-design-file
       args:
-        - name: filepath
+        - name: filename
           type: string
       return:
         - name: err
@@ -80,55 +80,58 @@ type:
       return:
         - name: err
           type: error
-      
-    - name: store-dsl-design
-      args:
-        - name: relative-path
-          type: string
-        - name: dsl
-          type: string
-        - name: name
-          type: string
-        - name: design
-          type: "interface{}"
-      return:
-        - name: err
-          type: error
-      
-    - name: store-type-design
-      args:
-        - name: relative-path
-          type: string
-        - name: name
-          type: string
-        - name: design
-          type: "interface{}"
-      return:
-        - name: err
-          type: error
-      
-    - name: store-package-design
-      args:
-        - name: relative-path
-          type: string
-        - name: name
-          type: string
-        - name: design
-          type: "interface{}"
-      return:
-        - name: err
-          type: error
-      
-    - name: store-custom-design
-      args:
-        - name: relative-path
-          type: string
-        - name: name
-          type: string
-        - name: design
-          type: "interface{}"
-      return:
-        - name: err
-          type: error
-      
-      
+
+  private-files:
+    - name: store
+      functions: 
+        - name: store-dsl-design
+          args:
+            - name: relative-path
+              type: string
+            - name: dsl
+              type: string
+            - name: name
+              type: string
+            - name: design
+              type: "interface{}"
+          return:
+            - name: err
+              type: error
+          
+        - name: store-type-design
+          args:
+            - name: relative-path
+              type: string
+            - name: name
+              type: string
+            - name: design
+              type: "interface{}"
+          return:
+            - name: err
+              type: error
+          
+        - name: store-package-design
+          args:
+            - name: relative-path
+              type: string
+            - name: name
+              type: string
+            - name: design
+              type: "interface{}"
+          return:
+            - name: err
+              type: error
+          
+        - name: store-custom-design
+          args:
+            - name: relative-path
+              type: string
+            - name: name
+              type: string
+            - name: design
+              type: "interface{}"
+          return:
+            - name: err
+              type: error
+          
+          

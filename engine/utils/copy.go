@@ -1,20 +1,35 @@
 package utils
+// package publicFiles
 
 import (
+	// HOFSTADTER_START import
 	"github.com/pkg/errors"
 	"io"
 	"io/ioutil"
 	"os"
+	// HOFSTADTER_END   import
 )
 
-// Copies file source to destination dest.
-func CopyFile(source string, dest string) (err error) {
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
+
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
+
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
+
+/*
+Where's your docs doc?!
+*/
+func CopyFile(source string,destination string) (err error) {
+	// HOFSTADTER_START CopyFile
 	sf, err := os.Open(source)
 	if err != nil {
 		return errors.Wrap(err, "while copying file")
 	}
 	defer sf.Close()
-	df, err := os.Create(dest)
+	df, err := os.Create(destination)
 	if err != nil {
 		return errors.Wrap(err, "while copying file")
 	}
@@ -23,18 +38,18 @@ func CopyFile(source string, dest string) (err error) {
 	if err == nil {
 		si, err := os.Stat(source)
 		if err != nil {
-			err = os.Chmod(dest, si.Mode())
+			err = os.Chmod(destination, si.Mode())
 		}
 
 	}
-
+	// HOFSTADTER_END   CopyFile
 	return
 }
-
-// Recursively copies a directory tree, attempting to preserve permissions.
-// Source directory must exist, destination directory must *not* exist.
-func CopyDir(source string, dest string) (err error) {
-
+/*
+Where's your docs doc?!
+*/
+func CopyDir(source string,destination string) (err error) {
+	// HOFSTADTER_START CopyDir
 	// get properties of source dir
 	fi, err := os.Stat(source)
 	if err != nil {
@@ -45,17 +60,17 @@ func CopyDir(source string, dest string) (err error) {
 		return errors.New("Source is not a directory")
 	}
 
-	// ensure dest dir does not already exist
+	// ensure destination dir does not already exist
 	/*
-		_, err = os.Open(dest)
+		_, err = os.Open(destination)
 		if !os.IsNotExist(err) {
 			return errors.New("Destination already exists")
 		}
 	*/
 
-	// create dest dir
+	// create destination dir
 
-	err = os.MkdirAll(dest, fi.Mode())
+	err = os.MkdirAll(destination, fi.Mode())
 	if err != nil {
 		return errors.Wrap(err, "while copying dir")
 	}
@@ -65,7 +80,7 @@ func CopyDir(source string, dest string) (err error) {
 	for _, entry := range entries {
 
 		sfp := source + "/" + entry.Name()
-		dfp := dest + "/" + entry.Name()
+		dfp := destination + "/" + entry.Name()
 		if entry.IsDir() {
 			err = CopyDir(sfp, dfp)
 			if err != nil {
@@ -80,5 +95,10 @@ func CopyDir(source string, dest string) (err error) {
 		}
 
 	}
+	// HOFSTADTER_END   CopyDir
 	return
 }
+
+
+
+// HOFSTADTER_BELOW

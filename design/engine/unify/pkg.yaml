@@ -29,7 +29,7 @@ pkg:
         - name: parent-path
           type: string
         - name: design-data
-          type: "map:interface{}"
+          type: "interface{}"
       return:
         - name: err
           type: error

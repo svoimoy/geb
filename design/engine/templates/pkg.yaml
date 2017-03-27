@@ -48,11 +48,12 @@ pkg:
 
 
 
-  private-functions:
-
-    - name: add-template-helpers
-      args:
-        - name: tpl
-          type: "*raymond.Template"
+  private-files:
+    - name: helpers
+      functions:
+        - name: add-template-helpers
+          args:
+            - name: tpl
+              type: "*raymond.Template"
 
 

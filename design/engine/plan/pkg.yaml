@@ -11,7 +11,7 @@ pkg:
         - name: design-data
           type: "map:interface{}"
       return:
-        - name: plans
+        - name: ret
           type: "array:Plan"
         - name: err
           type: error
@@ -23,6 +23,8 @@ pkg:
     # see engine/plan/todo.md
     - name: make-plans
       args:
+        - name: dsl-ctx
+          type: "interface{}"
         - name: dsl-map
           type: "map:*engine.dsl.Dsl"
         - name: design-data

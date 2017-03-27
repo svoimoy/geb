@@ -1,6 +1,8 @@
 package templates
+// package privateFiles
 
 import (
+	// HOFSTADTER_START import
 	"encoding/json"
 	"fmt"
 	"os"
@@ -11,25 +13,23 @@ import (
 	"github.com/codemodus/kace"
 	"github.com/kr/pretty"
 	"gopkg.in/yaml.v2"
+	// HOFSTADTER_END   import
 )
 
-func (template *Template) Render(design interface{}) (string, error) {
-	tpl := (*raymond.Template)(template.Template)
-	return tpl.Exec(design)
-}
+// HOFSTADTER_START const
+// HOFSTADTER_END   const
 
-func RenderTemplate(template *Template, design interface{}) (string, error) {
-	tpl := (*raymond.Template)(template.Template)
-	return tpl.Exec(design)
-}
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
 
-func AddHelpers(tpl *Template) {
-	rtpl := (*raymond.Template)(tpl.Template)
-	add_template_helpers(rtpl)
-}
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
 
-func add_template_helpers(tpl *raymond.Template) {
-
+/*
+Where's your docs doc?!
+*/
+func addTemplateHelpers(tpl *raymond.  Template)  {
+	// HOFSTADTER_START addTemplateHelpers
 	tpl.RegisterHelper("concat2", helper_concat2)
 	tpl.RegisterHelper("concat3", helper_concat3)
 	tpl.RegisterHelper("concat4", helper_concat4)
@@ -89,7 +89,14 @@ func add_template_helpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("ne", helper_ne)
 
 	tpl.RegisterHelper("getenv", helper_getenv)
+
+	// HOFSTADTER_END   addTemplateHelpers
+	return
 }
+
+
+
+// HOFSTADTER_BELOW
 
 func helper_concat2(s1, s2 string) string {
 	return s1 + s2
