@@ -12,7 +12,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.cli.commands.3.subcommands.default")
+	ldcfg := viper.GetStringMap("log-config.commands.system.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -44,7 +44,7 @@ func SetLogger(l log.Logger) {
 	// set subcommand loggers before possibly overriding locally next
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.cli.commands.3.subcommands")
+	lcfg := viper.GetStringMap("log-config.commands.system.default")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -75,18 +75,5 @@ func SetLogger(l log.Logger) {
 	}
 
 }
-
-/*
-ctx_path: dsl.cli.commands.3.subcommands.2
-long: Update the geb library DSLs, designs, and other files in the dot folder.
-name: update
-parent: system
-parent_path: dsl.cli.commands.3
-path: commands.subcommands
-pkg_path: cli/commands/3/subcommands
-short: Update the geb library and dot folder
-usage: update
-
-*/
 
 // HOFSTADTER_BELOW

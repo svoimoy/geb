@@ -92,4 +92,5 @@ func SetLogger(l log.Logger) {
 	}
 
 }
+
 {{/with}}

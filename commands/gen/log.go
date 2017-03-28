@@ -12,7 +12,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.cli.commands.5.subcommands.default")
+	ldcfg := viper.GetStringMap("log-config.commands.gen.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -44,7 +44,7 @@ func SetLogger(l log.Logger) {
 	// set subcommand loggers before possibly overriding locally next
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.cli.commands.5.subcommands")
+	lcfg := viper.GetStringMap("log-config.commands.gen.default")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -75,43 +75,5 @@ func SetLogger(l log.Logger) {
 	}
 
 }
-
-/*
-args:
-- ctx_path: dsl.cli.commands.5.subcommands.0.args.0
-  help: Path to the input design file.
-  name: designFile
-  parent: geb.gen.file
-  parent_path: dsl.cli.commands.5.subcommands.0
-  pkg_path: cli/commands/5/subcommands/0/args
-  required: true
-  type: string
-- ctx_path: dsl.cli.commands.5.subcommands.0.args.1
-  help: Path to the template file.
-  name: templateFile
-  parent: geb.gen.file
-  parent_path: dsl.cli.commands.5.subcommands.0
-  pkg_path: cli/commands/5/subcommands/0/args
-  required: true
-  type: string
-- ctx_path: dsl.cli.commands.5.subcommands.0.args.2
-  help: Path to the output file. Can also be 'stdout'.
-  name: outputFile
-  parent: geb.gen.file
-  parent_path: dsl.cli.commands.5.subcommands.0
-  pkg_path: cli/commands/5/subcommands/0/args
-  required: true
-  type: string
-ctx_path: dsl.cli.commands.5.subcommands.0
-long: Generate a file from design and a template.
-name: file
-parent: gen
-parent_path: dsl.cli.commands.5
-path: commands.subcommands
-pkg_path: cli/commands/5/subcommands
-short: Generate a file.
-usage: file <designFile> <templateFile> <outputFile>
-
-*/
 
 // HOFSTADTER_BELOW

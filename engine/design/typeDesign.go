@@ -235,6 +235,7 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
 		}
 		name = tmp
+		D["relPath"] = relativePath
 
 	case map[interface{}]interface{}:
 		iname, ok := D["name"]
@@ -246,6 +247,7 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
 		}
 		name = tmp
+		D["relPath"] = relativePath
 
 	default:
 		return errors.New("Top-level definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
@@ -266,6 +268,7 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 				return errors.New("Top-level type-list does not have a 'list' or is not an array of objects in '" + " design: " + fmt.Sprint(design))
 			}
 			t_list = tmp_list
+			D["relPath"] = relativePath
 
 		case map[interface{}]interface{}:
 			tmp_list, ok := D["list"].([]interface{})
@@ -273,6 +276,7 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 				return errors.New("Top-level type-list does not have a 'list' or is not an array of objects in '" + " design: " + fmt.Sprint(design))
 			}
 			t_list = tmp_list
+			D["relPath"] = relativePath
 
 		default:
 			return errors.New("Type-list definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
@@ -296,6 +300,7 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 					return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
 				}
 				ename = tmp
+				E["relPath"] = relativePath
 
 			case map[interface{}]interface{}:
 				iname, ok := E["name"]
@@ -307,6 +312,7 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 					return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
 				}
 				ename = tmp
+				E["relPath"] = relativePath
 
 			default:
 				return errors.New("Type-list definition '" + dsl + "' is not a map[string]")

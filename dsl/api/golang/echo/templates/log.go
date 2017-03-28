@@ -83,8 +83,5 @@ func SetLogger(l log.Logger) {
 
 }
 
-/*
-{{{yaml CTX}}}
-*/
 {{/with}}
 

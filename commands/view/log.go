@@ -12,7 +12,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.cli.commands.4.subcommands.default")
+	ldcfg := viper.GetStringMap("log-config.commands.view.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -44,7 +44,7 @@ func SetLogger(l log.Logger) {
 	// set subcommand loggers before possibly overriding locally next
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.cli.commands.4.subcommands")
+	lcfg := viper.GetStringMap("log-config.commands.view.default")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -75,29 +75,5 @@ func SetLogger(l log.Logger) {
 	}
 
 }
-
-/*
-aliases:
-- P
-args:
-- ctx_path: dsl.cli.commands.4.subcommands.5.args.0
-  help: one ore more dotpaths for indexing into the data
-  name: paths
-  parent: geb.view.plans
-  parent_path: dsl.cli.commands.4.subcommands.5
-  pkg_path: cli/commands/4/subcommands/5/args
-  rest: true
-  type: array:string
-ctx_path: dsl.cli.commands.4.subcommands.5
-long: View information about a Project's Plans known from the current path
-name: plans
-parent: view
-parent_path: dsl.cli.commands.4
-path: commands.subcommands
-pkg_path: cli/commands/4/subcommands
-short: View information about a Project's Plans
-usage: plans <dotpath>...
-
-*/
 
 // HOFSTADTER_BELOW
