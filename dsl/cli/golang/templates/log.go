@@ -1,5 +1,5 @@
 {{#with RepeatedContext as |CTX| }}
-package {{#if parent}}{{lower CTX.parent}}{{else}}commands{{/if}}
+package {{#if parent}}{{camel CTX.parent}}{{else}}commands{{/if}}
 
 // The following line in the template needs fixing, it's probably related to the tree traversal and adding information
 // go unification improvements!!

@@ -1,5 +1,4 @@
 package templates
-
 // package privateFiles
 
 import (
@@ -29,7 +28,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func addTemplateHelpers(tpl *raymond.Template) {
+func addTemplateHelpers(tpl *raymond.  Template)  {
 	// HOFSTADTER_START addTemplateHelpers
 	tpl.RegisterHelper("concat2", helper_concat2)
 	tpl.RegisterHelper("concat3", helper_concat3)
@@ -94,6 +93,8 @@ func addTemplateHelpers(tpl *raymond.Template) {
 	// HOFSTADTER_END   addTemplateHelpers
 	return
 }
+
+
 
 // HOFSTADTER_BELOW
 
@@ -230,9 +231,9 @@ func helper_trimto_first(str, pre string, keep bool) string {
 	pos := strings.Index(str, pre)
 	if pos >= 0 {
 		if keep {
-			return str[:pos-len(pre)]
+			return str[pos-len(pre)+1:]
 		}
-		return str[:pos]
+		return str[pos+1:]
 	}
 	return str
 }
@@ -241,9 +242,9 @@ func helper_trimfrom_first(str, pre string, keep bool) string {
 	pos := strings.Index(str, pre)
 	if pos >= 0 {
 		if keep {
-			return str[pos+len(pre):]
+			return str[:pos+len(pre)]
 		}
-		return str[pos:]
+		return str[:pos]
 	}
 	return str
 }
@@ -252,9 +253,9 @@ func helper_trimto_last(str, pre string, keep bool) string {
 	pos := strings.LastIndex(str, pre)
 	if pos >= 0 {
 		if keep {
-			return str[:pos-len(pre)]
+			return str[pos-len(pre)+1:]
 		}
-		return str[:pos]
+		return str[pos+1:]
 	}
 	return str
 }
@@ -263,9 +264,9 @@ func helper_trimfrom_last(str, pre string, keep bool) string {
 	pos := strings.LastIndex(str, pre)
 	if pos >= 0 {
 		if keep {
-			return str[pos+len(pre):]
+			return str[:pos+len(pre)]
 		}
-		return str[pos:]
+		return str[:pos]
 	}
 	return str
 }
@@ -298,6 +299,8 @@ func helper_getbetween(str, lhs, rhs string) string {
 	rpos := strings.LastIndex(str, rhs)
 	if lpos < 0 {
 		lpos = 0
+	} else {
+		lpos += 1
 	}
 	if rpos < 0 {
 		rpos = len(str)

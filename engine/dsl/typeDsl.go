@@ -18,9 +18,9 @@ About:
 Where's your docs doc?!
 */
 type Dsl struct {
-	Config              *Config                   `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
-	SourcePath          string                    `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
-	AvailableGenerators map[string]string         `json:"available-generators" xml:"available-generators" yaml:"available-generators" form:"available-generators" query:"available-generators" `
+	Config              *Config                         `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
+	SourcePath          string                          `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
+	AvailableGenerators map[string]string               `json:"available-generators" xml:"available-generators" yaml:"available-generators" form:"available-generators" query:"available-generators" `
 	Generators          map[string]*gen.Generator `json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
 }
 

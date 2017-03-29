@@ -128,6 +128,7 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 			for _, R := range repeats {
 				logger.Info("Processing Templates Field: '"+R.Name+"'", "field", R.Field, "dslCtx", dslCtx)
 
+				// lookup the field used to fill in the template
 				repeat_elems, err := dotpath.Get(R.Field, dslCtx, false)
 				if err != nil || repeat_elems == nil {
 					logger.Debug("Skipping Templates Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
@@ -138,6 +139,10 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 				logger.Debug("Doing Templates Field: '" + R.Name + "'")
 				var c_slice []interface{}
 
+				// the first two clauses ensure its an object of some sort
+				// the last handles arrays, but omits the object check
+				// should we be checking for objects at all?
+				// or just arrays and other?
 				switch M := repeat_elems.(type) {
 
 				case map[string]interface{}:
@@ -174,10 +179,20 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 				c_slice = tmp_c_slice
 
 				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "c_slice", c_slice)
+				// for all of the templates in the generator configuration, for this field
 				for _, t_pair := range R.Templates {
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Templates)
-					t_key := t_pair.In
 
+					// check the when clause
+					if t_pair.When != "" {
+						when_elems, err := dotpath.Get(t_pair.When, repeat_elems, false)
+						if err != nil || when_elems == nil {
+							logger.Debug("Skipping TemplatePair When Field: '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
+							continue
+						}
+					}
+
+					t_key := t_pair.In
 					T, ok := G.Templates[t_key]
 					if !ok {
 						return nil, errors.New("Unknown repeat template: " + t_key)

@@ -42,3 +42,6 @@ log-config:
   default:
     level: warn
     stack: false
+  engine:
+    unify:
+      level: info

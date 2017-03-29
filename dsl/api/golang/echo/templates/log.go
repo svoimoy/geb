@@ -1,5 +1,9 @@
 {{#with RepeatedContext as |CTX| }}
-package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
+{{#if (eq CTX.parent DslContext.name)}}
+package {{camel CTX.path}}
+{{else}}
+package {{#if parent}}{{camel CTX.parent}}{{else}}commands{{/if}}
+{{/if}}
 
 // The following line in the template needs fixing, it's probably related to the tree traversal and adding information
 // go unification improvements!!
@@ -83,5 +87,8 @@ func SetLogger(l log.Logger) {
 
 }
 
+/*
+{{{yaml CTX}}}
+*/
 {{/with}}
 

@@ -66,36 +66,59 @@ template-configs:
         out: "setupRoutes.go"
       - in: "config.yaml"
         out: "config.yaml"
+      - in: "log.go"
+        out: "routes/log.go"
+      - in: "log.go"
+        out: "resources/log.go"
 
   - name: route
     field: routes
     templates:
       - in: "routes/route.go"
         out: "routes/{{camel name}}.go"
-      - in: "log.go"
-        out: "routes/log.go"
+      - when: routes
+        in: "log.go"
+        out: "routes/{{name}}/log.go"
+
   - name: sub-route
-    field: routes.routes
+    field: routes.[:].routes
     templates:
       - in: "routes/subroute.go"
-        out: "routes/{{parent.name}}/{{camel name}}.go"
-      - in: "log.go"
-        out: "routes/{{parent.name}}/log.go"
+        out: "routes/{{parent}}/{{camel name}}.go"
+      - when: routes
+        in: "log.go"
+        out: "routes/{{parent}}/{{name}}/log.go"
+
+  - name: subsub-route
+    field: routes.[:].routes.[:].routes
+    templates:
+      - in: "routes/subroute.go"
+        out: "routes/{{getbetween CTX.pkgPath '/' '/'}}/{{parent}}/{{camel name}}.go"
+
 
   - name: resource
     field: resources
     templates:
       - in: "resources/resource.go"
         out: "resources/{{camel name}}.go"
-      - in: "log.go"
-        out: "resources/log.go"
+      - when: resources
+        in: "log.go"
+        out: "resources/{{name}}/log.go"
+
   - name: sub-resource
-    field: resources.resources
+    field: resources.[:].resources
     templates:
       - in: "resources/subresource.go"
-        out: "resources/{{parent.name}}/{{camel name}}.go"
-      - in: "log.go"
-        out: "resources/{{parent.name}}/log.go"
+        out: "resources/{{parent}}/{{camel name}}.go"
+      - when: resources
+        in: "log.go"
+        out: "resources/{{parent}}/{{camel name}}/log.go"
+
+  - name: subsub-resource
+    field: resources.[:].resources.[:].resources
+    templates:
+      - in: "resources/subresource.go"
+        out: "resources/{{getbetween pkgPath '/' '/'}}/{{camel name}}.go"
 
 
 

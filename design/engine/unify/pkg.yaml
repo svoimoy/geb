@@ -26,6 +26,8 @@ pkg:
           type: string
         - name: path
           type: string
+        - name: pkg-path
+          type: string
         - name: parent-path
           type: string
         - name: design-data

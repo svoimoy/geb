@@ -38,6 +38,8 @@ type-list:
     - name: template-render-pair
       version: "0.0.1"
       fields:
+        - name: when
+          type: string
         - name: in
           type: string
           required: true

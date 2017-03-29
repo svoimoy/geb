@@ -28,7 +28,7 @@ template-configs:
         out: "commands/{{camel name}}.go"
 
   - name: sub-command
-    field: commands.subcommands
+    field: commands.[:].subcommands
     templates:
       - in: "cmd.go"
         out: "commands/{{parent}}/{{camel name}}.go"

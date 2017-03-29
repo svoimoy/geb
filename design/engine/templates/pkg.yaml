@@ -54,6 +54,6 @@ pkg:
         - name: add-template-helpers
           args:
             - name: tpl
-              type: "*raymond.Template"
+              type: "*github.com/aymerick/raymond.Template"
 
 

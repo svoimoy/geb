@@ -1,4 +1,4 @@
-{{#with DslContext}}
+{{#with DslContext as |CTX|}}
 package main
 
 import (
@@ -11,10 +11,10 @@ import (
 	"github.com/spf13/viper"
 	log15 "gopkg.in/inconshreveable/log15.v2"
 
-	{{#if DslContext.resources}}
+	{{#if CTX.resources}}
 	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/resources"
 	{{/if}}
-	{{#if DslContext.routes}}
+	{{#if CTX.routes}}
 	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/routes"
 	{{/if}}
 
@@ -67,8 +67,11 @@ func main() {
 	// HOFSTADTER_START main-prerun
 	// HOFSTADTER_END   main-prerun
 
+	host := viper.GetString("host")
+	port := viper.GetString("port")
+
 	E.Logger.SetLevel(log.INFO)
-	E.Logger.Fatal(E.Start(":1323"))
+	E.Logger.Fatal(E.Start(host+":"+port))
 }
 
 func read_config() {
@@ -126,10 +129,10 @@ func config_logger() {
 
 	// set package loggers
 	xtalk.SetLogger(logger)
-	{{#if DslContext.resources}}
+	{{#if CTX.resources}}
 	resources.SetLogger(logger)
 	{{/if}}
-	{{#if DslContext.routes}}
+	{{#if CTX.routes}}
 	routes.SetLogger(logger)
 	{{/if}}
 

@@ -26,7 +26,7 @@ Where's your docs doc?!
 */
 func Unify(parent string, path string, parentPath string, designData map[string]interface{}) (err error) {
 	// HOFSTADTER_START Unify
-	err = unify(parent, path, parentPath, designData)
+	err = unify(parent, path, "", parentPath, designData)
 	return err
 	// HOFSTADTER_END   Unify
 	return
@@ -35,9 +35,9 @@ func Unify(parent string, path string, parentPath string, designData map[string]
 /*
 Where's your docs doc?!
 */
-func unify(parent string, path string, parentPath string, designData interface{}) (err error) {
+func unify(parent string, path string, pkgPath string, parentPath string, designData interface{}) (err error) {
 	// HOFSTADTER_START unify
-	logger.Info("unify", "parent", parent, "path", path, "data", designData)
+	logger.Info("unify", "parent", parent, "path", path, "pkgPath", pkgPath, "data", designData)
 	path_flds := strings.Split(path, ".")
 	path_len := len(path_flds)
 
@@ -64,18 +64,26 @@ func unify(parent string, path string, parentPath string, designData interface{}
 		pkg_path := strings.Join(path_flds[1:path_len-1], ".")
 		pkg_path = strings.Replace(pkg_path, ".", "/", -1)
 
+		if pkgPath == "" {
+			pkgPath = name
+		} else {
+			pkgPath = strings.Join([]string{pkgPath, name}, "/")
+		}
+
 		switch vmap := designData.(type) {
 		case map[string]interface{}:
 			vmap["parent"] = parent
 			vmap["parent_path"] = parentPath
 			vmap["ctx_path"] = path
 			vmap["pkg_path"] = pkg_path
+			vmap["pkgPath"] = pkgPath
 
 		case map[interface{}]interface{}:
 			vmap["parent"] = parent
 			vmap["parent_path"] = parentPath
 			vmap["ctx_path"] = path
 			vmap["pkg_path"] = pkg_path
+			vmap["pkgPath"] = pkgPath
 
 		default:
 			return errors.New("in unify, named data is not a map")
@@ -107,24 +115,24 @@ func unify(parent string, path string, parentPath string, designData interface{}
 			switch V := val.(type) {
 			case map[string]interface{}:
 				logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, r_parent_path, val)
+				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
 				if err != nil {
 					logger.Debug("returning " + key)
 					return errors.Wrap(err, "in unify: "+key)
 				}
 			case map[interface{}]interface{}:
 				logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, r_parent_path, val)
+				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
 				if err != nil {
 					logger.Debug("returning " + key)
 					return errors.Wrap(err, "in unify: "+key)
 				}
 			case []interface{}:
 				for idx, elem := range V {
-					sidx := fmt.Sprint(idx)
+					sidx := "[" + fmt.Sprint(idx) + "]"
 					i_path := strings.Join([]string{r_path, sidx}, ".")
 					logger.Debug("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
-					err := unify(r_parent, i_path, r_parent_path, elem)
+					err := unify(r_parent, i_path, pkgPath, r_parent_path, elem)
 					if err != nil {
 						logger.Debug("returning " + sidx)
 						return errors.Wrap(err, "in unify: "+sidx)
@@ -143,24 +151,24 @@ func unify(parent string, path string, parentPath string, designData interface{}
 			switch V := val.(type) {
 			case map[string]interface{}:
 				logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, r_parent_path, val)
+				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
 				if err != nil {
 					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 			case map[interface{}]interface{}:
 				logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, r_parent_path, val)
+				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
 				if err != nil {
 					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 			case []interface{}:
 				for idx, elem := range V {
-					sidx := fmt.Sprint(idx)
+					sidx := "[" + fmt.Sprint(idx) + "]"
 					i_path := strings.Join([]string{r_path, sidx}, ".")
 					logger.Debug("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
-					err := unify(r_parent, i_path, r_parent_path, elem)
+					err := unify(r_parent, i_path, pkgPath, r_parent_path, elem)
 					if err != nil {
 						logger.Debug("returning " + sidx)
 						return errors.Wrap(err, "in unify: "+sidx)
@@ -173,20 +181,20 @@ func unify(parent string, path string, parentPath string, designData interface{}
 	case []interface{}:
 		for key, val := range D {
 			logger.Debug("  - inspecting...", "key", key, "val", val)
-			skey := fmt.Sprint(key)
+			skey := "[" + fmt.Sprint(key) + "]"
 			r_path := strings.Join([]string{path, skey}, ".")
 
 			switch val.(type) {
 			case map[string]interface{}:
 				logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, r_parent_path, val)
+				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
 				if err != nil {
 					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 			case map[interface{}]interface{}:
 				logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, r_parent_path, val)
+				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
 				if err != nil {
 					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)

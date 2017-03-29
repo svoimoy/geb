@@ -103,6 +103,7 @@ func (P *Project) addTemplateHelpers() {
 
 func (P *Project) registerTemplateHelpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("dotpath", P.tpl_helper_dotpath)
+	tpl.RegisterHelper("getdesign", P.tpl_helper_dotpath_design)
 	tpl.RegisterHelper("gettype", P.tpl_helper_dotpath_type)
 	tpl.RegisterHelper("getdsl", P.tpl_helper_dotpath_dsl)
 
@@ -165,6 +166,21 @@ func (P *Project) tpl_helper_dotpath(path string, data interface{}, no_solo_arra
 		return options.FnWith("Error during path search: " + err.Error())
 	}
 	// obj := options.Eval(data, path)
+	if obj == nil {
+		return options.FnWith("Path not found: " + path + fmt.Sprintf("\n%+v", data))
+	}
+
+	return options.FnWith(obj)
+}
+
+// data optional argument defaults to Design
+func (P *Project) tpl_helper_dotpath_design(path string, no_solo_array bool, options *raymond.Options) interface{} {
+	data := P.Design
+
+	obj, err := data.GetByPath(path)
+	if err != nil {
+		return options.FnWith("Error during path search: " + err.Error())
+	}
 	if obj == nil {
 		return options.FnWith("Path not found: " + path + fmt.Sprintf("\n%+v", data))
 	}
