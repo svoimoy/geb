@@ -230,9 +230,9 @@ func helper_trimto_first(str, pre string, keep bool) string {
 	pos := strings.Index(str, pre)
 	if pos >= 0 {
 		if keep {
-			return str[pos-len(pre)+1:]
+			return str[pos:]
 		}
-		return str[pos+1:]
+		return str[pos+len(pre):]
 	}
 	return str
 }
@@ -252,9 +252,9 @@ func helper_trimto_last(str, pre string, keep bool) string {
 	pos := strings.LastIndex(str, pre)
 	if pos >= 0 {
 		if keep {
-			return str[pos-len(pre)+1:]
+			return str[pos:]
 		}
-		return str[pos+1:]
+		return str[pos+len(pre):]
 	}
 	return str
 }

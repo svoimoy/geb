@@ -183,15 +183,6 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 				for _, t_pair := range R.Templates {
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Templates)
 
-					// check the when clause
-					if t_pair.When != "" {
-						when_elems, err := dotpath.Get(t_pair.When, repeat_elems, false)
-						if err != nil || when_elems == nil {
-							logger.Debug("Skipping TemplatePair When Field: '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
-							continue
-						}
-					}
-
 					t_key := t_pair.In
 					T, ok := G.Templates[t_key]
 					if !ok {
@@ -203,7 +194,30 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 
 					for idx, val := range c_slice {
 						// needed because of range iteration behavior
+						// also want to override when 'when' is found
 						local_ctx := val
+
+						// check the when clause
+						if t_pair.When != "" {
+							logger.Info("When", "t_pair", t_pair)
+							when_elems, err := dotpath.Get(t_pair.When, val, false)
+							logger.Debug("  elems", "when_elems", when_elems)
+							if err != nil || when_elems == nil {
+								logger.Debug("Skipping TemplatePair When Field: '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
+								continue
+							}
+							switch W := when_elems.(type) {
+							case []interface{}:
+								if len(W) == 0 {
+									logger.Warn("Skipping TemplatePair When Field: (array) '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
+									continue
+								}
+								when_elems = W[0]
+							}
+							logger.Debug("When is NOW")
+							local_ctx = when_elems
+						}
+
 
 						logger.Debug("     context", "val", local_ctx, "idx", idx)
 
@@ -214,6 +228,8 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 						logger.Info("OFNAME", "name", OF_name)
 
 						outfile := filepath.Join(ctx_dir, G_key, OF_name)
+
+				
 
 						// build up the plan data struct
 						fgd := Plan{

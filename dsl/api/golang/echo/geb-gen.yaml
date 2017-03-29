@@ -66,9 +66,11 @@ template-configs:
         out: "setupRoutes.go"
       - in: "config.yaml"
         out: "config.yaml"
-      - in: "log.go"
+      - when: routes
+        in: "log.go"
         out: "routes/log.go"
-      - in: "log.go"
+      - when: resources
+        in: "log.go"
         out: "resources/log.go"
 
   - name: route

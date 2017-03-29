@@ -17,7 +17,12 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.{{replace CTX.pkg_path '/' '.' -1 }}.default")
+	{{#if (eq CTX.parent DslContext.name)}}
+		ldcfg := viper.GetStringMap("log-config.{{replace CTX.path '/' '.' -1 }}.default")
+	{{else}}
+		ldcfg := viper.GetStringMap("log-config.{{replace (trimto_first CTX.pkgPath '/' false) '/' '.' -1 }}.default")
+	{{/if}}
+
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -55,7 +60,11 @@ func SetLogger(l log.Logger) {
 
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.{{replace CTX.pkg_path '/' '.' -1 }}")
+	{{#if (eq CTX.parent DslContext.name)}}
+		lcfg := viper.GetStringMap("log-config.{{replace CTX.path '/' '.' -1 }}")
+	{{else}}
+		lcfg := viper.GetStringMap("log-config.{{replace (trimto_first CTX.pkgPath '/' false) '/' '.' -1 }}")
+	{{/if}}
 
 	if lcfg == nil || len(lcfg) == 0  {
 		logger = l

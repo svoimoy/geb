@@ -25,6 +25,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
+	// lcfg := viper.GetStringMap("log-config.{{replace (trimto_first CTX.pkgPath '/' false) '/' '.' -1 }}.default")
 	{{#if parent}}
 	ldcfg := viper.GetStringMap("log-config.commands.{{parent}}.default")
 	{{else}}
@@ -73,9 +74,9 @@ func SetLogger(l log.Logger) {
 
 	// possibly override locally
 	{{#if parent}}
-	lcfg := viper.GetStringMap("log-config.commands.{{parent}}.default")
+	lcfg := viper.GetStringMap("log-config.commands.{{parent}}")
 	{{else}}
-	lcfg := viper.GetStringMap("log-config.commands.default")
+	lcfg := viper.GetStringMap("log-config.commands")
 	{{/if}}
 
 	if lcfg == nil || len(lcfg) == 0  {
