@@ -18,8 +18,8 @@ About:
 Where's your docs doc?!
 */
 type Generator struct {
-	Config     *Config                 `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
-	SourcePath string                  `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
+	Config     *Config               `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
+	SourcePath string                `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
 	Templates  templates.TemplateMap `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
 	Partials   templates.TemplateMap `json:"partials" xml:"partials" yaml:"partials" form:"partials" query:"partials" `
 }

@@ -22,7 +22,7 @@ type Plan struct {
 	Gen             string                 `json:"gen" xml:"gen" yaml:"gen" form:"gen" query:"gen" `
 	File            string                 `json:"file" xml:"file" yaml:"file" form:"file" query:"file" `
 	Data            map[string]interface{} `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
-	Template        *templates.Template     `json:"template" xml:"template" yaml:"template" form:"template" query:"template" `
+	Template        *templates.Template    `json:"template" xml:"template" yaml:"template" form:"template" query:"template" `
 	Outfile         string                 `json:"outfile" xml:"outfile" yaml:"outfile" form:"outfile" query:"outfile" `
 	DslContext      interface{}            `json:"dsl-context" xml:"dsl-context" yaml:"dsl-context" form:"dsl-context" query:"dsl-context" `
 	TemplateContext interface{}            `json:"template-context" xml:"template-context" yaml:"template-context" form:"template-context" query:"template-context" `

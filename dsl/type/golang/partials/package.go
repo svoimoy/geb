@@ -7,7 +7,7 @@
 		{{getprefix (trimto_last type "/" false) "." }}.  {{! this is just for formatting ~}}
 	{{else ~}}
 	{{#with (getsuffix (getsuffix type ":") "*") as |T| ~}}
-		{{getsuffix (trimto_last T "." true) "." ~}}.  {{! this is just for formatting ~}}
+		{{getsuffix (trimfrom_last T "." false) "." ~}}.  {{! this is just for formatting ~}}
 	{{/with ~}}
 	{{/if~}}
 {{else ~}}
