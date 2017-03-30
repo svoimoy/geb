@@ -38,6 +38,7 @@ func setupRoutes(G *echo.Group) error {
 		{{/each}}
 	{{/each }}
 
+	return nil
 }
 /*
 	This is a test for dotpath indexing enhancement:

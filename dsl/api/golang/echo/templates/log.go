@@ -2,7 +2,7 @@
 {{#if (eq CTX.parent DslContext.name)}}
 package {{camel CTX.path}}
 {{else}}
-package {{#if parent}}{{camel CTX.parent}}{{else}}commands{{/if}}
+package {{#if CTX.parent}}{{camel CTX.parent}}{{else}}commands{{/if}}
 {{/if}}
 
 // The following line in the template needs fixing, it's probably related to the tree traversal and adding information
@@ -96,8 +96,5 @@ func SetLogger(l log.Logger) {
 
 }
 
-/*
-{{{yaml CTX}}}
-*/
 {{/with}}
 

@@ -1,7 +1,10 @@
 {{#with RepeatedContext as |CTX| }}
 {{#with DslContext as |API| }}
-package resources
-// package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
+{{#if (eq CTX.parent DslContext.name)}}
+package {{camel CTX.path}}
+{{else}}
+package {{#if CTX.parent}}{{camel CTX.parent}}{{else}}unknown{{/if}}
+{{/if}}
 
 import (
 	"net/http"
@@ -38,6 +41,7 @@ Parent:    {{CTX.parent}}
 {{#with . as |M|}}
 // {{upper M.method}}  {{M.input}}  ->  {{M.output}}
 func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
+	var err error
 
 	// input
 	{{#if M.path-params}}
@@ -48,8 +52,13 @@ func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 	{{#if M.input}}
 	// START binding input to query/form/body params
 	// Initialize
-	{{> type/golang/var-new.go typename=M.input }}
+	{{#with M.input.[0] as |IN|}}
+		{{> type/golang/var-new-type.go TYP=IN }}
 
+		if err = ctx.Bind({{camel IN.name}}); err != nil {
+			return err
+		}
+	{{/with}}
 	// END binding input to query/form/body params
 	{{/if}}
 
@@ -63,7 +72,7 @@ func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 
 		// Validate {{p.name}} 
 		{{camel P.name}}_tag := "required{{#each validation}},{{.}}{{/each}}"
-		err := validator.New().Var({{camel P.name}}, {{camel P.name}}_tag)
+		err = validator.New().Var({{camel P.name}}, {{camel P.name}}_tag)
 		if err != nil {
 			return err
 		}
@@ -77,27 +86,31 @@ func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 
 
 {{#if M.output}}
+{{#with M.output.[0] as |OUT|}}
 	// OUTPUT
-	{{> type/golang/var-new.go typename=M.output }}
+	{{> type/golang/var-new-type.go TYP=OUT }}
+{{/with}}
 {{else}}
 	// NO OUTPUT
+	var output struct{}{}
 {{/if}}
 
 	// HOFSTADTER_START {{lower M.method}}
 	// HOFSTADTER_END   {{lower M.method}}
 
 	// return the output response
-
+{{#if M.output}}
+{{#with M.output.[0] as |OUT|}}
+	return ctx.JSON(http.StatusOK, {{camel OUT.name}})
+{{/with}}
+{{else}}
 	return ctx.JSON(http.StatusOK, output)
+{{/if}}
 
 }
 {{/with}}
 
 {{/each}} // End resource.methods
-
-/*
-{{{yaml CTX}}}
-*/
 
 {{/with}}
 {{/with}}

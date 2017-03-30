@@ -76,7 +76,7 @@ template-configs:
   - name: route
     field: routes
     templates:
-      - in: "routes/route.go"
+      - in: "route.go"
         out: "routes/{{camel name}}.go"
       - when: routes
         in: "log.go"
@@ -85,7 +85,7 @@ template-configs:
   - name: sub-route
     field: routes.[:].routes
     templates:
-      - in: "routes/subroute.go"
+      - in: "route.go"
         out: "routes/{{parent}}/{{camel name}}.go"
       - when: routes
         in: "log.go"
@@ -94,14 +94,14 @@ template-configs:
   - name: subsub-route
     field: routes.[:].routes.[:].routes
     templates:
-      - in: "routes/subroute.go"
+      - in: "route.go"
         out: "routes/{{getbetween CTX.pkgPath '/' '/'}}/{{parent}}/{{camel name}}.go"
 
 
   - name: resource
     field: resources
     templates:
-      - in: "resources/resource.go"
+      - in: "resource.go"
         out: "resources/{{camel name}}.go"
       - when: resources
         in: "log.go"
@@ -110,7 +110,7 @@ template-configs:
   - name: sub-resource
     field: resources.[:].resources
     templates:
-      - in: "resources/subresource.go"
+      - in: "resource.go"
         out: "resources/{{parent}}/{{camel name}}.go"
       - when: resources
         in: "log.go"
@@ -119,7 +119,7 @@ template-configs:
   - name: subsub-resource
     field: resources.[:].resources.[:].resources
     templates:
-      - in: "resources/subresource.go"
+      - in: "resource.go"
         out: "resources/{{getbetween pkgPath '/' '/'}}/{{camel name}}.go"
 
 

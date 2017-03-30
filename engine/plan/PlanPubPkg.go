@@ -227,7 +227,7 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 						}
 						logger.Info("OFNAME", "name", OF_name)
 
-						outfile := filepath.Join(ctx_dir, G_key, OF_name)
+						outfile := filepath.Join(G_key, ctx_dir, OF_name)
 
 				
 

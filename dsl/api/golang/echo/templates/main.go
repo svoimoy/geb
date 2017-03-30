@@ -128,7 +128,6 @@ func config_logger() {
 	logger.SetHandler(termlog)
 
 	// set package loggers
-	xtalk.SetLogger(logger)
 	{{#if CTX.resources}}
 	resources.SetLogger(logger)
 	{{/if}}

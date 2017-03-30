@@ -1,7 +1,10 @@
-{{#with RepeatedContext as |RC| }}
+{{#with RepeatedContext as |CTX| }}
 {{#with DslContext as |API| }}
-package routes
-// package {{#each (split RC.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
+{{#if (eq CTX.parent DslContext.name)}}
+package {{camel CTX.path}}
+{{else}}
+package {{#if CTX.parent}}{{camel CTX.parent}}{{else}}unknown{{/if}}
+{{/if}}
 
 import (
 	"github.com/labstack/echo"
@@ -12,11 +15,11 @@ import (
 
 /*
 API:     {{API.name}}
-Name:    {{RC.name}}
-Route:   {{RC.route}}
-Method:  {{RC.method}}
-Path:    {{RC.path}}
-Parent:  {{RC.parent}}
+Name:    {{CTX.name}}
+Route:   {{CTX.route}}
+Method:  {{CTX.method}}
+Path:    {{CTX.path}}
+Parent:  {{CTX.parent}}
 */
 
 
@@ -31,8 +34,8 @@ Parent:  {{RC.parent}}
 
 
 // Should find a way to build up errors and return all
-// {{upper RC.method}}  {{RC.input}}  ->  {{RC.output}}
-func Handle_{{upper RC.method}}_{{camelT RC.name}}(ctx echo.Context) error {
+// {{upper CTX.method}}  {{CTX.input}}  ->  {{CTX.output}}
+func Handle_{{upper CTX.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 	// Check params
 {{#params . as |P|}}
 
