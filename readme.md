@@ -23,10 +23,35 @@ See the Developing section on tips (making symlinks).
 You can copy if you do not plan to develop geb.
 
 
+### Usage
+
+The docs are pretty much m.i.a. but you should still dive in!
+
+Once you've followed the developing/tips below,
+start by copying a design folder and geb.yaml
+from an example and running `geb gen`.
+
+The basic layout for a project would be:
+
+```
+project
+  - geb.yaml
+  - design/
+    - api.yaml
+    - user.yaml
+    - post.yaml
+    - db.yaml
+```
+
+Many of the examples are out of data right now.
+This repository and [Xtalk](https://github.ibm.com/krobots/k8s-csf-xtalk)
+are both up-to-date examples. (minus Xtalk's pkg type usage in function designs)
+
+
 
 ### Developing
 
-Please contribute, we are working towards and ecosystem.
+The docs are pretty much m.i.a. but you should still dive in!
 
 
 ##### Overriding generators
