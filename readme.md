@@ -17,17 +17,20 @@ With it, you can:
 1. Clone this repository to: `$GOPATH/github.ibm.com/hofstadter-io/geb`
 2. Change to that directory and run: `go install`
 
-Then do the initial setup:
+It may also be `go get`-able, just don't use `-u` because the dependencies
+are vendored in and go gets confused. (not extensively tested)
 
-See the Developing section on tips (making symlinks).
-You can copy if you do not plan to develop geb.
+__Then do the initial setup:__
+
+See the Tips section on getting setup for now.
+You can copy rather than link if you do not plan to develop geb.
 
 
 ### Usage
 
 The docs are pretty much m.i.a. but you should still dive in!
 
-Once you've followed the developing/tips below,
+Once you've followed the tips below,
 start by copying a design folder and geb.yaml
 from an example and running `geb gen`.
 
@@ -96,7 +99,9 @@ dsl specifics (types too)
 
 
 
-##### Tips:
+### Tips
+
+Some setup steps and tips while things are still shakey.
 
 Make the following symlinks,
 from the development folder:
