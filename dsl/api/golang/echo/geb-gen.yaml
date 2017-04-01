@@ -72,6 +72,15 @@ template-configs:
       - when: resources
         in: "log.go"
         out: "resources/log.go"
+      - when: "databases.[type==postgres]"
+        in: "setupPostgres.go"
+        out: "databases/setupPostgres.go"
+
+  - name: databases
+    field: databases
+    templates:
+      - in: "log.go"
+        out: "databases/log.go"
 
   - name: route
     field: routes

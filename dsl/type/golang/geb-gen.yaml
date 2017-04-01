@@ -11,6 +11,9 @@ template-configs:
     templates:
       - in: "default.go"
         out: "type{{camelT name}}.go"
+      - when: orm
+        in: "db.go"
+        out: "db{{camelT name}}.go"
 
   - name: public-files
     field: "public-files"

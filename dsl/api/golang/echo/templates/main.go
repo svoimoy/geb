@@ -17,6 +17,9 @@ import (
 	{{#if CTX.routes}}
 	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/routes"
 	{{/if}}
+	{{#if CTX.databases}}
+	"{{{trimprefix file_fulldir (concat2 ENV.GOPATH '/src/')}}}/databases"
+	{{/if}}
 
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
@@ -69,6 +72,11 @@ func main() {
 
 	host := viper.GetString("host")
 	port := viper.GetString("port")
+
+	{{#each CTX.databases as |DB|}}
+	databases.ConnectTo{{camelT DB.type}}()
+	defer databases.DisconnectFrom{{camelT DB.type}}()
+	{{/each}}
 
 	E.Logger.SetLevel(log.INFO)
 	E.Logger.Fatal(E.Start(host+":"+port))
