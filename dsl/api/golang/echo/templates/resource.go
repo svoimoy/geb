@@ -41,7 +41,9 @@ var {{camel CTX.name}}Validate = validator.New()
 {{#each methods}}
 
 {{#with . as |M|}}
-// {{upper M.method}}  {{M.input}}  ->  {{M.output}}
+/*
+{{#if M.documentation}}{{ M.documentation }}{{else}}Where's your docs doc?!{{/if}}
+*/
 func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 	var err error
 
