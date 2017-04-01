@@ -22,8 +22,8 @@ type {{camel RC.name}} struct {
 {{else}}
 type {{camelT RC.name}} struct {
 {{/if}}
-{{#each RC.fields ~}}
-	{{> type/golang/field.go .}}
+{{#each RC.fields as |F| ~}}
+	{{> type/golang/field.go FIELD=F}}
 {{/each}}
 }
 
@@ -36,17 +36,19 @@ type {{camelT RC.name}} struct {
 {{#if documentation}}{{ documentation }}{{else}}Where's your docs doc?!{{/if}}
 */
 {{#if V.private}}
-type {{camel RC.name}}View_{{camelT V.name}} struct {
+type {{camel RC.name}}View{{camelT V.name}} struct {
 {{else}}
-type {{camelT RC.name}}View_{{camelT V.name}} struct {
+type {{camelT RC.name}}View{{camelT V.name}} struct {
 {{/if}}
 {{#each V.fields}}{{#with . as |F|~}}
 {{#if (hasprefix F.type "local")}}
-{{#dotpath (trimprefix F.type "local.") RC.fields true }}
-	{{> type/golang/field.go .}}
+{{#dotpath (concat3 "[name==" (trimprefix F.type "local.") "]") RC.fields true }}
+{{#with . as |realF|}}
+	{{> type/golang/field.go FIELD=realF}}
+{{/with}}
 {{/dotpath}}
 {{else}}
-	{{> type/golang/field.go F}}
+	{{> type/golang/field.go FIELD=F}}
 {{/if}}
 {{/with}}{{/each ~}}
 }

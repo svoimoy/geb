@@ -1,7 +1,7 @@
 {{#with RepeatedContext as |CTX| }}
 {{#with DslContext as |API| }}
 {{#if (eq CTX.parent DslContext.name)}}
-package {{camel CTX.path}}
+package {{camel (trimto_first CTX.path "api." false)}}
 {{else}}
 package {{#if CTX.parent}}{{camel CTX.parent}}{{else}}unknown{{/if}}
 {{/if}}
@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/go-playground/validator"
 
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
@@ -34,6 +35,7 @@ Parent:    {{CTX.parent}}
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
+var {{camel CTX.name}}Validate = validator.New()
 
 
 {{#each methods}}
@@ -55,7 +57,24 @@ func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 	{{#with M.input.[0] as |IN|}}
 		{{> type/golang/var-new-type.go TYP=IN }}
 
-		if err = ctx.Bind({{camel IN.name}}); err != nil {
+		err = ctx.Bind(&{{camel IN.name}})
+		if err != nil {
+			return err
+		}
+		err = {{camel CTX.name}}Validate.Struct({{camel IN.name}})
+		if err != nil {
+			if _, ok := err.(*validator.InvalidValidationError); ok {
+				return ctx.JSON(http.StatusBadRequest, map[string]interface{} {
+					"errors": err,
+					"type": "invalid",
+				})
+			}
+			if _, ok := err.(*validator.ValidationErrors); ok {
+				return ctx.JSON(http.StatusBadRequest, map[string]interface{} {
+					"errors": err,
+					"type": "validation",
+				})
+			}
 			return err
 		}
 	{{/with}}
@@ -72,9 +91,12 @@ func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 
 		// Validate {{p.name}} 
 		{{camel P.name}}_tag := "required{{#each validation}},{{.}}{{/each}}"
-		err = validator.New().Var({{camel P.name}}, {{camel P.name}}_tag)
+		err = {{camel CTX.name}}Validate.Var({{camel P.name}}, {{camel P.name}}_tag)
 		if err != nil {
-			return err
+			return ctx.JSON(http.StatusBadRequest, map[string]interface{} {
+				"errors": err,
+				"type": "internal",
+			})
 		}
 	{{else}}
 	   // Only built in types are supported in query/form params. Use 'input' option on the resource.method
@@ -106,7 +128,7 @@ func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 {{else}}
 	return ctx.JSON(http.StatusOK, output)
 {{/if}}
-
+	return err // hacky...
 }
 {{/with}}
 

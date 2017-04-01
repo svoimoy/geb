@@ -12,14 +12,14 @@ if {{@index}} >= len(args) {
 }
 {{/if}}
 {{#if arg.rest}}
-var {{arg.name}} {{> go-type.go arg.type}}
+var {{camel arg.name}} {{> go-type.go arg.type}}
 if {{@index}} < len(args) {
-	{{arg.name}} = args[{{@index}}:]
+	{{camel arg.name}} = args[{{@index}}:]
 }
 {{else}}
-var {{arg.name}} {{arg.type}}
+var {{camel arg.name}} {{arg.type}}
 if {{@index}} < len(args) {
-	{{arg.name}} = args[{{@index}}]
+	{{camel arg.name}} = args[{{@index}}]
 }
 {{/if}}
 

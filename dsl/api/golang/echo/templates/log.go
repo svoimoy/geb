@@ -1,6 +1,6 @@
 {{#with RepeatedContext as |CTX| }}
 {{#if (eq CTX.parent DslContext.name)}}
-package {{camel CTX.path}}
+package {{camel (trimto_first CTX.path "api." false)}}
 {{else}}
 package {{#if CTX.parent}}{{camel CTX.parent}}{{else}}commands{{/if}}
 {{/if}}

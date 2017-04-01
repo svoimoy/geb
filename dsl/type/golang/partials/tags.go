@@ -1,1 +1,1 @@
-`json:"{{name}}" xml:"{{name}}" yaml:"{{name}}" form:"{{name}}" query:"{{name}}"{{#if validation }} {{> validate.go}}{{else~}}{{/if}} `
+`json:"{{snake name}}" xml:"{{snake name}}" yaml:"{{snake name}}" form:"{{snake name}}" query:"{{snake name}}"{{#if validation }} {{> validate.go}}{{else~}}{{/if}} `

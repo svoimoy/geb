@@ -1,5 +1,0 @@
-pkg:
-  name: catch
-  version: "0.0.1"
-  short: The package implementing frisby catch functionality.
-  short: The package implementing frisby catch to create tests from requests and responses.

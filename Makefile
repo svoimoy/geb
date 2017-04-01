@@ -13,9 +13,7 @@ gen:
 
 .Phony: fmt
 fmt:
-	@gofmt -w main.go
-	@find cmd -type f -exec gofmt -w {} \;
-	@find engine -type f -exec gofmt -w {} \;
+	@gofmt -w main.go commands engine
 	
 .Phony: clone
 clone:

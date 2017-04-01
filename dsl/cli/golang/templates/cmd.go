@@ -41,7 +41,9 @@ import (
 // HOFSTADTER_END   init
 
 
+{{#if RC.long}}
 var {{camelT RC.name}}Long = `{{{RC.long}}}`
+{{/if}}
 
 {{> "flag-var.go" RC }}
 
@@ -51,15 +53,28 @@ var {{camelT RC.name}}Cmd = &cobra.Command {
 	{{#if RC.hidden}}
 	Hidden: true,
 	{{/if}}
+
+	{{#if RC.usage}}
 	Use: "{{{RC.usage}}}",
+	{{else}}
+	Use: "{{{RC.name}}}",
+	{{/if}}
+
 	{{#if RC.aliases}}
 	Aliases: []string{ 
 		{{#each RC.aliases}}"{{.}}",
 		{{/each}}
 	},
 	{{/if}}
+
+	{{#if RC.short}}
 	Short: "{{{RC.short}}}",
+	{{/if}}
+
+	{{#if RC.long}}
 	Long: {{camelT RC.name}}Long,
+	{{/if}}
+
 	{{#if RC.persistent-prerun}}
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In PersistentPreRun {{RC.name}}Cmd", "args", args)
@@ -109,17 +124,19 @@ var {{camelT RC.name}}Cmd = &cobra.Command {
 }
 
 
+{{#if (eq RC.parent CLI.name) }}
 func init() {
-	{{#if (eq RC.parent CLI.name) }}
 	RootCmd.AddCommand({{camelT RC.name}}Cmd)
-	{{/if}}
+}
+{{/if}}
 
-	{{#if subcommands}}
+{{#if subcommands}}
+func init() {
 	{{#each subcommands}}
 	{{camelT RC.name}}Cmd.AddCommand({{lower RC.name}}.{{camelT name}}Cmd)
 	{{/each}}
-	{{/if}}
 }
+{{/if}}
 
 {{/with}}
 {{/with}}

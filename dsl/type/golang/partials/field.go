@@ -1,7 +1,5 @@
-{{#with . as |F|}}
-{{#if F.private}}
-{{camel F.name}} {{>type/golang/type.go F ~}}
+{{#if FIELD.private}}
+{{camel FIELD.name}} {{>type/golang/type.go TYP=FIELD ~}}
 {{else}}
-{{camelT F.name}} {{>type/golang/type.go F}} {{> type/golang/tags.go F ~}}
+{{camelT FIELD.name}} {{>type/golang/type.go TYP=FIELD}} {{> type/golang/tags.go FIELD ~}}
 {{/if}}
-{{/with}}

@@ -1,7 +1,7 @@
 {{#with RepeatedContext as |CTX| }}
 {{#with DslContext as |API| }}
 {{#if (eq CTX.parent DslContext.name)}}
-package {{camel CTX.path}}
+package routes
 {{else}}
 package {{#if CTX.parent}}{{camel CTX.parent}}{{else}}unknown{{/if}}
 {{/if}}
