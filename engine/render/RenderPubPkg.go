@@ -214,7 +214,7 @@ func SpliceResults(existing string, rendered string) (spliced string, err error)
 	if has_below && old_lpos > -1 {
 		all_lines = append(all_lines, old_lines[old_lpos:]...)
 	} else {
-		all_lines = append(all_lines, []byte(COMMENT+" HOFSTADTER_BELOW\n\n"))
+		all_lines = append(all_lines, []byte(COMMENT+" "+HOF_TAG+"BELOW\n\n"))
 	}
 
 	logger.Debug("   result length", "all_lines", len(all_lines))
