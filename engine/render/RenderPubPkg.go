@@ -142,7 +142,7 @@ func SpliceResults(existing string, rendered string) (spliced string, err error)
 
 	logger.Debug("Splice lengths", "old_lines", len(old_lines), "new_lines", len(new_lines))
 
-	// find HOFSTADTER tags and extract splices from the OLD file
+	// find HOF tags and extract splices from the OLD file
 	has_below := false
 	old_lpos := -1
 	splices := map[string][][]byte{}
@@ -209,7 +209,7 @@ func SpliceResults(existing string, rendered string) (spliced string, err error)
 		}
 	}
 
-	// If we foud the HOFSTADTER_BELOW line in the OLD file,
+	// If we foud the HOF..._BELOW line in the OLD file,
 	// respect it in the NEW file and put in back
 	if has_below && old_lpos > -1 {
 		all_lines = append(all_lines, old_lines[old_lpos:]...)
