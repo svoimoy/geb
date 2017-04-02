@@ -5,5 +5,5 @@
 {{else}}
 	// user-defined
 	var {{camel TYP.name }} {{!formatting block ~}}
-	{{> type/golang/type-def.go TYP=TYP ~}}
+	{{> type/golang/type.go TYP=TYP ~}}
 {{/if}}

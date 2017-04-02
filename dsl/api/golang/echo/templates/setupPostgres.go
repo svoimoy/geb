@@ -2,12 +2,8 @@
 package databases
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/spf13/viper"
-
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 )
@@ -23,15 +19,7 @@ import (
 
 var POSTGRES *gorm.DB
 
-func ConnectToPostgres() {
-
-	host := viper.GetString("pg-host")
-	user := viper.GetString("pg-user")
-	pass := viper.GetString("pg-pass")
-	db := viper.GetString("pg-db")
-	sslmode := viper.GetString("pg-sslmode")
-
-	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=%s", host, user, pass, db, sslmode)
+func ConnectToPostgres(connStr string) {
 
 	var err error
 	POSTGRES, err = gorm.Open("postgres", connStr)

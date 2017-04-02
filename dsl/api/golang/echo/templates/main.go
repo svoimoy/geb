@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/labstack/echo"
@@ -70,16 +71,27 @@ func main() {
 	// HOFSTADTER_START main-prerun
 	// HOFSTADTER_END   main-prerun
 
-	host := viper.GetString("host")
-	port := viper.GetString("port")
+	appHost := viper.GetString("host")
+	appPort := viper.GetString("port")
 
 	{{#each CTX.databases as |DB|}}
-	databases.ConnectTo{{camelT DB.type}}()
-	defer databases.DisconnectFrom{{camelT DB.type}}()
+		{{#if (eq DB.type "postgres")}}
+		host := viper.GetString("pg-host")
+		user := viper.GetString("pg-user")
+		pass := viper.GetString("pg-pass")
+		db := viper.GetString("pg-db")
+		sslmode := viper.GetString("pg-sslmode")
+
+		connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=%s", host, user, pass, db, sslmode)
+		databases.ConnectTo{{camelT DB.type}}(connStr)
+		{{else}}
+		databases.ConnectTo{{camelT DB.type}}()
+		{{/if}}
+		defer databases.DisconnectFrom{{camelT DB.type}}()
 	{{/each}}
 
 	E.Logger.SetLevel(log.INFO)
-	E.Logger.Fatal(E.Start(host+":"+port))
+	E.Logger.Fatal(E.Start(appHost+":"+appPort))
 }
 
 func read_config() {

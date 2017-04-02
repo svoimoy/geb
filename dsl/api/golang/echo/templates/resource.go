@@ -7,11 +7,14 @@ package {{#if CTX.parent}}{{camel CTX.parent}}{{else}}unknown{{/if}}
 {{/if}}
 
 import (
+	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/google/uuid"
 	"github.com/go-playground/validator"
-
+	"github.com/labstack/echo"
+	
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 )
@@ -119,8 +122,45 @@ func Handle_{{upper M.method}}_{{camelT CTX.name}}(ctx echo.Context) error {
 	var output struct{}{}
 {{/if}}
 
-	// HOFSTADTER_START {{lower M.method}}
-	// HOFSTADTER_END   {{lower M.method}}
+	fmt.Println("{{M.method}} {{CTX.name}}") 
+
+	// HOFSTADTER_START {{lower M.method}}-pre-db
+	// HOFSTADTER_END   {{lower M.method}}-pre-db
+
+
+	DB := databases.POSTGRES
+
+	{{#if (eq (lower M.method) "list")}}
+	DB.Find(&{{camel M.output.[0].name}})
+
+	{{else if (eq (lower M.method) "get")}}
+	DB.Where(&{{camel M.output.[0].name}}).First(&{{camel M.output.[0].name}})
+
+	{{else if (eq (lower M.method) "put")}}
+	DB.Save(&{{camel M.input.[0].name}})
+
+	{{else if (eq (lower M.method) "post")}}
+	// template needs fixing here (for resource spec)
+	{{camel M.output.[0].name}}.{{camelT CTX.resource}}ID = uuid.New().String()
+	DB.Create(&{{camel M.output.[0].name}})
+	
+	{{else if (eq (lower M.method) "delete")}}
+
+	DB.Delete(&{{camel M.output.[0].name}})
+
+	{{else}}
+	// unknown method: {{M.method}}
+	{{/if}}
+
+	errs := DB.GetErrors()
+	if len(errs) > 0 {
+		logger.Error("with DB call", "method", "{{M.method}}", "resource", "{{CTX.name}}", "errors", errs)
+		return errors.New("error making call to DB" + fmt.Sprint(errs))
+	}
+
+
+	// HOFSTADTER_START {{lower M.method}}-post-db
+	// HOFSTADTER_END   {{lower M.method}}-post-db
 
 	// return the output response
 {{#if M.output}}

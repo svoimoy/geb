@@ -27,7 +27,7 @@ func init() {
 }
 
 func AutoMigrate{{camelT DSL.name}}(db *gorm.DB) {
-	db.AutoMigrate(&{{camelT DSL.name}}{})
+	db.Debug().AutoMigrate(&{{camelT DSL.name}}{})
 }
 
 {{/with}}
