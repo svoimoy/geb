@@ -9,7 +9,7 @@ build:
 .Phony: gen
 gen:
 	@geb gen
-	@find contracrostipunctus -type f \! -name "contracrostipunctus" -exec gofmt -w {} \;
+	@gofmt -w main.go commands engine
 
 .Phony: fmt
 fmt:
