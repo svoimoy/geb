@@ -2,6 +2,7 @@ type-list:
   name: "gen-config-types"
   list:
     - name: config
+      kabob: true
       version: "0.0.1"
       fields:
         - name: name
@@ -24,6 +25,7 @@ type-list:
           type: string
 
     - name: template-config
+      kabob: true
       version: "0.0.1"
       fields:
         - name: name
@@ -36,6 +38,7 @@ type-list:
           type: array:template-render-pair
 
     - name: template-render-pair
+      kabob: true
       version: "0.0.1"
       fields:
         - name: when

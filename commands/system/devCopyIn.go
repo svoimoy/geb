@@ -26,9 +26,12 @@ import (
 var DevCopyInLong = `Copy development files to the dot folder`
 
 var DevCopyInCmd = &cobra.Command{
-	Use:   "dev-copy-in",
+
+	Use: "dev-copy-in",
+
 	Short: "Copy development files to the dot folder",
-	Long:  DevCopyInLong,
+
+	Long: DevCopyInLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In dev-copy-inCmd", "args", args)
@@ -37,10 +40,6 @@ var DevCopyInCmd = &cobra.Command{
 		// HOFSTADTER_START cmd_run
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

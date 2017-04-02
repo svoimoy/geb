@@ -49,9 +49,12 @@ Input:
 `
 
 var MiCmd = &cobra.Command{
-	Use:   "mi",
+
+	Use: "mi",
+
 	Short: "View information about a Project's Plans",
-	Long:  MiLong,
+
+	Long: MiLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In miCmd", "args", args)
@@ -99,10 +102,6 @@ var MiCmd = &cobra.Command{
 		fmt.Printf("\nMI = %q\n\n", MI)
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

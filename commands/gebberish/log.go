@@ -12,6 +12,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
+	// lcfg := viper.GetStringMap("log-config.gebberish.mi.default")
 	ldcfg := viper.GetStringMap("log-config.commands.gebberish.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
@@ -44,7 +45,7 @@ func SetLogger(l log.Logger) {
 	// set subcommand loggers before possibly overriding locally next
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.gebberish.default")
+	lcfg := viper.GetStringMap("log-config.commands.gebberish")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

@@ -29,9 +29,12 @@ import (
 var FileLong = `Generate a file from design and a template.`
 
 var FileCmd = &cobra.Command{
-	Use:   "file <designFile> <templateFile> <outputFile>",
+
+	Use: "file <designFile> <templateFile> <outputFile>",
+
 	Short: "Generate a file.",
-	Long:  FileLong,
+
+	Long: FileLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In fileCmd", "args", args)
@@ -79,10 +82,6 @@ var FileCmd = &cobra.Command{
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

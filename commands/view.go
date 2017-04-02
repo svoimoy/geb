@@ -28,24 +28,29 @@ import (
 var ViewLong = `View information known to the geb tool.`
 
 var ViewCmd = &cobra.Command{
+
 	Use: "view",
+
 	Aliases: []string{
 		"v",
 	},
+
 	Short: "View information known to the geb tool.",
-	Long:  ViewLong,
+
+	Long: ViewLong,
 }
 
 func init() {
 	RootCmd.AddCommand(ViewCmd)
+}
 
+func init() {
 	ViewCmd.AddCommand(view.SystemCmd)
 	ViewCmd.AddCommand(view.DslCmd)
 	ViewCmd.AddCommand(view.GenCmd)
 	ViewCmd.AddCommand(view.ProjectCmd)
 	ViewCmd.AddCommand(view.DesignCmd)
 	ViewCmd.AddCommand(view.PlansCmd)
-
 }
 
 // HOFSTADTER_BELOW

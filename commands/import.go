@@ -45,14 +45,18 @@ func init() {
 }
 
 var ImportCmd = &cobra.Command{
+
 	Use: "import <file or directory> <output file or directory>",
+
 	Aliases: []string{
 		"i",
 		"convert",
 		"eat",
 	},
+
 	Short: "Import other stuff into Hofstadter",
-	Long:  ImportLong,
+
+	Long: ImportLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In importCmd", "args", args)
@@ -90,7 +94,6 @@ var ImportCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(ImportCmd)
-
 }
 
 // HOFSTADTER_BELOW

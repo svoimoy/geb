@@ -1,5 +1,6 @@
 type:
   name: "plan"
+  kabob: true
   fields:
     - name: dsl
       type: string

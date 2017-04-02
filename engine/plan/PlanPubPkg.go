@@ -218,7 +218,6 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 							local_ctx = when_elems
 						}
 
-
 						logger.Debug("     context", "val", local_ctx, "idx", idx)
 
 						OF_name, err := determineOutfileName(t_pair.Out, val)
@@ -228,8 +227,6 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 						logger.Info("OFNAME", "name", OF_name)
 
 						outfile := filepath.Join(G_key, ctx_dir, OF_name)
-
-				
 
 						// build up the plan data struct
 						fgd := Plan{

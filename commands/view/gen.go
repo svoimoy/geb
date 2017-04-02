@@ -31,12 +31,16 @@ import (
 var GenLong = `View information about generators known from the current path`
 
 var GenCmd = &cobra.Command{
+
 	Use: "gen <dotpaths>...",
+
 	Aliases: []string{
 		"g",
 	},
+
 	Short: "View information about Generators",
-	Long:  GenLong,
+
+	Long: GenLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In genCmd", "args", args)
@@ -64,10 +68,6 @@ var GenCmd = &cobra.Command{
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

@@ -31,12 +31,16 @@ See [...] for more information.
 `
 
 var BuildCmd = &cobra.Command{
+
 	Use: "build",
+
 	Aliases: []string{
 		"b",
 	},
+
 	Short: "Run the build pipeline for a project.",
-	Long:  BuildLong,
+
+	Long: BuildLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In buildCmd", "args", args)
@@ -58,7 +62,6 @@ var BuildCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(BuildCmd)
-
 }
 
 // HOFSTADTER_BELOW

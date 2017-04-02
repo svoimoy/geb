@@ -32,12 +32,16 @@ unless overridden by the output flag.
 `
 
 var CreateCmd = &cobra.Command{
+
 	Use: "create <name> <dsl/gen>...",
+
 	Aliases: []string{
 		"new",
 	},
+
 	Short: "Create a new project",
-	Long:  CreateLong,
+
+	Long: CreateLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In createCmd", "args", args)
@@ -57,21 +61,20 @@ var CreateCmd = &cobra.Command{
 		// [1]name:   dsls_n_gens
 		//     help:   The starting list of DSLs and generators by path.
 		//     req'd:
-		var dsls_n_gens []string
+		var dslsNGens []string
 
 		if 1 < len(args) {
-			dsls_n_gens = args[1:]
+			dslsNGens = args[1:]
 		}
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("geb create:", name, dsls_n_gens)
+		fmt.Println("geb create:", name, dslsNGens)
 		// HOFSTADTER_END   cmd_run
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(CreateCmd)
-
 }
 
 // HOFSTADTER_BELOW

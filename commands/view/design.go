@@ -31,12 +31,16 @@ import (
 var DesignLong = `View information about Designs known from the current path`
 
 var DesignCmd = &cobra.Command{
+
 	Use: "design <dotpath>...",
+
 	Aliases: []string{
 		"D",
 	},
+
 	Short: "View information about Designs",
-	Long:  DesignLong,
+
+	Long: DesignLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In designCmd", "args", args)
@@ -64,10 +68,6 @@ var DesignCmd = &cobra.Command{
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

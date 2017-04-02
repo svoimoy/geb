@@ -28,22 +28,27 @@ import (
 var SystemLong = `Manage the geb system and congiuration`
 
 var SystemCmd = &cobra.Command{
+
 	Use: "system",
+
 	Aliases: []string{
 		"sys",
 		"s",
 	},
+
 	Short: "Manage the geb system and congiuration",
-	Long:  SystemLong,
+
+	Long: SystemLong,
 }
 
 func init() {
 	RootCmd.AddCommand(SystemCmd)
+}
 
+func init() {
 	SystemCmd.AddCommand(system.InitCmd)
 	SystemCmd.AddCommand(system.DevCopyInCmd)
 	SystemCmd.AddCommand(system.UpdateCmd)
-
 }
 
 // HOFSTADTER_BELOW

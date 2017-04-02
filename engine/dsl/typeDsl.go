@@ -14,6 +14,12 @@ About:
 // HOFSTADTER_START const
 // HOFSTADTER_END   const
 
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
+
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
+
 /*
 Where's your docs doc?!
 */
@@ -32,7 +38,6 @@ func NewDsl() *Dsl {
 		AvailableGenerators: map[string]string{},
 		Generators:          map[string]*gen.Generator{},
 	}
-	// loop over fields looking for pointers
 }
 
 /*

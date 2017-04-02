@@ -1,5 +1,6 @@
 type:
   name: "dsl"
+  kabob: true
   fields:
     - name: config
       type: '*Config'

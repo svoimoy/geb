@@ -31,12 +31,16 @@ import (
 var DslLong = `View information about DSLs known from the current path`
 
 var DslCmd = &cobra.Command{
+
 	Use: "dsl <dotpath>...",
+
 	Aliases: []string{
 		"d",
 	},
+
 	Short: "View information about DSLs",
-	Long:  DslLong,
+
+	Long: DslLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In dslCmd", "args", args)
@@ -64,10 +68,6 @@ var DslCmd = &cobra.Command{
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

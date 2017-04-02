@@ -31,15 +31,19 @@ import (
 var GenLong = `Generate a project from its working directory.`
 
 var GenCmd = &cobra.Command{
+
 	Use: "gen",
+
 	Aliases: []string{
 		"geb",
 		"geberate",
 		"generate",
 		"g",
 	},
+
 	Short: "Generate a project.",
-	Long:  GenLong,
+
+	Long: GenLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In genCmd", "args", args)
@@ -58,9 +62,10 @@ var GenCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(GenCmd)
+}
 
+func init() {
 	GenCmd.AddCommand(gen.FileCmd)
-
 }
 
 // HOFSTADTER_BELOW

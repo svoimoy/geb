@@ -1,5 +1,6 @@
 type:
   name: "dsl-config"
+  kabob: true
   version: "0.0.1"
   fields:
     - name: paths

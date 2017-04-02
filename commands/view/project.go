@@ -31,13 +31,17 @@ import (
 var ProjectLong = `View information about a Project known from the current path`
 
 var ProjectCmd = &cobra.Command{
+
 	Use: "project <dotpath>...",
+
 	Aliases: []string{
 		"p",
 		"proj",
 	},
+
 	Short: "View information about a Project",
-	Long:  ProjectLong,
+
+	Long: ProjectLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In projectCmd", "args", args)
@@ -65,10 +69,6 @@ var ProjectCmd = &cobra.Command{
 		}
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

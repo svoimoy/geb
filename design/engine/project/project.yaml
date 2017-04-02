@@ -1,5 +1,6 @@
 type:
   name: "project"
+  kabob: true
   fields:
     - name: config
       type: '*Config'

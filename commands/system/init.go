@@ -26,13 +26,17 @@ import (
 var InitLong = `Intializes the geb tool and the ~/.hofstadter dot folder.`
 
 var InitCmd = &cobra.Command{
+
 	Use: "init",
+
 	Aliases: []string{
 		"initialize",
 		"setup",
 	},
+
 	Short: "Initialize the geb tool and files",
-	Long:  InitLong,
+
+	Long: InitLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In initCmd", "args", args)
@@ -41,10 +45,6 @@ var InitCmd = &cobra.Command{
 		// HOFSTADTER_START cmd_run
 		// HOFSTADTER_END   cmd_run
 	},
-}
-
-func init() {
-
 }
 
 // HOFSTADTER_BELOW

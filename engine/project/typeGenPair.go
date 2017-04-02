@@ -13,6 +13,12 @@ About:
 // HOFSTADTER_START const
 // HOFSTADTER_END   const
 
+// HOFSTADTER_START var
+// HOFSTADTER_END   var
+
+// HOFSTADTER_START init
+// HOFSTADTER_END   init
+
 /*
 Where's your docs doc?!
 */
@@ -26,7 +32,6 @@ func NewGenPair() *GenPair {
 	return &GenPair{
 		Gen: []string{},
 	}
-	// loop over fields looking for pointers
 }
 
 // HOFSTADTER_BELOW

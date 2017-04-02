@@ -36,7 +36,7 @@ type {{camelT RC.name}} struct {
 {{/if}}
 
 {{#each RC.fields as |F| ~}}
-	{{> type/golang/field.go FIELD=F}}
+	{{> type/golang/field.go FIELD=F KABOB=RC.kabob}}
 {{/each}}
 
 {{> type/golang/gorm-relation-fields.go TYP=RC}}

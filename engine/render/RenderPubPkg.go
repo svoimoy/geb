@@ -19,7 +19,7 @@ import (
 
 // HOFSTADTER_START const
 const COMMENT = "//"
-const HOF_TAG = "HOFSTADTER_"
+const HOF_TAG = "HOFST" + "ADTER_"
 
 // HOFSTADTER_END   const
 
@@ -150,17 +150,17 @@ func SpliceResults(existing string, rendered string) (spliced string, err error)
 	for l, line := range old_lines {
 		if bytes.Contains(line, []byte(HOF_TAG)) {
 			// fmt.Println(string(line))
-			if bytes.Contains(line, []byte(HOF_TAG + "BELOW")) {
+			if bytes.Contains(line, []byte(HOF_TAG+"BELOW")) {
 				has_below = true
 				old_lpos = l
 				break
-			} else if bytes.Contains(line, []byte(HOF_TAG + "START")) {
+			} else if bytes.Contains(line, []byte(HOF_TAG+"START")) {
 				// get last token
 				fields := bytes.Fields(line)
 				splice_name := bytes.TrimSpace(fields[len(fields)-1])
 				splice = string(splice_name)
 				// fmt.Println("Splice out start:", splice)
-			} else if bytes.Contains(line, []byte(HOF_TAG + "END")) {
+			} else if bytes.Contains(line, []byte(HOF_TAG+"END")) {
 				// fmt.Println("Splice out end:", splice, len(splices[splice]))
 				splice = ""
 			}
@@ -186,15 +186,15 @@ func SpliceResults(existing string, rendered string) (spliced string, err error)
 	all_lines := [][]byte{}
 	for _, line := range new_lines {
 		if bytes.Contains(line, []byte(HOF_TAG)) {
-			if bytes.Contains(line, []byte(HOF_TAG + "BELOW")) {
+			if bytes.Contains(line, []byte(HOF_TAG+"BELOW")) {
 				break
-			} else if bytes.Contains(line, []byte(HOF_TAG + "START")) {
+			} else if bytes.Contains(line, []byte(HOF_TAG+"START")) {
 				all_lines = append(all_lines, line)
 				fields := bytes.Fields(line)
 				splice_name := bytes.TrimSpace(fields[len(fields)-1])
 				splice = string(splice_name)
 				// fmt.Println("Splice in start:", splice)
-			} else if bytes.Contains(line, []byte(HOF_TAG + "END")) {
+			} else if bytes.Contains(line, []byte(HOF_TAG+"END")) {
 				all_lines = append(all_lines, splices[splice]...)
 				all_lines = append(all_lines, line)
 				// fmt.Println("Splice in end:", splice)

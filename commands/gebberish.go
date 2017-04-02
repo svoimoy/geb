@@ -29,20 +29,25 @@ var GebberishLong = `Games, shenanigans, and other gebberish.`
 
 var GebberishCmd = &cobra.Command{
 	Hidden: true,
-	Use:    "gebberish",
+
+	Use: "gebberish",
+
 	Aliases: []string{
 		"games",
 		"G",
 	},
+
 	Short: "it's a puzzle?!",
-	Long:  GebberishLong,
+
+	Long: GebberishLong,
 }
 
 func init() {
 	RootCmd.AddCommand(GebberishCmd)
+}
 
+func init() {
 	GebberishCmd.AddCommand(gebberish.MiCmd)
-
 }
 
 // HOFSTADTER_BELOW
