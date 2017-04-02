@@ -4,4 +4,4 @@ var {{NAME}} {{> type/golang/modifiers.go MOD=MOD ~}}
 {{else ~}}
 {{> type/golang/package.go TYP ~}}
 {{/if~}}
-{{camelT TYP.parent}}View_{{camelT TYP.name}}
+{{camelT TYP.parent}}View{{camelT TYP.name}}
