@@ -1,5 +1,9 @@
 {{#with RepeatedContext as |CTX| }}
+{{#if CTX.package-identifier}}
+package {{CTX.package-identifier}}
+{{else}}
 package {{camel CTX.parent}}
+{{/if}}
 // package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
 
 import (

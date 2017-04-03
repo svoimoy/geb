@@ -1,5 +1,9 @@
 {{#with DslContext as |CTX| }}
+{{#if CTX.package-identifier}}
+package {{CTX.package-identifier}}
+{{else}}
 package {{#each (split CTX.pkg_path "/")}}{{#if @last }}{{camel .}}{{/if}}{{/each}}
+{{/if}}
 
 import (
 	"github.com/spf13/viper"
