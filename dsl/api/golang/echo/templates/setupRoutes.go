@@ -37,10 +37,19 @@ import (
 
 func setupRoutes(G *echo.Group) error {
 
+	// HOFSTADTER_START pre-routes
+	// HOFSTADTER_END   pre-routes
+
 	// Routes
 	{{#each routes as |R|}}
 	{{> router/route.go R ~}}
 	{{/each}}
+
+	// HOFSTADTER_START post-routes
+	// HOFSTADTER_END   post-routes
+
+	// HOFSTADTER_START pre-resources
+	// HOFSTADTER_END   pre-resources
 
 	// Resources
 	{{#each API.resources as |R1| ~}}
@@ -64,6 +73,9 @@ func setupRoutes(G *echo.Group) error {
 			{{/each }}
 		{{/each }}
 	{{/each }}
+
+	// HOFSTADTER_START post-resources
+	// HOFSTADTER_END   post-resources
 
 	return nil
 }
