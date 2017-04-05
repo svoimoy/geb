@@ -38,7 +38,7 @@ func MakePlans(dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (r
 	if err != nil {
 		return ret, errors.Wrap(err, "in MakePlans\n")
 	}
-	logger.Debug("    and...  flatland!!", "flatland", flatland)
+	// logger.Debug("    and...  flatland!!", "flatland", flatland)
 
 	for ctx_path, design := range flatland {
 		ps := strings.Split(ctx_path, "/")
@@ -56,7 +56,7 @@ func MakePlans(dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (r
 
 		}
 
-		logger.Debug("in MakingPlans", "ctx_path", ctx_path, "plans", ret)
+		logger.Debug("in MakingPlans", "ctx_path", ctx_path, "plans", len(ret))
 	}
 
 	return ret, nil
@@ -153,7 +153,34 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 
 				case []interface{}:
 					for _, elem := range M {
-						c_slice = append(c_slice, elem)
+						// need to think about sub-sub-sub-[cli/api] and N-sub-[dsl]
+						//
+						// recursion!
+						//
+						// possibly flatten array levels
+						if R.Flatten > 0 {
+
+							switch M2 := elem.(type) {
+
+							case map[string]interface{}:
+								c_slice = append(c_slice, M2)
+
+							case map[interface{}]interface{}:
+								c_slice = append(c_slice, M2)
+
+							case []interface{}:
+								for _, elem2 := range M2 {
+									c_slice = append(c_slice, elem2)
+								}
+
+							default:
+								logger.Info("input is not a map or slice", "input", M)
+
+							}
+						} else {
+							// just add the current array to c_slice
+							c_slice = append(c_slice, elem)
+						}
 					}
 
 				default:
@@ -161,7 +188,7 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 
 				}
 
-				logger.Info("Done adding to c_slice", "c_slice", c_slice)
+				// logger.Info("Done adding to c_slice", "c_slice", len(c_slice))
 
 				// flattern c_slice
 				// ....
@@ -178,7 +205,7 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 				}
 				c_slice = tmp_c_slice
 
-				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice), "c_slice", c_slice)
+				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
 				// for all of the templates in the generator configuration, for this field
 				for _, t_pair := range R.Templates {
 					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Templates)
@@ -224,9 +251,9 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 						if err != nil {
 							return nil, errors.Wrap(err, "in make_dsls\n")
 						}
-						logger.Info("OFNAME", "name", OF_name)
 
 						outfile := filepath.Join(G_key, ctx_dir, OF_name)
+						logger.Warn("OFNAME", "G_key", G_key, "ctx_dir", ctx_dir, "OF_name", OF_name, "outfile", outfile)
 
 						// build up the plan data struct
 						fgd := Plan{
@@ -248,7 +275,8 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 						plans = append(plans, fgd)
 
 					} // END of context loop 'c_slice'
-					logger.Debug("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", c_slice)
+					logger.Info("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", len(c_slice))
+					// logger.Debug("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", c_slice)
 
 				}
 
@@ -258,7 +286,8 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 
 	} // End DSL loop
 
-	logger.Debug("return from makePlans", "plans", plans)
+	logger.Info("return from makePlans")
+	// logger.Debug("return from makePlans", "plans", plans)
 
 	return plans, nil
 
@@ -333,7 +362,7 @@ Where's your docs doc?!
 */
 func determineOutfileName(outfileTemplateString string, renderingData interface{}) (outputFilename string, err error) {
 	// HOFSTADTER_START determineOutfileName
-	logger.Debug("outfile_name", "in", outfileTemplateString, "data", renderingData)
+	logger.Debug("outfile_name", "in", outfileTemplateString)
 	rtpl, err := raymond.Parse(outfileTemplateString)
 	if err != nil {
 		return "", errors.Wrap(err, "in determine_outfile_name\n")

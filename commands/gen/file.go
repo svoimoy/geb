@@ -9,6 +9,8 @@ import (
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
 
+	"os"
+
 	"github.com/spf13/cobra"
 )
 
@@ -43,11 +45,15 @@ var FileCmd = &cobra.Command{
 		//     help:   Path to the input design file.
 		//     req'd:  true
 		if 0 >= len(args) {
+			fmt.Printf("missing required argument: 'designFile'")
 			cmd.Usage()
-			return
+			os.Exit(1)
 		}
+
 		var designFile string
+
 		if 0 < len(args) {
+
 			designFile = args[0]
 		}
 
@@ -55,11 +61,15 @@ var FileCmd = &cobra.Command{
 		//     help:   Path to the template file.
 		//     req'd:  true
 		if 1 >= len(args) {
+			fmt.Printf("missing required argument: 'templateFile'")
 			cmd.Usage()
-			return
+			os.Exit(1)
 		}
+
 		var templateFile string
+
 		if 1 < len(args) {
+
 			templateFile = args[1]
 		}
 
@@ -67,11 +77,15 @@ var FileCmd = &cobra.Command{
 		//     help:   Path to the output file. Can also be 'stdout'.
 		//     req'd:  true
 		if 2 >= len(args) {
+			fmt.Printf("missing required argument: 'outputFile'")
 			cmd.Usage()
-			return
+			os.Exit(1)
 		}
+
 		var outputFile string
+
 		if 2 < len(args) {
+
 			outputFile = args[2]
 		}
 

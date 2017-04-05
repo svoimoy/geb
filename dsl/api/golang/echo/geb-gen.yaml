@@ -102,6 +102,7 @@ template-configs:
 
   - name: subsub-route
     field: routes.[:].routes.[:].routes
+    flatten: 1
     templates:
       - in: "route.go"
         out: "routes/{{getbetween CTX.pkgPath '/' '/'}}/{{parent}}/{{camel name}}.go"
@@ -127,6 +128,7 @@ template-configs:
 
   - name: subsub-resource
     field: resources.[:].resources.[:].resources
+    flatten: 1
     templates:
       - in: "resource.go"
         out: "resources/{{getbetween pkgPath '/' '/'}}/{{camel name}}.go"

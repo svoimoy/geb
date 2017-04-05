@@ -45,7 +45,8 @@ func (D *Design) storeDslDesign(relativePath string, dsl string, name string, de
 	dd_map := insert
 	for i, F := range fields {
 		foundSameDsl := false
-		curr_path := fields[:i]
+		curr_path := make([]string, len(fields[:i+1]))
+		copy(curr_path, fields[:i+1])
 
 		sameDslPath := append(curr_path, dsl, name)
 		// sameDslPath = append(sameDslPath, name)
@@ -64,7 +65,7 @@ func (D *Design) storeDslDesign(relativePath string, dsl string, name string, de
 			F0 = strings.Split(dsl_path, ".")[0]
 		}
 
-		logger.Info("store_dsl_design", "curr_path", curr_path, "dsl_path", dsl_path, "i", i, "rel_path", relativePath, "dsl", dsl, "name", name, "match", foundSameDsl)
+		logger.Info("store_dsl_design", "F", F, "curr_path", curr_path, "dsl_path", dsl_path, "i", i, "rel_path", relativePath, "dsl", dsl, "name", name, "match", foundSameDsl)
 
 		cmap := make(map[string]interface{})
 		if foundSameDsl {
@@ -76,7 +77,6 @@ func (D *Design) storeDslDesign(relativePath string, dsl string, name string, de
 		if F != "" {
 			dd_map[F] = cmap
 			dd_map = cmap
-			curr_path = append(curr_path, F)
 		}
 	}
 	dd_map[dsl] = design

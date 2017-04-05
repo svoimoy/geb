@@ -10,6 +10,8 @@ import (
 	"github.ibm.com/hofstadter-io/geb/gebberish"
 	// HOFSTADTER_END   import
 
+	"os"
+
 	"github.com/spf13/cobra"
 )
 
@@ -63,17 +65,22 @@ var MiCmd = &cobra.Command{
 		//     help:   The rule to apply [r# or rule-#]
 		//     req'd:  true
 		if 0 >= len(args) {
+			fmt.Printf("missing required argument: 'rule'")
 			cmd.Usage()
-			return
+			os.Exit(1)
 		}
+
 		var rule string
+
 		if 0 < len(args) {
+
 			rule = args[0]
 		}
 
 		// [1]name:   extra
 		//     help:   optional args to rules 3 and 4
 		//     req'd:
+
 		var extra []string
 
 		if 1 < len(args) {

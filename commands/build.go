@@ -48,6 +48,7 @@ var BuildCmd = &cobra.Command{
 		// [0]name:   stages
 		//     help:   The stages to run in order. Used to override the pipeline in the project file.
 		//     req'd:
+
 		var stages []string
 
 		if 0 < len(args) {

@@ -25,6 +25,7 @@ Where's your docs doc?!
 type TemplateConfig struct {
 	Name      string               `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
 	Field     string               `json:"field" xml:"field" yaml:"field" form:"field" query:"field" `
+	Flatten   int                  `json:"flatten" xml:"flatten" yaml:"flatten" form:"flatten" query:"flatten" `
 	Templates []TemplateRenderPair `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
 }
 

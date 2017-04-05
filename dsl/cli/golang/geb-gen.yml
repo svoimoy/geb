@@ -26,12 +26,29 @@ template-configs:
     templates:
       - in: "cmd.go"
         out: "commands/{{camel name}}.go"
+      - when: subcommands
+        in: "log.go"
+        out: "commands/{{name}}/log.go"
 
   - name: sub-command
     field: commands.[:].subcommands
     templates:
       - in: "cmd.go"
         out: "commands/{{parent}}/{{camel name}}.go"
-      - in: "log.go"
-        out: "commands/{{parent}}/log.go"
+      - when: subcommands
+        in: "log.go"
+        out: "commands/{{parent}}/{{name}}/log.go"
 
+  - name: sub-sub-command
+    field: commands.[:].subcommands.[:].subcommands
+    flatten: 1
+    templates:
+      - in: "cmd.go"
+        out: "commands/{{getbetween pkgPath '/' '/'}}/{{camel name}}.go"
+
+#   - name: sub-sub-command
+#     field: commands.[:].subcommands.[:].subcommands
+#     templates:
+#       - in: "cmd.go"
+#         out: "commands/{{pkgPath}}/{{camel name}}.go"
+#         # out: "commands/{{getbetween pkgPath '/' '/'}}/{{camel name}}.go"

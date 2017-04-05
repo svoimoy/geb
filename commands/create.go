@@ -7,6 +7,8 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
+	"os"
+
 	"github.com/spf13/cobra"
 )
 
@@ -50,17 +52,22 @@ var CreateCmd = &cobra.Command{
 		//     help:   The name of the new project to create
 		//     req'd:  true
 		if 0 >= len(args) {
+			fmt.Printf("missing required argument: 'name'")
 			cmd.Usage()
-			return
+			os.Exit(1)
 		}
+
 		var name string
+
 		if 0 < len(args) {
+
 			name = args[0]
 		}
 
 		// [1]name:   dsls_n_gens
 		//     help:   The starting list of DSLs and generators by path.
 		//     req'd:
+
 		var dslsNGens []string
 
 		if 1 < len(args) {

@@ -7,6 +7,8 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
+	"os"
+
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
@@ -65,11 +67,15 @@ var ImportCmd = &cobra.Command{
 		//     help:   Path to the file or folder. Can also be 'stdin'.
 		//     req'd:  true
 		if 0 >= len(args) {
+			fmt.Printf("missing required argument: 'input'")
 			cmd.Usage()
-			return
+			os.Exit(1)
 		}
+
 		var input string
+
 		if 0 < len(args) {
+
 			input = args[0]
 		}
 
@@ -77,11 +83,15 @@ var ImportCmd = &cobra.Command{
 		//     help:   Path to the output file or folder. Can also be 'stdout'.
 		//     req'd:  true
 		if 1 >= len(args) {
+			fmt.Printf("missing required argument: 'output'")
 			cmd.Usage()
-			return
+			os.Exit(1)
 		}
+
 		var output string
+
 		if 1 < len(args) {
+
 			output = args[1]
 		}
 

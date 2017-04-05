@@ -9,8 +9,20 @@ package {{lower RC.parent}}
 
 import (
 	// HOFSTADTER_START import
+	{{#if RC.omit-run}}
+	{{else}}
 	"fmt"
+	{{/if}}
 	// HOFSTADTER_END   import
+
+	{{#dotpath "args.required" RC false}}
+	{{# with . as |D|}}
+	{{#if (contains D "Error")}}
+	{{else}}
+	"os"
+	{{/if}}
+	{{/with}}
+	{{/dotpath}}
 
 	{{#if RC.flags}}
 	"github.com/spf13/viper"
@@ -99,7 +111,9 @@ var {{camelT RC.name}}Cmd = &cobra.Command {
 		{{> args-parse.go RC }}
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("Got Here")
+		fmt.Println("{{replace RC.pkgPath "/" " " -1}}:", {{#each RC.args}}
+		{{camel name}},	
+		{{/each}})
 		// HOFSTADTER_END   cmd_run
 	},
 	{{/unless}}

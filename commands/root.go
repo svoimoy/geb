@@ -18,6 +18,11 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
+var GebLong = `Hofstadter is a Framework
+for building data-centric
+Platforms. geb is the tool.
+`
+
 var (
 	configPFlag        string
 	designPFlag        string
@@ -42,12 +47,12 @@ func init() {
 
 var (
 	RootCmd = &cobra.Command{
-		Use:   "geb",
+
+		Use: "geb",
+
 		Short: "geb is the Hofstadter framework CLI tool",
-		Long: `Hofstadter is a Framework
-for building data-centric
-Platforms. geb is the tool.
-`,
+
+		Long: GebLong,
 	}
 )
 

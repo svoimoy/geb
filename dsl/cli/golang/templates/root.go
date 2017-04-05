@@ -24,6 +24,9 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
+{{#if CLI.long}}
+var {{camelT CLI.name}}Long = `{{{CLI.long}}}`
+{{/if}}
 
 {{> "flag-var.go" CLI }}
 
@@ -31,9 +34,21 @@ import (
 
 var (
 	RootCmd = &cobra.Command{
-		Use:   "{{ CLI.name }}",
-		Short: "{{ CLI.short }}",
-		Long:  `{{ CLI.long }}`,
+
+		{{#if CLI.usage}}
+		Use: "{{{CLI.usage}}}",
+		{{else}}
+		Use: "{{{CLI.name}}}",
+		{{/if}}
+
+		{{#if CLI.short}}
+		Short: "{{{CLI.short}}}",
+		{{/if}}
+
+		{{#if CLI.long}}
+		Long: {{camelT CLI.name}}Long,
+		{{/if}}
+
 		{{#if CLI.persistent-prerun}}
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			{{> args-parse.go CLI }}
@@ -44,7 +59,7 @@ var (
 		{{/if}}
 		{{#if CLI.prerun}}
 		PreRun: func(cmd *cobra.Command, args []string) {
-			logger.Debug("In PreRun {{RC.name}}Cmd", "args", args)
+			logger.Debug("In PreRun {{CLI.name}}Cmd", "args", args)
 			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_prerun
@@ -53,7 +68,7 @@ var (
 		{{/if}}
 		{{#unless CLI.omit-run}}
 		Run: func(cmd *cobra.Command, args []string) {
-			logger.Debug("In {{RC.name}}Cmd", "args", args)
+			logger.Debug("In {{CLI.name}}Cmd", "args", args)
 			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_run
@@ -62,7 +77,7 @@ var (
 		{{/unless}}
 		{{#if CLI.persistent-postrun}}
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
-			logger.Debug("In PersistentPostRun {{RC.name}}Cmd", "args", args)
+			logger.Debug("In PersistentPostRun {{CLI.name}}Cmd", "args", args)
 			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_persistent_postrun
@@ -71,7 +86,7 @@ var (
 		{{/if}}
 		{{#if CLI.postrun}}
 		PostRun: func(cmd *cobra.Command, args []string) {
-			logger.Debug("In PostRun {{RC.name}}Cmd", "args", args)
+			logger.Debug("In PostRun {{CLI.name}}Cmd", "args", args)
 			{{> args-parse.go CLI }}
 
 			// HOFSTADTER_START cmd_postrun

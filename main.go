@@ -39,8 +39,10 @@ func main() {
 
 func read_config() {
 	viper.SetConfigType("yaml")
-	viper.SetConfigName("geb")
-	viper.AddConfigPath("$HOME/.geb")
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	// viper.SetConfigName("geb")
+	// viper.AddConfigPath("$HOME/.geb")
 	viper.MergeInConfig()
 
 	// Hackery because viper only takes the first config file found... not merging, wtf does merge config mean then anyway

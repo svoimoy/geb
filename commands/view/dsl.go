@@ -48,6 +48,7 @@ var DslCmd = &cobra.Command{
 		// [0]name:   paths
 		//     help:   one ore more dotpaths for indexing into the data
 		//     req'd:
+
 		var paths []string
 
 		if 0 < len(args) {
