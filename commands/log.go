@@ -48,9 +48,9 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers before possibly overriding locally next
-	system.SetLogger(logger)
 	gebberish.SetLogger(logger)
 	gen.SetLogger(logger)
+	system.SetLogger(logger)
 	view.SetLogger(logger)
 
 	// possibly override locally

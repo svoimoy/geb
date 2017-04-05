@@ -1,5 +1,6 @@
 cli:
   name: geb
+
   commands:
 
     - name: create

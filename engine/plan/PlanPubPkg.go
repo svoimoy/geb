@@ -253,7 +253,7 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 						}
 
 						outfile := filepath.Join(G_key, ctx_dir, OF_name)
-						logger.Warn("OFNAME", "G_key", G_key, "ctx_dir", ctx_dir, "OF_name", OF_name, "outfile", outfile)
+						logger.Info("OFNAME", "G_key", G_key, "ctx_dir", ctx_dir, "OF_name", OF_name, "outfile", outfile)
 
 						// build up the plan data struct
 						fgd := Plan{

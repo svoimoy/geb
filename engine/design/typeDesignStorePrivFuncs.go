@@ -45,8 +45,8 @@ func (D *Design) storeDslDesign(relativePath string, dsl string, name string, de
 	dd_map := insert
 	for i, F := range fields {
 		foundSameDsl := false
-		curr_path := make([]string, len(fields[:i+1]))
-		copy(curr_path, fields[:i+1])
+		curr_path := make([]string, len(fields[:i]), len(fields))
+		copy(curr_path, fields[:i])
 
 		sameDslPath := append(curr_path, dsl, name)
 		// sameDslPath = append(sameDslPath, name)

@@ -1,6 +1,8 @@
 cli:
   name: geb
+
   commands:
+
     - name: build
       usage: build
       aliases:
