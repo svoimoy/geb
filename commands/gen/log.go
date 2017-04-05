@@ -12,7 +12,6 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	// lcfg := viper.GetStringMap("log-config.gen.file.default")
 	ldcfg := viper.GetStringMap("log-config.commands.gen.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l

@@ -4,6 +4,7 @@ package system
 
 import (
 	// HOFSTADTER_START import
+	"fmt"
 	// HOFSTADTER_END   import
 
 	"github.com/spf13/cobra"
@@ -43,6 +44,7 @@ var InitCmd = &cobra.Command{
 		// Argument Parsing
 
 		// HOFSTADTER_START cmd_run
+		fmt.Println("Initializing geb and libraries")
 		// HOFSTADTER_END   cmd_run
 	},
 }

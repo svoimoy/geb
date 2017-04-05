@@ -32,4 +32,3 @@ cli:
       default: output
       help: The directory to output generated files to.
 
-  # commands and sub-commands are now in the sub-directories
