@@ -7,18 +7,14 @@ type-list:
       fields:
         - name: name
           type: string
-          required: true
         - name: version
           type: string
-          required: true
         - name: about
           type: string
         - name: type
           type: string
-          required: true
         - name: language
           type: string
-          required: true
         - name: template-configs
           type: array:template-config
         - name: output-dir
@@ -30,10 +26,10 @@ type-list:
       fields:
         - name: name
           type: string
-          required: true
         - name: field
           type: string
-          required: true
+        - name: flatten
+          type: int
         - name: templates
           type: array:template-render-pair
 
@@ -45,8 +41,6 @@ type-list:
           type: string
         - name: in
           type: string
-          required: true
         - name: out
           type: string
-          required: true
 
