@@ -13,7 +13,7 @@ With it, you can:
 - Contribute to the ecosystem by sharing your designs, templates, generators, or complete applications.
 
 
-### Installation
+## Installation
 
 ```
 go get github.ibm.com/hofstadter-io/geb
@@ -25,12 +25,12 @@ geb sys init
 `git config --global url."git@github.tbm.com:".insteadOf "https://github.ibm.com/"`
 
 
-### Quick Introduction
+## Quick Introduction
 
 The docs are pretty much m.i.a. but you should still dive in!
 See the projects list below for in-depth examples.
 
-#### The project file
+### The project file `geb.yaml`
 
 Every project begins with a folder containing a `geb.yaml` file and a design directory.
 
@@ -85,7 +85,7 @@ log-config:
     stack: false
 ```
 
-#### The design layout
+### The design folder layout 
 
 The typical layout for a project is defined by the design layout.
 
@@ -117,7 +117,7 @@ my-project/
                 ...
 ```
 
-#### Generated output layout
+### Generated output layout
 
 When you run `geb gen`,
 the output structure will align with the design structure.
@@ -160,15 +160,71 @@ my-project/
 Types and Packages will land in a folder which aligns with the design folder path.
 
 
-#### A first design
+## A first example
 
 Let's make a hello world CLI.
+
+### Initial files and folders
+
 Create a folder with the name `hello`,
 add the `geb.yaml`, and a `design/cli.yaml`.
 
-You can copy the `geb.yaml` file from above, making sure to change the name to `hello`
+```
+hello/
+  Makefile
+  geb.yaml
+  design/
+    cli.yaml
+```
 
-Now put the following in the `cli.yaml`:
+`Makefile`:
+
+```
+gen:
+	@geb gen && gofmt -w .
+```
+
+(note the Makefile requires tab indentation)
+
+`geb.yaml`:
+
+```
+name: "hello"
+about: "A simple hello world cli."
+
+output-dir: "."
+
+design-dir: "design"
+
+dsl-config:
+  paths:
+    - "dsl"
+    - "$GOPATH/src/github.ibm.com/hofstadter-io/geb/dsl"
+  default:
+    - dsl: common
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: type
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: pkg
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: cli
+      gen:
+        - golang
+      output-dir: "."
+
+log-config:
+  default:
+    level: warn
+    stack: false
+```
+
+`cli.yaml`:
 
 ```
 cli:
@@ -176,16 +232,13 @@ cli:
   short: "A simple hello world cli."
 ```
 
-#### A first generation
+### A first generation
 
 Now run:
 
 ```
-# generate output from design
-geb gen
-
-# make the code pretty (it's in golang)
-gofmt -w .
+# generate and format output from design
+make gen
 
 # build the hello cli
 go build
@@ -197,7 +250,7 @@ go build
 pretty boring eh?
 
 
-#### Adding to the code
+### Adding to the code
 
 Now let's change the existing command
 and have it do something.
@@ -222,16 +275,13 @@ fmt.Println("Hello! ", args)
 
 
 
-#### Regenerating and rebuilding
+### Regenerating and rebuilding
 
 Run the same commands as before again:
 
 ```
-# generate output from design
-geb gen
-
-# make the code pretty (it's in golang)
-gofmt -w .
+# generate and format output from design
+make gen
 
 # build the hello cli
 go build
@@ -247,7 +297,7 @@ geb takes care not to distrub your code.
 All you have to do is edit between the `HOFSTADTER_*` tags.
 
 
-#### Adding a command
+### Adding a command
 
 Add a command to the `design/cli.yaml` file:
 
@@ -275,7 +325,7 @@ formatted nicer and say something
 when no message is supplied.
 
 
-### Documentation
+## Documentation
 
 Coming soon...
 
@@ -284,7 +334,7 @@ Don't hesitate to ask a question via the GitHub issues either.
 
 An [API walkthrough](./docs/intro/api.md) has been started.
 
-### Projects using Hofstadter
+## Projects using Hofstadter
 
 | Project                                                           | types | pkg | api | cli | notes |
 |:--------                                                          |:-----:|:---:|:---:|:---:|:------|
