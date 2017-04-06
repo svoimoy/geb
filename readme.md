@@ -89,59 +89,6 @@ log-config:
 
 The typical layout for a project is defined by the design layout.
 
-API:
-
-```
-my-project/
-
-    geb.yaml
-    Makefile   (for simple command sequences)
-
-    design/
-
-        server/
-            api.yaml
-            routes/
-                <route-name>.yaml
-                ...
-                <route-name>/               (when it has subroutes)
-                    <sub-route-name>.yaml
-                    ...
-            resources/
-                <resource-name>.yaml
-                ...
-                <resource-name>/            (when it has subresources)
-                    <sub-resource-name>.yaml
-                    ...
-
-        lib/
-            app-specific/
-                pkg.yaml
-                subdir/type.yaml
-                ...
-            db-ops/
-                pkg.yaml
-            tools/
-                db-ops/
-                    cli.yaml
-                    ...
-                data-ops/
-                    cli.yaml
-                    ...
-                app-ops/
-                    cli.yaml
-                    ...
-            types/
-                type.yaml
-                subdir/type.yaml
-
-        clients/
-          sdk/
-            pkg.yaml
-          <api-name>-cli/
-            cli.yaml
-```
-
 CLI:
 
 ```
@@ -162,7 +109,7 @@ my-project/
         lib/
             app-specific/
                 pkg.yaml
-                subdir/type.yaml
+                subdir/pkg.yaml
                 ...
             types/
                 type.yaml
@@ -175,29 +122,42 @@ my-project/
 When you run `geb gen`,
 the output structure will align with the design structure.
 You can use any folder layout you wish to organize tyour code.
-Note, APIs and CLIs will generate folder structure which matches their definition.
-i.e.:
+Note, the APIs and CLIs will generate folder structure which matches their definition.
 
 ```
 
-any/path/to/cli/
+my-project/
+
     main.go
+
     commands/
         root.go
         <command-name>.go
         ...
+
         <command-name>/             (when it has subcommands)
             <sub-command-name>.yaml
             ...
+            
             <sub-command-name>/             (when it has sub-sub-commands)
                 <sub-sub-command-name>.yaml
                 ...
+
+        lib/
+
+            app-specific/
+                <name>PubPkg.yaml
+                ...
+                subdir/<name>PubPkg.yaml
+                ...
+
+            types/
+                type<Name>.yaml
+                subdir/type<Name>.yaml
+                ...
 ```
 
-The API routes and resources follow a similar pattern of output folder structure.
-
 Types and Packages will land in a folder which aligns with the design folder path.
-
 
 
 #### A first design
@@ -321,6 +281,8 @@ Coming soon...
 
 Get a feel [here](./docs) for what is to come.
 Don't hesitate to ask a question via the GitHub issues either.
+
+An [API walkthrough](./docs/intro/api.md) has been started.
 
 ### Projects using Hofstadter
 
