@@ -1,11 +1,15 @@
 cli:
   name: geb
   short: "geb is the Hofstadter framework CLI tool"
+
   long: |
     Hofstadter is a Framework
     for building data-centric
     Platforms. geb is the tool.
+
+  persistent-prerun: true
   omit-run: true
+  
   pflags:
     - name: config
       long: config

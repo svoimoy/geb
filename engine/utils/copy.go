@@ -102,3 +102,5 @@ func CopyDir(source string, destination string) (err error) {
 }
 
 // HOFSTADTER_BELOW
+
+var CopyFolder = CopyDir

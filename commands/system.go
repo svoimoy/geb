@@ -47,7 +47,7 @@ func init() {
 
 func init() {
 	SystemCmd.AddCommand(system.InitCmd)
-	SystemCmd.AddCommand(system.DevCopyInCmd)
+	SystemCmd.AddCommand(system.DevModeCmd)
 	SystemCmd.AddCommand(system.UpdateCmd)
 }
 

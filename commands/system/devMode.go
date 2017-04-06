@@ -16,8 +16,8 @@ import (
 )
 
 // Tool:   geb
-// Name:   init
-// Usage:  init
+// Name:   dev-mode
+// Usage:  dev-mode
 // Parent: system
 
 // HOFSTADTER_START const
@@ -29,27 +29,22 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-var InitLong = `Intializes the geb tool and the ~/.geb dot folder.`
+var DevModeCmd = &cobra.Command{
 
-var InitCmd = &cobra.Command{
-
-	Use: "init",
+	Use: "dev-mode",
 
 	Aliases: []string{
-		"initialize",
-		"setup",
+		"dev",
 	},
 
-	Short: "Initialize the geb tool and files.",
-
-	Long: InitLong,
+	Short: "Put geb in development mode.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In initCmd", "args", args)
+		logger.Debug("In dev-modeCmd", "args", args)
 		// Argument Parsing
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("Initializing geb and libraries")
+		fmt.Println("geb system dev-mode: Putting geb in developer mode.")
 
 		// get user and home dir
 		u, err := user.Current()
@@ -71,7 +66,7 @@ var InitCmd = &cobra.Command{
 		}
 
 		// copy in geb.yaml
-		gebFileSrc := filepath.Join(gebGoDir, "lib/dotfolder/geb.yaml")
+		gebFileSrc := filepath.Join(gebGoDir, "lib/dotfolder/dev.yaml")
 		gebFileDest := filepath.Join(dotFolder, "geb.yaml")
 		fmt.Println("copy: ", gebFileSrc, gebFileDest)
 		err = utils.CopyFile(gebFileSrc, gebFileDest)
@@ -80,7 +75,7 @@ var InitCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// copy dsl folder
+		// link dsl folder
 		dslFolderSrc := filepath.Join(gebGoDir, "dsl")
 		dslFolderDest := filepath.Join(dotFolder, "dsl")
 
@@ -91,13 +86,16 @@ var InitCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// copy in the dsl folder
-		fmt.Println("copy: ", dslFolderSrc, dslFolderDest)
-		err = utils.CopyFolder(dslFolderSrc, dslFolderDest)
+		// link in the dsl folder
+		fmt.Println("link: ", dslFolderSrc, dslFolderDest)
+		err = os.Symlink(dslFolderSrc, dslFolderDest)
 		if err != nil {
 			fmt.Println("Error:", err)
 			os.Exit(1)
 		}
+
+		// echo path update
+		fmt.Println("Add 'PATH=$PATH:$GOPATH/src/github.ibm.com/hofstadter-io/geb' to your .profile, .bashrc, or which ever you may use.")
 
 		// HOFSTADTER_END   cmd_run
 	},

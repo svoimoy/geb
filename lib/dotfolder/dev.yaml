@@ -1,0 +1,14 @@
+design-dir: "design"
+
+output-dir: "."
+
+dsl-config:
+  paths:
+    - "dsl"
+    - "$GOPATH/src/github.ibm.com/hofstadter-io/geb"
+
+log-config:
+  default:
+    level: warn
+    stack: true
+
