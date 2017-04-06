@@ -290,7 +290,7 @@ An [API walkthrough](./docs/intro/api.md) has been started.
 |:--------                                                          |:-----:|:---:|:---:|:---:|:------|
 | [geb](https://github.ibm.com/hofstadter-io/geb)                   |   x   |  x  |     |  x  | meta... |
 | [Xtalk](https://github.ibm.com/krobots/k8s-csf-xtalk)             |   x   |  x  |  x  |  x  | facilitates communication between CSF and Armada |
-| [gzi](https://github.ibm.com/hofstadter-io/gzi)                   |   x   |  x  |     |  x  | GitHub-ZenHug CLI |
+| [gzi](https://github.ibm.com/hofstadter-io/gzi)                   |   x   |  x  |     |  x  | GitHub-ZenHub CLI |
 | [cego](https://github.ibm.com/hofstadter-io/cego)                 |   x   |  x  |     |  x  | Tool for visibility at IBM |
 | [disgo-frontend-api](https://github.ibm.com/hofstadter-io/geb)    |   x   |  x  |  X  |  x  | experimental golang api server |
 
