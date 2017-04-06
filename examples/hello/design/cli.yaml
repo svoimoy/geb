@@ -1,0 +1,13 @@
+cli:
+  name: hello
+  short: "A simple hello world cli."
+
+  commands:
+    - name: there
+      short: "say something to someone"
+      args:
+        - name: who
+          type: string
+          required: true
+        - name: what
+          type: string
