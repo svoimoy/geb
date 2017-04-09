@@ -19,8 +19,6 @@ dependencies:
           out: lib/tools/data-ops/cli.yaml
         - in: client/sdk/pkg.yaml
           out: client/sdk/pkg.yaml
-        - in: client/js/pkg.yaml
-          out: client/js/pkg.yaml
         - in: client/cli/cli.yaml
           out: "client/{{name}}-cli/cli.yaml"
 

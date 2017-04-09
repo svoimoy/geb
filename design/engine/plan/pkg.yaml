@@ -51,6 +51,8 @@ pkg:
           type: "*engine.gen.generator"
         - name: R
           type: "engine.gen.template-config"
+        - name: make-design
+          type: bool
 
       return:
         - name: plans

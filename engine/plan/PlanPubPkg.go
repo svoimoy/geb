@@ -106,7 +106,7 @@ func MakeSubdesignPlans(dslMap map[string]*dsl.Dsl, designData map[string]interf
 /*
 Where's your docs doc?!
 */
-func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, designData map[string]interface{}, D *dsl.Dsl, G *gen.Generator, R gen.TemplateConfig) (plans []Plan, err error) {
+func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, designData map[string]interface{}, D *dsl.Dsl, G *gen.Generator, R gen.TemplateConfig, makeDesign bool) (plans []Plan, err error) {
 	// HOFSTADTER_START makePlans
 	logger.Info("makePlans")
 	logger.Debug("  context", "dsl_ctx", dslCtx)
@@ -197,7 +197,13 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 		logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Templates)
 
 		t_key := t_pair.In
+		// need to look up in Templates or Designs here
+		// ugly...
 		T, ok := G.Templates[t_key]
+		if makeDesign == true {
+			logger.Info("    Looking for design template: ", "t_pair", t_pair, "in", G.Designs)
+			T, ok = G.Designs[t_key]
+		}
 		if !ok {
 			return nil, errors.New("Unknown repeat template: " + t_key)
 		}
@@ -284,6 +290,7 @@ Where's your docs doc?!
 */
 func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (plans []Plan, err error) {
 	// HOFSTADTER_START makeProjectPlans
+	logger.Debug("makeProjectPlans start")
 	// get the ctx path for later comparison against dsl
 	ictx_path, err := dotpath.Get("ctx_path", dslCtx, true)
 	if err != nil {
@@ -333,7 +340,7 @@ func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl
 
 			// Render the repeated templates
 			for _, R := range repeats {
-				ps, err := makePlans(d_key, g_key, ctx_dir, dslCtx, designData, D, G, R)
+				ps, err := makePlans(d_key, g_key, ctx_dir, dslCtx, designData, D, G, R, false)
 				if err != nil {
 					return nil, errors.Wrap(err, "while making project plans")
 				}
@@ -353,6 +360,67 @@ Where's your docs doc?!
 */
 func makeSubdesignPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (plans []Plan, err error) {
 	// HOFSTADTER_START makeSubdesignPlans
+	logger.Debug("makeSubdesignPlans start")
+	// get the ctx path for later comparison against dsl
+	ictx_path, err := dotpath.Get("ctx_path", dslCtx, true)
+	if err != nil {
+		return nil, errors.New("ctx_path not found, in make_type")
+	}
+	ctx_path, ok := ictx_path.(string)
+	if !ok {
+		return nil, errors.New("ctx_path is not a string, in make_type")
+	}
+
+	// For DSLs, we need the last field to know which dsl it is
+	ctx_flds := strings.Split(ctx_path, ".")
+	ctx_dir := ""
+	if len(ctx_flds) > 2 {
+		ctx_dir = filepath.Join(ctx_flds[1 : len(ctx_flds)-1]...)
+	}
+	ctx_dsl := ctx_flds[0]
+	if dslType == "dsl" {
+		ctx_dsl = ctx_flds[len(ctx_flds)-1]
+	}
+
+	logger.Debug("Making Dsl plan", "dslMap", dslMap, "ctx_dsl", ctx_dsl, "ctx_dir", ctx_dir)
+
+	// Loop over DSLs in the plans
+	for d_key, D := range dslMap {
+		// ... comparing the dsl type to the design type
+		if d_key != ctx_dsl {
+			continue
+		}
+		logger.Info("    dsl: "+D.Config.Name, "d_key", d_key, "ctx_dsl", ctx_dsl, "ctx_path", ctx_path)
+
+		// Loop over each generator in the current DSL
+		for g_key, G := range D.Generators {
+			logger.Info("      gen: "+g_key, "gen_cfg", G.Config)
+
+			//
+			//  TEMPLATES
+			//
+			// Render the templates
+			repeats := G.Config.Dependencies.Designs
+			if len(repeats) == 0 {
+				logger.Debug("       skipping dsl repeat: "+D.Config.Type, "name", D.Config.Name, "repeats", repeats)
+				continue
+			}
+			logger.Info("Templates found in config:", "count", len(repeats), "repeats", repeats)
+			logger.Info("      doing dsl repeat: "+D.Config.Type, "name", D.Config.Name, "d_key", d_key)
+
+			// Render the repeated templates
+			for _, R := range repeats {
+				ps, err := makePlans(d_key, g_key, filepath.Join("subdesigns", ctx_dir), dslCtx, designData, D, G, R, true)
+				if err != nil {
+					return nil, errors.Wrap(err, "while making project plans")
+				}
+				plans = append(plans, ps...)
+			} // End of template processing
+
+		} // End Generator loop
+
+	} // End DSL loop
+
 	// HOFSTADTER_END   makeSubdesignPlans
 	return
 }

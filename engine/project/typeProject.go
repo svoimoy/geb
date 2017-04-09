@@ -88,6 +88,10 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 	// fmt.Println(dstr)
 	logger.Debug("Project Design", "design", P.Design)
 
+	// Prep the templates now that they are loaded
+	P.registerPartials()
+	P.addTemplateHelpers()
+
 	return nil
 	// HOFSTADTER_END   Load
 	return
@@ -148,6 +152,94 @@ Where's your docs doc?!
 */
 func (P *Project) Subdesign() (errorReport []error) {
 	// HOFSTADTER_START Subdesign
+
+	//
+	//
+	//  this is function is basically a first pass
+	//  with all of the plan functions used in ../GenProject.go
+	//
+	//
+
+
+	//
+	//
+	//  this is P.Plan()
+	//
+	//
+
+	// create a map for the planning process
+	data := map[string]interface{}{
+		"proj":   P.Design.Proj,
+		"data":   P.Design.Data,
+		"type":   P.Design.Type,
+		"dsl":    P.Design.Dsl,
+		"pkg":    P.Design.Pkg,
+		"custom": P.Design.Custom,
+	}
+
+	// call the planning module (except subdesigns here)
+	plans, err := plan.MakeSubdesignPlans(P.DslMap, data)
+	if err != nil {
+		return []error{errors.Wrap(err, "in proj.Project.Plan()\n")}
+	}
+
+	P.Plans = plans
+
+	//
+	//
+	//  this is P.Render()
+	//
+	//
+
+	// render the subdesigns
+	errs := render.RenderPlans(P.Plans, P.Config.OutputDir)
+	if len(errs) > 0 {
+		fmt.Println("Errors during subdesign rendering:")
+		for i, err := range errs {
+			fmt.Printf("  %d) %v\n\n", i, err)
+		}
+		return errs
+	}
+
+	//
+	//
+	//  this is P.Load() of the subdesigns
+	//
+	//
+	P.Design.ImportDesignFolder("subdesigns")
+
+	/*
+
+	// make sure loading designs does not depend on the generators being loaded
+	// d_dir := P.Config.DesignDir
+	d_dir := "subdesign"
+	logger.Info("Reading designs", "folder", d_dir)
+	d, err := design.CreateFromFolder(d_dir)
+	if err != nil {
+		return errors.Wrapf(err, "While reading design folder: %s\n", d_dir)
+	}
+	P.Design = d -- need to merge here
+
+	// dstr := fmt.Sprintf("%# v\n\n", pretty.Formatter(P.Design))
+	// fmt.Println(dstr)
+	logger.Debug("Project Design", "design", P.Design)
+
+	*/
+
+	//
+	//
+	//  this is P.Unify() of the design + subdesign
+	//
+	//
+	// just call P.Unify() again
+	P.Unify()
+
+	//
+	//
+	//  then we are re-ready for the Plan and Render that is about to jappen
+	//
+	//
+	return nil
 	// HOFSTADTER_END   Subdesign
 	return
 }
@@ -157,10 +249,6 @@ Where's your docs doc?!
 */
 func (P *Project) Plan() (err error) {
 	// HOFSTADTER_START Plan
-
-	// Prep for calling the planning module
-	P.registerPartials()
-	P.addTemplateHelpers()
 
 	// create a map for the planning process
 	data := map[string]interface{}{
