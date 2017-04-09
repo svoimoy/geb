@@ -236,7 +236,7 @@ func (P *Project) Subdesign() (errorReport []error) {
 
 	//
 	//
-	//  then we are re-ready for the Plan and Render that is about to jappen
+	//  then we are re-ready for the Plan and Render that is about to happen
 	//
 	//
 	return nil

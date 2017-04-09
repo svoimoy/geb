@@ -13,10 +13,10 @@ dependencies:
       templates:
         - in: lib/db-ops/pkg.yaml
           out: lib/db-ops/pkg.yaml
-        - in: lib/tools/db-ops/cli.yaml
-          out: lib/tools/db-ops/cli.yaml
-        - in: lib/tools/data-ops/cli.yaml
-          out: lib/tools/data-ops/cli.yaml
+        - in: tools/db-ops/cli.yaml
+          out: tools/db-ops/cli.yaml
+        - in: tools/data-ops/cli.yaml
+          out: tools/data-ops/cli.yaml
         - in: client/sdk/pkg.yaml
           out: client/sdk/pkg.yaml
         - in: client/cli/cli.yaml
