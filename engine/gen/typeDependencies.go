@@ -23,13 +23,13 @@ About:
 Where's your docs doc?!
 */
 type Dependencies struct {
-	Designs    []DependentDesigns `json:"designs" xml:"designs" yaml:"designs" form:"designs" query:"designs" `
-	Generators []GeneratorConfig  `json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
+	Designs    []TemplateConfig  `json:"designs" xml:"designs" yaml:"designs" form:"designs" query:"designs" `
+	Generators []GeneratorConfig `json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
 }
 
 func NewDependencies() *Dependencies {
 	return &Dependencies{
-		Designs:    []DependentDesigns{},
+		Designs:    []TemplateConfig{},
 		Generators: []GeneratorConfig{},
 	}
 }

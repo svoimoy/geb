@@ -30,6 +30,11 @@ type:
         - name: errorReport
           type: "array:error"
 
+    - name: subdesign
+      return:
+        - name: errorReport
+          type: "array:error"
+
     - name: plan
       return:
         - name: err

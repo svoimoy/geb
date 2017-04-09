@@ -146,6 +146,15 @@ func (P *Project) Unify() (errorReport []error) {
 /*
 Where's your docs doc?!
 */
+func (P *Project) Subdesign() (errorReport []error) {
+	// HOFSTADTER_START Subdesign
+	// HOFSTADTER_END   Subdesign
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
 func (P *Project) Plan() (err error) {
 	// HOFSTADTER_START Plan
 
@@ -156,6 +165,7 @@ func (P *Project) Plan() (err error) {
 	// create a map for the planning process
 	data := map[string]interface{}{
 		"proj":   P.Design.Proj,
+		"data":   P.Design.Data,
 		"type":   P.Design.Type,
 		"dsl":    P.Design.Dsl,
 		"pkg":    P.Design.Pkg,

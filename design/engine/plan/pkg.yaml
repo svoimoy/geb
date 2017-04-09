@@ -16,12 +16,65 @@ pkg:
         - name: err
           type: error
 
+    - name: make-subdesign-plans
+      args:
+        - name: dsl-map
+          type: "map:*engine.dsl.Dsl"
+        - name: design-data
+          type: "map:interface{}"
+      return:
+        - name: ret
+          type: "array:Plan"
+        - name: err
+          type: error
+
 
   private-functions:
 
     # this will replace the 4 different planning methods which exist today
     # see engine/plan/todo.md
     - name: make-plans
+      args:
+        - name: dsl-key
+          type: string
+        - name: gen-key
+          type: string
+        - name: ctx-dir
+          type: string
+        - name: dsl-ctx
+          type: "interface{}"
+        - name: design-data
+          type: "map:interface{}"
+        - name: D
+          type: "*engine.dsl.Dsl"
+        - name: G
+          type: "*engine.gen.generator"
+        - name: R
+          type: "engine.gen.template-config"
+
+      return:
+        - name: plans
+          type: "array:Plan"
+        - name: err
+          type: error
+
+    - name: make-project-plans
+      args:
+        - name: dsl-type
+          type: string
+        - name: dsl-ctx
+          type: "interface{}"
+        - name: dsl-map
+          type: "map:*engine.dsl.Dsl"
+        - name: design-data
+          type: "map:interface{}"
+      return:
+        - name: plans
+          type: "array:Plan"
+        - name: err
+          type: error
+
+    - name: make-subdesign-plans
       args:
         - name: dsl-type
           type: string

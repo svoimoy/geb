@@ -47,23 +47,9 @@ type-list:
       kabob: true
       fields:
         - name: designs
-          type: array:dependent-designs
+          type: array:template-config
         - name: generators
           type: array:generator-config
-
-    - name: dependent-designs
-      kabob: true
-      fields:
-        - name: name
-          type: string
-        - name: field
-          type: string
-        - name: when
-          type: string
-        - name: in
-          type: string
-        - name: out
-          type: string
 
     - name: generator-config
       kabob: true

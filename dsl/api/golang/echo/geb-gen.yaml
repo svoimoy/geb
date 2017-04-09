@@ -8,30 +8,21 @@ about: A golang Echo webframework dsl
 # e.x. pkg is used in binding for api, cli, client
 dependencies:
   designs:
-    - name: db-ops
-      data: "."
-      in: lib/db-ops/pkg.yaml
-      out: lib/db-ops/pkg.yaml
-    - name: db-cli
-      data: "."
-      in: lib/tools/db-ops/cli.yaml
-      out: lib/tools/db-ops/cli.yaml
-    - name: data-cli
-      data: "."
-      in: lib/tools/data-ops/cli.yaml
-      out: lib/tools/data-ops/cli.yaml
-    - name: sdk
-      data: "."
-      in: client/sdk/pkg.yaml
-      out: client/sdk/pkg.yaml
-    - name: js
-      data: "."
-      in: client/js/pkg.yaml
-      out: client/js/pkg.yaml
-    - name: cli
-      data: "."
-      in: client/cli/cli.yaml
-      out: "client/{{name}}-cli/cli.yaml"
+    - name: root
+      field: "."
+      templates:
+        - in: lib/db-ops/pkg.yaml
+          out: lib/db-ops/pkg.yaml
+        - in: lib/tools/db-ops/cli.yaml
+          out: lib/tools/db-ops/cli.yaml
+        - in: lib/tools/data-ops/cli.yaml
+          out: lib/tools/data-ops/cli.yaml
+        - in: client/sdk/pkg.yaml
+          out: client/sdk/pkg.yaml
+        - in: client/js/pkg.yaml
+          out: client/js/pkg.yaml
+        - in: client/cli/cli.yaml
+          out: "client/{{name}}-cli/cli.yaml"
 
   generators:
     - dsl: common

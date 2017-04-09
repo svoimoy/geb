@@ -13,6 +13,7 @@ import (
 	"github.ibm.com/hofstadter-io/dotpath"
 
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"
+	"github.ibm.com/hofstadter-io/geb/engine/gen"
 	"github.ibm.com/hofstadter-io/geb/engine/templates"
 	// HOFSTADTER_END   import
 )
@@ -45,7 +46,7 @@ func MakePlans(dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (r
 		f0 := ps[0]
 		switch f0 {
 		case "type", "pkg", "dsl":
-			plans, err := makePlans(f0, design, dslMap, designData)
+			plans, err := makeProjectPlans(f0, design, dslMap, designData)
 			if err != nil {
 				return ret, errors.Wrap(err, "in MakePlans\n")
 			}
@@ -67,11 +68,222 @@ func MakePlans(dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (r
 /*
 Where's your docs doc?!
 */
-func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (plans []Plan, err error) {
+func MakeSubdesignPlans(dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (ret []Plan, err error) {
+	// HOFSTADTER_START MakeSubdesignPlans
+	logger.Info("Planning Subdesigns")
+	logger.Info("    with...", "dslMap", dslMap)
+
+	flatland, err := flattenDesignData("", designData)
+	if err != nil {
+		return ret, errors.Wrap(err, "in MakePlans\n")
+	}
+	// logger.Debug("    and...  flatland!!", "flatland", flatland)
+
+	for ctx_path, design := range flatland {
+		ps := strings.Split(ctx_path, "/")
+		f0 := ps[0]
+		switch f0 {
+		case "type", "pkg", "dsl":
+			plans, err := makeSubdesignPlans(f0, design, dslMap, designData)
+			if err != nil {
+				return ret, errors.Wrap(err, "in MakePlans\n")
+			}
+			ret = append(ret, plans...)
+
+		default:
+			return nil, errors.New("unknown design type: '" + ctx_path + "' // " + f0)
+
+		}
+
+		logger.Debug("in MakingPlans", "ctx_path", ctx_path, "plans", len(ret))
+	}
+
+	return ret, nil
+	// HOFSTADTER_END   MakeSubdesignPlans
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, designData map[string]interface{}, D *dsl.Dsl, G *gen.Generator, R gen.TemplateConfig) (plans []Plan, err error) {
 	// HOFSTADTER_START makePlans
 	logger.Info("makePlans")
 	logger.Debug("  context", "dsl_ctx", dslCtx)
 
+	logger.Info("Processing Templates Field: '"+R.Name+"'", "field", R.Field, "dslCtx", dslCtx)
+
+	// lookup the field used to fill in the template
+	repeat_elems, err := dotpath.Get(R.Field, dslCtx, false)
+	// meh...
+	if err != nil || repeat_elems == nil {
+		logger.Debug("Skipping Templates Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
+
+		return nil, nil
+	}
+
+	logger.Debug("Doing Templates Field: '" + R.Name + "'")
+	var c_slice []interface{}
+
+	// the first two clauses ensure its an object of some sort
+	// the last handles arrays, but omits the object check
+	// should we be checking for objects at all?
+	// or just arrays and other?
+	switch M := repeat_elems.(type) {
+
+	case map[string]interface{}:
+		c_slice = append(c_slice, M)
+
+	case map[interface{}]interface{}:
+		c_slice = append(c_slice, M)
+
+	case []interface{}:
+		for _, elem := range M {
+			// need to think about sub-sub-sub-[cli/api] and N-sub-[dsl]
+			//
+			// recursion!
+			//
+			// possibly flatten array levels
+			if R.Flatten > 0 {
+
+				switch M2 := elem.(type) {
+
+				case map[string]interface{}:
+					c_slice = append(c_slice, M2)
+
+				case map[interface{}]interface{}:
+					c_slice = append(c_slice, M2)
+
+				case []interface{}:
+					for _, elem2 := range M2 {
+						c_slice = append(c_slice, elem2)
+					}
+
+				default:
+					logger.Info("input is not a map or slice", "input", M)
+
+				}
+			} else {
+				// just add the current array to c_slice
+				c_slice = append(c_slice, elem)
+			}
+		}
+
+	default:
+		logger.Info("input is not a map or slice", "input", M)
+
+	}
+
+	// logger.Info("Done adding to c_slice", "c_slice", len(c_slice))
+
+	// flattern c_slice
+	// ....
+	// ....
+	tmp_c_slice := []interface{}{}
+	for _, elem := range c_slice {
+		if A, ok := elem.([]interface{}); ok {
+			for _, a := range A {
+				tmp_c_slice = append(tmp_c_slice, a)
+			}
+		} else {
+			tmp_c_slice = append(tmp_c_slice, elem)
+		}
+	}
+	c_slice = tmp_c_slice
+
+	logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
+	// for all of the templates in the generator configuration, for this field
+	for _, t_pair := range R.Templates {
+		logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Templates)
+
+		t_key := t_pair.In
+		T, ok := G.Templates[t_key]
+		if !ok {
+			return nil, errors.New("Unknown repeat template: " + t_key)
+		}
+		// t_ray := (*raymond.Template)(T)
+		t_ray := T
+		logger.Debug("        found repeat template: ", "repeat", R.Name, "in", t_key)
+
+		for idx, val := range c_slice {
+			// needed because of range iteration behavior
+			// also want to override when 'when' is found
+			local_ctx := val
+
+			// check the when clause
+			if t_pair.When != "" {
+				logger.Info("When", "t_pair", t_pair)
+				when_elems, err := dotpath.Get(t_pair.When, val, false)
+				logger.Debug("  elems", "when_elems", when_elems)
+				if err != nil || when_elems == nil {
+					logger.Debug("Skipping TemplatePair When Field: '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
+					continue
+				}
+				switch W := when_elems.(type) {
+				case []interface{}:
+					if len(W) == 0 {
+						logger.Warn("Skipping TemplatePair When Field: (array) '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
+						continue
+					}
+					when_elems = W[0]
+				}
+				logger.Debug("When is NOW")
+				local_ctx = when_elems
+			}
+
+			logger.Debug("     context", "val", local_ctx, "idx", idx)
+
+			OF_name, err := determineOutfileName(t_pair.Out, val)
+			if err != nil {
+				return nil, errors.Wrap(err, "in make_dsls\n")
+			}
+
+			G_key := filepath.Join(dslKey, genKey)
+			if G.Config.OutputDir != "" {
+				G_key = G.Config.OutputDir
+			}
+
+			outfile := filepath.Join(G_key, ctxDir, OF_name)
+			logger.Info("OFNAME", "G_key", G_key, "ctx_dir", ctxDir, "OF_name", OF_name, "outfile", outfile)
+
+			// build up the plan data struct
+			fgd := Plan{
+				Dsl:      dslKey,
+				Gen:      genKey,
+				File:     t_key,
+				Template: t_ray,
+				Data:     designData,
+				Outfile:  outfile,
+
+				DslContext:      dslCtx,
+				RepeatedContext: local_ctx,
+				TemplateContext: local_ctx,
+			}
+			// logger.Info("        planned repeat file: "+t_key, "index", idx)
+			// logger.Debug("          data...", "fgd", fgd, "index", idx)
+
+			// add the plan to a linear list to be rendered
+			plans = append(plans, fgd)
+
+		} // END of context loop 'c_slice'
+		logger.Info("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", len(c_slice))
+		// logger.Debug("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", c_slice)
+
+	}
+	logger.Info("return from makePlans")
+	// logger.Debug("return from makePlans", "plans", plans)
+
+	return plans, nil
+
+	// HOFSTADTER_END   makePlans
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (plans []Plan, err error) {
+	// HOFSTADTER_START makeProjectPlans
 	// get the ctx path for later comparison against dsl
 	ictx_path, err := dotpath.Get("ctx_path", dslCtx, true)
 	if err != nil {
@@ -107,11 +319,6 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 		for g_key, G := range D.Generators {
 			logger.Info("      gen: "+g_key, "gen_cfg", G.Config)
 
-			G_key := filepath.Join(d_key, g_key)
-			if G.Config.OutputDir != "" {
-				G_key = G.Config.OutputDir
-			}
-
 			//
 			//  TEMPLATES
 			//
@@ -126,172 +333,27 @@ func makePlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, d
 
 			// Render the repeated templates
 			for _, R := range repeats {
-				logger.Info("Processing Templates Field: '"+R.Name+"'", "field", R.Field, "dslCtx", dslCtx)
-
-				// lookup the field used to fill in the template
-				repeat_elems, err := dotpath.Get(R.Field, dslCtx, false)
-				if err != nil || repeat_elems == nil {
-					logger.Debug("Skipping Templates Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
-
-					continue
+				ps, err := makePlans(d_key, g_key, ctx_dir, dslCtx, designData, D, G, R)
+				if err != nil {
+					return nil, errors.Wrap(err, "while making project plans")
 				}
-
-				logger.Debug("Doing Templates Field: '" + R.Name + "'")
-				var c_slice []interface{}
-
-				// the first two clauses ensure its an object of some sort
-				// the last handles arrays, but omits the object check
-				// should we be checking for objects at all?
-				// or just arrays and other?
-				switch M := repeat_elems.(type) {
-
-				case map[string]interface{}:
-					c_slice = append(c_slice, M)
-
-				case map[interface{}]interface{}:
-					c_slice = append(c_slice, M)
-
-				case []interface{}:
-					for _, elem := range M {
-						// need to think about sub-sub-sub-[cli/api] and N-sub-[dsl]
-						//
-						// recursion!
-						//
-						// possibly flatten array levels
-						if R.Flatten > 0 {
-
-							switch M2 := elem.(type) {
-
-							case map[string]interface{}:
-								c_slice = append(c_slice, M2)
-
-							case map[interface{}]interface{}:
-								c_slice = append(c_slice, M2)
-
-							case []interface{}:
-								for _, elem2 := range M2 {
-									c_slice = append(c_slice, elem2)
-								}
-
-							default:
-								logger.Info("input is not a map or slice", "input", M)
-
-							}
-						} else {
-							// just add the current array to c_slice
-							c_slice = append(c_slice, elem)
-						}
-					}
-
-				default:
-					logger.Info("input is not a map or slice", "input", M)
-
-				}
-
-				// logger.Info("Done adding to c_slice", "c_slice", len(c_slice))
-
-				// flattern c_slice
-				// ....
-				// ....
-				tmp_c_slice := []interface{}{}
-				for _, elem := range c_slice {
-					if A, ok := elem.([]interface{}); ok {
-						for _, a := range A {
-							tmp_c_slice = append(tmp_c_slice, a)
-						}
-					} else {
-						tmp_c_slice = append(tmp_c_slice, elem)
-					}
-				}
-				c_slice = tmp_c_slice
-
-				logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
-				// for all of the templates in the generator configuration, for this field
-				for _, t_pair := range R.Templates {
-					logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Templates)
-
-					t_key := t_pair.In
-					T, ok := G.Templates[t_key]
-					if !ok {
-						return nil, errors.New("Unknown repeat template: " + t_key)
-					}
-					// t_ray := (*raymond.Template)(T)
-					t_ray := T
-					logger.Debug("        found repeat template: ", "repeat", R.Name, "in", t_key)
-
-					for idx, val := range c_slice {
-						// needed because of range iteration behavior
-						// also want to override when 'when' is found
-						local_ctx := val
-
-						// check the when clause
-						if t_pair.When != "" {
-							logger.Info("When", "t_pair", t_pair)
-							when_elems, err := dotpath.Get(t_pair.When, val, false)
-							logger.Debug("  elems", "when_elems", when_elems)
-							if err != nil || when_elems == nil {
-								logger.Debug("Skipping TemplatePair When Field: '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
-								continue
-							}
-							switch W := when_elems.(type) {
-							case []interface{}:
-								if len(W) == 0 {
-									logger.Warn("Skipping TemplatePair When Field: (array) '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
-									continue
-								}
-								when_elems = W[0]
-							}
-							logger.Debug("When is NOW")
-							local_ctx = when_elems
-						}
-
-						logger.Debug("     context", "val", local_ctx, "idx", idx)
-
-						OF_name, err := determineOutfileName(t_pair.Out, val)
-						if err != nil {
-							return nil, errors.Wrap(err, "in make_dsls\n")
-						}
-
-						outfile := filepath.Join(G_key, ctx_dir, OF_name)
-						logger.Info("OFNAME", "G_key", G_key, "ctx_dir", ctx_dir, "OF_name", OF_name, "outfile", outfile)
-
-						// build up the plan data struct
-						fgd := Plan{
-							Dsl:      d_key,
-							Gen:      g_key,
-							File:     t_key,
-							Template: t_ray,
-							Data:     designData,
-							Outfile:  outfile,
-
-							DslContext:      dslCtx,
-							RepeatedContext: local_ctx,
-							TemplateContext: local_ctx,
-						}
-						// logger.Info("        planned repeat file: "+t_key, "index", idx)
-						// logger.Debug("          data...", "fgd", fgd, "index", idx)
-
-						// add the plan to a linear list to be rendered
-						plans = append(plans, fgd)
-
-					} // END of context loop 'c_slice'
-					logger.Info("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", len(c_slice))
-					// logger.Debug("    end repeat loop: ", "repeat", R.Name, "in", t_key, "c_slice", c_slice)
-
-				}
-
+				plans = append(plans, ps...)
 			} // End of template processing
 
 		} // End Generator loop
 
 	} // End DSL loop
 
-	logger.Info("return from makePlans")
-	// logger.Debug("return from makePlans", "plans", plans)
+	// HOFSTADTER_END   makeProjectPlans
+	return
+}
 
-	return plans, nil
-
-	// HOFSTADTER_END   makePlans
+/*
+Where's your docs doc?!
+*/
+func makeSubdesignPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (plans []Plan, err error) {
+	// HOFSTADTER_START makeSubdesignPlans
+	// HOFSTADTER_END   makeSubdesignPlans
 	return
 }
 
