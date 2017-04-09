@@ -1,0 +1,4 @@
+name: "db/psql"
+version: "0.1"
+type: "dsl"
+about: "a package dsl, specialized for Postgres"

@@ -3,6 +3,17 @@ version: "0.1"
 about: "generator for golang types"
 type: "type"
 
+dependencies:
+  designs:
+    - name: root
+      field: "."
+      templates:
+        - when: orm
+          in: db-pub-funcs.yaml
+          out: "{{name}}-db-pub-funcs.yaml"
+        - when: orm
+          in: db-type-funcs.yaml
+          out: "{{name}}-db-type-funcs.yaml"
 
 template-configs:
 
@@ -10,19 +21,19 @@ template-configs:
     field: "."
     templates:
       - in: "default.go"
-        out: "type{{camelT name}}.go"
+        out: "{{camelT name}}.go"
       - when: orm
         in: "db.go"
-        out: "db{{camelT name}}.go"
+        out: "{{camelT name}}-DB.go"
 
   - name: public-files
     field: "public-files"
     templates:
       - in: "public-file.go"
-        out: "type{{camelT parent}}{{camelT name}}PubFuncs.go"
+        out: "{{camelT name}}.go"
 
   - name: private-files
     field: "private-files"
     templates:
       - in: "private-file.go"
-        out: "type{{camelT parent}}{{camelT name}}PrivFuncs.go"
+        out: "{{camelT name}}.go"

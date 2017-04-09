@@ -12,7 +12,7 @@ template-configs:
       - in: "log.go"
         out: "log.go"
       - in: "package.go"
-        out: "{{camelT name}}PubPkg.go"
+        out: "{{#if filename}}{{filename}}{{else}}{{camelT name}}PubPkg{{/if}}.go"
         
       #- in: "public-pkg-funcs.go"
       #  out: "{{camelT name}}PubPkg.go"

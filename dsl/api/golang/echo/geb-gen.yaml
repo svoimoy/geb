@@ -11,16 +11,15 @@ dependencies:
     - name: root
       field: "."
       templates:
-        - in: lib/db-ops/pkg.yaml
-          out: lib/db-ops/pkg.yaml
-        - in: tools/db-ops/cli.yaml
-          out: tools/db-ops/cli.yaml
-        - in: tools/data-ops/cli.yaml
-          out: tools/data-ops/cli.yaml
+        - when: "databases.[type==postgres]"
+          in: databases/psql/db.yaml
+          out: databases/psql/db.yaml
         - in: client/sdk/pkg.yaml
           out: client/sdk/pkg.yaml
         - in: client/cli/cli.yaml
           out: "client/{{name}}-cli/cli.yaml"
+        - in: tools/data-ops/cli.yaml
+          out: tools/data-ops/cli.yaml
 
   generators:
     - dsl: common
@@ -32,6 +31,10 @@ dependencies:
         - golang
       output-dir: "."
     - dsl: pkg
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: db/psql
       gen:
         - golang
       output-dir: "."
@@ -57,15 +60,6 @@ template-configs:
       - when: resources
         in: "log.go"
         out: "resources/log.go"
-      - when: "databases.[type==postgres]"
-        in: "setupPostgres.go"
-        out: "databases/setupPostgres.go"
-
-  - name: databases
-    field: databases
-    templates:
-      - in: "log.go"
-        out: "databases/log.go"
 
   - name: route
     field: routes

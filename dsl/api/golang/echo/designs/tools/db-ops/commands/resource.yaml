@@ -1,0 +1,52 @@
+# add db funcs to the type public functions
+{{#with RepeatedContext as |CTX|}}
+cli:
+  name: "{{DslContext.name}}-tool-db"
+
+  commands:
+
+    - name: "{{CTX.name}}"
+
+      subcommands:
+
+        - name: "migrate"
+          return:
+            - name: err
+              type: error
+
+        - name: "create"
+          usage: "create <data-file>"
+          args:
+            - name: data-file
+              type: string
+
+        - name: "find"
+          usage: "find <uuid>"
+          args:
+            - name: id
+              type: string
+
+        - name: "update"
+          usage: "update <data-file>"
+          args:
+            - name: data-file
+              type: string
+
+        - name: "delete"
+          usage: "delete <uuid>"
+          args:
+            - name: id
+              type: string 
+
+        - name: "query"
+          usage: "query [key=value]..."
+          args:
+            - name: matchers
+              type: array:string 
+
+
+{{/with}}
+
+# HOFSTADTER_BELOW
+
+

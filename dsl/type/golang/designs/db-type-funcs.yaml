@@ -1,0 +1,55 @@
+# add db funcs to the type public functions
+{{#with DslContext as |CTX|}}
+type:
+  name: "{{CTX.name}}"
+
+  public-files:
+
+    - name: "{{CTX.name}}-db-type-funcs"
+
+      functions:
+
+        - name: migrate
+          args:
+            - name: db
+              type: "*github.com/jinzhu/gorm.DB"
+          return:
+            - name: err
+              type: error
+
+        - name: create
+          args:
+            - name: db
+              type: "*github.com/jinzhu/gorm.DB"
+          return:
+            - name: err
+              type: error
+
+        - name: find
+          args:
+            - name: db
+              type: "*github.com/jinzhu/gorm.DB"
+          return:
+            - name: err
+              type: error
+
+        - name: update
+          args:
+            - name: db
+              type: "*github.com/jinzhu/gorm.DB"
+          return:
+            - name: err
+              type: error
+
+        - name: delete
+          args:
+            - name: db
+              type: "*github.com/jinzhu/gorm.DB"
+          return:
+            - name: err
+              type: error
+
+{{/with}}
+
+# HOFSTADTER_BELOW
+

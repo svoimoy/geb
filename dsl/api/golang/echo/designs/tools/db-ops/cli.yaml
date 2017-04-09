@@ -1,4 +1,38 @@
 cli:
   name: "{{DslContext.name}}-tool-db"
 
+  short: "A tool for working with the {{DslContext.name}} databases"
+  long: "A tool for working with the {{DslContext.name}} databases"
+
+  omit-run: true
+
+  persistent-prerun: true
+
+  commands:
+
+    - name: table
+      short: "work with tables"
+
+      omit-run: true
+
+    - name: create
+      short: "create records"
+
+      omit-run: true
+
+    - name: update
+      short: "update records"
+
+      omit-run: true
+
+    - name: delete
+      short: "delete records"
+
+      omit-run: true
+
+    - name: query
+      short: "query records"
+
+      omit-run: true
+
 # HOFSTADTER_BELOW

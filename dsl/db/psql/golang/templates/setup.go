@@ -1,5 +1,4 @@
-{{#with DslContext as |API| }}
-package databases
+package psql
 
 import (
 	"github.com/jinzhu/gorm"
@@ -32,5 +31,5 @@ func DisconnectFromPostgres() {
 	POSTGRES.Close()
 }
 
-{{/with}}
 // HOFSTADTER_BELOW
+

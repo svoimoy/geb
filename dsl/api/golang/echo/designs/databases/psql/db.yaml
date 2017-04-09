@@ -1,0 +1,15 @@
+{{#with DslContext as |CTX|}}
+db/psql:
+  name: postgres
+
+  database-config:
+    host: postgres
+    port: 5432
+    name: develop
+    user: watson
+    pass: disgophery
+
+{{/with}}
+
+# HOFSTADTER_BELOW
+
