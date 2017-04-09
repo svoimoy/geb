@@ -106,6 +106,15 @@ func (D *Design) storeDslDesign(relativePath string, dsl string, name string, de
 /*
 Where's your docs doc?!
 */
+func (D *Design) storeDataDesign(relativePath string, name string, design interface{}) (err error) {
+	// HOFSTADTER_START storeDataDesign
+	// HOFSTADTER_END   storeDataDesign
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
 func (D *Design) storeTypeDesign(relativePath string, name string, design interface{}) (err error) {
 	// HOFSTADTER_START storeTypeDesign
 	logger.Info("    - storing type", "name", name, "rel_path", relativePath)

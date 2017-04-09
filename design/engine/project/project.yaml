@@ -52,22 +52,16 @@ type:
     - name: load
       functions:
 
-        - name: load-default-generators
-          return:
-            - name: err
-              type: error
-
         - name: load-generators
-          args:
-            - name: generators
-              type: "array:string"
           return:
             - name: err
               type: error
 
-        - name: load-generator-list
+        - name: load-generator
           args:
-            - name: generators
+            - name: generator
+              type: "engine.gen.generator-config"
+            - name: dsl-lookup-paths
               type: "array:string"
           return:
             - name: err

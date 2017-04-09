@@ -7,5 +7,5 @@ type:
       type: array:string
       required: true
     - name: default
-      type: array:gen-pair
+      type: "array:engine.gen.generator-config"
 

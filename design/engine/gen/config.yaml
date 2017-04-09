@@ -3,7 +3,6 @@ type-list:
   list:
     - name: config
       kabob: true
-      version: "0.0.1"
       fields:
         - name: name
           type: string
@@ -15,6 +14,8 @@ type-list:
           type: string
         - name: language
           type: string
+        - name: dependencies
+          type: dependencies
         - name: template-configs
           type: array:template-config
         - name: output-dir
@@ -22,7 +23,6 @@ type-list:
 
     - name: template-config
       kabob: true
-      version: "0.0.1"
       fields:
         - name: name
           type: string
@@ -35,12 +35,44 @@ type-list:
 
     - name: template-render-pair
       kabob: true
-      version: "0.0.1"
       fields:
         - name: when
           type: string
         - name: in
           type: string
         - name: out
+          type: string
+
+    - name: dependencies
+      kabob: true
+      fields:
+        - name: designs
+          type: array:dependent-designs
+        - name: generators
+          type: array:generator-config
+
+    - name: dependent-designs
+      kabob: true
+      fields:
+        - name: name
+          type: string
+        - name: field
+          type: string
+        - name: when
+          type: string
+        - name: in
+          type: string
+        - name: out
+          type: string
+
+    - name: generator-config
+      kabob: true
+      fields:
+        - name: dsl
+          type: string
+          required: true
+        - name: gen
+          type: array:string
+        - name: output-dir
           type: string
 

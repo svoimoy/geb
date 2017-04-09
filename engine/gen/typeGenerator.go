@@ -26,6 +26,7 @@ Where's your docs doc?!
 type Generator struct {
 	Config     *Config               `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
 	SourcePath string                `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
+	Designs    templates.TemplateMap `json:"designs" xml:"designs" yaml:"designs" form:"designs" query:"designs" `
 	Templates  templates.TemplateMap `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
 	Partials   templates.TemplateMap `json:"partials" xml:"partials" yaml:"partials" form:"partials" query:"partials" `
 }
@@ -43,6 +44,17 @@ Where's your docs doc?!
 func (G *Generator) MergeOverwrite(incoming *Generator) {
 	// HOFSTADTER_START MergeOverwrite
 	logger.Info("Merging GEN", "existing", G.SourcePath, "incoming", incoming.SourcePath)
+
+	for path, T := range incoming.Designs {
+		_, ok := G.Designs[path]
+		if ok {
+			logger.Info("Overriding design", "design", path)
+		} else {
+			logger.Info("Adding design", "design", path)
+		}
+		G.Designs[path] = T
+	}
+
 	for path, T := range incoming.Templates {
 		_, ok := G.Templates[path]
 		if ok {
@@ -52,6 +64,7 @@ func (G *Generator) MergeOverwrite(incoming *Generator) {
 		}
 		G.Templates[path] = T
 	}
+
 	for path, P := range incoming.Partials {
 		_, ok := G.Partials[path]
 		if ok {
@@ -71,6 +84,17 @@ Where's your docs doc?!
 func (G *Generator) MergeSkipExisting(incoming *Generator) {
 	// HOFSTADTER_START MergeSkipExisting
 	logger.Info("Merging GEN", "existing", G.SourcePath, "incoming", incoming.SourcePath)
+
+	for path, T := range incoming.Designs {
+		_, ok := G.Designs[path]
+		if ok {
+			logger.Info("Skipping design", "design", path)
+		} else {
+			logger.Info("Adding design", "design", path)
+			G.Designs[path] = T
+		}
+	}
+
 	for path, T := range incoming.Templates {
 		_, ok := G.Templates[path]
 		if ok {
@@ -80,6 +104,7 @@ func (G *Generator) MergeSkipExisting(incoming *Generator) {
 			G.Templates[path] = T
 		}
 	}
+
 	for path, P := range incoming.Partials {
 		_, ok := G.Partials[path]
 		if ok {

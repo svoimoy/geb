@@ -6,6 +6,8 @@ type:
       type: '*Config'
     - name: source-path
       type: 'string'
+    - name: designs
+      type: 'engine.templates.TemplateMap'
     - name: templates
       type: 'engine.templates.TemplateMap'
     - name: partials

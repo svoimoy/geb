@@ -33,20 +33,22 @@ About:
 Where's your docs doc?!
 */
 type Design struct {
-	Custom map[string]interface{} `json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
-	Dsl    map[string]interface{} `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
-	Pkg    map[string]interface{} `json:"pkg" xml:"pkg" yaml:"pkg" form:"pkg" query:"pkg" `
 	Proj   map[string]interface{} `json:"proj" xml:"proj" yaml:"proj" form:"proj" query:"proj" `
+	Data   map[string]interface{} `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
 	Type   map[string]interface{} `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
+	Pkg    map[string]interface{} `json:"pkg" xml:"pkg" yaml:"pkg" form:"pkg" query:"pkg" `
+	Dsl    map[string]interface{} `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
+	Custom map[string]interface{} `json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
 }
 
 func NewDesign() *Design {
 	return &Design{
-		Custom: map[string]interface{}{},
-		Dsl:    map[string]interface{}{},
-		Pkg:    map[string]interface{}{},
 		Proj:   map[string]interface{}{},
+		Data:   map[string]interface{}{},
 		Type:   map[string]interface{}{},
+		Pkg:    map[string]interface{}{},
+		Dsl:    map[string]interface{}{},
+		Custom: map[string]interface{}{},
 	}
 }
 

@@ -68,11 +68,14 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 	P.Config = c
 	logger.Info("Project Config", "config", P.Config)
 
-	err = P.LoadGenerators(generators)
+	// This should probably move below the design loading
+	// or perhaps we just have a step during unification to load the dependencies and such
+	err = P.LoadGenerators()
 	if err != nil {
 		return errors.Wrap(err, "while loading generators\n")
 	}
 
+	// make sure loading designs does not depend on the generators being loaded
 	d_dir := P.Config.DesignDir
 	logger.Info("Reading designs", "folder", d_dir)
 	d, err := design.CreateFromFolder(d_dir)

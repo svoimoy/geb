@@ -1,0 +1,48 @@
+api:
+  name: server
+  about: "a simple blog server"
+
+  config:
+    host: localhost
+    port: 4224
+
+  prometheus: true
+
+  databases:
+    - name: postgres
+      type: postgres
+
+  auth:
+    authentication:
+      - type: basic
+      - type: apikey
+    authorization:
+      - type: abac
+      # - type: rbac 
+
+  middleware:
+    - name: auth
+    - name: cors
+    - name: csrf
+    - name: limiter
+
+  global-params:
+    - name: version
+      type: string
+      required: true
+
+  routes:
+    - name: lively-check
+      route: lively
+      method: GET
+      return:
+        - name: ret-data
+          type: lively-response
+
+    - name: ready-check
+      route: ready
+      method: GET
+      return:
+        - name: ret-data
+          type: ready-response
+

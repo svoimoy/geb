@@ -1,8 +1,9 @@
 package project
 
 import (
-// HOFSTADTER_START import
-// HOFSTADTER_END   import
+	// HOFSTADTER_START import
+	"github.ibm.com/hofstadter-io/geb/engine/gen"
+	// HOFSTADTER_END   import
 )
 
 /*
@@ -23,14 +24,14 @@ About:
 Where's your docs doc?!
 */
 type DslConfig struct {
-	Paths   []string  `json:"paths" xml:"paths" yaml:"paths" form:"paths" query:"paths" `
-	Default []GenPair `json:"default" xml:"default" yaml:"default" form:"default" query:"default" `
+	Paths   []string              `json:"paths" xml:"paths" yaml:"paths" form:"paths" query:"paths" `
+	Default []gen.GeneratorConfig `json:"default" xml:"default" yaml:"default" form:"default" query:"default" `
 }
 
 func NewDslConfig() *DslConfig {
 	return &DslConfig{
 		Paths:   []string{},
-		Default: []GenPair{},
+		Default: []gen.GeneratorConfig{},
 	}
 }
 

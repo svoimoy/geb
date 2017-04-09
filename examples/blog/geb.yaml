@@ -1,0 +1,30 @@
+name: "blog"
+about: "an example blog app"
+
+design-dir: "design"
+output-dir: "."
+
+dsl-config:
+  paths:
+    - "$GOPATH/src/github.ibm.com/hofstadter-io/geb/dsl"
+  default:
+
+    - dsl: type
+      gen:
+        - golang
+      output-dir: "."
+
+    - dsl: pkg
+      gen:
+        - golang
+      output-dir: "."
+
+    - dsl: api
+      gen:
+        - golang/echo
+      output-dir: "."
+
+log-config:
+  default:
+    level: warn
+    stack: true

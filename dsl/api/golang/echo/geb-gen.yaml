@@ -4,56 +4,52 @@ language: golang
 type: api
 about: A golang Echo webframework dsl
 
-# Need to be careful about not colliding with
-# any other pkg, cli, api
-# however the user has control over these
-# settings anyhow, so perhaps just need to detect
-
-#build-pipeline:
-#  stages:
-#    - name: generate dependent yaml
-#      cmd: "geb gen ...? (specific dirs and output files)"
-#    # possible remove with deps
-#    - name: generate types
-#      cmd: "geb gen -gen type/golang ???"
-#    - name: generate library
-#      cmd: "geb gen -gen pkg/golang ???"
-#    # stop possible remove with deps
-#    - name: generate api
-#      cmd: "geb gen -gen api/golang/echo"
-#    # possible remove with deps
-#    - name: generate js-client
-#      cmd: "geb gen -G client/js"
-#    - name: generate cli
-#      cmd: "geb gen cli"
-#    # stop possible remove with deps
-
-# build-pipeline with deps below
-build-pipeline:
-  stages:
-    # - name: generate dependent yaml
-    #   cmd: "geb gen ...? (specific dirs and output files)"
-    - name: generate api
-      cmd: "geb gen -gen api/golang/echo"
-
 # How to deal with package and user-defined, but used dsl
 # e.x. pkg is used in binding for api, cli, client
 dependencies:
-  design-templates:
-    - dsl: cli
+  designs:
+    - name: db-ops
       data: "."
-      in: cli.yaml
-      out: cli.yaml
-    - dsl: client
+      in: lib/db-ops/pkg.yaml
+      out: lib/db-ops/pkg.yaml
+    - name: db-cli
       data: "."
-      in: client.yaml
-      out: client.yaml
+      in: lib/tools/db-ops/cli.yaml
+      out: lib/tools/db-ops/cli.yaml
+    - name: data-cli
+      data: "."
+      in: lib/tools/data-ops/cli.yaml
+      out: lib/tools/data-ops/cli.yaml
+    - name: sdk
+      data: "."
+      in: client/sdk/pkg.yaml
+      out: client/sdk/pkg.yaml
+    - name: js
+      data: "."
+      in: client/js/pkg.yaml
+      out: client/js/pkg.yaml
+    - name: cli
+      data: "."
+      in: client/cli/cli.yaml
+      out: "client/{{name}}-cli/cli.yaml"
+
   generators:
-    - type/golang # include? (probably doesn't hurt)
-    - pkg/golang  # include? (probably doesn't hurt)
-    - cli/golang
-    - client/golang
-    - client/js
+    - dsl: common
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: type
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: pkg
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: cli
+      gen:
+        - golang
+      output-dir: "."
 
 template-configs:
 

@@ -42,6 +42,12 @@ func CreateFromFolder(folder string) (g *Generator, err error) {
 	g.Config = c
 	g.SourcePath = folder
 
+	d, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "designs"))
+	if err != nil {
+		return nil, errors.Wrapf(err, "while reading 'partials' folder in: %s\n", folder)
+	}
+	g.Designs = d
+
 	p, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
 	if err != nil {
 		return nil, errors.Wrapf(err, "while reading 'partials' folder in: %s\n", folder)

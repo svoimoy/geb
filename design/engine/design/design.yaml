@@ -3,15 +3,17 @@ type:
   kabob: true
   version: "0.0.1"
   fields:
-    - name: custom
+    - name: proj
       type: 'map:interface{}'
-    - name: dsl
+    - name: data
+      type: 'map:interface{}'
+    - name: type
       type: 'map:interface{}'
     - name: pkg
       type: 'map:interface{}'
-    - name: proj
+    - name: dsl
       type: 'map:interface{}'
-    - name: type
+    - name: custom
       type: 'map:interface{}'
 
   public-functions:
@@ -90,6 +92,18 @@ type:
             - name: relative-path
               type: string
             - name: dsl
+              type: string
+            - name: name
+              type: string
+            - name: design
+              type: "interface{}"
+          return:
+            - name: err
+              type: error
+          
+        - name: store-data-design
+          args:
+            - name: relative-path
               type: string
             - name: name
               type: string

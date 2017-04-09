@@ -6,8 +6,18 @@ about: A golang viper/cobra cli dsl
 
 dependencies:
   generators:
-    - type/golang
-    - pkg/golang
+    - dsl: common
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: type
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: pkg
+      gen:
+        - golang
+      output-dir: "."
 
 template-configs:
 
