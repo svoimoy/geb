@@ -1,4 +1,0 @@
-{{#with dsl.project as |P|}}
-custom:
-  project-name: {{P.name}}
-{{/with}}

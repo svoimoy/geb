@@ -239,9 +239,18 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 
 			logger.Debug("     context", "val", local_ctx, "idx", idx)
 
+			// ************** move all this to the determine name ************//
 			OF_name, err := determineOutfileName(t_pair.Out, val)
 			if err != nil {
 				return nil, errors.Wrap(err, "in make_dsls\n")
+			}
+
+			// check if outfile name has special key to build the path from the output root
+			// basically just erase the ctxDir because the other directories are determined else where in the config
+			// (template-configs, dependecies.[designs,generators])
+			if strings.HasPrefix(OF_name, "OUTPUT_ROOT/") {
+				ctxDir = ""
+				OF_name = strings.TrimPrefix(OF_name, "OUTPUT_ROOT/")
 			}
 
 			G_key := filepath.Join(dslKey, genKey)
@@ -251,6 +260,7 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 
 			outfile := filepath.Join(G_key, ctxDir, OF_name)
 			logger.Info("OFNAME", "G_key", G_key, "ctx_dir", ctxDir, "OF_name", OF_name, "outfile", outfile)
+			// ************** move all this to the determine name ************//
 
 			// build up the plan data struct
 			fgd := Plan{

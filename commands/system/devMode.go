@@ -57,6 +57,9 @@ var DevModeCmd = &cobra.Command{
 		const gebGoDirEnv = "$GOPATH/src/github.ibm.com/hofstadter-io/geb"
 		gebGoDir := os.ExpandEnv(gebGoDirEnv)
 
+		const dslGoDirEnv = "$GOPATH/src/github.ibm.com/hofstadter-io/dsl-library"
+		dslGoDir := os.ExpandEnv(dslGoDirEnv)
+
 		// possibly create dotfolder
 		dotFolder := filepath.Join(home, ".geb")
 		err = os.MkdirAll(dotFolder, 0755)
@@ -76,7 +79,7 @@ var DevModeCmd = &cobra.Command{
 		}
 
 		// link dsl folder
-		dslFolderSrc := filepath.Join(gebGoDir, "dsl")
+		dslFolderSrc := filepath.Join(dslGoDir)
 		dslFolderDest := filepath.Join(dotFolder, "dsl")
 
 		// possibly remove existing dir, (returns nil if non-existent)

@@ -1,7 +1,0 @@
-name: "fresh-default"
-version: "0.1"
-language: hofstadter
-type: "project/fresh"
-about: Generator for a project created from scratch
-
-

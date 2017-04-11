@@ -42,6 +42,7 @@ func addTemplateHelpers(tpl *raymond.Template) {
 
 	tpl.RegisterHelper("yaml", helper_yaml)
 	tpl.RegisterHelper("json", helper_json)
+	tpl.RegisterHelper("indent", helper_indent)
 	tpl.RegisterHelper("pprint", helper_pretty)
 	tpl.RegisterHelper("pretty", helper_pretty)
 	tpl.RegisterHelper("lwidth", helper_lwidth)
@@ -133,6 +134,15 @@ func helper_yaml(value interface{}) string {
 		return err.Error()
 	}
 	return string(bytes)
+}
+
+func helper_indent(value, indent string) string {
+	ret := ""
+	lines := strings.Split(value, "\n")
+	for _, line := range lines {
+		ret += indent + line + "\n"
+	}
+	return ret
 }
 
 func helper_json(value interface{}) string {

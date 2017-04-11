@@ -1,4 +1,0 @@
-cli:
-  name: "{{DslContext.name}}-tool-data"
-
-# HOFSTADTER_BELOW

@@ -1,7 +1,0 @@
-name: "clone-hofstadter"
-version: "0.1"
-language: hofstadter
-type: "project/clone"
-about: Generator for a project cloned from a hofstadter server
-
-

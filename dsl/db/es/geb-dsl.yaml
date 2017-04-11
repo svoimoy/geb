@@ -1,5 +1,0 @@
-name: "db-es"
-version: "0.1"
-type: "dsl"
-about: "a package dsl, specialized for ElasticSearch"
-

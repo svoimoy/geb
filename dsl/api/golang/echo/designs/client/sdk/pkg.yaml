@@ -1,4 +1,0 @@
-pkg:
-  name: "{{DslContext.name}}-sdk"
-
-# HOFSTADTER_BELOW
