@@ -15,13 +15,13 @@
   - Merging, layering, overriding
 
 - Project Walkthrough
+  - The `geb.yaml` project file
   - Starting an API
   - Adding types
+  - Adding databases
   - Adding routes and resources
-  - The `geb.yaml` project file
-    - main configuration
-    - generators
-    - build pipeline 
+  - Building, running, and using
+  - Adding functionality to the server
 
 - Designs
   - Overview

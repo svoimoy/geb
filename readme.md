@@ -28,13 +28,11 @@ geb sys init
 
 ## Getting Started
 
-[Generate a file](./docs/getting-started/file.md)
+Learn how to [generate a file](./docs/getting-started/file.md)
 
-[A first CLI](./docs/getting-started/cli.md)
+Build your [first project, aCLI](./docs/getting-started/cli.md)
 
-[Overview](./docs/getting-started/overview.md)
-
-[DSL Library](https://github.ibm.com/hofstadter-io/dsl-library)
+Get an [overview of Hofstadter](./docs/getting-started/overview.md)
 
 ## Documentation
 
@@ -45,7 +43,7 @@ Don't hesitate to ask a question via the GitHub issues either.
 
 [In-depth API walkthrough](./docs/walkthrough) 
 
-[Concepts](./docs/concepts)
+[The Concepts](./docs/concepts)
 
 [All about designs](./docs/designs)
 

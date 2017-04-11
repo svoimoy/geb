@@ -1,7 +1,17 @@
 # geb - An ALI example
 
+- Project layout
+  - The `geb.yaml` project file
+- Starting an API
+- Adding types
+- Adding databases
+- Adding routes and resources
+- Building, running, and using
+- Adding functionality to the server
 
-# The design layout
+## Starting the API
+
+### The design layout
 
 The typical layout for an API project is defined by the design layout.
 It is more complex that the typical CLI.
