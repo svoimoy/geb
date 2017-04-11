@@ -166,18 +166,6 @@ dsl-config:
     - "dsl"
     - "$GOPATH/src/github.ibm.com/hofstadter-io/geb/dsl"
   default:
-    - dsl: common
-      gen:
-        - golang
-      output-dir: "."
-    - dsl: type
-      gen:
-        - golang
-      output-dir: "."
-    - dsl: pkg
-      gen:
-        - golang
-      output-dir: "."
     - dsl: cli
       gen:
         - golang
