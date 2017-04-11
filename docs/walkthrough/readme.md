@@ -36,28 +36,12 @@ my-project/
         lib/
             app-specific/
                 pkg.yaml
+                ...
                 subdir/type.yaml
                 ...
-            db-ops/
-                pkg.yaml
-            tools/
-                db-ops/
-                    cli.yaml
-                    ...
-                data-ops/
-                    cli.yaml
-                    ...
-                app-ops/
-                    cli.yaml
-                    ...
             types/
                 type.yaml
+                ...
                 subdir/type.yaml
-
-        clients/
-          sdk/
-            pkg.yaml
-          <api-name>-cli/
-            cli.yaml
 ```
 

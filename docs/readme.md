@@ -7,10 +7,11 @@
 
 - Concepts
   - Data centric design
+  - Naming things is hard
+  - Projects
   - Designs
   - DSLs
   - Generators
-  - Projects
   - Merging, layering, overriding
 
 - Project Walkthrough
@@ -50,7 +51,7 @@
   - Designs
   - Project starter packs
 
-- [Hofstadter Developers Corner](./doc/develop)
+- [Developers Documentation](./doc/develop)
   - Implementing Generators
   - Creating DSLs and the accompanying design
 
