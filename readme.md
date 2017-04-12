@@ -30,7 +30,7 @@ geb sys init
 
 Learn how to [generate a file](./docs/getting-started/file.md)
 
-Build your [first project, aCLI](./docs/getting-started/cli.md)
+Build your [first project, a CLI](./docs/getting-started/cli.md)
 
 Get an [overview of Hofstadter](./docs/getting-started/overview.md)
 

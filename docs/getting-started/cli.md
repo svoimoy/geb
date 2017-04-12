@@ -164,7 +164,7 @@ design-dir: "design"
 dsl-config:
   paths:
     - "dsl"
-    - "$GOPATH/src/github.ibm.com/hofstadter-io/geb/dsl"
+    - "$HOME/.geb/dsl"
   default:
     - dsl: cli
       gen:
@@ -175,6 +175,9 @@ log-config:
   default:
     level: warn
     stack: false
+  engine:
+    render:
+      level: info
 ```
 
 `cli.yaml`:
@@ -202,11 +205,14 @@ go build
 
 pretty boring eh?
 
+Look around the files that were generated.
 
 ### Adding to the code
 
 Now let's change the existing command
 and have it do something.
+
+In `commands/root.go`:
 
 Add pkg `"fmt"` in the imports:
 
@@ -273,6 +279,7 @@ cli:
 Now regenerate, rebuild, and then run:
 `hello there <name> <message>`.
 
+You should find a new file `commands/there.go`.
 Try updating the print message to be
 formatted nicer and say something
 when no message is supplied.
