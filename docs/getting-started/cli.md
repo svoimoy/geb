@@ -16,9 +16,6 @@ The dsl-config sections tells geb where to find DSLs and which generators to use
 It is typical to have all output-dir fields be "." unless you are generating
 the same dsl in multiple languages (experimental).
 
-The `common`, `type`, and `pkg` DSLs are almost always included.
-(until the dependent generators feature is added)
-
 ```
 name: "geb"
 about: "The geb command-line tool for making profit."
@@ -201,6 +198,7 @@ go build
 
 # run the command
 ./hello
+./hello help
 ```
 
 pretty boring eh?
@@ -232,6 +230,15 @@ fmt.Println("Hello! ", args)
 // HOFSTADTER_END   cmd_run
 ```
 
+Notice that you only added code between the
+`HOFSTADTER_START <token>` and `HOFSTADTER_END <token>`.
+Code between tag pairs is not touched 
+when regenerating code. You also cannot add tags
+(until you graduate to template designing :).
+You may also do what ever you want below the tag
+`HOFSTADTER_BELOW`.
+Also, the `HOFSTADTER_*` may be proceeded
+by any comment charator and whitespace.
 
 
 ### Regenerating and rebuilding
@@ -284,4 +291,7 @@ Try updating the print message to be
 formatted nicer and say something
 when no message is supplied.
 
+### Going beyond
 
+For a look at a more advanced cli,
+look no further than the [design folder](../../design) in this repository.
