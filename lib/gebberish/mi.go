@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"io/ioutil"
+	"os"
 	"path/filepath"
-	"strings"
 
 	"github.ibm.com/hofstadter-io/geb/engine/utils"
 )
@@ -17,7 +17,22 @@ func Mi(rule string, arg int) (string, error) {
 	}
 	MI := orig
 	L := len(MI)
+
+	fmt.Println(MI, rule, arg)
 	switch rule {
+
+	case "init", "setup":
+		dir := "$HOME/.geb/.gebberish"
+		dir, err := utils.ResolvePath(dir)
+		if err != nil {
+			return "", err
+		}
+
+		err = os.MkdirAll(dir, 0755)
+		if err != nil {
+			return "", err
+		}
+
 	case "c", "curr", "current", "s", "stat", "status", "get":
 		return MI, nil
 
@@ -38,31 +53,20 @@ func Mi(rule string, arg int) (string, error) {
 
 	// mi-rule-3:    if mi-string contains an 'III',  you may replace it with 'U'
 	case "3", "r3", "rule-3", "rule3":
+		indicies := map[int]int{}
 		cnt := 0
-		for i, _ := range MI {
+		for i := 0; i < len(MI) - 2; i++ {
 			if MI[i:i+3] == "III" {
+				indicies[cnt] = i
 				cnt++
 			}
 		}
 		if cnt > 0 {
-			if arg >= cnt {
-				return orig, errors.New("arg grater than count of " + fmt.Sprint(cnt))
-			}
-			if arg > -1 {
-				idx := strings.LastIndex(MI, "III")
-				MI = MI[:idx] + "U" + MI[idx+3:]
-
+			pos, ok := indicies[arg]
+			if ok {
+				MI = MI[:pos] + "U" + MI[pos+3:]
 			} else {
-				cnt := 0
-				for idx, _ := range MI {
-					if MI[idx:idx+3] == "III" {
-						if cnt == arg {
-							MI = MI[:idx] + "U" + MI[idx+3:]
-						}
-						cnt++
-					}
-				}
-
+				return orig, errors.New("mi-rule-3 does not work for that pos")
 			}
 		} else {
 			return orig, errors.New("mi-rule-3 does not apply")
@@ -70,31 +74,20 @@ func Mi(rule string, arg int) (string, error) {
 
 	// mi-rule-4:    if mi-string contains a 'UU',    you may drop it (remove it)
 	case "4", "r4", "rule-4", "rule4":
+		indicies := map[int]int{}
 		cnt := 0
-		for i, _ := range MI {
+		for i := 0; i < len(MI) - 1; i++ {
 			if MI[i:i+2] == "UU" {
+				indicies[cnt] = i
 				cnt++
 			}
 		}
 		if cnt > 0 {
-			if arg >= cnt {
-				return orig, errors.New("arg grater than count of " + fmt.Sprint(cnt))
-			}
-			if arg > -1 {
-				idx := strings.LastIndex(MI, "UU")
-				MI = MI[:idx] + MI[idx+2:]
-
+			pos, ok := indicies[arg]
+			if ok {
+				MI = MI[:pos] + MI[pos+2:]
 			} else {
-				cnt := 0
-				for idx, _ := range MI {
-					if MI[idx:idx+2] == "UU" {
-						if cnt == arg {
-							MI = MI[:idx] + MI[idx+2:]
-						}
-						cnt++
-					}
-				}
-
+				return orig, errors.New("mi-rule-4 does not work for that pos")
 			}
 		} else {
 			return orig, errors.New("mi-rule-4 does not apply")
@@ -114,17 +107,16 @@ func Mi(rule string, arg int) (string, error) {
 
 func get_current() (string, error) {
 	MI := "MI"
-	dir := "$HOME/.hofstadter/.gebberish"
-	dir, err := utils.ResolvePath(dir)
-	if err != nil {
-		return MI, nil
-	}
-	fn := filepath.Join(dir, "mi.txt")
+	dir := "$HOME/.geb/.gebberish"
+	dir = os.ExpandEnv(dir)
 
-	err = utils.FileExists(fn)
+	fn := filepath.Join(dir, "mi.txt")
+	err := utils.FileExists(fn)
 	if err != nil {
+		set_current(MI)
 		return MI, nil
 	}
+
 	bytes, err := ioutil.ReadFile(fn)
 	if err != nil {
 		return MI, errors.Wrap(err, "in get current")
@@ -134,13 +126,17 @@ func get_current() (string, error) {
 }
 
 func set_current(MI string) error {
-	dir := "$HOME/.hofstadter/.gebberish"
-	dir, err := utils.ResolvePath(dir)
-	if err != nil {
-		return nil
-	}
-	fn := filepath.Join(dir, "mi.txt")
+	fmt.Println("setting MI:", MI)
 
+	dir := "$HOME/.geb/.gebberish"
+	dir = os.ExpandEnv(dir)
+
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		return err
+	}
+
+	fn := filepath.Join(dir, "mi.txt")
 	err = ioutil.WriteFile(fn, []byte(MI), 0644)
 	if err != nil {
 		return errors.Wrap(err, "in set current")
