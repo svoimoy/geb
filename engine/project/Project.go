@@ -160,7 +160,6 @@ func (P *Project) Subdesign() (errorReport []error) {
 	//
 	//
 
-
 	//
 	//
 	//  this is P.Plan()
@@ -207,24 +206,6 @@ func (P *Project) Subdesign() (errorReport []error) {
 	//
 	//
 	P.Design.ImportDesignFolder("subdesigns")
-
-	/*
-
-	// make sure loading designs does not depend on the generators being loaded
-	// d_dir := P.Config.DesignDir
-	d_dir := "subdesign"
-	logger.Info("Reading designs", "folder", d_dir)
-	d, err := design.CreateFromFolder(d_dir)
-	if err != nil {
-		return errors.Wrapf(err, "While reading design folder: %s\n", d_dir)
-	}
-	P.Design = d -- need to merge here
-
-	// dstr := fmt.Sprintf("%# v\n\n", pretty.Formatter(P.Design))
-	// fmt.Println(dstr)
-	logger.Debug("Project Design", "design", P.Design)
-
-	*/
 
 	//
 	//
