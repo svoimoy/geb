@@ -9,8 +9,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"gopkg.in/yaml.v2"
 	"github.com/naoina/toml"
+	"gopkg.in/yaml.v2"
 
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
@@ -50,7 +50,7 @@ func init() {
 	AdhocCmd.Flags().StringVarP(&inputFlag, "input", "i", "stdin", "path to an input file or directory")
 	viper.BindPFlag("input", AdhocCmd.Flags().Lookup("input"))
 
-	AdhocCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "t", "yaml", "type of the data in the input file or directory")
+	AdhocCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "I", "yaml", "type of the data in the input file or directory")
 	viper.BindPFlag("input-type", AdhocCmd.Flags().Lookup("input-type"))
 
 	AdhocCmd.Flags().StringVarP(&fieldFlag, "field", "f", ".", "a dotpath into the data to be used for rendering")
@@ -62,7 +62,7 @@ func init() {
 	AdhocCmd.Flags().StringVarP(&templateStringFlag, "template-string", "T", "{{{yaml .}}}", "Template contents to render with.")
 	viper.BindPFlag("template-string", AdhocCmd.Flags().Lookup("template-string"))
 
-	AdhocCmd.Flags().StringVarP(&templateFileFlag, "template-file", "F", "", "Path to the template file.")
+	AdhocCmd.Flags().StringVarP(&templateFileFlag, "template-file", "t", "", "Path to the template file.")
 	viper.BindPFlag("template-file", AdhocCmd.Flags().Lookup("template-file"))
 
 	AdhocCmd.Flags().StringVarP(&outputFlag, "output", "o", "stdout", "path to an output file or directory")

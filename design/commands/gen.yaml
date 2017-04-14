@@ -33,7 +33,7 @@ cli:
 
             - name: input-type
               long: input-type
-              short: t
+              short: I
               type: string
               default: yaml
               help: type of the data in the input file or directory
@@ -60,7 +60,7 @@ cli:
 
             - name: template-file
               long: template-file
-              short: F
+              short: t
               type: string
               default: ""
               help: Path to the template file.
