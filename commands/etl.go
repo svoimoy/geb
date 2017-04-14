@@ -28,11 +28,12 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-var EtlLong = `read file(s) or folder(s),
+var EtlLong = `
+Read file(s) or folder(s),
 select and transform data,
 output to file(s) or folder(s).
-A more flexible and expressive
-'geb gen adhoc'.
+
+A more flexible, bulk processing 'geb gen adhoc'.
 `
 
 var (
@@ -42,13 +43,13 @@ var (
 )
 
 func init() {
-	EtlCmd.Flags().StringVarP(&inputFlag, "input", "i", "from-config", "path to an input file or directory")
+	EtlCmd.Flags().StringVarP(&inputFlag, "input", "i", "from-etl-config", "path to an input file or directory")
 	viper.BindPFlag("input", EtlCmd.Flags().Lookup("input"))
 
 	EtlCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "t", "yaml", "type of the data in the input file or directory")
 	viper.BindPFlag("input-type", EtlCmd.Flags().Lookup("input-type"))
 
-	EtlCmd.Flags().StringVarP(&outputFlag, "output", "o", "from-config", "path to an output file or directory")
+	EtlCmd.Flags().StringVarP(&outputFlag, "output", "o", "from-etl-config", "path to an output file or directory")
 	viper.BindPFlag("output", EtlCmd.Flags().Lookup("output"))
 
 }

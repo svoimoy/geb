@@ -4,15 +4,16 @@ package gen
 
 import (
 	// HOFSTADTER_START import
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 
 	"gopkg.in/yaml.v2"
+	"github.com/naoina/toml"
 
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
-
-	"os"
 
 	"github.com/spf13/viper"
 
@@ -21,7 +22,7 @@ import (
 
 // Tool:   geb
 // Name:   adhoc
-// Usage:  adhoc <templateFile>
+// Usage:  adhoc
 // Parent: gen
 
 // HOFSTADTER_START const
@@ -36,10 +37,13 @@ import (
 var AdhocLong = `Generate something from data and a template.`
 
 var (
-	inputFlag     string
-	inputTypeFlag string
-	fieldFlag     string
-	outputFlag    string
+	inputFlag          string
+	inputTypeFlag      string
+	fieldFlag          string
+	flattenFlag        int
+	templateStringFlag string
+	templateFileFlag   string
+	outputFlag         string
 )
 
 func init() {
@@ -52,6 +56,15 @@ func init() {
 	AdhocCmd.Flags().StringVarP(&fieldFlag, "field", "f", ".", "a dotpath into the data to be used for rendering")
 	viper.BindPFlag("field", AdhocCmd.Flags().Lookup("field"))
 
+	AdhocCmd.Flags().IntVarP(&flattenFlag, "flatten", "", 0, "flattend nested arrays by N levels")
+	viper.BindPFlag("flatten", AdhocCmd.Flags().Lookup("flatten"))
+
+	AdhocCmd.Flags().StringVarP(&templateStringFlag, "template-string", "T", "{{{yaml .}}}", "Template contents to render with.")
+	viper.BindPFlag("template-string", AdhocCmd.Flags().Lookup("template-string"))
+
+	AdhocCmd.Flags().StringVarP(&templateFileFlag, "template-file", "F", "", "Path to the template file.")
+	viper.BindPFlag("template-file", AdhocCmd.Flags().Lookup("template-file"))
+
 	AdhocCmd.Flags().StringVarP(&outputFlag, "output", "o", "stdout", "path to an output file or directory")
 	viper.BindPFlag("output", AdhocCmd.Flags().Lookup("output"))
 
@@ -59,7 +72,7 @@ func init() {
 
 var AdhocCmd = &cobra.Command{
 
-	Use: "adhoc <templateFile>",
+	Use: "adhoc",
 
 	Aliases: []string{
 		"on-the-fly",
@@ -72,21 +85,6 @@ var AdhocCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In adhocCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   template-file
-		//     help:   Path to the template file.
-		//     req'd:  true
-		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'template-file'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
-
-		var templateFile string
-
-		if 0 < len(args) {
-
-			templateFile = args[0]
-		}
 
 		// HOFSTADTER_START cmd_run
 
@@ -99,7 +97,7 @@ var AdhocCmd = &cobra.Command{
 		}
 
 		// read in data
-		var inputData interface{}
+		var inputData map[string]interface{}
 		var data []byte
 		var err error
 		if inputFlag == "stdin" {
@@ -110,14 +108,28 @@ var AdhocCmd = &cobra.Command{
 			errExit(err)
 		}
 
-		// need to switch on input filename extension here
 		// unmarshal into interface{}
-		err = yaml.Unmarshal(data, &inputData)
-		errExit(err)
+		switch inputTypeFlag {
+		case "yaml", "yml":
+			err = yaml.Unmarshal(data, &inputData)
+			errExit(err)
+		case "json":
+			err = json.Unmarshal(data, &inputData)
+			errExit(err)
+		case "toml":
+			err = toml.Unmarshal(data, &inputData)
+			errExit(err)
+		default:
+			fmt.Println("unknown input type: ", inputTypeFlag)
+			os.Exit(1)
+		}
 
 		// read in the template
-		data, err = ioutil.ReadFile(templateFile)
-		errExit(err)
+		data = []byte(templateStringFlag)
+		if templateFileFlag != "" {
+			data, err = ioutil.ReadFile(templateFileFlag)
+			errExit(err)
+		}
 
 		templateData := string(data)
 

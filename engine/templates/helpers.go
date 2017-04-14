@@ -14,6 +14,7 @@ import (
 	"github.com/codemodus/kace"
 	"github.com/kr/pretty"
 	"gopkg.in/yaml.v2"
+	"github.com/naoina/toml"
 	// HOFSTADTER_END   import
 )
 
@@ -41,6 +42,7 @@ func addTemplateHelpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("join5", helper_join5)
 
 	tpl.RegisterHelper("yaml", helper_yaml)
+	tpl.RegisterHelper("toml", helper_toml)
 	tpl.RegisterHelper("json", helper_json)
 	tpl.RegisterHelper("indent", helper_indent)
 	tpl.RegisterHelper("pprint", helper_pretty)
@@ -130,6 +132,14 @@ func helper_pretty(value interface{}) string {
 
 func helper_yaml(value interface{}) string {
 	bytes, err := yaml.Marshal(value)
+	if err != nil {
+		return err.Error()
+	}
+	return string(bytes)
+}
+
+func helper_toml(value interface{}) string {
+	bytes, err := toml.Marshal(value)
 	if err != nil {
 		return err.Error()
 	}

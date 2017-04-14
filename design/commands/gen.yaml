@@ -18,15 +18,9 @@ cli:
         - name: adhoc
           aliases:
             - on-the-fly
-          usage: adhoc <templateFile>
+          usage: adhoc
           short: Generate something from data and a template.
           long: Generate something from data and a template.
-
-          args:
-            - name: template-file
-              type: string
-              required: true
-              help: Path to the template file.
 
           flags:
 
@@ -50,6 +44,26 @@ cli:
               type: string
               default: "."
               help: a dotpath into the data to be used for rendering
+
+            - name: flatten
+              long: flatten
+              type: int
+              default: 0
+              help: flattend nested arrays by N levels
+
+            - name: template-string
+              long: template-string
+              short: T
+              type: string
+              default: "{{{yaml .}}}"
+              help: Template contents to render with.
+
+            - name: template-file
+              long: template-file
+              short: F
+              type: string
+              default: ""
+              help: Path to the template file.
 
             - name: output
               long: output

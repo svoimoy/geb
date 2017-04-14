@@ -34,3 +34,9 @@ profit: poor
 serious-profit:
 	@rm profit/contracrostipunctus
 	@cp -fR profit/* .
+
+.Phony: cloc
+cloc:
+	@cloc design
+	@cloc main.go commands engine lib
+

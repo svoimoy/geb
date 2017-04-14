@@ -7,11 +7,12 @@ cli:
       usage: etl <etl-config>
       short: perform ETLs with geb
       long: |
-        read file(s) or folder(s),
+
+        Read file(s) or folder(s),
         select and transform data,
         output to file(s) or folder(s).
-        A more flexible and expressive
-        'geb gen adhoc'.
+
+        A more flexible, bulk processing 'geb gen adhoc'.
 
       args:
         - name: etl-config
@@ -31,7 +32,7 @@ cli:
           long: input
           short: i
           type: string
-          default: "from-config"
+          default: "from-etl-config"
           help: path to an input file or directory
 
         - name: input-type
@@ -45,8 +46,9 @@ cli:
           long: output
           short: o
           type: string
-          default: "from-config"
+          default: "from-etl-config"
           help: path to an output file or directory
+
 
     - name: etl-serve
       usage: etl-serve <etl-config>
