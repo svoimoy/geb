@@ -1,6 +1,8 @@
 cli:
   name: geb
+  
   commands:
+
     - name: view
       usage: view
       aliases:
@@ -8,7 +10,9 @@ cli:
       short: View information known to the geb tool.
       long: View information known to the geb tool.
       omit-run: true
+
       subcommands:
+
         - name: system
           usage: sys <dotpaths>...
           aliases:
@@ -23,6 +27,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
+
         - name: dsl
           usage: dsl <dotpath>...
           aliases:
@@ -34,6 +39,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
+
         - name: gen
           usage: gen <dotpaths>...
           aliases:
@@ -45,6 +51,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
+
         - name: project
           usage: project <dotpath>...
           aliases:
@@ -57,6 +64,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
+              
         - name: design
           usage: design <dotpath>...
           aliases:
@@ -68,6 +76,7 @@ cli:
               type: array:string
               rest: true
               help: one ore more dotpaths for indexing into the data
+
         - name: plans
           usage: plans <dotpath>...
           aliases:

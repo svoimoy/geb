@@ -1,0 +1,54 @@
+cli:
+  name: geb
+
+  commands:
+
+    - name: etl
+      usage: etl
+      short: perform ETLs with geb
+      long: |
+        read file(s) or folder(s),
+        select and transform data,
+        output to file(s) or folder(s).
+        A more flexible and expressive
+        'geb gen adhoc'.
+
+      args:
+        - name: etl-config
+          long: etl-config
+          required: true
+          help: a dotpath into the data to be used for rendering
+
+
+    - name: etl-serve
+      usage: etl-serve
+      short: serve ETLs with geb
+      long: |
+        similar to the 'geb etl' command
+        and served up in as a RESTful API.
+
+      args:
+
+        - name: etl-config
+          long: etl-config
+          required: true
+          help: a dotpath into the data to be used for rendering
+
+      flags:
+
+        - name: host
+          long: host
+          short: h
+          type: string
+          default: "localhost"
+          help: host to run the server as
+
+        - name: port
+          long: port
+          short: p
+          type: string
+          default: "11110"
+          help: port to run the server on
+
+
+

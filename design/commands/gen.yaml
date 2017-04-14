@@ -1,6 +1,8 @@
 cli:
   name: geb
+
   commands:
+
     - name: gen
       usage: gen
       aliases:
@@ -10,23 +12,43 @@ cli:
         - g
       short: Generate a project.
       long: Generate a project from its working directory.
+
       subcommands:
-        - name: file
-          usage: file <designFile> <templateFile> <outputFile>
-          short: Generate a file.
-          long: Generate a file from design and a template.
+
+        - name: adhoc
+          aliases:
+            - on-the-fly
+          usage: adhoc <templateFile>
+          short: Generate .
+          long: Generate something from data and a template.
+
           args:
-            - name: designFile
-              type: string
-              required: true
-              help: Path to the input design file.
-            - name: templateFile
+            - name: template-file
               type: string
               required: true
               help: Path to the template file.
-            - name: outputFile
+
+          flags:
+
+            - name: input
+              long: input
+              short: i
               type: string
-              required: true
-              help: Path to the output file. Can also be 'stdout'.
+              default: stdin
+              help: path to an input file or directory
+
+            - name: field
+              long: field
+              short: f
+              type: string
+              default: "."
+              help: a dotpath into the data to be used for rendering
+
+            - name: output
+              long: output
+              short: o
+              type: string
+              default: stdout
+              help: path to an output file or directory
 
 
