@@ -11,8 +11,6 @@ import (
 	// HOFSTADTER_END   import
 
 	"github.com/spf13/cobra"
-
-	"github.ibm.com/hofstadter-io/geb/commands/gen"
 )
 
 // Tool:   geb
@@ -69,10 +67,6 @@ var GenCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(GenCmd)
-}
-
-func init() {
-	GenCmd.AddCommand(gen.AdhocCmd)
 }
 
 // HOFSTADTER_BELOW

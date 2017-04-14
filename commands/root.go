@@ -28,19 +28,19 @@ Platforms. geb is the tool.
 `
 
 var (
-	configPFlag string
-	designPFlag string
-	outputPFlag string
+	RootConfigPFlag string
+	RootDesignPFlag string
+	RootOutputPFlag string
 )
 
 func init() {
-	RootCmd.PersistentFlags().StringVarP(&configPFlag, "config", "c", "geb.yaml", "A geb project config file.")
+	RootCmd.PersistentFlags().StringVarP(&RootConfigPFlag, "config", "c", "geb.yaml", "A geb project config file.")
 	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
 
-	RootCmd.PersistentFlags().StringVarP(&designPFlag, "design", "d", "design", "The design files directory.")
+	RootCmd.PersistentFlags().StringVarP(&RootDesignPFlag, "design", "d", "design", "The design files directory.")
 	viper.BindPFlag("design", RootCmd.PersistentFlags().Lookup("design"))
 
-	RootCmd.PersistentFlags().StringVarP(&outputPFlag, "output", "o", "output", "The directory to output generated files to.")
+	RootCmd.PersistentFlags().StringVarP(&RootOutputPFlag, "output", "o", "output", "The directory to output generated files to.")
 	viper.BindPFlag("output", RootCmd.PersistentFlags().Lookup("output"))
 
 }

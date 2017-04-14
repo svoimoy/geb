@@ -37,19 +37,19 @@ A more flexible, bulk processing 'geb gen adhoc'.
 `
 
 var (
-	inputFlag     string
-	inputTypeFlag string
-	outputFlag    string
+	EtlInputFlag     string
+	EtlInputTypeFlag string
+	EtlOutputFlag    string
 )
 
 func init() {
-	EtlCmd.Flags().StringVarP(&inputFlag, "input", "i", "from-etl-config", "path to an input file or directory")
+	EtlCmd.Flags().StringVarP(&EtlInputFlag, "input", "i", "from-etl-config", "path to an input file or directory")
 	viper.BindPFlag("input", EtlCmd.Flags().Lookup("input"))
 
-	EtlCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "t", "yaml", "type of the data in the input file or directory")
+	EtlCmd.Flags().StringVarP(&EtlInputTypeFlag, "input-type", "t", "yaml", "type of the data in the input file or directory")
 	viper.BindPFlag("input-type", EtlCmd.Flags().Lookup("input-type"))
 
-	EtlCmd.Flags().StringVarP(&outputFlag, "output", "o", "from-etl-config", "path to an output file or directory")
+	EtlCmd.Flags().StringVarP(&EtlOutputFlag, "output", "o", "from-etl-config", "path to an output file or directory")
 	viper.BindPFlag("output", EtlCmd.Flags().Lookup("output"))
 
 }

@@ -37,11 +37,11 @@ Stuff is...
 `
 
 var (
-	TypeFlag string
+	ImportTypeFlag string
 )
 
 func init() {
-	ImportCmd.Flags().StringVarP(&TypeFlag, "type", "T", "", "The type of input data to force geb to use a certain format")
+	ImportCmd.Flags().StringVarP(&ImportTypeFlag, "type", "T", "", "The type of input data to force geb to use a certain format")
 	viper.BindPFlag("type", ImportCmd.Flags().Lookup("type"))
 
 }

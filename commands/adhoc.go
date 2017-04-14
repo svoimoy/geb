@@ -1,6 +1,6 @@
-package gen
+package commands
 
-// package subcommands
+// package commands
 
 import (
 	// HOFSTADTER_START import
@@ -9,8 +9,9 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
-	"gopkg.in/yaml.v2"
+	// "gopkg.in/yaml.v2"
 
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
@@ -23,7 +24,7 @@ import (
 // Tool:   geb
 // Name:   adhoc
 // Usage:  adhoc
-// Parent: gen
+// Parent: geb
 
 // HOFSTADTER_START const
 // HOFSTADTER_END   const
@@ -37,36 +38,40 @@ import (
 var AdhocLong = `Generate something from data and a template.`
 
 var (
-	inputFlag          string
-	inputTypeFlag      string
-	fieldFlag          string
-	flattenFlag        int
-	templateStringFlag string
-	templateFileFlag   string
-	outputFlag         string
+	AdhocInputFlag          string
+	AdhocInputTypeFlag      string
+	AdhocFieldFlag          string
+	AdhocFlattenFlag        int
+	AdhocTemplateStringFlag string
+	AdhocTemplateFileFlag   string
+	AdhocOutputFlag         string
+	AdhocOutputTypeFlag     string
 )
 
 func init() {
-	AdhocCmd.Flags().StringVarP(&inputFlag, "input", "i", "stdin", "path to an input file or directory")
+	AdhocCmd.Flags().StringVarP(&AdhocInputFlag, "input", "i", "stdin", "path to an input file or directory")
 	viper.BindPFlag("input", AdhocCmd.Flags().Lookup("input"))
 
-	AdhocCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "I", "yaml", "type of the data in the input file or directory")
+	AdhocCmd.Flags().StringVarP(&AdhocInputTypeFlag, "input-type", "I", "yaml", "input type from [yaml,json,toml]")
 	viper.BindPFlag("input-type", AdhocCmd.Flags().Lookup("input-type"))
 
-	AdhocCmd.Flags().StringVarP(&fieldFlag, "field", "f", ".", "a dotpath into the data to be used for rendering")
+	AdhocCmd.Flags().StringVarP(&AdhocFieldFlag, "field", "f", ".", "a dotpath into the data to be used for rendering")
 	viper.BindPFlag("field", AdhocCmd.Flags().Lookup("field"))
 
-	AdhocCmd.Flags().IntVarP(&flattenFlag, "flatten", "", 0, "flattend nested arrays by N levels")
+	AdhocCmd.Flags().IntVarP(&AdhocFlattenFlag, "flatten", "", 0, "flattend nested arrays by N levels")
 	viper.BindPFlag("flatten", AdhocCmd.Flags().Lookup("flatten"))
 
-	AdhocCmd.Flags().StringVarP(&templateStringFlag, "template-string", "T", "{{{yaml .}}}", "Template contents to render with.")
+	AdhocCmd.Flags().StringVarP(&AdhocTemplateStringFlag, "template-string", "T", "{{{&lt;output-type&gt; .}}}", "Template contents to render with.")
 	viper.BindPFlag("template-string", AdhocCmd.Flags().Lookup("template-string"))
 
-	AdhocCmd.Flags().StringVarP(&templateFileFlag, "template-file", "t", "", "Path to the template file.")
+	AdhocCmd.Flags().StringVarP(&AdhocTemplateFileFlag, "template-file", "t", "", "Path to the template file.")
 	viper.BindPFlag("template-file", AdhocCmd.Flags().Lookup("template-file"))
 
-	AdhocCmd.Flags().StringVarP(&outputFlag, "output", "o", "stdout", "path to an output file or directory")
+	AdhocCmd.Flags().StringVarP(&AdhocOutputFlag, "output", "o", "stdout", "path to an output file or directory")
 	viper.BindPFlag("output", AdhocCmd.Flags().Lookup("output"))
+
+	AdhocCmd.Flags().StringVarP(&AdhocOutputTypeFlag, "output-type", "O", "", "output type from [yaml,json,toml]")
+	viper.BindPFlag("output-type", AdhocCmd.Flags().Lookup("output-type"))
 
 }
 
@@ -97,19 +102,19 @@ var AdhocCmd = &cobra.Command{
 		}
 
 		// read in data
-		var inputData map[string]interface{}
+		var inputData interface{}
 		var data []byte
 		var err error
-		if inputFlag == "stdin" {
+		if AdhocInputFlag == "stdin" {
 			data, err = ioutil.ReadAll(os.Stdin)
 			errExit(err)
 		} else {
-			data, err = ioutil.ReadFile(inputFlag)
+			data, err = ioutil.ReadFile(AdhocInputFlag)
 			errExit(err)
 		}
 
 		// unmarshal into interface{}
-		switch inputTypeFlag {
+		switch AdhocInputTypeFlag {
 		case "yaml", "yml":
 			err = yaml.Unmarshal(data, &inputData)
 			errExit(err)
@@ -120,33 +125,46 @@ var AdhocCmd = &cobra.Command{
 			err = toml.Unmarshal(data, &inputData)
 			errExit(err)
 		default:
-			fmt.Println("unknown input type: ", inputTypeFlag)
+			fmt.Println("unknown input type: ", AdhocInputTypeFlag)
 			os.Exit(1)
 		}
 
 		// read in the template
-		data = []byte(templateStringFlag)
-		if templateFileFlag != "" {
-			data, err = ioutil.ReadFile(templateFileFlag)
+		data = []byte(AdhocTemplateStringFlag)
+		if AdhocTemplateFileFlag != "" {
+			data, err = ioutil.ReadFile(AdhocTemplateFileFlag)
 			errExit(err)
 		}
 
+		switch AdhocOutputTypeFlag {
+		case "yaml", "yml":
+			data = []byte("{{{yaml .}}}")
+		case "json":
+			data = []byte("{{{json .}}}")
+		case "toml":
+			data = []byte("{{{toml .}}}")
+		default:
+		}
 		templateData := string(data)
 
 		// generate
-		outputData, err := engine.GenerateAdhoc(inputData, fieldFlag, templateData)
+		outputData, err := engine.GenerateAdhoc(inputData, AdhocFieldFlag, templateData)
 		errExit(err)
 
 		// write the output
-		if outputFlag == "stdout" {
+		if AdhocOutputFlag == "stdout" {
 			fmt.Println(outputData)
 		} else {
-			err := ioutil.WriteFile(outputFlag, []byte(outputData), 0644)
+			err := ioutil.WriteFile(AdhocOutputFlag, []byte(outputData), 0644)
 			errExit(err)
 		}
 
 		// HOFSTADTER_END   cmd_run
 	},
+}
+
+func init() {
+	RootCmd.AddCommand(AdhocCmd)
 }
 
 // HOFSTADTER_BELOW

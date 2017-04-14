@@ -33,15 +33,15 @@ and served up in as a RESTful API.
 `
 
 var (
-	hostFlag string
-	portFlag string
+	EtlServeHostFlag string
+	EtlServePortFlag string
 )
 
 func init() {
-	EtlServeCmd.Flags().StringVarP(&hostFlag, "host", "h", "localhost", "host to run the server as")
+	EtlServeCmd.Flags().StringVarP(&EtlServeHostFlag, "host", "h", "localhost", "host to run the server as")
 	viper.BindPFlag("host", EtlServeCmd.Flags().Lookup("host"))
 
-	EtlServeCmd.Flags().StringVarP(&portFlag, "port", "p", "1110", "port to run the server on")
+	EtlServeCmd.Flags().StringVarP(&EtlServePortFlag, "port", "p", "1110", "port to run the server on")
 	viper.BindPFlag("port", EtlServeCmd.Flags().Lookup("port"))
 
 }

@@ -9,7 +9,6 @@ import (
 	log "gopkg.in/inconshreveable/log15.v2"
 
 	"github.ibm.com/hofstadter-io/geb/commands/gebberish"
-	"github.ibm.com/hofstadter-io/geb/commands/gen"
 	"github.ibm.com/hofstadter-io/geb/commands/system"
 	"github.ibm.com/hofstadter-io/geb/commands/view"
 )
@@ -47,10 +46,9 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers before possibly overriding locally next
-	gen.SetLogger(logger)
+	system.SetLogger(logger)
 	view.SetLogger(logger)
 	gebberish.SetLogger(logger)
-	system.SetLogger(logger)
 
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.commands")
