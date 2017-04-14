@@ -61,7 +61,7 @@ func init() {
 	AdhocCmd.Flags().IntVarP(&AdhocFlattenFlag, "flatten", "", 0, "flattend nested arrays by N levels")
 	viper.BindPFlag("flatten", AdhocCmd.Flags().Lookup("flatten"))
 
-	AdhocCmd.Flags().StringVarP(&AdhocTemplateStringFlag, "template-string", "T", "{{{&lt;output-type&gt; .}}}", "Template contents to render with.")
+	AdhocCmd.Flags().StringVarP(&AdhocTemplateStringFlag, "template-string", "T", "", "Template contents to render with. Default: &apos;{{{&lt;output-type&gt; .}}}&apos;")
 	viper.BindPFlag("template-string", AdhocCmd.Flags().Lookup("template-string"))
 
 	AdhocCmd.Flags().StringVarP(&AdhocTemplateFileFlag, "template-file", "t", "", "Path to the template file.")
@@ -130,20 +130,33 @@ var AdhocCmd = &cobra.Command{
 		}
 
 		// read in the template
-		data = []byte(AdhocTemplateStringFlag)
-		if AdhocTemplateFileFlag != "" {
+		data = []byte("{{{yaml .}}}")
+		tsF := AdhocTemplateStringFlag != ""
+		tfF := AdhocTemplateFileFlag != ""
+		otF := AdhocOutputTypeFlag != ""
+
+		if (tsF && tfF) || (tsF && otF) || (tfF && otF) {
+			fmt.Println("cannot specify only one of template-string, template-file, or output-type flags")
+			fmt.Printf("%q %q %q\n", AdhocTemplateStringFlag, AdhocTemplateFileFlag, AdhocOutputTypeFlag)
+
+			os.Exit(1)
+		} else if tsF {
+			data = []byte(AdhocTemplateStringFlag)
+		} else if tfF {
 			data, err = ioutil.ReadFile(AdhocTemplateFileFlag)
 			errExit(err)
-		}
-
-		switch AdhocOutputTypeFlag {
-		case "yaml", "yml":
-			data = []byte("{{{yaml .}}}")
-		case "json":
-			data = []byte("{{{json .}}}")
-		case "toml":
-			data = []byte("{{{toml .}}}")
-		default:
+		} else if otF {
+			switch AdhocOutputTypeFlag {
+			case "yaml", "yml":
+				data = []byte("{{{yaml .}}}")
+			case "json":
+				data = []byte("{{{json .}}}")
+			case "toml":
+				data = []byte("{{{toml .}}}")
+			default:
+				fmt.Printf("unknown output-type: %q\n", AdhocOutputTypeFlag)
+				os.Exit(1)
+			}
 		}
 		templateData := string(data)
 

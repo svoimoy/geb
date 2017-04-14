@@ -46,9 +46,9 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers before possibly overriding locally next
-	system.SetLogger(logger)
-	view.SetLogger(logger)
 	gebberish.SetLogger(logger)
+	view.SetLogger(logger)
+	system.SetLogger(logger)
 
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.commands")

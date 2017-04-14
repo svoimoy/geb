@@ -53,8 +53,8 @@ cli:
           long: template-string
           short: T
           type: string
-          default: "{{{<output-type> .}}}"
-          help: Template contents to render with.
+          default: ""
+          help: "Template contents to render with. Default: '{{{<output-type> .}}}'"
 
         - name: template-file
           long: template-file
