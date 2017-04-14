@@ -1,0 +1,23 @@
+cli:
+  name: geb
+
+  commands:
+
+
+    - name: serve
+      usage: serve <server-config>
+      short: serve templates and ETL pipelines with geb
+      long: |
+        "similar to the 'geb adhoc' and 'geb etl' commands
+        now served up as a RESTful API.
+
+        See the server docs at: ...tbd..."
+
+      args:
+
+        - name: server-config
+          long: server-config
+          type: string
+          required: true
+          help: a dotpath into the server configuration file
+

@@ -49,37 +49,3 @@ cli:
           default: "from-etl-config"
           help: path to an output file or directory
 
-
-    - name: etl-serve
-      usage: etl-serve <etl-config>
-      short: serve ETLs with geb
-      long: |
-        similar to the 'geb etl' command
-        and served up in as a RESTful API.
-
-      args:
-
-        - name: etl-config
-          long: etl-config
-          type: string
-          required: true
-          help: a dotpath into the data to be used for rendering
-
-      flags:
-
-        - name: host
-          long: host
-          short: h
-          type: string
-          default: "localhost"
-          help: host to run the server as
-
-        - name: port
-          long: port
-          short: p
-          type: string
-          default: "1110"
-          help: port to run the server on
-
-
-

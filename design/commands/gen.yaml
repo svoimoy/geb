@@ -49,6 +49,12 @@ cli:
           default: 0
           help: flattend nested arrays by N levels
 
+        - name: multi
+          long: multi
+          type: bool
+          default: false
+          help: the output is an array and each element should be put through the template. In this case the output flag should also be specified with a template for determining the path/to/file.out
+
         - name: template-string
           long: template-string
           short: T

@@ -42,6 +42,7 @@ var (
 	AdhocInputTypeFlag      string
 	AdhocFieldFlag          string
 	AdhocFlattenFlag        int
+	AdhocMultiFlag          bool
 	AdhocTemplateStringFlag string
 	AdhocTemplateFileFlag   string
 	AdhocOutputFlag         string
@@ -60,6 +61,9 @@ func init() {
 
 	AdhocCmd.Flags().IntVarP(&AdhocFlattenFlag, "flatten", "", 0, "flattend nested arrays by N levels")
 	viper.BindPFlag("flatten", AdhocCmd.Flags().Lookup("flatten"))
+
+	AdhocCmd.Flags().BoolVarP(&AdhocMultiFlag, "multi", "", false, "the output is an array and each element should be put through the template. In this case the output flag should also be specified with a template for determining the path/to/file.out")
+	viper.BindPFlag("multi", AdhocCmd.Flags().Lookup("multi"))
 
 	AdhocCmd.Flags().StringVarP(&AdhocTemplateStringFlag, "template-string", "T", "", "Template contents to render with. Default: &apos;{{{&lt;output-type&gt; .}}}&apos;")
 	viper.BindPFlag("template-string", AdhocCmd.Flags().Lookup("template-string"))
