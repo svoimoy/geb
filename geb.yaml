@@ -21,11 +21,11 @@ dsl-config:
     - dsl: pkg
       gen:
         - golang
-      output-dir: '.'
+      output-dir: "."
     - dsl: cli
       gen:
         - golang
-      output-dir: '.'
+      output-dir: "."
 
 build-pipeline:
   stages:
@@ -40,3 +40,6 @@ log-config:
   default:
     level: warn
     stack: false
+  engine:
+    render:
+      level: info
