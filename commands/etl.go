@@ -9,12 +9,14 @@ import (
 
 	"os"
 
+	"github.com/spf13/viper"
+
 	"github.com/spf13/cobra"
 )
 
 // Tool:   geb
 // Name:   etl
-// Usage:  etl
+// Usage:  etl <etl-config>
 // Parent: geb
 
 // HOFSTADTER_START const
@@ -33,9 +35,27 @@ A more flexible and expressive
 'geb gen adhoc'.
 `
 
+var (
+	inputFlag     string
+	inputTypeFlag string
+	outputFlag    string
+)
+
+func init() {
+	EtlCmd.Flags().StringVarP(&inputFlag, "input", "i", "from-config", "path to an input file or directory")
+	viper.BindPFlag("input", EtlCmd.Flags().Lookup("input"))
+
+	EtlCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "t", "yaml", "type of the data in the input file or directory")
+	viper.BindPFlag("input-type", EtlCmd.Flags().Lookup("input-type"))
+
+	EtlCmd.Flags().StringVarP(&outputFlag, "output", "o", "from-config", "path to an output file or directory")
+	viper.BindPFlag("output", EtlCmd.Flags().Lookup("output"))
+
+}
+
 var EtlCmd = &cobra.Command{
 
-	Use: "etl",
+	Use: "etl <etl-config>",
 
 	Short: "perform ETLs with geb",
 
@@ -45,7 +65,7 @@ var EtlCmd = &cobra.Command{
 		logger.Debug("In etlCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   etl-config
-		//     help:   a dotpath into the data to be used for rendering
+		//     help:   path to an etl config file to be used for rendering
 		//     req'd:  true
 		if 0 >= len(args) {
 			fmt.Println("missing required argument: 'etl-config'\n")
@@ -60,9 +80,20 @@ var EtlCmd = &cobra.Command{
 			etlConfig = args[0]
 		}
 
+		// [1]name:   sub-config
+		//     help:   the name(s) of a template-config in the etl-config to use
+		//     req'd:
+
+		var subConfig []string
+
+		if 1 < len(args) {
+			subConfig = args[1:]
+		}
+
 		// HOFSTADTER_START cmd_run
 		fmt.Println("geb etl:",
 			etlConfig,
+			subConfig,
 		)
 		// HOFSTADTER_END   cmd_run
 	},

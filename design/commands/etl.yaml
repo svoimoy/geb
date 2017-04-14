@@ -4,7 +4,7 @@ cli:
   commands:
 
     - name: etl
-      usage: etl
+      usage: etl <etl-config>
       short: perform ETLs with geb
       long: |
         read file(s) or folder(s),
@@ -18,11 +18,38 @@ cli:
           long: etl-config
           type: string
           required: true
-          help: a dotpath into the data to be used for rendering
+          help: path to an etl config file to be used for rendering
 
+        - name: sub-config
+          long: sub-config
+          type: array:string
+          rest: true
+          help: the name(s) of a template-config in the etl-config to use
+
+      flags:
+        - name: input
+          long: input
+          short: i
+          type: string
+          default: "from-config"
+          help: path to an input file or directory
+
+        - name: input-type
+          long: input-type
+          short: t
+          type: string
+          default: yaml
+          help: type of the data in the input file or directory
+
+        - name: output
+          long: output
+          short: o
+          type: string
+          default: "from-config"
+          help: path to an output file or directory
 
     - name: etl-serve
-      usage: etl-serve
+      usage: etl-serve <etl-config>
       short: serve ETLs with geb
       long: |
         similar to the 'geb etl' command

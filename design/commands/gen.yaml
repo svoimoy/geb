@@ -41,7 +41,7 @@ cli:
               long: input-type
               short: t
               type: string
-              default: stdin
+              default: yaml
               help: type of the data in the input file or directory
 
             - name: field

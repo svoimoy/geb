@@ -46,7 +46,7 @@ func init() {
 	AdhocCmd.Flags().StringVarP(&inputFlag, "input", "i", "stdin", "path to an input file or directory")
 	viper.BindPFlag("input", AdhocCmd.Flags().Lookup("input"))
 
-	AdhocCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "t", "stdin", "type of the data in the input file or directory")
+	AdhocCmd.Flags().StringVarP(&inputTypeFlag, "input-type", "t", "yaml", "type of the data in the input file or directory")
 	viper.BindPFlag("input-type", AdhocCmd.Flags().Lookup("input-type"))
 
 	AdhocCmd.Flags().StringVarP(&fieldFlag, "field", "f", ".", "a dotpath into the data to be used for rendering")
@@ -89,6 +89,8 @@ var AdhocCmd = &cobra.Command{
 		}
 
 		// HOFSTADTER_START cmd_run
+
+		// to shorten the code below
 		errExit := func(err error) {
 			if err != nil {
 				fmt.Println(err)
@@ -96,7 +98,7 @@ var AdhocCmd = &cobra.Command{
 			}
 		}
 
-		// read in data and unmarshal into interface{}
+		// read in data
 		var inputData interface{}
 		var data []byte
 		var err error
@@ -109,17 +111,21 @@ var AdhocCmd = &cobra.Command{
 		}
 
 		// need to switch on input filename extension here
+		// unmarshal into interface{}
 		err = yaml.Unmarshal(data, &inputData)
 		errExit(err)
 
+		// read in the template
 		data, err = ioutil.ReadFile(templateFile)
 		errExit(err)
 
 		templateData := string(data)
 
+		// generate
 		outputData, err := engine.GenerateAdhoc(inputData, fieldFlag, templateData)
 		errExit(err)
 
+		// write the output
 		if outputFlag == "stdout" {
 			fmt.Println(outputData)
 		} else {

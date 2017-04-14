@@ -16,7 +16,7 @@ import (
 
 // Tool:   geb
 // Name:   etl-serve
-// Usage:  etl-serve
+// Usage:  etl-serve <etl-config>
 // Parent: geb
 
 // HOFSTADTER_START const
@@ -48,7 +48,7 @@ func init() {
 
 var EtlServeCmd = &cobra.Command{
 
-	Use: "etl-serve",
+	Use: "etl-serve <etl-config>",
 
 	Short: "serve ETLs with geb",
 

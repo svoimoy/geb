@@ -1,0 +1,13 @@
+type:
+  name: config
+
+  fields:
+    - name: input-path
+      type: string
+
+    - name: output-path
+      type: string
+
+    - name: template-configs
+      type: array:engine.gen.template-config
+
