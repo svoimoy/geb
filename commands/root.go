@@ -28,24 +28,12 @@ Platforms. geb is the tool.
 `
 
 var (
-	configPFlag        string
-	designPFlag        string
-	templatePathsPFlag string
-	outputPFlag        string
+	configPFlag string
 )
 
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&configPFlag, "config", "c", "geb.yaml", "A geb project config file.")
 	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
-
-	RootCmd.PersistentFlags().StringVarP(&designPFlag, "design", "d", "design", "The design files directory.")
-	viper.BindPFlag("design", RootCmd.PersistentFlags().Lookup("design"))
-
-	RootCmd.PersistentFlags().StringVarP(&templatePathsPFlag, "template-paths", "t", "templates:~/.hofstadter/templates", "The search path for templates, reads from left to right, overriding along the way.")
-	viper.BindPFlag("template-paths", RootCmd.PersistentFlags().Lookup("template-paths"))
-
-	RootCmd.PersistentFlags().StringVarP(&outputPFlag, "output", "o", "output", "The directory to output generated files to.")
-	viper.BindPFlag("output", RootCmd.PersistentFlags().Lookup("output"))
 
 }
 

@@ -41,6 +41,22 @@ pkg:
             - name: err
               type: error
 
+    - name: gen-adhoc
+      functions:
+        - name: generate-adhoc
+          args:
+            - name: input-data
+              type: "interface{}"
+            - name: field-path
+              type: string
+            - name: template-data
+              type: string
+          return:
+            - name: output-data
+              type: string
+            - name: err
+              type: error
+
     - name: info
       functions:
         - name: get-project-data

@@ -19,7 +19,7 @@ cli:
           aliases:
             - on-the-fly
           usage: adhoc <templateFile>
-          short: Generate .
+          short: Generate something from data and a template.
           long: Generate something from data and a template.
 
           args:
@@ -36,6 +36,13 @@ cli:
               type: string
               default: stdin
               help: path to an input file or directory
+
+            - name: input-type
+              long: input-type
+              short: t
+              type: string
+              default: stdin
+              help: type of the data in the input file or directory
 
             - name: field
               long: field

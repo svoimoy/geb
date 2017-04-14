@@ -65,7 +65,7 @@ var MiCmd = &cobra.Command{
 		//     help:   The rule to apply [r# or rule-#]
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Printf("missing required argument: 'rule'")
+			fmt.Println("missing required argument: 'rule'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}

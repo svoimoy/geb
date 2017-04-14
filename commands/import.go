@@ -67,7 +67,7 @@ var ImportCmd = &cobra.Command{
 		//     help:   Path to the file or folder. Can also be 'stdin'.
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Printf("missing required argument: 'input'")
+			fmt.Println("missing required argument: 'input'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}
@@ -83,7 +83,7 @@ var ImportCmd = &cobra.Command{
 		//     help:   Path to the output file or folder. Can also be 'stdout'.
 		//     req'd:  true
 		if 1 >= len(args) {
-			fmt.Printf("missing required argument: 'output'")
+			fmt.Println("missing required argument: 'output'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}

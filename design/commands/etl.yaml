@@ -16,6 +16,7 @@ cli:
       args:
         - name: etl-config
           long: etl-config
+          type: string
           required: true
           help: a dotpath into the data to be used for rendering
 
@@ -31,6 +32,7 @@ cli:
 
         - name: etl-config
           long: etl-config
+          type: string
           required: true
           help: a dotpath into the data to be used for rendering
 
@@ -47,7 +49,7 @@ cli:
           long: port
           short: p
           type: string
-          default: "11110"
+          default: "1110"
           help: port to run the server on
 
 

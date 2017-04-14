@@ -5,6 +5,7 @@ package commands
 import (
 	// HOFSTADTER_START import
 	"fmt"
+	"os"
 
 	"github.ibm.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
@@ -50,6 +51,12 @@ var GenCmd = &cobra.Command{
 		// Argument Parsing
 
 		// HOFSTADTER_START cmd_run
+		if len(args) > 0 {
+			fmt.Println("Error: 'geb gen' does not accept arguments.\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
+
 		filename := "geb.yaml"
 
 		err := engine.GenerateProject(filename, args)
@@ -65,7 +72,7 @@ func init() {
 }
 
 func init() {
-	GenCmd.AddCommand(gen.FileCmd)
+	GenCmd.AddCommand(gen.AdhocCmd)
 }
 
 // HOFSTADTER_BELOW
