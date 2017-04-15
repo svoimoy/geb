@@ -9,11 +9,11 @@ build:
 .Phony: gen
 gen:
 	@geb gen
-	@gofmt -w main.go commands engine
+	@gofmt -w main.go commands engine lib
 
 .Phony: fmt
 fmt:
-	@gofmt -w main.go commands engine
+	@gofmt -w main.go commands engine lib
 	
 .Phony: clone
 clone:

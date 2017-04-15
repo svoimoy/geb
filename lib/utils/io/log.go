@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"github.com/spf13/viper"
@@ -12,7 +12,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.lib.system.default")
+	ldcfg := viper.GetStringMap("log-config.lib.utils.io.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -47,7 +47,7 @@ func SetLogger(l log.Logger) {
 	// HOFSTADTER_END logging-config
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.lib.system")
+	lcfg := viper.GetStringMap("log-config.lib.utils.io")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

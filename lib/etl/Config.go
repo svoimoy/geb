@@ -8,7 +8,7 @@ import (
 
 /*
 Name:      config
-About:     
+About:
 */
 
 // HOFSTADTER_START const
@@ -24,27 +24,15 @@ About:
 Where's your docs doc?!
 */
 type Config struct {
-
-
-	InputPath string `json:"input_path" xml:"input_path" yaml:"input_path" form:"input_path" query:"input_path" `
-	OutputPath string `json:"output_path" xml:"output_path" yaml:"output_path" form:"output_path" query:"output_path" `
-	TemplateConfigs []gen.  TemplateConfig `json:"template_configs" xml:"template_configs" yaml:"template_configs" form:"template_configs" query:"template_configs" `
-
-
+	InputPath       string               `json:"input_path" xml:"input_path" yaml:"input_path" form:"input_path" query:"input_path" `
+	OutputPath      string               `json:"output_path" xml:"output_path" yaml:"output_path" form:"output_path" query:"output_path" `
+	TemplateConfigs []gen.TemplateConfig `json:"template_configs" xml:"template_configs" yaml:"template_configs" form:"template_configs" query:"template_configs" `
 }
 
 func NewConfig() *Config {
 	return &Config{
-TemplateConfigs: []gen.  TemplateConfig{},
-				}
+		TemplateConfigs: []gen.TemplateConfig{},
+	}
 }
 
-
-
-
-
-
-
-
 // HOFSTADTER_BELOW
-

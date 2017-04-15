@@ -55,7 +55,7 @@ func Mi(rule string, arg int) (string, error) {
 	case "3", "r3", "rule-3", "rule3":
 		indicies := map[int]int{}
 		cnt := 0
-		for i := 0; i < len(MI) - 2; i++ {
+		for i := 0; i < len(MI)-2; i++ {
 			if MI[i:i+3] == "III" {
 				indicies[cnt] = i
 				cnt++
@@ -76,7 +76,7 @@ func Mi(rule string, arg int) (string, error) {
 	case "4", "r4", "rule-4", "rule4":
 		indicies := map[int]int{}
 		cnt := 0
-		for i := 0; i < len(MI) - 1; i++ {
+		for i := 0; i < len(MI)-1; i++ {
 			if MI[i:i+2] == "UU" {
 				indicies[cnt] = i
 				cnt++
