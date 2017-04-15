@@ -49,26 +49,26 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 		return O, nil
 
 		/*
-	case map[interface{}]interface{}:
-		U, ok := update.(map[interface{}]interface{})
-		if !ok {
-			return nil, errors.New("update is not mI like original")
-		}
-		logger.Info("mI entering")
-		for key, val := range U {
-			logger.Debug("in merge mI-U", "key", key, "val", val, "curr", O[key])
-			if curr, exists := O[key]; exists {
-				tmp, err := merge(curr, val)
-				logger.Debug("after merge mI", "tmp", tmp, "err", err)
-				if err != nil {
-					return nil, errors.Wrap(err, "in merge mI")
+			case map[interface{}]interface{}:
+				U, ok := update.(map[interface{}]interface{})
+				if !ok {
+					return nil, errors.New("update is not mI like original")
 				}
-				val = tmp
-			}
-			O[key] = val
-		}
-		logger.Info("mI returning", "O", O)
-		return O, nil
+				logger.Info("mI entering")
+				for key, val := range U {
+					logger.Debug("in merge mI-U", "key", key, "val", val, "curr", O[key])
+					if curr, exists := O[key]; exists {
+						tmp, err := merge(curr, val)
+						logger.Debug("after merge mI", "tmp", tmp, "err", err)
+						if err != nil {
+							return nil, errors.Wrap(err, "in merge mI")
+						}
+						val = tmp
+					}
+					O[key] = val
+				}
+				logger.Info("mI returning", "O", O)
+				return O, nil
 		*/
 
 	case []interface{}:
@@ -91,12 +91,12 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 				OM[name.(string)] = E
 
 				/*
-			case map[interface{}]interface{}:
-				name, ok := E["name"]
-				if !ok {
-					return nil, errors.New("original array objects must have names to be merged")
-				}
-				OM[name.(string)] = E
+					case map[interface{}]interface{}:
+						name, ok := E["name"]
+						if !ok {
+							return nil, errors.New("original array objects must have names to be merged")
+						}
+						OM[name.(string)] = E
 				*/
 
 			case string:
@@ -119,12 +119,12 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 				UM[name.(string)] = E
 
 				/*
-			case map[interface{}]interface{}:
-				name, ok := E["name"]
-				if !ok {
-					return nil, errors.New("original array objects must have names to be merged")
-				}
-				UM[name.(string)] = E
+					case map[interface{}]interface{}:
+						name, ok := E["name"]
+						if !ok {
+							return nil, errors.New("original array objects must have names to be merged")
+						}
+						UM[name.(string)] = E
 				*/
 
 			case string:

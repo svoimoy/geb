@@ -135,8 +135,8 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 		c_slice = append(c_slice, M)
 
 		/*
-	case map[interface{}]interface{}:
-		c_slice = append(c_slice, M)
+			case map[interface{}]interface{}:
+				c_slice = append(c_slice, M)
 		*/
 
 	case []interface{}:
@@ -154,8 +154,8 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 					c_slice = append(c_slice, M2)
 
 					/*
-				case map[interface{}]interface{}:
-					c_slice = append(c_slice, M2)
+						case map[interface{}]interface{}:
+							c_slice = append(c_slice, M2)
 					*/
 
 				case []interface{}:
@@ -474,8 +474,8 @@ func flattenDesignData(baseOutputPath string, designData interface{}) (flattened
 					flattened[dsl_key] = vmap
 
 					/*
-				case map[interface{}]interface{}:
-					flattened[dsl_key] = vmap
+						case map[interface{}]interface{}:
+							flattened[dsl_key] = vmap
 					*/
 
 				default:

@@ -79,12 +79,12 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 			vmap["pkgPath"] = pkgPath
 
 			/*
-		case map[interface{}]interface{}:
-			vmap["parent"] = parent
-			vmap["parent_path"] = parentPath
-			vmap["ctx_path"] = path
-			vmap["pkg_path"] = pkg_path
-			vmap["pkgPath"] = pkgPath
+				case map[interface{}]interface{}:
+					vmap["parent"] = parent
+					vmap["parent_path"] = parentPath
+					vmap["ctx_path"] = path
+					vmap["pkg_path"] = pkg_path
+					vmap["pkgPath"] = pkgPath
 			*/
 
 		default:
@@ -123,13 +123,13 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					return errors.Wrap(err, "in unify: "+key)
 				}
 				/*
-			case map[interface{}]interface{}:
-				logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-				if err != nil {
-					logger.Debug("returning " + key)
-					return errors.Wrap(err, "in unify: "+key)
-				}
+					case map[interface{}]interface{}:
+						logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
+						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
+						if err != nil {
+							logger.Debug("returning " + key)
+							return errors.Wrap(err, "in unify: "+key)
+						}
 				*/
 			case []interface{}:
 				for idx, elem := range V {
@@ -147,41 +147,41 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 		}
 
 		/*
-	case map[interface{}]interface{}:
-		for key, val := range D {
-			logger.Debug("  - inspecting...", "key", key, "val", val)
-			skey := fmt.Sprint(key)
-			r_path := strings.Join([]string{path, skey}, ".")
-
-			switch V := val.(type) {
-			case map[string]interface{}:
-				logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-				if err != nil {
-					logger.Debug("returning " + skey)
-					return errors.Wrap(err, "in unify: "+skey)
-				}
 			case map[interface{}]interface{}:
-				logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-				if err != nil {
-					logger.Debug("returning " + skey)
-					return errors.Wrap(err, "in unify: "+skey)
-				}
-			case []interface{}:
-				for idx, elem := range V {
-					sidx := "[" + fmt.Sprint(idx) + "]"
-					i_path := strings.Join([]string{r_path, sidx}, ".")
-					logger.Debug("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
-					err := unify(r_parent, i_path, pkgPath, r_parent_path, elem)
-					if err != nil {
-						logger.Debug("returning " + sidx)
-						return errors.Wrap(err, "in unify: "+sidx)
+				for key, val := range D {
+					logger.Debug("  - inspecting...", "key", key, "val", val)
+					skey := fmt.Sprint(key)
+					r_path := strings.Join([]string{path, skey}, ".")
+
+					switch V := val.(type) {
+					case map[string]interface{}:
+						logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
+						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
+						if err != nil {
+							logger.Debug("returning " + skey)
+							return errors.Wrap(err, "in unify: "+skey)
+						}
+					case map[interface{}]interface{}:
+						logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
+						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
+						if err != nil {
+							logger.Debug("returning " + skey)
+							return errors.Wrap(err, "in unify: "+skey)
+						}
+					case []interface{}:
+						for idx, elem := range V {
+							sidx := "[" + fmt.Sprint(idx) + "]"
+							i_path := strings.Join([]string{r_path, sidx}, ".")
+							logger.Debug("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
+							err := unify(r_parent, i_path, pkgPath, r_parent_path, elem)
+							if err != nil {
+								logger.Debug("returning " + sidx)
+								return errors.Wrap(err, "in unify: "+sidx)
+							}
+						}
 					}
+					logger.Debug("  - done inspecting...", "key", key, "val", val)
 				}
-			}
-			logger.Debug("  - done inspecting...", "key", key, "val", val)
-		}
 		*/
 
 	case []interface{}:
@@ -199,13 +199,13 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					return errors.Wrap(err, "in unify: "+skey)
 				}
 				/*
-			case map[interface{}]interface{}:
-				logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
-				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-				if err != nil {
-					logger.Debug("returning " + skey)
-					return errors.Wrap(err, "in unify: "+skey)
-				}
+					case map[interface{}]interface{}:
+						logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
+						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
+						if err != nil {
+							logger.Debug("returning " + skey)
+							return errors.Wrap(err, "in unify: "+skey)
+						}
 				*/
 			}
 			logger.Debug("  - done inspecting...", "key", key, "val", val)
