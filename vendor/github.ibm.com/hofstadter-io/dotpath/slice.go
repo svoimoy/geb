@@ -120,17 +120,15 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 				logger.Debug("Adding val", "val", val)
 				subs = append(subs, val)
 
-			/*
-				case map[interface{}]interface{}:
-					logger.Debug("        map[iface]")
-					val, err := get_from_imap_by_path(IDX, paths, V)
-					if err != nil {
-						logger.Debug("could not find '" + P + "' in object")
-						continue
-					}
-					logger.Debug("Adding val", "val", val)
-					subs = append(subs, val)
-			*/
+			case map[interface{}]interface{}:
+				logger.Debug("        map[iface]")
+				val, err := get_from_imap_by_path(IDX, paths, V)
+				if err != nil {
+					logger.Debug("could not find '" + P + "' in object")
+					continue
+				}
+				logger.Debug("Adding val", "val", val)
+				subs = append(subs, val)
 
 			default:
 				str := fmt.Sprintf("%+v", reflect.TypeOf(V))

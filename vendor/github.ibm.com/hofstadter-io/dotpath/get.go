@@ -153,7 +153,6 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 		// }
 		return elems, nil
 
-		/*
 	case map[interface{}]interface{}:
 		elems, err := get_from_imap_by_path(IDX, paths, T)
 		if err != nil {
@@ -163,7 +162,6 @@ func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error)
 		// 	return E[0], nil
 		// }
 		return elems, nil
-		*/
 
 	case []interface{}:
 		logger.Debug("Processing Slice", "paths", paths, "T", T)
@@ -282,14 +280,12 @@ func add_parent_and_path(child interface{}, parent interface{}, path string) (in
 			return nil, errors.Errorf("parent does not have name: %+v", parent)
 		}
 		parent_ref = p_ref.(string)
-		/*
 	case map[interface{}]interface{}:
 		p_ref, ok := P["name"]
 		if !ok {
 			return nil, errors.Errorf("parent does not have name: %+v", parent)
 		}
 		parent_ref = p_ref.(string)
-		*/
 
 	default:
 		str := fmt.Sprintf("%+v", reflect.TypeOf(parent))
@@ -302,11 +298,9 @@ func add_parent_and_path(child interface{}, parent interface{}, path string) (in
 	case map[string]interface{}:
 		C["parent"] = parent_ref
 		C["path"] = path
-		/*
 	case map[interface{}]interface{}:
 		C["parent"] = parent_ref
 		C["path"] = path
-		*/
 
 	case []interface{}:
 		for _, elem := range C {
@@ -314,11 +308,9 @@ func add_parent_and_path(child interface{}, parent interface{}, path string) (in
 			case map[string]interface{}:
 				E["parent"] = parent_ref
 				E["path"] = path
-				/*
 			case map[interface{}]interface{}:
 				E["parent"] = parent_ref
 				E["path"] = path
-				*/
 			default:
 				str := fmt.Sprintf("in slice of %+v", reflect.TypeOf(E))
 				return nil, errors.New("element not an object type: " + str)

@@ -31,6 +31,9 @@ func main() {
 	read_config()
 	config_logger()
 
+	// HOFSTADTER_START main
+	// HOFSTADTER_END   main
+
 	if err := commands.RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
