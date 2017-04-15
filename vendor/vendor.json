@@ -46,6 +46,12 @@
 			"revisionTime": "2016-10-26T20:31:22Z"
 		},
 		{
+			"checksumSHA1": "17vYJDDMJO63/G/tRFIUuSlMCbE=",
+			"path": "github.com/ghodss/yaml",
+			"revision": "73d445a93680fa1a78ae23a5839bad48f32ba1ee",
+			"revisionTime": "2015-09-09T03:16:57Z"
+		},
+		{
 			"checksumSHA1": "n1JHIV6xUkQzOhTlVBq2aFcejEU=",
 			"path": "github.com/gin-gonic/gin",
 			"revision": "e06cef06726e4746308f6f81530dda879c2a65af",
@@ -216,6 +222,24 @@
 			"revisionTime": "2016-10-20T16:18:36Z"
 		},
 		{
+			"checksumSHA1": "A6nZdZ1/lTOVINhIndyw2ZWN9JU=",
+			"path": "github.com/naoina/go-stringutil",
+			"revision": "6b638e95a32d0c1131db0e7fe83775cbea4a0d0b",
+			"revisionTime": "2015-11-18T23:44:43Z"
+		},
+		{
+			"checksumSHA1": "2gmvVTDCks8cPhpmyDlvm0sbrXE=",
+			"path": "github.com/naoina/toml",
+			"revision": "ac014c6b6502388d89a85552b7208b8da7cfe104",
+			"revisionTime": "2017-04-10T21:57:17Z"
+		},
+		{
+			"checksumSHA1": "xZBlSMT5o/A+EDOro6KbfHZwSNc=",
+			"path": "github.com/naoina/toml/ast",
+			"revision": "ac014c6b6502388d89a85552b7208b8da7cfe104",
+			"revisionTime": "2017-04-10T21:57:17Z"
+		},
+		{
 			"checksumSHA1": "8Y05Pz7onrQPcVWW6JStSsYRh6E=",
 			"path": "github.com/pelletier/go-buffruneio",
 			"revision": "df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d",
@@ -295,10 +319,10 @@
 			"revisionTime": "2016-03-15T19:31:34Z"
 		},
 		{
-			"checksumSHA1": "Ue1V+eMhqw/rPqu/AKpCBMB0s/M=",
+			"checksumSHA1": "rD8X1ZWYOYD3x7gAgAuxI5onfgk=",
 			"path": "github.ibm.com/hofstadter-io/dotpath",
-			"revision": "d8ab1e55bdd39885dc76b41ce552f6d457b6b0de",
-			"revisionTime": "2016-12-30T04:25:02Z"
+			"revision": "1a0d556fcbc45d32cfa3874d264a8d0d1e7a90ca",
+			"revisionTime": "2017-02-27T05:09:03Z"
 		},
 		{
 			"checksumSHA1": "TK1Yr8BbwionaaAvM+77lwAAx/8=",

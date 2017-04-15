@@ -34,6 +34,7 @@ Build your [first project, a CLI](./docs/getting-started/cli.md)
 
 Get an [overview of Hofstadter](./docs/getting-started/overview.md)
 
+
 ## Documentation
 
 The docs are pretty much m.i.a. but you should still dive in!

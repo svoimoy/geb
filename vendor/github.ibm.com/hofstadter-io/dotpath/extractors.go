@@ -59,11 +59,13 @@ func extract_from_slice_with_name(listing string, data []interface{}) (interface
 				name = name_value
 			}
 
+			/*
 		case map[interface{}]interface{}:
 			name_value, ok := D["name"].(string)
 			if ok {
 				name = name_value
 			}
+			*/
 
 		}
 
@@ -93,11 +95,13 @@ func extract_from_slice_with_field(field, value string, data []interface{}) (int
 				field_value = f_value
 			}
 
+			/*
 		case map[interface{}]interface{}:
 			f_value, ok := D[field].(string)
 			if ok {
 				field_value = f_value
 			}
+			*/
 
 		}
 
@@ -162,6 +166,7 @@ func extract_from_map_by_field(field string, data interface{}) (interface{}, err
 			}
 		}
 
+		/*
 	case map[interface{}]interface{}:
 		for _, f := range fields {
 			val, ok := D[f]
@@ -169,6 +174,7 @@ func extract_from_map_by_field(field string, data interface{}) (interface{}, err
 				ret = append(ret, val)
 			}
 		}
+		*/
 
 	default:
 		return nil, errors.New("data arg is not a map type")
@@ -197,6 +203,7 @@ func extract_from_map_by_value(field interface{}, value string, data interface{}
 			}
 		}
 
+		/*
 	case map[interface{}]interface{}:
 		for _, f := range fields {
 			val, ok := D[f]
@@ -204,6 +211,7 @@ func extract_from_map_by_value(field interface{}, value string, data interface{}
 				ret = append(ret, val)
 			}
 		}
+		*/
 
 	default:
 		return nil, errors.New("data arg is not a map type")
