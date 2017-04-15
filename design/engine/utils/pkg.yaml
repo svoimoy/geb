@@ -64,7 +64,6 @@ pkg:
             - name: err
               type: error
 
-
   private-functions:
 
     - name: merge

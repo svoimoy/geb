@@ -1,0 +1,19 @@
+pkg:
+  name: "io"
+  about: "the Hofstadter utils/io package"
+
+  public-files:
+
+    - name: content
+      functions:
+        
+        - name: determine-content-type
+          args:
+            - name: data
+              type: []byte
+          return:
+            - name: content-type
+              type: string
+            - name: err
+              type: error
+
