@@ -11,9 +11,9 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
-	// "gopkg.in/yaml.v2"
 
 	"github.ibm.com/hofstadter-io/geb/engine"
+	"github.ibm.com/hofstadter-io/geb/lib/utils/io"
 	// HOFSTADTER_END   import
 
 	"github.com/spf13/viper"
@@ -53,7 +53,7 @@ func init() {
 	AdhocCmd.Flags().StringVarP(&AdhocInputFlag, "input", "i", "stdin", "path to an input file or directory")
 	viper.BindPFlag("input", AdhocCmd.Flags().Lookup("input"))
 
-	AdhocCmd.Flags().StringVarP(&AdhocInputTypeFlag, "input-type", "I", "yaml", "input type from [yaml,json,toml]")
+	AdhocCmd.Flags().StringVarP(&AdhocInputTypeFlag, "input-type", "I", "auto", "input type, one of [yaml,json,toml]")
 	viper.BindPFlag("input-type", AdhocCmd.Flags().Lookup("input-type"))
 
 	AdhocCmd.Flags().StringVarP(&AdhocFieldFlag, "field", "f", ".", "a dotpath into the data to be used for rendering")
@@ -107,6 +107,7 @@ var AdhocCmd = &cobra.Command{
 
 		// read in data
 		var inputData interface{}
+		var inputContentType string
 		var data []byte
 		var err error
 		if AdhocInputFlag == "stdin" {
@@ -117,8 +118,16 @@ var AdhocCmd = &cobra.Command{
 			errExit(err)
 		}
 
+		if AdhocInputTypeFlag == "auto" {
+			ctype, cerr := io.DetermineDataContentType(data)
+			errExit(cerr)
+			inputContentType = ctype
+		} else {
+			inputContentType = AdhocInputTypeFlag
+		}
+
 		// unmarshal into interface{}
-		switch AdhocInputTypeFlag {
+		switch inputContentType {
 		case "yaml", "yml":
 			err = yaml.Unmarshal(data, &inputData)
 			errExit(err)
@@ -134,7 +143,7 @@ var AdhocCmd = &cobra.Command{
 		}
 
 		// read in the template
-		data = []byte("{{{yaml .}}}")
+		data = []byte("{{{json .}}}")
 		tsF := AdhocTemplateStringFlag != ""
 		tfF := AdhocTemplateFileFlag != ""
 		otF := AdhocOutputTypeFlag != ""

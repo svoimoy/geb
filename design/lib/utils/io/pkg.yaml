@@ -20,7 +20,7 @@ pkg:
         - name: determine-data-content-type
           args:
             - name: data
-              type: "[]byte"
+              type: "array:byte"
           return:
             - name: content-type
               type: string
