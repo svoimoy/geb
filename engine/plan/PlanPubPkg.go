@@ -134,8 +134,10 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 	case map[string]interface{}:
 		c_slice = append(c_slice, M)
 
+		/*
 	case map[interface{}]interface{}:
 		c_slice = append(c_slice, M)
+		*/
 
 	case []interface{}:
 		for _, elem := range M {
@@ -151,8 +153,10 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 				case map[string]interface{}:
 					c_slice = append(c_slice, M2)
 
+					/*
 				case map[interface{}]interface{}:
 					c_slice = append(c_slice, M2)
+					*/
 
 				case []interface{}:
 					for _, elem2 := range M2 {
@@ -469,8 +473,10 @@ func flattenDesignData(baseOutputPath string, designData interface{}) (flattened
 				case map[string]interface{}:
 					flattened[dsl_key] = vmap
 
+					/*
 				case map[interface{}]interface{}:
 					flattened[dsl_key] = vmap
+					*/
 
 				default:
 					return nil, errors.New("in flatten_design, named data is not a map")

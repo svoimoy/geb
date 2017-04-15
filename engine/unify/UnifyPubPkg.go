@@ -78,12 +78,14 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 			vmap["pkg_path"] = pkg_path
 			vmap["pkgPath"] = pkgPath
 
+			/*
 		case map[interface{}]interface{}:
 			vmap["parent"] = parent
 			vmap["parent_path"] = parentPath
 			vmap["ctx_path"] = path
 			vmap["pkg_path"] = pkg_path
 			vmap["pkgPath"] = pkgPath
+			*/
 
 		default:
 			return errors.New("in unify, named data is not a map")
@@ -120,6 +122,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					logger.Debug("returning " + key)
 					return errors.Wrap(err, "in unify: "+key)
 				}
+				/*
 			case map[interface{}]interface{}:
 				logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
@@ -127,6 +130,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					logger.Debug("returning " + key)
 					return errors.Wrap(err, "in unify: "+key)
 				}
+				*/
 			case []interface{}:
 				for idx, elem := range V {
 					sidx := "[" + fmt.Sprint(idx) + "]"
@@ -142,6 +146,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}
 
+		/*
 	case map[interface{}]interface{}:
 		for key, val := range D {
 			logger.Debug("  - inspecting...", "key", key, "val", val)
@@ -177,6 +182,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 			}
 			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}
+		*/
 
 	case []interface{}:
 		for key, val := range D {
@@ -192,6 +198,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
+				/*
 			case map[interface{}]interface{}:
 				logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
@@ -199,6 +206,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
+				*/
 			}
 			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}

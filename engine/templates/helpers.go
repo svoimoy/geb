@@ -12,9 +12,9 @@ import (
 
 	"github.com/aymerick/raymond"
 	"github.com/codemodus/kace"
+	"github.com/ghodss/yaml"
 	"github.com/kr/pretty"
 	"github.com/naoina/toml"
-	"gopkg.in/yaml.v2"
 	// HOFSTADTER_END   import
 )
 

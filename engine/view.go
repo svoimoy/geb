@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
+	"github.com/ghodss/yaml"
 	"github.com/spf13/viper"
 	"github.ibm.com/hofstadter-io/dotpath"
-	"gopkg.in/yaml.v2"
 
 	"github.ibm.com/hofstadter-io/geb/engine/design"
 	"github.ibm.com/hofstadter-io/geb/engine/dsl"

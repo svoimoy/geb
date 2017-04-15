@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gopkg.in/yaml.v1"
+	"github.com/ghodss/yaml"
 
 	"github.ibm.com/hofstadter-io/dotpath"
 	// HOFSTADTER_END   import
@@ -206,7 +206,7 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 
 	// get list of all top level DSL entries
 	for dsl, val := range top_level {
-		data := val.(map[interface{}]interface{})
+		data := val.(map[string]interface{})
 		err = D.storeDesign(rel_path, dsl, data)
 		if err != nil {
 			return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
@@ -244,17 +244,19 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 		name = tmp
 		D["relPath"] = relativePath
 
-	case map[interface{}]interface{}:
-		iname, ok := D["name"]
-		if !ok {
-			return errors.New("Top-level definition '" + dsl + "' missing required field 'name'.")
-		}
-		tmp, ok := iname.(string)
-		if !ok {
-			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
-		}
-		name = tmp
-		D["relPath"] = relativePath
+		/*
+			case map[interface{}]interface{}:
+				iname, ok := D["name"]
+				if !ok {
+					return errors.New("Top-level definition '" + dsl + "' missing required field 'name'.")
+				}
+				tmp, ok := iname.(string)
+				if !ok {
+					return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
+				}
+				name = tmp
+				D["relPath"] = relativePath
+		*/
 
 	default:
 		return errors.New("Top-level definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
@@ -277,13 +279,15 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 			t_list = tmp_list
 			D["relPath"] = relativePath
 
-		case map[interface{}]interface{}:
-			tmp_list, ok := D["list"].([]interface{})
-			if !ok {
-				return errors.New("Top-level type-list does not have a 'list' or is not an array of objects in '" + " design: " + fmt.Sprint(design))
-			}
-			t_list = tmp_list
-			D["relPath"] = relativePath
+			/*
+				case map[interface{}]interface{}:
+					tmp_list, ok := D["list"].([]interface{})
+					if !ok {
+						return errors.New("Top-level type-list does not have a 'list' or is not an array of objects in '" + " design: " + fmt.Sprint(design))
+					}
+					t_list = tmp_list
+					D["relPath"] = relativePath
+			*/
 
 		default:
 			return errors.New("Type-list definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
@@ -309,17 +313,19 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 				ename = tmp
 				E["relPath"] = relativePath
 
-			case map[interface{}]interface{}:
-				iname, ok := E["name"]
-				if !ok {
-					return errors.New("Type-list definition '" + name + "' missing required field 'name'.")
-				}
-				tmp, ok := iname.(string)
-				if !ok {
-					return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
-				}
-				ename = tmp
-				E["relPath"] = relativePath
+				/*
+					case map[interface{}]interface{}:
+						iname, ok := E["name"]
+						if !ok {
+							return errors.New("Type-list definition '" + name + "' missing required field 'name'.")
+						}
+						tmp, ok := iname.(string)
+						if !ok {
+							return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
+						}
+						ename = tmp
+						E["relPath"] = relativePath
+				*/
 
 			default:
 				return errors.New("Type-list definition '" + dsl + "' is not a map[string]")

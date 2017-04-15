@@ -48,6 +48,7 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 		logger.Info("mS returning", "O", O)
 		return O, nil
 
+		/*
 	case map[interface{}]interface{}:
 		U, ok := update.(map[interface{}]interface{})
 		if !ok {
@@ -68,6 +69,7 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 		}
 		logger.Info("mI returning", "O", O)
 		return O, nil
+		*/
 
 	case []interface{}:
 		U, ok := update.([]interface{})
@@ -88,12 +90,14 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 				}
 				OM[name.(string)] = E
 
+				/*
 			case map[interface{}]interface{}:
 				name, ok := E["name"]
 				if !ok {
 					return nil, errors.New("original array objects must have names to be merged")
 				}
 				OM[name.(string)] = E
+				*/
 
 			case string:
 				OM[E] = E
@@ -114,12 +118,14 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 				}
 				UM[name.(string)] = E
 
+				/*
 			case map[interface{}]interface{}:
 				name, ok := E["name"]
 				if !ok {
 					return nil, errors.New("original array objects must have names to be merged")
 				}
 				UM[name.(string)] = E
+				*/
 
 			case string:
 				UM[E] = E

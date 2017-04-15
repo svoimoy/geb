@@ -5,7 +5,7 @@ import (
 	"github.com/pkg/errors"
 	"io/ioutil"
 
-	"gopkg.in/yaml.v1"
+	"github.com/ghodss/yaml"
 	// HOFSTADTER_END   import
 )
 
