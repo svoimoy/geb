@@ -1,0 +1,22 @@
+api:
+  name: serve
+  about: serve templates and ETL pipelines with geb
+
+  module: true
+
+  config:
+    host: "localhost"
+    port: "1110"
+    base-url: "/api/v1"
+
+  routes:
+    - name: ready-check
+      route: readyz
+      method: GET
+      return: version-response
+
+    - name: health-check
+      route: healthz
+      method: GET
+      return: health-response
+

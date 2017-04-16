@@ -220,6 +220,17 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 			// also want to override when 'when' is found
 			local_ctx := val
 
+			// check the unless clause
+			if t_pair.Unless != "" {
+				logger.Info("Unless", "t_pair", t_pair)
+				unless_elems, err := dotpath.Get(t_pair.Unless, val, false)
+				logger.Debug("  elems", "unless_elems", unless_elems)
+				if err == nil || unless_elems != nil {
+					logger.Debug("Skipping TemplatePair Unless Field: '"+R.Name+"'", "unless", t_pair.Unless, "err", err, "unless_elems", unless_elems)
+					continue
+				}
+			}
+
 			// check the when clause
 			if t_pair.When != "" {
 				logger.Info("When", "t_pair", t_pair)

@@ -10,21 +10,13 @@ dsl-config:
   paths:
     - "$HOME/.geb/dsl"
   default:
-    - dsl: common
-      gen:
-        - golang
-      output-dir: "."
-    - dsl: type
-      gen:
-        - golang
-      output-dir: "."
-    - dsl: pkg
-      gen:
-        - golang
-      output-dir: "."
     - dsl: cli
       gen:
         - golang
+      output-dir: "."
+    - dsl: api
+      gen:
+        - golang/echo
       output-dir: "."
 
 build-pipeline:

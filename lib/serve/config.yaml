@@ -1,0 +1,10 @@
+name: "serve"
+version: ""
+
+release-mode: "debug"
+
+host: "localhost"
+port: "1110"
+
+# HOFSTADTER_BELOW
+

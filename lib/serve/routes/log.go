@@ -1,22 +1,33 @@
-package commands
+package routes
 
 // The following line in the template needs fixing, it's probably related to the tree traversal and adding information
 // go unification improvements!!
-// package
+// package routes
+
+/*
+ctx_path: dsl.lib.serve.api.routes.[0]
+method: GET
+name: ready-check
+parent: serve
+parent_path: dsl.lib.serve.api
+path: routes
+pkg_path: lib/serve/api/routes
+pkgPath: serve/ready-check
+return: version-response
+route: readyz
+
+*/
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.ibm.com/hofstadter-io/geb/commands/gebberish"
-	"github.ibm.com/hofstadter-io/geb/commands/system"
-	"github.ibm.com/hofstadter-io/geb/commands/view"
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.default")
+	ldcfg := viper.GetStringMap("log-config.routes.default")
+
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -46,12 +57,9 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers before possibly overriding locally next
-	view.SetLogger(logger)
-	system.SetLogger(logger)
-	gebberish.SetLogger(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands")
+	lcfg := viper.GetStringMap("log-config.routes")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

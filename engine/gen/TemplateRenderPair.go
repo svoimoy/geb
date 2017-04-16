@@ -23,9 +23,10 @@ About:
 Where's your docs doc?!
 */
 type TemplateRenderPair struct {
-	When string `json:"when" xml:"when" yaml:"when" form:"when" query:"when" `
-	In   string `json:"in" xml:"in" yaml:"in" form:"in" query:"in" `
-	Out  string `json:"out" xml:"out" yaml:"out" form:"out" query:"out" `
+	When   string `json:"when" xml:"when" yaml:"when" form:"when" query:"when" `
+	Unless string `json:"unless" xml:"unless" yaml:"unless" form:"unless" query:"unless" `
+	In     string `json:"in" xml:"in" yaml:"in" form:"in" query:"in" `
+	Out    string `json:"out" xml:"out" yaml:"out" form:"out" query:"out" `
 }
 
 func NewTemplateRenderPair() *TemplateRenderPair {

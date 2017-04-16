@@ -38,6 +38,8 @@ type-list:
       fields:
         - name: when
           type: string
+        - name: unless
+          type: string
         - name: in
           type: string
         - name: out

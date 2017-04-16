@@ -1,22 +1,24 @@
-package commands
+package serve
 
 // The following line in the template needs fixing, it's probably related to the tree traversal and adding information
 // go unification improvements!!
 // package
 
+/*
+true
+
+*/
+
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.ibm.com/hofstadter-io/geb/commands/gebberish"
-	"github.ibm.com/hofstadter-io/geb/commands/system"
-	"github.ibm.com/hofstadter-io/geb/commands/view"
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.default")
+	ldcfg := viper.GetStringMap("log-config..default")
+
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -46,12 +48,9 @@ func SetLogger(l log.Logger) {
 	}
 
 	// set subcommand loggers before possibly overriding locally next
-	view.SetLogger(logger)
-	system.SetLogger(logger)
-	gebberish.SetLogger(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands")
+	lcfg := viper.GetStringMap("log-config.")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
