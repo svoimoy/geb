@@ -5,12 +5,14 @@ package templates
 import (
 	// HOFSTADTER_START import
 	"encoding/json"
+//	"encoding/xml"
 	"fmt"
 	"os"
 	"reflect"
 	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.com/clbanning/mxj"
 	"github.com/codemodus/kace"
 	"github.com/ghodss/yaml"
 	"github.com/kr/pretty"
@@ -44,6 +46,7 @@ func addTemplateHelpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("yaml", helper_yaml)
 	tpl.RegisterHelper("toml", helper_toml)
 	tpl.RegisterHelper("json", helper_json)
+	tpl.RegisterHelper("xml", helper_xml)
 	tpl.RegisterHelper("indent", helper_indent)
 	tpl.RegisterHelper("pprint", helper_pretty)
 	tpl.RegisterHelper("pretty", helper_pretty)
@@ -156,7 +159,16 @@ func helper_indent(value, indent string) string {
 }
 
 func helper_json(value interface{}) string {
-	bytes, err := json.MarshalIndent(value, "", "\t")
+	bytes, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		return err.Error()
+	}
+	return string(bytes)
+}
+
+func helper_xml(value interface{}) string {
+	mv := mxj.Map(value.(map[string]interface{}))
+	bytes, err := mv.XmlIndent("", "  ")
 	if err != nil {
 		return err.Error()
 	}

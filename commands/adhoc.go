@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/clbanning/mxj"
 	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
 
@@ -108,42 +109,54 @@ var AdhocCmd = &cobra.Command{
 		// read in data
 		var inputData interface{}
 		var inputContentType string
-		var data []byte
 		var err error
-		if AdhocInputFlag == "stdin" {
-			data, err = ioutil.ReadAll(os.Stdin)
-			errExit(err)
-		} else {
-			data, err = ioutil.ReadFile(AdhocInputFlag)
-			errExit(err)
-		}
 
 		if AdhocInputTypeFlag == "auto" {
-			ctype, cerr := io.DetermineDataContentType(data)
-			errExit(cerr)
-			inputContentType = ctype
+			if AdhocInputFlag == "stdin" {
+				ctype, cerr := io.ReadAll(os.Stdin, &inputData)
+				errExit(cerr)
+				inputContentType = ctype
+			} else {
+				ctype, cerr := io.ReadFile(AdhocInputFlag, &inputData)
+				errExit(cerr)
+				inputContentType = ctype
+			}
 		} else {
 			inputContentType = AdhocInputTypeFlag
+			var content []byte
+
+			if AdhocInputFlag == "stdin" {
+				content, err = ioutil.ReadAll(os.Stdin)
+				errExit(err)
+			} else {
+				content, err = ioutil.ReadFile(AdhocInputFlag)
+				errExit(err)
+			}
+
+			// unmarshal into interface{}
+			switch inputContentType {
+			case "json":
+				err = json.Unmarshal(content, &inputData)
+				errExit(err)
+			case "yaml", "yml":
+				err = yaml.Unmarshal(content, &inputData)
+				errExit(err)
+			case "xml":
+				mv, merr := mxj.NewMapXml(content)
+				errExit(merr)
+				inputData = map[string]interface{}(mv)
+			case "toml":
+				err = toml.Unmarshal(content, &inputData)
+				errExit(err)
+			default:
+				fmt.Println("unknown input type: ", AdhocInputTypeFlag)
+				os.Exit(1)
+			}
 		}
 
-		// unmarshal into interface{}
-		switch inputContentType {
-		case "yaml", "yml":
-			err = yaml.Unmarshal(data, &inputData)
-			errExit(err)
-		case "json":
-			err = json.Unmarshal(data, &inputData)
-			errExit(err)
-		case "toml":
-			err = toml.Unmarshal(data, &inputData)
-			errExit(err)
-		default:
-			fmt.Println("unknown input type: ", AdhocInputTypeFlag)
-			os.Exit(1)
-		}
 
 		// read in the template
-		data = []byte("{{{json .}}}")
+		data := []byte("{{{json .}}}")
 		tsF := AdhocTemplateStringFlag != ""
 		tfF := AdhocTemplateFileFlag != ""
 		otF := AdhocOutputTypeFlag != ""
@@ -160,10 +173,12 @@ var AdhocCmd = &cobra.Command{
 			errExit(err)
 		} else if otF {
 			switch AdhocOutputTypeFlag {
-			case "yaml", "yml":
-				data = []byte("{{{yaml .}}}")
 			case "json":
 				data = []byte("{{{json .}}}")
+			case "yaml", "yml":
+				data = []byte("{{{yaml .}}}")
+			case "xml":
+				data = []byte("{{{xml .}}}")
 			case "toml":
 				data = []byte("{{{toml .}}}")
 			default:

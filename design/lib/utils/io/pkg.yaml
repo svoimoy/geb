@@ -4,6 +4,33 @@ pkg:
 
   public-files:
 
+    - name: read
+      functions:
+
+        - name: read-all
+          args:
+            - name: reader 
+              type: "io.Reader"
+            - name: obj
+              type: "*interface{}"
+          return:
+            - name: content-type
+              type: string
+            - name: err
+              type: error
+
+        - name: read-file
+          args:
+            - name: filepath
+              type: string
+            - name: obj
+              type: "*interface{}"
+          return:
+            - name: content-type
+              type: string
+            - name: err
+              type: error
+
     - name: content
       functions:
         

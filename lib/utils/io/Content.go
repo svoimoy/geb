@@ -5,6 +5,7 @@ package io
 import (
 	// HOFSTADTER_START import
 	"encoding/json"
+	"encoding/xml"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"strings"
@@ -37,11 +38,14 @@ func DetermineFileContentType(filepath string) (contentType string, err error) {
 	case "json":
 		return "json", nil
 
+	case "toml":
+		return "toml", nil
+
 	case "yaml", "yml":
 		return "yaml", nil
 
-	case "toml":
-		return "toml", nil
+	case "xml":
+		return "xml", nil
 
 	default:
 		data, err := ioutil.ReadFile(filepath)
@@ -71,6 +75,11 @@ func DetermineDataContentType(data []byte) (contentType string, err error) {
 	}
 
 	err = yaml.Unmarshal(data, &obj)
+	if err == nil {
+		return "yaml", nil
+	}
+
+	err = xml.Unmarshal(data, &obj)
 	if err == nil {
 		return "yaml", nil
 	}
