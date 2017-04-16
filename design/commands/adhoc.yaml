@@ -14,17 +14,17 @@ cli:
 
         - name: input
           long: input
-          short: i
+          short: I
           type: string
           default: stdin
           help: path to an input file or directory
 
         - name: input-type
           long: input-type
-          short: I
+          short: i
           type: string
           default: auto
-          help: input type, one of [yaml,json,toml]
+          help: input type, one of [yaml,json,toml,xml]
 
         - name: field
           long: field
@@ -61,16 +61,16 @@ cli:
 
         - name: output
           long: output
-          short: o
+          short: O
           type: string
           default: stdout
           help: path to an output file or directory
 
         - name: output-type
           long: output-type
-          short: O
+          short: o
           type: string
           default: ""
-          help: output type from [yaml,json,toml]
+          help: output type from [yaml,json,toml,xml] (default "json")
 
 

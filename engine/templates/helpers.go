@@ -5,7 +5,6 @@ package templates
 import (
 	// HOFSTADTER_START import
 	"encoding/json"
-//	"encoding/xml"
 	"fmt"
 	"os"
 	"reflect"

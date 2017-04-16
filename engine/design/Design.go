@@ -4,14 +4,12 @@ import (
 	// HOFSTADTER_START import
 	"fmt"
 	"github.com/pkg/errors"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/ghodss/yaml"
-
 	"github.ibm.com/hofstadter-io/dotpath"
+	"github.ibm.com/hofstadter-io/geb/lib/utils/io"
 	// HOFSTADTER_END   import
 )
 
@@ -82,11 +80,19 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 		if err != nil {
 			return nil
 		}
-		if info.IsDir() || !(strings.Contains(info.Name(), ".yml") || strings.Contains(info.Name(), ".yaml")) {
+		if info.IsDir() {
 			return nil
 		}
 
-		return local_d.importDesign(folder, path)
+		dot := strings.LastIndex(path, ".")
+		ext := path[dot+1:]
+		switch ext {
+
+		case "json", "toml", "xml", "yaml", "yml":
+			return local_d.importDesign(folder, path)
+		default:
+			return nil
+		}
 	}
 
 	// Walk the directory
@@ -182,17 +188,31 @@ Where's your docs doc?!
 */
 func (D *Design) importDesign(basePath string, designPath string) (err error) {
 	// HOFSTADTER_START importDesign
+
 	logger.Info("  - file: " + designPath)
 	// fmt.Println(" -", designPath)
-	top_level := make(map[string]interface{})
-	raw_data, err := ioutil.ReadFile(designPath)
+
+	var iface interface{}
+	_, err = io.ReadFile(designPath, &iface)
 	if err != nil {
 		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
 	}
-	err = yaml.Unmarshal([]byte(raw_data), &top_level)
-	if err != nil {
-		return errors.Wrap(err, "in design.import_design (yaml unmarshal): "+designPath+"\n")
+	logger.Debug("after reading", "iface", iface)
+	top_level, ok := iface.(map[string]interface{})
+	if !ok {
+		return errors.New("design data is not an object")
 	}
+
+	/*
+		raw_data, err := ioutil.ReadFile(designPath)
+		if err != nil {
+			return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
+		}
+		err = yaml.Unmarshal([]byte(raw_data), &top_level)
+		if err != nil {
+			return errors.Wrap(err, "in design.import_design (yaml unmarshal): "+designPath+"\n")
+		}
+	*/
 
 	rel_file, err := filepath.Rel(basePath, designPath)
 	if err != nil {

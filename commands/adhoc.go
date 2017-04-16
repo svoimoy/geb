@@ -51,10 +51,10 @@ var (
 )
 
 func init() {
-	AdhocCmd.Flags().StringVarP(&AdhocInputFlag, "input", "i", "stdin", "path to an input file or directory")
+	AdhocCmd.Flags().StringVarP(&AdhocInputFlag, "input", "I", "stdin", "path to an input file or directory")
 	viper.BindPFlag("input", AdhocCmd.Flags().Lookup("input"))
 
-	AdhocCmd.Flags().StringVarP(&AdhocInputTypeFlag, "input-type", "I", "auto", "input type, one of [yaml,json,toml]")
+	AdhocCmd.Flags().StringVarP(&AdhocInputTypeFlag, "input-type", "i", "auto", "input type, one of [yaml,json,toml,xml]")
 	viper.BindPFlag("input-type", AdhocCmd.Flags().Lookup("input-type"))
 
 	AdhocCmd.Flags().StringVarP(&AdhocFieldFlag, "field", "f", ".", "a dotpath into the data to be used for rendering")
@@ -72,10 +72,10 @@ func init() {
 	AdhocCmd.Flags().StringVarP(&AdhocTemplateFileFlag, "template-file", "t", "", "Path to the template file.")
 	viper.BindPFlag("template-file", AdhocCmd.Flags().Lookup("template-file"))
 
-	AdhocCmd.Flags().StringVarP(&AdhocOutputFlag, "output", "o", "stdout", "path to an output file or directory")
+	AdhocCmd.Flags().StringVarP(&AdhocOutputFlag, "output", "O", "stdout", "path to an output file or directory")
 	viper.BindPFlag("output", AdhocCmd.Flags().Lookup("output"))
 
-	AdhocCmd.Flags().StringVarP(&AdhocOutputTypeFlag, "output-type", "O", "", "output type from [yaml,json,toml]")
+	AdhocCmd.Flags().StringVarP(&AdhocOutputTypeFlag, "output-type", "o", "", "output type from [yaml,json,toml,xml] (default &quot;json&quot;)")
 	viper.BindPFlag("output-type", AdhocCmd.Flags().Lookup("output-type"))
 
 }
@@ -153,7 +153,6 @@ var AdhocCmd = &cobra.Command{
 				os.Exit(1)
 			}
 		}
-
 
 		// read in the template
 		data := []byte("{{{json .}}}")
