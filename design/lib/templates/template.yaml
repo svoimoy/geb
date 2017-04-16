@@ -1,0 +1,30 @@
+type:
+  name: template
+
+  fields:
+    - name: id
+      type: string
+
+    - name: name
+      type: string
+
+    - name: data
+      type: string
+
+
+  views:
+
+    - name: short
+      fields:
+        - type: local.id
+        - type: local.name
+
+    - name: create
+      fields:
+        - type: local.name
+          validation:
+            - required
+        - type: local.data
+          validation:
+            - required
+

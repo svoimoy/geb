@@ -1,0 +1,4 @@
+pkg:
+  name: templates
+  about: a package for working with geb templates
+

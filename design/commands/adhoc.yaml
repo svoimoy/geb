@@ -17,7 +17,7 @@ cli:
           short: I
           type: string
           default: stdin
-          help: path to an input file or directory
+          help: path to an input file or directory, merged with the input command's arguments.
 
         - name: input-type
           long: input-type

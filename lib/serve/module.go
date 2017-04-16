@@ -8,8 +8,6 @@ import (
 	"github.com/labstack/gommon/log"
 
 	"github.com/spf13/viper"
-
-	"github.ibm.com/hofstadter-io/geb/lib/serve/routes"
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 )

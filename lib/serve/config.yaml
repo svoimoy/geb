@@ -8,3 +8,6 @@ port: "1110"
 
 # HOFSTADTER_BELOW
 
+
+template-dir: "local-data/templates"
+

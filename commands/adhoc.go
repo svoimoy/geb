@@ -51,7 +51,7 @@ var (
 )
 
 func init() {
-	AdhocCmd.Flags().StringVarP(&AdhocInputFlag, "input", "I", "stdin", "path to an input file or directory")
+	AdhocCmd.Flags().StringVarP(&AdhocInputFlag, "input", "I", "stdin", "path to an input file or directory, merged with the input command&apos;s arguments.")
 	viper.BindPFlag("input", AdhocCmd.Flags().Lookup("input"))
 
 	AdhocCmd.Flags().StringVarP(&AdhocInputTypeFlag, "input-type", "i", "auto", "input type, one of [yaml,json,toml,xml]")

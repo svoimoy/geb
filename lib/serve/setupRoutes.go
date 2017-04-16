@@ -3,6 +3,8 @@ package serve
 import (
 	"github.com/labstack/echo"
 
+	"github.ibm.com/hofstadter-io/geb/lib/serve/resources"
+
 	"github.ibm.com/hofstadter-io/geb/lib/serve/routes"
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
@@ -33,6 +35,12 @@ func setupRoutes(G *echo.Group) error {
 	// HOFSTADTER_END   pre-resources
 
 	// Resources
+	templatesGroup := G.Group("/templates")
+	templatesGroup.GET("", resources.Handle_LIST_Templates)
+	templatesGroup.POST("", resources.Handle_POST_Templates)
+	templatesGroup.GET("/:template-id", resources.Handle_GET_Templates)
+	templatesGroup.PUT("/:template-id", resources.Handle_PUT_Templates)
+	templatesGroup.DELETE("/:template-id", resources.Handle_DELETE_Templates)
 
 	// HOFSTADTER_START post-resources
 	// HOFSTADTER_END   post-resources

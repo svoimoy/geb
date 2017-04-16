@@ -1,22 +1,18 @@
-package commands
-
-// The following line in the template needs fixing, it's probably related to the tree traversal and adding information
-// go unification improvements!!
-// package
+package templates
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.ibm.com/hofstadter-io/geb/commands/gebberish"
-	"github.ibm.com/hofstadter-io/geb/commands/system"
-	"github.ibm.com/hofstadter-io/geb/commands/view"
+	// HOFSTADTER_START import
+	// HOFSTADTER_END   import
 )
+
+// hello world
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.default")
+	ldcfg := viper.GetStringMap("log-config.lib.templates.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -45,19 +41,27 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
-	// set subcommand loggers before possibly overriding locally next
-	gebberish.SetLogger(logger)
-	view.SetLogger(logger)
-	system.SetLogger(logger)
+	// set sub-loggers before possibly overriding locally next
+
+	// HOFSTADTER_START logging-config
+	// HOFSTADTER_END logging-config
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands")
+	lcfg := viper.GetStringMap("log-config.lib.templates")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
 	} else {
+		// hack because of default override (should look for both upfront)
+		logger = log.New()
+
 		// find the logging level
-		level_str := lcfg["level"].(string)
+		level_iface, ok := lcfg["level"]
+		level_str := "warn"
+		if ok {
+			level_str = level_iface.(string)
+		}
+
 		level, err := log.LvlFromString(level_str)
 		if err != nil {
 			panic(err)

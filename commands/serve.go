@@ -5,6 +5,8 @@ package commands
 import (
 	// HOFSTADTER_START import
 	"fmt"
+
+	"github.ibm.com/hofstadter-io/geb/lib/serve"
 	// HOFSTADTER_END   import
 
 	"os"
@@ -63,6 +65,9 @@ var ServeCmd = &cobra.Command{
 		fmt.Println("geb serve:",
 			serverConfig,
 		)
+
+		serve.Run()
+
 		// HOFSTADTER_END   cmd_run
 	},
 }

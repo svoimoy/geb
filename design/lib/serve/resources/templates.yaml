@@ -1,0 +1,53 @@
+api:
+  name: serve
+
+  resources:
+
+    - name: templates
+      route: templates
+      resource: lib.templates.template
+
+      omit-db-calls: true
+
+      methods:
+
+        - method: list
+          output: 
+            - name: ts
+              type: array:lib.templates.template.views.short
+
+        - method: post
+          input:
+            - name: in-tpl
+              type: lib.templates.template.views.create
+          output:
+            - name: out-tpl
+              type: lib.templates.template
+
+        - method: get
+          path-params:
+            - name: template-id
+              type: lib.templates.template.fields.id
+          output: 
+            - name: t
+              type: lib.templates.template
+
+        - method: put
+          path-params:
+            - name: template-id
+              type: lib.templates.template.fields.id
+          input:
+            - name: in-tpl
+              type: lib.templates.template
+          output:
+            - name: out-tpl
+              type: lib.templates.template
+
+        - method: delete
+          path-params:
+            - name: template-id
+              type: lib.templates.template.fields.id
+          output:
+            - name: out-tpl
+              type: lib.templates.template.views.short
+
