@@ -219,6 +219,7 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 			// needed because of range iteration behavior
 			// also want to override when 'when' is found
 			local_ctx := val
+			var when_ctx interface{}
 
 			// check the unless clause
 			if t_pair.Unless != "" {
@@ -246,10 +247,9 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 						logger.Warn("Skipping TemplatePair When Field: (array) '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
 						continue
 					}
-					when_elems = W[0]
 				}
 				logger.Debug("When is NOW")
-				local_ctx = when_elems
+				when_ctx = when_elems
 			}
 
 			logger.Debug("     context", "val", local_ctx, "idx", idx)
@@ -289,6 +289,7 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 				DslContext:      dslCtx,
 				RepeatedContext: local_ctx,
 				TemplateContext: local_ctx,
+				WhenContext:     when_ctx,
 			}
 			// logger.Info("        planned repeat file: "+t_key, "index", idx)
 			// logger.Debug("          data...", "fgd", fgd, "index", idx)

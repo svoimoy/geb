@@ -1,9 +1,5 @@
 package commands
 
-// The following line in the template needs fixing, it's probably related to the tree traversal and adding information
-// go unification improvements!!
-// package
-
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
@@ -45,13 +41,11 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
-	// set subcommand loggers before possibly overriding locally next
-	gebberish.SetLogger(logger)
-	view.SetLogger(logger)
-	system.SetLogger(logger)
+	// set sub-command loggers before possibly overriding locally next
+	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands")
+	lcfg := viper.GetStringMap("log-config.commands.geb")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -81,6 +75,12 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
+}
+
+func setSubLoggers(logger log.Logger) {
+	system.SetLogger(logger)
+	gebberish.SetLogger(logger)
+	view.SetLogger(logger)
 }
 
 // HOFSTADTER_BELOW

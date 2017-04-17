@@ -1,23 +1,5 @@
 package routes
 
-// The following line in the template needs fixing, it's probably related to the tree traversal and adding information
-// go unification improvements!!
-// package routes
-
-/*
-ctx_path: dsl.lib.serve.api.routes.[0]
-method: GET
-name: ready-check
-parent: serve
-parent_path: dsl.lib.serve.api
-path: routes
-pkg_path: lib/serve/api/routes
-pkgPath: serve/ready-check
-return: version-response
-route: readyz
-
-*/
-
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
@@ -56,7 +38,8 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
-	// set subcommand loggers before possibly overriding locally next
+	// set sub-command loggers before possibly overriding locally next
+	setSubLoggers(logger)
 
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.routes")
@@ -89,6 +72,9 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
+}
+
+func setSubLoggers(logger log.Logger) {
 }
 
 // HOFSTADTER_BELOW

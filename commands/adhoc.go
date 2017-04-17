@@ -207,4 +207,9 @@ func init() {
 	RootCmd.AddCommand(AdhocCmd)
 }
 
+func init() {
+	// add sub-commands to this command when present
+
+}
+
 // HOFSTADTER_BELOW

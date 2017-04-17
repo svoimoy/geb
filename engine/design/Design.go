@@ -71,7 +71,7 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 	// Make sure the folder exists
 	_, err = os.Lstat(folder)
 	if err != nil {
-		return errors.Wrapf(err, "error lstat'n path in utils.ResolvePath\n")
+		return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"\n")
 	}
 
 	// local walk function closure
@@ -89,7 +89,11 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 		switch ext {
 
 		case "json", "toml", "xml", "yaml", "yml":
-			return local_d.importDesign(folder, path)
+			lerr := local_d.importDesign(folder, path)
+			if lerr != nil {
+				return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"  "+path+"\n")
+			}
+			return nil
 		default:
 			return nil
 		}
@@ -98,7 +102,7 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 	// Walk the directory
 	err = filepath.Walk(folder, import_design_walk_func)
 	if err != nil {
-		return errors.Wrap(err, "in design.CreateFromFolder: "+folder+"\n")
+		return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"\n")
 	}
 	return nil
 	// HOFSTADTER_END   ImportDesignFolder
@@ -198,21 +202,20 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
 	}
 	logger.Debug("after reading", "iface", iface)
-	top_level, ok := iface.(map[string]interface{})
-	if !ok {
-		return errors.New("design data is not an object")
-	}
 
+	// check if iface is nil, meaning empty file, and skip by return nil
+	// at this point because we passed the unmarshalling in the read func
 	/*
-		raw_data, err := ioutil.ReadFile(designPath)
-		if err != nil {
-			return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
-		}
-		err = yaml.Unmarshal([]byte(raw_data), &top_level)
-		if err != nil {
-			return errors.Wrap(err, "in design.import_design (yaml unmarshal): "+designPath+"\n")
+		if iface == nil {
+			return nil
 		}
 	*/
+
+	// convert to map
+	top_level, ok := iface.(map[string]interface{})
+	if !ok {
+		return errors.New("design data is not an object: " + designPath)
+	}
 
 	rel_file, err := filepath.Rel(basePath, designPath)
 	if err != nil {

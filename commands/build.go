@@ -65,4 +65,9 @@ func init() {
 	RootCmd.AddCommand(BuildCmd)
 }
 
+func init() {
+	// add sub-commands to this command when present
+
+}
+
 // HOFSTADTER_BELOW

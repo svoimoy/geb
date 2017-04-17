@@ -11,7 +11,7 @@ cli:
         - G
       short: "it's a puzzle?!"
       long: Games, shenanigans, and other gebberish.
-      subcommands:
+      commands:
         - name: mi
           usage: mi
           short: View information about a Project's Plans

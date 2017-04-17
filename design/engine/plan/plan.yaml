@@ -26,4 +26,6 @@ type:
       type: "interface{}"
     - name: repeated-context
       type: "interface{}"
+    - name: when-context
+      type: "interface{}"
 

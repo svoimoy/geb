@@ -51,3 +51,11 @@ api:
             - name: out-tpl
               type: lib.templates.template.views.short
 
+      routes:
+
+        - name: render
+          route: render
+          method: POST
+          path-params:
+            - name: template-id
+              type: lib.templates.template.fields.id

@@ -45,6 +45,8 @@ func init() {
 }
 
 func init() {
+	// add sub-commands to this command when present
+
 	ViewCmd.AddCommand(view.SystemCmd)
 	ViewCmd.AddCommand(view.DslCmd)
 	ViewCmd.AddCommand(view.GenCmd)

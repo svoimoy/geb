@@ -99,14 +99,26 @@ func RenderPlan(plan plan.Plan, outputDir string) (err error) {
 
 	if plan.TemplateContext != nil {
 		plan.Data["TemplateContext"] = plan.TemplateContext
+	} else {
+		delete(plan.Data, "TemplateContext")
 	}
 
 	if plan.RepeatedContext != nil {
 		plan.Data["RepeatedContext"] = plan.RepeatedContext
+	} else {
+		delete(plan.Data, "RepeatedContext")
 	}
 
 	if plan.DslContext != nil {
 		plan.Data["DslContext"] = plan.DslContext
+	} else {
+		delete(plan.Data, "DslContext")
+	}
+
+	if plan.WhenContext != nil {
+		plan.Data["WhenContext"] = plan.WhenContext
+	} else {
+		delete(plan.Data, "WhenContext")
 	}
 
 	// Render the template

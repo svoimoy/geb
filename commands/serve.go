@@ -76,4 +76,9 @@ func init() {
 	RootCmd.AddCommand(ServeCmd)
 }
 
+func init() {
+	// add sub-commands to this command when present
+
+}
+
 // HOFSTADTER_BELOW

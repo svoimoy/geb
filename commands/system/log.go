@@ -1,9 +1,5 @@
 package system
 
-// The following line in the template needs fixing, it's probably related to the tree traversal and adding information
-// go unification improvements!!
-// package subcommands
-
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
@@ -41,7 +37,8 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
-	// set subcommand loggers before possibly overriding locally next
+	// set sub-command loggers before possibly overriding locally next
+	setSubLoggers(logger)
 
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.commands.system")
@@ -74,6 +71,9 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
+}
+
+func setSubLoggers(logger log.Logger) {
 }
 
 // HOFSTADTER_BELOW

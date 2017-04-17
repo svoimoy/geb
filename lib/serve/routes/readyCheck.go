@@ -26,7 +26,7 @@ Parent:  serve
 
 // Should find a way to build up errors and return all
 // GET    ->
-func Handle_GET_ReadyCheck(ctx echo.Context) error {
+func Handle_GET_ReadyCheck(ctx echo.Context) (err error) {
 	// Check params
 
 	// HOFSTADTER_START handler

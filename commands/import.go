@@ -106,4 +106,9 @@ func init() {
 	RootCmd.AddCommand(ImportCmd)
 }
 
+func init() {
+	// add sub-commands to this command when present
+
+}
+
 // HOFSTADTER_BELOW

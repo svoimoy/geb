@@ -33,6 +33,7 @@ type Plan struct {
 	DslContext      interface{}            `json:"dsl-context" xml:"dsl-context" yaml:"dsl-context" form:"dsl-context" query:"dsl-context" `
 	TemplateContext interface{}            `json:"template-context" xml:"template-context" yaml:"template-context" form:"template-context" query:"template-context" `
 	RepeatedContext interface{}            `json:"repeated-context" xml:"repeated-context" yaml:"repeated-context" form:"repeated-context" query:"repeated-context" `
+	WhenContext     interface{}            `json:"when-context" xml:"when-context" yaml:"when-context" form:"when-context" query:"when-context" `
 }
 
 func NewPlan() *Plan {

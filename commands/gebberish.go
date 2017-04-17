@@ -47,6 +47,8 @@ func init() {
 }
 
 func init() {
+	// add sub-commands to this command when present
+
 	GebberishCmd.AddCommand(gebberish.MiCmd)
 }
 

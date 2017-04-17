@@ -1,23 +1,18 @@
 package serve
 
-// The following line in the template needs fixing, it's probably related to the tree traversal and adding information
-// go unification improvements!!
-// package
-
-/*
-true
-
-*/
-
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
+
+	"github.ibm.com/hofstadter-io/geb/lib/serve/resources"
+
+	"github.ibm.com/hofstadter-io/geb/lib/serve/routes"
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config..default")
+	ldcfg := viper.GetStringMap("log-config.serve.default")
 
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
@@ -47,10 +42,11 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
-	// set subcommand loggers before possibly overriding locally next
+	// set sub-command loggers before possibly overriding locally next
+	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.")
+	lcfg := viper.GetStringMap("log-config.serve")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -80,6 +76,12 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
+}
+
+func setSubLoggers(logger log.Logger) {
+	resources.SetLogger(logger)
+
+	routes.SetLogger(logger)
 }
 
 // HOFSTADTER_BELOW

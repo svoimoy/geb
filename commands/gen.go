@@ -69,4 +69,9 @@ func init() {
 	RootCmd.AddCommand(GenCmd)
 }
 
+func init() {
+	// add sub-commands to this command when present
+
+}
+
 // HOFSTADTER_BELOW

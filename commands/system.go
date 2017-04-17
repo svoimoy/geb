@@ -46,6 +46,8 @@ func init() {
 }
 
 func init() {
+	// add sub-commands to this command when present
+
 	SystemCmd.AddCommand(system.InitCmd)
 	SystemCmd.AddCommand(system.DevModeCmd)
 	SystemCmd.AddCommand(system.UpdateCmd)

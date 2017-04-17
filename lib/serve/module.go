@@ -8,6 +8,10 @@ import (
 	"github.com/labstack/gommon/log"
 
 	"github.com/spf13/viper"
+
+	"github.ibm.com/hofstadter-io/geb/lib/serve/resources"
+
+	"github.ibm.com/hofstadter-io/geb/lib/serve/routes"
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 )
@@ -46,7 +50,9 @@ func Run() {
 	// Base API Group
 	G := E.Group("/api/v1")
 
-	setupRoutes(G)
+	resources.InitRouter(G)
+
+	routes.InitRouter(G)
 
 	// HOFSTADTER_START main-prerun
 	// HOFSTADTER_END   main-prerun

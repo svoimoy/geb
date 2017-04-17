@@ -15,8 +15,10 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/aymerick/raymond"
 	"github.com/spf13/viper"
 
+	T "github.ibm.com/hofstadter-io/geb/engine/templates"
 	"github.ibm.com/hofstadter-io/geb/lib/templates"
 	// HOFSTADTER_END   import
 )
@@ -45,8 +47,7 @@ var templatesValidate = validator.New()
 /*
 Where's your docs doc?!
 */
-func Handle_LIST_Templates(ctx echo.Context) error {
-	var err error
+func Handle_LIST_Templates(ctx echo.Context) (err error) {
 
 	// HOFSTADTER_START list-body-start
 	// HOFSTADTER_END   list-body-start
@@ -86,8 +87,7 @@ func Handle_LIST_Templates(ctx echo.Context) error {
 /*
 Where's your docs doc?!
 */
-func Handle_POST_Templates(ctx echo.Context) error {
-	var err error
+func Handle_POST_Templates(ctx echo.Context) (err error) {
 
 	// HOFSTADTER_START post-body-start
 	// HOFSTADTER_END   post-body-start
@@ -148,8 +148,7 @@ func Handle_POST_Templates(ctx echo.Context) error {
 /*
 Where's your docs doc?!
 */
-func Handle_GET_Templates(ctx echo.Context) error {
-	var err error
+func Handle_GET_Templates(ctx echo.Context) (err error) {
 
 	// HOFSTADTER_START get-body-start
 	// HOFSTADTER_END   get-body-start
@@ -186,8 +185,7 @@ func Handle_GET_Templates(ctx echo.Context) error {
 /*
 Where's your docs doc?!
 */
-func Handle_PUT_Templates(ctx echo.Context) error {
-	var err error
+func Handle_PUT_Templates(ctx echo.Context) (err error) {
 
 	// HOFSTADTER_START put-body-start
 	// HOFSTADTER_END   put-body-start
@@ -255,8 +253,7 @@ func Handle_PUT_Templates(ctx echo.Context) error {
 /*
 Where's your docs doc?!
 */
-func Handle_DELETE_Templates(ctx echo.Context) error {
-	var err error
+func Handle_DELETE_Templates(ctx echo.Context) (err error) {
 
 	// HOFSTADTER_START delete-body-start
 	// HOFSTADTER_END   delete-body-start
@@ -296,6 +293,66 @@ func Handle_DELETE_Templates(ctx echo.Context) error {
 }
 
 // End resource.methods
+
+// Should find a way to build up errors and return all
+// POST    ->
+func Handle_POST_Render(ctx echo.Context) (err error) {
+
+	// Check params
+
+	// input
+	// path param
+	// extract
+
+	templateID := ctx.Param("template-id")
+
+	// validate that field
+
+	// HOFSTADTER_START handler
+	t, err := readTemplate(templateID)
+	if err != nil {
+		return err
+	}
+
+	body := ctx.Request().Body
+	inBytes, err := ioutil.ReadAll(body)
+	if err != nil {
+		return err
+	}
+
+	var inData interface{}
+	err = json.Unmarshal(inBytes, &inData)
+	if err != nil {
+		return err
+	}
+
+	tpl, err := raymond.Parse(t.Data)
+	if err != nil {
+		return err
+	}
+	Tpl := &T.Template{tpl}
+	T.AddHelpersToRaymond(Tpl)
+
+	outputData, err := tpl.Exec(inData)
+	if err != nil {
+		return err
+	}
+
+	r := map[string]interface{}{}
+	r["id"] = t.ID
+	r["name"] = t.Name
+	r["data"] = t.Data
+	r["input"] = inData
+	r["output"] = outputData
+
+	return ctx.JSON(http.StatusOK, r)
+
+	// HOFSTADTER_END   handler
+
+	return nil
+}
+
+// end resource.routes
 
 // HOFSTADTER_BELOW
 

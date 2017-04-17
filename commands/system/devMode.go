@@ -1,6 +1,6 @@
 package system
 
-// package subcommands
+// package commands
 
 import (
 	// HOFSTADTER_START import
@@ -102,6 +102,11 @@ var DevModeCmd = &cobra.Command{
 
 		// HOFSTADTER_END   cmd_run
 	},
+}
+
+func init() {
+	// add sub-commands to this command when present
+
 }
 
 // HOFSTADTER_BELOW

@@ -1,6 +1,6 @@
 package system
 
-// package subcommands
+// package commands
 
 import (
 	// HOFSTADTER_START import
@@ -42,6 +42,11 @@ var UpdateCmd = &cobra.Command{
 		fmt.Println("geb system update will be updated when the website goes live.")
 		// HOFSTADTER_END   cmd_run
 	},
+}
+
+func init() {
+	// add sub-commands to this command when present
+
 }
 
 // HOFSTADTER_BELOW
