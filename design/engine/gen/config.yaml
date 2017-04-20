@@ -40,10 +40,16 @@ type-list:
           type: string
         - name: unless
           type: string
+        - name: field
+          type: string
+        - name: flatten
+          type: int
         - name: in
           type: string
         - name: out
           type: string
+        - name: extra
+          type: array:string
 
     - name: dependencies
       kabob: true
