@@ -66,7 +66,11 @@ var ServeCmd = &cobra.Command{
 			serverConfig,
 		)
 
-		serve.Run()
+		err := serve.Run()
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
 
 		// HOFSTADTER_END   cmd_run
 	},

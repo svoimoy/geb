@@ -22,7 +22,7 @@ func InitRouter(G *echo.Group) (err error) {
 	// HOFSTADTER_START router-pre
 	// HOFSTADTER_END   router-pre
 
-	serveGroup := G.Group("/")
+	serveGroup := G.Group("")
 
 	// HOFSTADTER_START router-start
 	// HOFSTADTER_END   router-start
