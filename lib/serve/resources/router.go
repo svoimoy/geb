@@ -2,6 +2,8 @@ package resources
 
 import (
 	"github.com/labstack/echo"
+
+	"github.ibm.com/hofstadter-io/geb/lib/serve/resources/templates"
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 )
@@ -17,20 +19,22 @@ import (
 
 func InitRouter(G *echo.Group) (err error) {
 
+	// HOFSTADTER_START router-pre
+	// HOFSTADTER_END   router-pre
+
+	serveGroup := G.Group("/")
+
 	// HOFSTADTER_START router-start
 	// HOFSTADTER_END   router-start
 
-	templatesGroup := G.Group("/templates")
+	// names: serve | serve
+	// routes SAME NAME
 
-	// routes
-	templatesGroup.POST("/:template-id/render", Handle_POST_Render)
-
-	// methods
-	templatesGroup.GET("", Handle_LIST_Templates)
-	templatesGroup.POST("", Handle_POST_Templates)
-	templatesGroup.GET("/:template-id", Handle_GET_Templates)
-	templatesGroup.PUT("/:template-id", Handle_PUT_Templates)
-	templatesGroup.DELETE("/:template-id", Handle_DELETE_Templates)
+	// resources
+	err = templates.InitRouter(serveGroup)
+	if err != nil {
+		return err
+	}
 
 	// HOFSTADTER_START router-end
 	// HOFSTADTER_END   router-end

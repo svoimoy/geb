@@ -1,24 +1,20 @@
-package serve
+package templates
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.ibm.com/hofstadter-io/geb/lib/serve/resources"
-
-	"github.ibm.com/hofstadter-io/geb/lib/serve/routes"
 )
 
 /* no when
-Name: serve
-Parent:
-pkgPath: serve
+Name: templates
+Parent: serve
+pkgPath: serve/templates
 */
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.default")
+	ldcfg := viper.GetStringMap("log-config.resources.templates.default")
 
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
@@ -52,7 +48,7 @@ func SetLogger(l log.Logger) {
 	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.serve")
+	lcfg := viper.GetStringMap("log-config.resources.templates")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -85,9 +81,8 @@ func SetLogger(l log.Logger) {
 }
 
 func setSubLoggers(logger log.Logger) {
-	resources.SetLogger(logger)
 
-	routes.SetLogger(logger)
+	// ----
 
 }
 

@@ -17,12 +17,22 @@ import (
 
 func InitRouter(G *echo.Group) (err error) {
 
+	// HOFSTADTER_START router-pre
+	// HOFSTADTER_END   router-pre
+
+	serveGroup := G.Group("/")
+
 	// HOFSTADTER_START router-start
 	// HOFSTADTER_END   router-start
-	routesGroup := G.Group("/routes")
 
-	routesGroup.GET("/readyz", Handle_GET_ReadyCheck)
-	routesGroup.GET("/healthz", Handle_GET_HealthCheck)
+	// names: serve | serve
+	// routes SAME NAME
+
+	// resources
+
+	serveGroup.GET("/readyz", Handle_GET_ReadyCheck)
+
+	serveGroup.GET("/healthz", Handle_GET_HealthCheck)
 
 	// HOFSTADTER_START router-end
 	// HOFSTADTER_END   router-end

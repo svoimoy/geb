@@ -1,4 +1,4 @@
-package resources
+package templates
 
 import (
 	"github.com/pkg/errors"
