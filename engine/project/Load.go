@@ -12,9 +12,9 @@ import (
 
 	"github.com/ryanuber/go-glob"
 
-	"github.ibm.com/hofstadter-io/geb/engine/dsl"
-	"github.ibm.com/hofstadter-io/geb/engine/gen"
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.com/hofstadter-io/geb/engine/dsl"
+	"github.com/hofstadter-io/geb/engine/gen"
+	"github.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
 )
 

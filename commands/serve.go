@@ -6,7 +6,7 @@ import (
 	// HOFSTADTER_START import
 	"fmt"
 
-	"github.ibm.com/hofstadter-io/geb/lib/serve"
+	"github.com/hofstadter-io/geb/lib/serve"
 	// HOFSTADTER_END   import
 
 	"os"

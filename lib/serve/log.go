@@ -4,9 +4,9 @@ import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-	"github.ibm.com/hofstadter-io/geb/lib/serve/resources"
+	"github.com/hofstadter-io/geb/lib/serve/resources"
 
-	"github.ibm.com/hofstadter-io/geb/lib/serve/routes"
+	"github.com/hofstadter-io/geb/lib/serve/routes"
 )
 
 /* no when

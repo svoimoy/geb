@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.ibm.com/hofstadter-io/dotpath"
-	"github.ibm.com/hofstadter-io/geb/lib/utils/io"
+	"github.com/hofstadter-io/dotpath"
+	"github.com/hofstadter-io/geb/lib/utils/io"
 	// HOFSTADTER_END   import
 )
 

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
-	"github.ibm.com/hofstadter-io/geb/engine/project"
+	"github.com/hofstadter-io/geb/engine/project"
 	// HOFSTADTER_END   import
 )
 

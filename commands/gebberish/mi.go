@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.ibm.com/hofstadter-io/geb/lib/gebberish"
+	"github.com/hofstadter-io/geb/lib/gebberish"
 	// HOFSTADTER_END   import
 
 	"os"

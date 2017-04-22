@@ -16,15 +16,10 @@ With it, you can:
 ## Installation
 
 ```
-go get github.ibm.com/hofstadter-io/geb
-go get github.ibm.com/hofstadter-io/dsl-library
+go get github.com/hofstadter-io/geb
+go get github.com/hofstadter-io/dsl-library
 geb sys init
 ```
-
-(you will need git set up to use `git` rather than `https`)
-
-`git config --global url."git@github.tbm.com:".insteadOf "https://github.ibm.com/"`
-
 
 ## Getting Started
 
@@ -58,9 +53,5 @@ Don't hesitate to ask a question via the GitHub issues either.
 
 | Project                                                           | types | pkg | api | cli | db  | ci  | notes |
 |:--------                                                          |:-----:|:---:|:---:|:---:|:---:|:---:|:------|
-| [geb](https://github.ibm.com/hofstadter-io/geb)                   |   x   |  x  |     |  x  |     |     | meta... |
-| [Xtalk](https://github.ibm.com/krobots/k8s-csf-xtalk)             |   x   |  x  |     |  x  |     |     | facilitates communication between CSF and Armada |
-| [gzi](https://github.ibm.com/hofstadter-io/gzi)                   |   x   |  x  |     |  x  |     |     | GitHub-ZenHub CLI |
-| [cego](https://github.ibm.com/hofstadter-io/cego)                 |   x   |  x  |     |  x  |     |     | Tool for visibility at IBM |
-| [disgo-frontend-api](https://github.ibm.com/hofstadter-io/geb)    |   x   |  x  |  x  |  x  |  x  |  x  | experimental golang api server |
+| [geb](https://github.com/hofstadter-io/geb)                   |   x   |  x  |     |  x  |     |     | meta... |
 

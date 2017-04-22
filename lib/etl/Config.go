@@ -2,7 +2,7 @@ package etl
 
 import (
 	// HOFSTADTER_START import
-	"github.ibm.com/hofstadter-io/geb/engine/gen"
+	"github.com/hofstadter-io/geb/engine/gen"
 	// HOFSTADTER_END   import
 )
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/ghodss/yaml"
 
-	"github.ibm.com/hofstadter-io/geb/engine/templates"
+	"github.com/hofstadter-io/geb/engine/templates"
 	// HOFSTADTER_END   import
 )
 

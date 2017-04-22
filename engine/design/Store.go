@@ -7,9 +7,9 @@ import (
 	"github.com/pkg/errors"
 	"strings"
 
-	"github.ibm.com/hofstadter-io/dotpath"
+	"github.com/hofstadter-io/dotpath"
 
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
 )
 

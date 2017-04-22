@@ -9,7 +9,7 @@ import (
 	"os/user"
 	"path/filepath"
 
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
 
 	"github.com/spf13/cobra"
@@ -59,10 +59,10 @@ var InitCmd = &cobra.Command{
 		}
 		home := u.HomeDir
 
-		const gebGoDirEnv = "$GOPATH/src/github.ibm.com/hofstadter-io/geb"
+		const gebGoDirEnv = "$GOPATH/src/github.com/hofstadter-io/geb"
 		gebGoDir := os.ExpandEnv(gebGoDirEnv)
 
-		const dslGoDirEnv = "$GOPATH/src/github.ibm.com/hofstadter-io/dsl-library"
+		const dslGoDirEnv = "$GOPATH/src/github.com/hofstadter-io/dsl-library"
 		dslGoDir := os.ExpandEnv(dslGoDirEnv)
 
 		// possibly create dotfolder

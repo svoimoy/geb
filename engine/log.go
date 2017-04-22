@@ -5,16 +5,16 @@ import (
 	log "gopkg.in/inconshreveable/log15.v2"
 
 	// HOFSTADTER_START import
-	"github.ibm.com/hofstadter-io/geb/engine/design"
-	"github.ibm.com/hofstadter-io/geb/engine/dsl"
-	"github.ibm.com/hofstadter-io/geb/engine/gen"
-	"github.ibm.com/hofstadter-io/geb/engine/plan"
-	"github.ibm.com/hofstadter-io/geb/engine/project"
-	"github.ibm.com/hofstadter-io/geb/engine/render"
-	"github.ibm.com/hofstadter-io/geb/engine/system"
-	"github.ibm.com/hofstadter-io/geb/engine/templates"
-	"github.ibm.com/hofstadter-io/geb/engine/unify"
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.com/hofstadter-io/geb/engine/design"
+	"github.com/hofstadter-io/geb/engine/dsl"
+	"github.com/hofstadter-io/geb/engine/gen"
+	"github.com/hofstadter-io/geb/engine/plan"
+	"github.com/hofstadter-io/geb/engine/project"
+	"github.com/hofstadter-io/geb/engine/render"
+	"github.com/hofstadter-io/geb/engine/system"
+	"github.com/hofstadter-io/geb/engine/templates"
+	"github.com/hofstadter-io/geb/engine/unify"
+	"github.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
 )
 

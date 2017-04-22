@@ -3,7 +3,7 @@ package resources
 import (
 	"github.com/labstack/echo"
 
-	"github.ibm.com/hofstadter-io/geb/lib/serve/resources/templates"
+	"github.com/hofstadter-io/geb/lib/serve/resources/templates"
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 )

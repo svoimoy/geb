@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.ibm.com/hofstadter-io/geb/engine"
+	"github.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
 
 	"github.com/spf13/cobra"

@@ -5,7 +5,7 @@ output-dir: "."
 dsl-config:
   paths:
     - "dsl"
-    - "$GOPATH/src/github.ibm.com/hofstadter-io/dsl-library"
+    - "$GOPATH/src/github.com/hofstadter-io/dsl-library"
 
 log-config:
   default:

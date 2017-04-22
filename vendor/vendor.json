@@ -175,6 +175,12 @@
 			"revisionTime": "2016-12-01T14:17:04Z"
 		},
 		{
+			"checksumSHA1": "fTJHxboHf0osdXNkxnVhD4KnLz0=",
+			"path": "github.com/hofstadter-io/dotpath",
+			"revision": "5e5022e2fe34f51a776e7d8a06078a99c7fd2067",
+			"revisionTime": "2017-04-22T16:09:13Z"
+		},
+		{
 			"checksumSHA1": "40vJyUB4ezQSn/NSadsKEOrudMc=",
 			"path": "github.com/inconshreveable/mousetrap",
 			"revision": "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75",
@@ -364,12 +370,6 @@
 			"revisionTime": "2016-03-15T19:31:34Z"
 		},
 		{
-			"checksumSHA1": "e6UD8KvOUnNziyHdoN2+DF+o6oU=",
-			"path": "github.ibm.com/hofstadter-io/dotpath",
-			"revision": "1a0d556fcbc45d32cfa3874d264a8d0d1e7a90ca",
-			"revisionTime": "2017-02-27T05:09:03Z"
-		},
-		{
 			"checksumSHA1": "TK1Yr8BbwionaaAvM+77lwAAx/8=",
 			"origin": "github.com/labstack/echo/vendor/golang.org/x/crypto/acme",
 			"path": "golang.org/x/crypto/acme",
@@ -451,5 +451,5 @@
 			"revisionTime": "2015-09-24T14:23:14Z"
 		}
 	],
-	"rootPath": "github.ibm.com/hofstadter-io/geb"
+	"rootPath": "github.com/hofstadter-io/geb"
 }

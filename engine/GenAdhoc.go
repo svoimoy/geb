@@ -6,8 +6,8 @@ import (
 	// HOFSTADTER_START import
 	"github.com/aymerick/raymond"
 
-	"github.ibm.com/hofstadter-io/dotpath"
-	"github.ibm.com/hofstadter-io/geb/engine/templates"
+	"github.com/hofstadter-io/dotpath"
+	"github.com/hofstadter-io/geb/engine/templates"
 	// HOFSTADTER_END   import
 )
 

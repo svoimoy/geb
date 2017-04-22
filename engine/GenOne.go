@@ -9,8 +9,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.ibm.com/hofstadter-io/geb/engine/design"
-	"github.ibm.com/hofstadter-io/geb/engine/templates"
+	"github.com/hofstadter-io/geb/engine/design"
+	"github.com/hofstadter-io/geb/engine/templates"
 	// HOFSTADTER_END   import
 )
 

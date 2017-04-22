@@ -9,13 +9,13 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/spf13/viper"
-	"github.ibm.com/hofstadter-io/dotpath"
+	"github.com/hofstadter-io/dotpath"
 
-	"github.ibm.com/hofstadter-io/geb/engine/design"
-	"github.ibm.com/hofstadter-io/geb/engine/dsl"
-	"github.ibm.com/hofstadter-io/geb/engine/gen"
-	"github.ibm.com/hofstadter-io/geb/engine/project"
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.com/hofstadter-io/geb/engine/design"
+	"github.com/hofstadter-io/geb/engine/dsl"
+	"github.com/hofstadter-io/geb/engine/gen"
+	"github.com/hofstadter-io/geb/engine/project"
+	"github.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
 )
 

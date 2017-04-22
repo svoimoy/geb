@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/aymerick/raymond"
-	"github.ibm.com/hofstadter-io/dotpath"
+	"github.com/hofstadter-io/dotpath"
 	// HOFSTADTER_END   import
 )
 

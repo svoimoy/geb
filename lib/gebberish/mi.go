@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.ibm.com/hofstadter-io/geb/engine/utils"
+	"github.com/hofstadter-io/geb/engine/utils"
 )
 
 func Mi(rule string, arg int) (string, error) {

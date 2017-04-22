@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.ibm.com/hofstadter-io/geb/commands/gebberish"
+	"github.com/hofstadter-io/geb/commands/gebberish"
 )
 
 // Tool:   geb

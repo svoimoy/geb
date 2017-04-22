@@ -13,7 +13,7 @@ import (
 
 	"github.com/aymerick/raymond"
 
-	"github.ibm.com/hofstadter-io/geb/engine/plan"
+	"github.com/hofstadter-io/geb/engine/plan"
 	// HOFSTADTER_END   import
 )
 

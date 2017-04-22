@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-	"github.ibm.com/hofstadter-io/geb/lib/serve/resources/templates"
+	"github.com/hofstadter-io/geb/lib/serve/resources/templates"
 )
 
 /* when

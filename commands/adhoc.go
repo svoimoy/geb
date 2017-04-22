@@ -13,8 +13,8 @@ import (
 	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
 
-	"github.ibm.com/hofstadter-io/geb/engine"
-	"github.ibm.com/hofstadter-io/geb/lib/utils/io"
+	"github.com/hofstadter-io/geb/engine"
+	"github.com/hofstadter-io/geb/lib/utils/io"
 	// HOFSTADTER_END   import
 
 	"github.com/spf13/viper"

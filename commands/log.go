@@ -4,9 +4,9 @@ import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-	"github.ibm.com/hofstadter-io/geb/commands/gebberish"
-	"github.ibm.com/hofstadter-io/geb/commands/system"
-	"github.ibm.com/hofstadter-io/geb/commands/view"
+	"github.com/hofstadter-io/geb/commands/gebberish"
+	"github.com/hofstadter-io/geb/commands/system"
+	"github.com/hofstadter-io/geb/commands/view"
 )
 
 var logger = log.New()

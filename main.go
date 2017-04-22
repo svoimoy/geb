@@ -7,12 +7,12 @@ import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-	"github.ibm.com/hofstadter-io/geb/commands"
+	"github.com/hofstadter-io/geb/commands"
 
 	// HOFSTADTER_START import
-	"github.ibm.com/hofstadter-io/dotpath"
+	"github.com/hofstadter-io/dotpath"
 
-	"github.ibm.com/hofstadter-io/geb/engine"
+	"github.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
 )
 

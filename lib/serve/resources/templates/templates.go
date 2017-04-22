@@ -18,8 +18,8 @@ import (
 	"github.com/aymerick/raymond"
 	"github.com/spf13/viper"
 
-	T "github.ibm.com/hofstadter-io/geb/engine/templates"
-	"github.ibm.com/hofstadter-io/geb/lib/templates"
+	T "github.com/hofstadter-io/geb/engine/templates"
+	"github.com/hofstadter-io/geb/lib/templates"
 	// HOFSTADTER_END   import
 )
 
