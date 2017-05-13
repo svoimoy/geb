@@ -2,10 +2,8 @@ package serve
 
 import (
 	"os"
-	"sort"
 
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"
 
 	"github.com/spf13/viper"
@@ -16,6 +14,7 @@ import (
 
 	// HOFSTADTER_START import
 	"fmt"
+	"sort"
 	// HOFSTADTER_END   import
 )
 
@@ -23,30 +22,8 @@ import (
 // Version:
 // About:    serve templates and ETL pipelines with geb
 
-// HOFSTADTER_START const
-// HOFSTADTER_END   const
-
-// HOFSTADTER_START var
-// HOFSTADTER_END   var
-
-// HOFSTADTER_START init
-type Routes []echo.Route
-
-func (slice Routes) Len() int {
-    return len(slice)
-}
-
-func (slice Routes) Less(i, j int) bool {
-    if slice[i].Path == slice[j].Path {
-    	return slice[i].Method < slice[j].Method
-	}
-    return slice[i].Path < slice[j].Path
-}
-
-func (slice Routes) Swap(i, j int) {
-    slice[i], slice[j] = slice[j], slice[i]
-}
-// HOFSTADTER_END   init
+// HOFSTADTER_START start
+// HOFSTADTER_END   start
 
 func Run() (err error) {
 
@@ -56,18 +33,22 @@ func Run() (err error) {
 	// create the echo server object
 	E := echo.New()
 
-	// Pre-Middleware
-	// HOFSTADTER_START main-pre-middleware
-	// HOFSTADTER_END   main-pre-middleware
-
 	// Use-Middleware
-	E.Use(middleware.Recover())
+	// E.Use(middleware.Recover())
 
-	// HOFSTADTER_START main-pre-routes
-	// HOFSTADTER_END   main-pre-routes
+	// HOFSTADTER_START main-pre-group
+	// HOFSTADTER_END   main-pre-group
 
 	// Base API Group
 	G := E.Group("/api/v1")
+
+	// HOFSTADTER_START main-pre-middleware
+	// HOFSTADTER_END   main-pre-middleware
+
+	AddMiddleware(G, []string{"default"})
+
+	// HOFSTADTER_START main-pre-routes
+	// HOFSTADTER_END   main-pre-routes
 
 	err = resources.InitRouter(G)
 	if err != nil {
@@ -81,10 +62,17 @@ func Run() (err error) {
 
 	// HOFSTADTER_START main-prerun
 	fmt.Println("Routes:")
+
 	routes := E.Routes()
-	sort.Sort(Routes(routes))
+	sort.Slice(routes, func(i, j int) bool {
+		if routes[i].Path == routes[j].Path {
+			return routes[i].Method < routes[j].Method
+		}
+		return routes[i].Path < routes[j].Path
+	})
+
 	for _, r := range routes {
-		fmt.Printf("  %8s:  %s\n", r.Method, r.Path)	
+		fmt.Printf("  %8s:  %s\n", r.Method, r.Path)
 	}
 	// HOFSTADTER_END   main-prerun
 

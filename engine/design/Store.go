@@ -1,7 +1,5 @@
 package design
 
-// package privateFiles
-
 import (
 	// HOFSTADTER_START import
 	"github.com/pkg/errors"

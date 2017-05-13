@@ -248,6 +248,15 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 						continue
 					}
 				}
+
+				if t_pair.Field != "" {
+					when_elems, err = dotpath.Get(t_pair.Field, dslCtx, false)
+					if err != nil {
+						return errors.Wrap(err, fmt.Sprintf("err while looking up field (from design root) in template render pair:\n%#v\n", t_pair))
+					}
+					
+				}
+
 				logger.Debug("When is NOW")
 				when_ctx = when_elems
 			}

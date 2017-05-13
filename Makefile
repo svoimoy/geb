@@ -11,6 +11,10 @@ gen:
 	@geb gen
 	@gofmt -w main.go commands engine lib
 
+.Phony: geb
+geb: gen
+	@echo "geb!"
+
 .Phony: fmt
 fmt:
 	@gofmt -w main.go commands engine lib

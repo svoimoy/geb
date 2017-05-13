@@ -8,8 +8,8 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/ghodss/yaml"
-	"github.com/spf13/viper"
 	"github.com/hofstadter-io/dotpath"
+	"github.com/spf13/viper"
 
 	"github.com/hofstadter-io/geb/engine/design"
 	"github.com/hofstadter-io/geb/engine/dsl"

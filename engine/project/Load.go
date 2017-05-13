@@ -1,7 +1,5 @@
 package project
 
-// package publicFiles
-
 import (
 	// HOFSTADTER_START import
 	"fmt"

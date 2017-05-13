@@ -1,4 +1,4 @@
-Copyright (c) 2016, Tony Worm
+© Copyright 2016, 2017 IBM Corporation
 
 All rights reserved.
 
