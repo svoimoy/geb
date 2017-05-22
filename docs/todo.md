@@ -1,5 +1,17 @@
 # TODO and errors
 
+
+### Usability
+
+
+### Bugs and discords
+
+- collection types
+- object vs interface{}
+
+
+### Data
+
 - multiple objects in one file
   - yaml (---)
   - json (jsonl)
@@ -11,6 +23,8 @@
 - cli's and api's w/o cmds/resources do not generate log/router.go in folders that are still generated
   - this is supposed to be solve with gq boolean expressions and updates to the geb-gen.yaml
 
-Types:
+
+### Types
 
 - embed (for RBAC)
+

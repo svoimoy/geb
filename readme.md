@@ -29,6 +29,7 @@ Build your [first project, a CLI](./docs/getting-started/cli.md)
 
 Get an [overview of Hofstadter](./docs/getting-started/overview.md)
 
+Ask a question in [the google group](https://groups.google.com/d/forum/hofstadter)
 
 ## Documentation
 
