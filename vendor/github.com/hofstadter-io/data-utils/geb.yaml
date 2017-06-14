@@ -1,0 +1,14 @@
+name: "data-utils"
+about: "A package with various data utilities." 
+
+design-dir: "design"
+
+dsl-config:
+  paths:
+    - "$HOME/.geb/dsl"
+  default:
+    - dsl: pkg
+      gen:
+        - golang
+      output-dir: "."
+

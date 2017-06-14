@@ -1,6 +1,5 @@
 package io
 
-// package publicFiles
 
 import (
 	// HOFSTADTER_START import
@@ -27,42 +26,8 @@ import (
 /*
 Where's your docs doc?!
 */
-func DetermineFileContentType(filepath string) (contentType string, err error) {
-	// HOFSTADTER_START DetermineFileContentType
-
-	// assume files have correct extensions
-	dot := strings.LastIndex(filepath, ".")
-	ext := filepath[dot+1:]
-	switch ext {
-
-	case "json":
-		return "json", nil
-
-	case "toml":
-		return "toml", nil
-
-	case "yaml", "yml":
-		return "yaml", nil
-
-	case "xml":
-		return "xml", nil
-
-	default:
-		data, err := ioutil.ReadFile(filepath)
-		if err != nil {
-			return "", err
-		}
-		return DetermineDataContentType(data)
-	}
-	// HOFSTADTER_END   DetermineFileContentType
-	return
-}
-
-/*
-Where's your docs doc?!
-*/
-func DetermineDataContentType(data []byte) (contentType string, err error) {
-	// HOFSTADTER_START DetermineDataContentType
+func InferDataContentType(data []byte) (contentType string,err error) {
+	// HOFSTADTER_START InferDataContentType
 
 	// TODO: look for unique symbols in the data
 	// but always try to unmarshal to be sure
@@ -91,8 +56,45 @@ func DetermineDataContentType(data []byte) (contentType string, err error) {
 
 	return "", errors.New("unknown content type")
 
-	// HOFSTADTER_END   DetermineDataContentType
+	// HOFSTADTER_END   InferDataContentType
 	return
 }
+/*
+Where's your docs doc?!
+*/
+func InferFileContentType(filepath string) (contentType string,err error) {
+	// HOFSTADTER_START InferFileContentType
+
+	// assume files have correct extensions
+	// TODO use 'filepath.Ext()'
+	dot := strings.LastIndex(filepath, ".")
+	ext := filepath[dot+1:]
+	switch ext {
+
+	case "json":
+		return "json", nil
+
+	case "toml":
+		return "toml", nil
+
+	case "yaml", "yml":
+		return "yaml", nil
+
+	case "xml":
+		return "xml", nil
+
+	default:
+		data, err := ioutil.ReadFile(filepath)
+		if err != nil {
+			return "", err
+		}
+		return InferDataContentType(data)
+	}
+
+	// HOFSTADTER_END   InferFileContentType
+	return
+}
+
+
 
 // HOFSTADTER_BELOW

@@ -1,6 +1,5 @@
 package io
 
-// package publicFiles
 
 import (
 	// HOFSTADTER_START import
@@ -13,8 +12,6 @@ import (
 	"github.com/clbanning/mxj"
 	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
-
-	hofio "github.com/hofstadter-io/data-utils/io"
 	// HOFSTADTER_END   import
 )
 
@@ -30,7 +27,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func ReadAll(reader io.Reader, obj *interface{}) (contentType string, err error) {
+func ReadAll(reader io.  Reader,obj *interface{}) (contentType string,err error) {
 	// HOFSTADTER_START ReadAll
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
@@ -66,11 +63,10 @@ func ReadAll(reader io.Reader, obj *interface{}) (contentType string, err error)
 	// HOFSTADTER_END   ReadAll
 	return
 }
-
 /*
 Where's your docs doc?!
 */
-func ReadFile(filepath string, obj *interface{}) (contentType string, err error) {
+func ReadFile(filepath string,obj *interface{}) (contentType string,err error) {
 	// HOFSTADTER_START ReadFile
 	data, err := ioutil.ReadFile(filepath)
 	if err != nil {
@@ -111,12 +107,14 @@ func ReadFile(filepath string, obj *interface{}) (contentType string, err error)
 		return "yaml", nil
 
 	default:
-		return hofio.InferDataContentType(data)
+		return InferDataContentType(data)
 	}
 
 	return "", errors.New("unknown content type")
 	// HOFSTADTER_END   ReadFile
 	return
 }
+
+
 
 // HOFSTADTER_BELOW

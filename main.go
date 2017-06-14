@@ -10,8 +10,8 @@ import (
 	"github.com/hofstadter-io/geb/commands"
 
 	// HOFSTADTER_START import
+	"github.com/hofstadter-io/data-utils"
 	"github.com/hofstadter-io/dotpath"
-
 	"github.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
 )
@@ -98,6 +98,7 @@ func config_logger() {
 	// engine.SetLogger(logger)
 
 	// HOFSTADTER_START config-logger
+	dataUtils.SetLogger(logger)
 	dotpath.SetLogger(logger)
 	engine.SetLogger(logger)
 	// HOFSTADTER_END   config-logger

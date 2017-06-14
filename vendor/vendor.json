@@ -175,6 +175,24 @@
 			"revisionTime": "2016-12-01T14:17:04Z"
 		},
 		{
+			"checksumSHA1": "q5Yrqy6rP4yFq6Aw7gVsSUB/1zE=",
+			"path": "github.com/hofstadter-io/data-utils",
+			"revision": "fb680ac7ef50d2d665d7d690eb08ccabc6123961",
+			"revisionTime": "2017-06-13T16:53:04Z"
+		},
+		{
+			"checksumSHA1": "OELGO5a8YcbcGV58DAL/Hw8Xe0M=",
+			"path": "github.com/hofstadter-io/data-utils/io",
+			"revision": "fb680ac7ef50d2d665d7d690eb08ccabc6123961",
+			"revisionTime": "2017-06-13T16:53:04Z"
+		},
+		{
+			"checksumSHA1": "pOxK2yqDc77xlR+gH5u4pN+GOIY=",
+			"path": "github.com/hofstadter-io/data-utils/manip",
+			"revision": "fb680ac7ef50d2d665d7d690eb08ccabc6123961",
+			"revisionTime": "2017-06-13T16:53:04Z"
+		},
+		{
 			"checksumSHA1": "fTJHxboHf0osdXNkxnVhD4KnLz0=",
 			"path": "github.com/hofstadter-io/dotpath",
 			"revision": "5e5022e2fe34f51a776e7d8a06078a99c7fd2067",

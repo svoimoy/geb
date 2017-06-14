@@ -7,7 +7,9 @@ import (
 
 	"github.com/hofstadter-io/dotpath"
 
-	"github.com/hofstadter-io/geb/engine/utils"
+	// "github.com/hofstadter-io/geb/engine/utils"
+	"github.com/hofstadter-io/data-utils/manip"
+
 	// HOFSTADTER_END   import
 )
 
@@ -86,7 +88,7 @@ func (D *Design) storeDslDesign(relativePath string, dsl string, name string, de
 	} else {
 		logger.Info("merge...", "D.Dsl", D.Dsl, "update", insert)
 
-		merged, merr := utils.Merge(D.Dsl, insert)
+		merged, merr := manip.Merge(D.Dsl, insert)
 		if merr != nil {
 			return errors.Wrap(merr, "in storeDslDesign")
 		}
@@ -147,7 +149,7 @@ func (D *Design) storeTypeDesign(relativePath string, name string, design interf
 	} else {
 		logger.Info("merge...", "D.Type", D.Type, "update", insert)
 
-		merged, merr := utils.Merge(D.Type, insert)
+		merged, merr := manip.Merge(D.Type, insert)
 		if merr != nil {
 			return errors.Wrap(merr, "in storeTypeDesign")
 		}
@@ -200,7 +202,7 @@ func (D *Design) storePackageDesign(relativePath string, name string, design int
 	} else {
 		logger.Info("merge...", "D.Pkg", D.Pkg, "update", insert)
 
-		merged, merr := utils.Merge(D.Pkg, insert)
+		merged, merr := manip.Merge(D.Pkg, insert)
 		if merr != nil {
 			logger.Warn("Error merging", "error", merr)
 			return errors.Wrap(merr, "in storePakcageDesign")
@@ -253,7 +255,7 @@ func (D *Design) storeCustomDesign(relativePath string, name string, design inte
 	} else {
 		logger.Info("merge...", "D.Custom", D.Custom, "update", insert)
 
-		merged, merr := utils.Merge(D.Custom, insert)
+		merged, merr := manip.Merge(D.Custom, insert)
 		if merr != nil {
 			return errors.Wrap(merr, "in storeCustomDesign")
 		}
