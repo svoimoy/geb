@@ -211,12 +211,6 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		}
 	*/
 
-	// convert to map
-	top_level, ok := iface.(map[string]interface{})
-	if !ok {
-		return errors.New("design data is not an object: " + designPath)
-	}
-
 	rel_file, err := filepath.Rel(basePath, designPath)
 	if err != nil {
 		return errors.Wrap(err, "in design.import_design (rel filepath): "+designPath+"\n")
@@ -227,15 +221,42 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		rel_path = rel_path[1:]
 	}
 
-	// get list of all top level DSL entries
-	for dsl, val := range top_level {
-		data := val.(map[string]interface{})
-		err = D.storeDesign(rel_path, dsl, data)
-		if err != nil {
-			return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
-		}
-	}
+	// convert to map
+	switch top_level := iface.(type) {
+	case map[string]interface{}:
 
+		// get list of all top level DSL entries
+		for dsl, val := range top_level {
+			data := val.(map[string]interface{})
+			err = D.storeDesign(rel_path, dsl, data)
+			if err != nil {
+				return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+			}
+		}
+
+	case []interface{}:
+
+		for _, item := range top_level {
+
+			obj, ok := item.(map[string]interface{})
+			if !ok {
+				return errors.New("design data is not an object: " + designPath)
+			}
+
+			// get list of all top level DSL entries
+			for dsl, val := range obj {
+				data := val.(map[string]interface{})
+				err = D.storeDesign(rel_path, dsl, data)
+				if err != nil {
+					return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+				}
+			}
+		}
+
+	default:
+		return errors.New("design data is not an object: " + designPath)
+
+	}
 	return nil
 	// HOFSTADTER_END   importDesign
 	return
