@@ -27,7 +27,7 @@
 - consts
 - enums
 - higher-level containers
-
+- functional programming constructs
 
 ### Data
 
