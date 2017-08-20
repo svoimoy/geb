@@ -15,6 +15,11 @@
   - will this get fixed with `gq` and `visit`?
 - sub-package logging setup does not pick up third party? ok? manual? how to automate?
 
+### Tests
+
+- InferDataType... in data-utils
+- Merge... in data-utils
+
 ### Missing or enhancements
 
 - function types
@@ -22,7 +27,7 @@
 - consts
 - enums
 - higher-level containers
-
+- functional programming constructs
 
 ### Data
 

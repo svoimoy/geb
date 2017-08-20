@@ -4,6 +4,7 @@ package io
 
 import (
 	// HOFSTADTER_START import
+	"bytes"
 	"encoding/json"
 	"github.com/pkg/errors"
 	"io"
@@ -104,10 +105,30 @@ func ReadFile(filepath string, obj *interface{}) (contentType string, err error)
 		return "xml", nil
 
 	case "yaml", "yml":
-		err = yaml.Unmarshal(data, obj)
-		if err != nil {
-			return "", err
+		if bytes.Contains(data, []byte("---")) {
+			ydata := bytes.Split(data, []byte("---"))
+
+		    var yslice []interface{}	
+			for _, yd := range ydata {
+				var yobj interface{}
+				err = yaml.Unmarshal(yd, &yobj)
+				if err != nil {
+					return "", err
+				}
+				if yobj == nil {
+					continue
+				}
+				yslice = append(yslice, yobj)
+			}
+
+			*obj = yslice
+		} else {
+			err = yaml.Unmarshal(data, obj)
+			if err != nil {
+				return "", err
+			}
 		}
+
 		return "yaml", nil
 
 	default:
