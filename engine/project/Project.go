@@ -322,7 +322,6 @@ func (P *Project) FindAvailableGenerators(paths []string) (err error) {
 		}
 	}
 
-	return nil
 	// HOFSTADTER_END   FindAvailableGenerators
 	return
 }

@@ -34,7 +34,7 @@ func (P *Project) LoadGenerators() (err error) {
 	// search for available generators
 	err = P.FindAvailableGenerators(nil)
 	if err != nil {
-		return errors.Wrap(err, "while LoadingGenerators\n")
+		return errors.Wrap(err, "while FindAvailableGenerators\n")
 	}
 	logger.Info("  Available:", "avail", P.Available)
 
@@ -95,6 +95,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 			logger.Info("    importing", "dsl", s_dsl, "generator", s_gen)
 
 			// for each DSL lookup path
+			loaded := false
 			for _, path := range dslLookupPaths {
 
 				// Resolve the path for EnvVars, symlinks, existance
@@ -118,6 +119,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 				dsl_path := filepath.Join(path, s_dsl)
 				D, err := dsl.CreateFromFolder(dsl_path)
 				if err != nil {
+					continue
 					return err
 				}
 
@@ -125,6 +127,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 				gen_path := filepath.Join(dsl_path, s_gen)
 				G, err := gen.CreateFromFolder(gen_path)
 				if err != nil {
+					continue
 					return err
 				}
 
@@ -153,6 +156,12 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 						return errors.Wrap(derr, fmt.Sprintf("while loading dependent generator: %+v\n", depGen))
 					}
 				}
+
+				loaded = true
+			}
+
+			if !loaded {
+				return errors.New(fmt.Sprintf("while loading dependent generator: %+v\n", gp))
 			}
 		}
 
