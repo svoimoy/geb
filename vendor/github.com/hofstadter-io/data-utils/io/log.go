@@ -1,10 +1,8 @@
 package io
 
-
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 )
@@ -46,11 +44,10 @@ func SetLogger(l log.Logger) {
 	// HOFSTADTER_START logging-config
 	// HOFSTADTER_END logging-config
 
-
 	// possibly override locally
 	lcfg := viper.GetStringMap("log-config.io")
 
-	if lcfg == nil || len(lcfg) == 0  {
+	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
 	} else {
 		// hack because of default override (should look for both upfront)
@@ -62,7 +59,7 @@ func SetLogger(l log.Logger) {
 		if ok {
 			level_str = level_iface.(string)
 		}
-	
+
 		level, err := log.LvlFromString(level_str)
 		if err != nil {
 			panic(err)
@@ -87,6 +84,5 @@ func SetLogger(l log.Logger) {
 	}
 
 }
-
 
 // HOFSTADTER_BELOW

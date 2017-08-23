@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/hofstadter-io/dotpath"
-	"github.com/hofstadter-io/geb/lib/utils/io"
+	"github.com/hofstadter-io/data-utils/io"
 	// HOFSTADTER_END   import
 )
 
@@ -84,13 +84,13 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 			return nil
 		}
 
-		dot := strings.LastIndex(path, ".")
-		ext := path[dot+1:]
+		ext := filepath.Ext(path)[1:]
 		switch ext {
 
-		case "json", "toml", "xml", "yaml", "yml":
+		case "json", "toml", "xml", "yaml", "yml", "hof":
 			lerr := local_d.importDesign(folder, path)
 			if lerr != nil {
+				logger.Debug("importing error", "path", path, "error", lerr)
 				return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"  "+path+"\n")
 			}
 			return nil
@@ -202,6 +202,7 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
 	}
 	logger.Debug("after reading", "iface", iface)
+	// logger.Warn("after reading", "iface", iface, "path", designPath)
 
 	// check if iface is nil, meaning empty file, and skip by return nil
 	// at this point because we passed the unmarshalling in the read func

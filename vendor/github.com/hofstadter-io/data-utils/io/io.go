@@ -1,17 +1,19 @@
 package io
 
-
 import (
 	// HOFSTADTER_START import
+	"bytes"
 	"encoding/json"
 	"github.com/pkg/errors"
 	"io"
 	"io/ioutil"
-	"strings"
+	"path/filepath"
 
 	"github.com/clbanning/mxj"
 	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
+	"github.com/hofstadter-io/hof-lang/lib/ast"
+	"github.com/hofstadter-io/hof-lang/lib/parser"
 	// HOFSTADTER_END   import
 )
 
@@ -27,7 +29,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func ReadAll(reader io.  Reader,obj *interface{}) (contentType string,err error) {
+func ReadAll(reader io.Reader, obj *interface{}) (contentType string, err error) {
 	// HOFSTADTER_START ReadAll
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
@@ -49,9 +51,29 @@ func ReadAll(reader io.  Reader,obj *interface{}) (contentType string,err error)
 		return "json", nil
 	}
 
-	err = yaml.Unmarshal(data, obj)
-	if err == nil {
+	if bytes.Contains(data, []byte("---")) {
+		ydata := bytes.Split(data, []byte("---"))
+
+	    var yslice []interface{}
+		for _, yd := range ydata {
+			var yobj interface{}
+			err = yaml.Unmarshal(yd, &yobj)
+			if err != nil {
+				return "", err
+			}
+			if yobj == nil {
+				continue
+			}
+			yslice = append(yslice, yobj)
+		}
+
+		*obj = yslice
 		return "yaml", nil
+	} else {
+		err = yaml.Unmarshal(data, obj)
+		if err == nil {
+			return "yaml", nil
+		}
 	}
 
 	err = toml.Unmarshal(data, obj)
@@ -59,22 +81,35 @@ func ReadAll(reader io.  Reader,obj *interface{}) (contentType string,err error)
 		return "toml", nil
 	}
 
+	result, err := parser.ParseReader("", bytes.NewReader(data))
+	if err == nil {
+		hofFile := result.(ast.HofFile)
+		hofData, err := hofFile.ToData()
+		if err != nil {
+			return "", err
+		}
+
+		*obj = hofData
+		return "hof", nil
+	}
+
 	return "", errors.New("unknown content type")
 	// HOFSTADTER_END   ReadAll
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func ReadFile(filepath string,obj *interface{}) (contentType string,err error) {
+func ReadFile(filename string, obj *interface{}) (contentType string, err error) {
 	// HOFSTADTER_START ReadFile
-	data, err := ioutil.ReadFile(filepath)
+
+	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return "", err
 	}
 
-	dot := strings.LastIndex(filepath, ".")
-	ext := filepath[dot+1:]
+	ext := filepath.Ext(filename)[1:]
 	switch ext {
 
 	case "json":
@@ -100,11 +135,44 @@ func ReadFile(filepath string,obj *interface{}) (contentType string,err error) {
 		return "xml", nil
 
 	case "yaml", "yml":
-		err = yaml.Unmarshal(data, obj)
+		if bytes.Contains(data, []byte("---")) {
+			ydata := bytes.Split(data, []byte("---"))
+
+			var yslice []interface{}
+			for _, yd := range ydata {
+				var yobj interface{}
+				err = yaml.Unmarshal(yd, &yobj)
+				if err != nil {
+					return "", err
+				}
+				if yobj == nil {
+					continue
+				}
+				yslice = append(yslice, yobj)
+			}
+
+			*obj = yslice
+			return "yaml", nil
+		} else {
+			err = yaml.Unmarshal(data, obj)
+			if err == nil {
+				return "yaml", nil
+			}
+		}
+
+	case "hof":
+		result, err := parser.ParseReader("", bytes.NewReader(data))
 		if err != nil {
 			return "", err
 		}
-		return "yaml", nil
+		hofFile := result.(ast.HofFile)
+		hofData, err := hofFile.ToData()
+		if err != nil {
+			return "", err
+		}
+
+		*obj = hofData
+		return "hof", nil
 
 	default:
 		return InferDataContentType(data)
@@ -114,7 +182,5 @@ func ReadFile(filepath string,obj *interface{}) (contentType string,err error) {
 	// HOFSTADTER_END   ReadFile
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

@@ -1,0 +1,26 @@
+name: hof-lang
+about: "An extensible DSL language for Hofstadter"
+
+design-dir: "design"
+output-dir: "."
+
+dsl-config:
+  paths:
+    - "dsl"
+    - "$GOPATH/src/github.com/hofstadter-io/dsl-library"
+  default:
+    - dsl: peg
+      gen:
+        - golang
+      output-dir: "."
+    - dsl: cli
+      gen:
+        - golang
+      output-dir: "."
+
+log-config:
+  default:
+    level: warn
+    stack: false
+
+

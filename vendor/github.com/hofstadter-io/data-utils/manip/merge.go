@@ -1,6 +1,5 @@
 package manip
 
-
 import (
 	// HOFSTADTER_START import
 	"fmt"
@@ -20,7 +19,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func Merge(original interface{},update interface{}) (merged interface{},err error) {
+func Merge(original interface{}, update interface{}) (merged interface{}, err error) {
 	// HOFSTADTER_START Merge
 
 	if original == nil {
@@ -41,7 +40,7 @@ func Merge(original interface{},update interface{}) (merged interface{},err erro
 /*
 Where's your docs doc?!
 */
-func merge(original interface{},update interface{}) (merged interface{},err error) {
+func merge(original interface{}, update interface{}) (merged interface{}, err error) {
 	// HOFSTADTER_START merge
 
 	logger.Info("Merging", "original", original, "update", update)
@@ -192,6 +191,5 @@ func merge(original interface{},update interface{}) (merged interface{},err erro
 	// HOFSTADTER_END   merge
 	return
 }
-
 
 // HOFSTADTER_BELOW

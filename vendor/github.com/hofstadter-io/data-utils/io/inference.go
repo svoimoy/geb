@@ -1,16 +1,17 @@
 package io
 
-
 import (
 	// HOFSTADTER_START import
+	"bytes"
 	"encoding/json"
 	"encoding/xml"
 	"github.com/pkg/errors"
 	"io/ioutil"
-	"strings"
+	"path/filepath"
 
 	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
+	"github.com/hofstadter-io/hof-lang/lib/parser"
 	// HOFSTADTER_END   import
 )
 
@@ -26,7 +27,7 @@ import (
 /*
 Where's your docs doc?!
 */
-func InferDataContentType(data []byte) (contentType string,err error) {
+func InferDataContentType(data []byte) (contentType string, err error) {
 	// HOFSTADTER_START InferDataContentType
 
 	// TODO: look for unique symbols in the data
@@ -54,21 +55,26 @@ func InferDataContentType(data []byte) (contentType string,err error) {
 		return "toml", nil
 	}
 
-	return "", errors.New("unknown content type")
+	_, err = parser.ParseReader("", bytes.NewReader(data))
+	if err == nil {
+		return "hof", nil
+	}
+
+	return "", errors.New("[IDCT] unknown content type")
 
 	// HOFSTADTER_END   InferDataContentType
 	return
 }
+
 /*
 Where's your docs doc?!
 */
-func InferFileContentType(filepath string) (contentType string,err error) {
+func InferFileContentType(filename string) (contentType string, err error) {
 	// HOFSTADTER_START InferFileContentType
 
 	// assume files have correct extensions
 	// TODO use 'filepath.Ext()'
-	dot := strings.LastIndex(filepath, ".")
-	ext := filepath[dot+1:]
+	ext := filepath.Ext(filename)[1:]
 	switch ext {
 
 	case "json":
@@ -83,8 +89,11 @@ func InferFileContentType(filepath string) (contentType string,err error) {
 	case "xml":
 		return "xml", nil
 
+	case "hof":
+		return "hof", nil
+
 	default:
-		data, err := ioutil.ReadFile(filepath)
+		data, err := ioutil.ReadFile(filename)
 		if err != nil {
 			return "", err
 		}
@@ -94,7 +103,5 @@ func InferFileContentType(filepath string) (contentType string,err error) {
 	// HOFSTADTER_END   InferFileContentType
 	return
 }
-
-
 
 // HOFSTADTER_BELOW

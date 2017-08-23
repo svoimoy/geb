@@ -4,6 +4,7 @@ package commands
 
 import (
 	// HOFSTADTER_START import
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -15,6 +16,8 @@ import (
 
 	"github.com/hofstadter-io/geb/engine"
 	"github.com/hofstadter-io/geb/lib/utils/io"
+	"github.com/hofstadter-io/hof-lang/lib/ast"
+	"github.com/hofstadter-io/hof-lang/lib/parser"
 	// HOFSTADTER_END   import
 
 	"github.com/spf13/viper"
@@ -148,6 +151,15 @@ var AdhocCmd = &cobra.Command{
 			case "toml":
 				err = toml.Unmarshal(content, &inputData)
 				errExit(err)
+			case "hof":
+				result, err := parser.ParseReader("", bytes.NewReader(content))
+				errExit(err)
+
+				hofFile := result.(ast.HofFile)
+				hofData, err := hofFile.ToData()
+				errExit(err)
+
+				inputData = hofData
 			default:
 				fmt.Println("unknown input type: ", AdhocInputTypeFlag)
 				os.Exit(1)
