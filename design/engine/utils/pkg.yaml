@@ -25,20 +25,6 @@ pkg:
             - name: err
               type: error
 
-    - name: merge
-      functions:
-        - name: merge
-          args:
-            - name: original
-              type: "interface{}"
-            - name: update
-              type: "interface{}"
-          return:   
-            - name: merged
-              type: "interface{}"
-            - name: err
-              type: error
-
     - name: files
       functions:
         - name: look-for-known-files
