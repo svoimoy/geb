@@ -16,8 +16,6 @@ import (
 
 	"github.com/mohae/deepcopy"
 	"github.com/go-test/deep"
-	"reflect"
-	"github.com/kr/pretty"
 	// HOFSTADTER_END   import
 )
 
@@ -214,16 +212,6 @@ func (P *Project) Subdesign() (errorReport []error) {
 		//
 		//
 		orig := deepcopy.Copy(P.Design)
-		equal := deep.Equal(orig, P.Design)
-		fmt.Println("Design == Post-Subdesign: ", same, len(equal))
-		if equal != nil {
-
-			for _, line := range equal {
-				fmt.Println(line)
-			}
-		}
-		fmt.Println("============================")
-
 
 		P.Design.ImportDesignFolder("subdesigns")
 
@@ -234,33 +222,13 @@ func (P *Project) Subdesign() (errorReport []error) {
 		//
 		// just call P.Unify() again
 
-		same = reflect.DeepEqual(orig, P.Design)
-		equal = deep.Equal(orig, P.Design)
-		fmt.Println("Design == Post-Subdesign: ", same, len(equal))
-		fmt.Println("============================")
-		if equal != nil {
-
-			if false {
-				// val1 := orig.(*design.Design).Type["types"].(map[string]interface{})["User"].(map[string]interface{})["public-files"].([]interface{})[0]
-				// val2 := P.Design.Type["types"].(map[string]interface{})["User"].(map[string]interface{})["public-files"].([]interface{})[0]
-				val1 := orig.(*design.Design).Type["types"].(map[string]interface{})["User"]
-				val2 := P.Design.Type["types"].(map[string]interface{})["User"]
-				fmt.Printf("%# v\n", pretty.Formatter(val1))
-				fmt.Println("============================")
-				fmt.Printf("%# v\n", pretty.Formatter(val2))
-				fmt.Println("============================")
-			}
-		}
-		if false {
-			fmt.Println("============================")
-			fmt.Printf("%# v\n", pretty.Formatter(orig))
-			fmt.Println("============================")
-			fmt.Printf("%# v\n", pretty.Formatter(P.Design))
-			fmt.Println("============================")
-			fmt.Println("\n\n")
-		}
-
 		P.Unify()
+
+		equal := deep.Equal(orig, P.Design)
+		if equal == nil {
+			same = true
+		}
+
 
 	}
 	//

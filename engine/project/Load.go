@@ -91,6 +91,8 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 			}
 		} // end for loop looking for gen in available generators
 
+		var lastErr error
+
 		if found {
 			logger.Info("    importing", "dsl", s_dsl, "generator", s_gen)
 
@@ -103,9 +105,11 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 				// skip it if the file does not exist
 				if err != nil {
 					if _, ok := err.(*os.PathError); ok {
+						lastErr = err
 						continue
 					}
 					if strings.Contains(err.Error(), "no such file or directory") {
+						lastErr = err
 						continue
 					}
 
@@ -119,16 +123,16 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 				dsl_path := filepath.Join(path, s_dsl)
 				D, err := dsl.CreateFromFolder(dsl_path)
 				if err != nil {
+					lastErr = err
 					continue
-					return err
 				}
 
 				// load the generator
 				gen_path := filepath.Join(dsl_path, s_gen)
 				G, err := gen.CreateFromFolder(gen_path)
 				if err != nil {
+					lastErr = err
 					continue
-					return err
 				}
 
 				// possibly override the outpur directory
@@ -143,7 +147,15 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 				orig, ok := P.DslMap[s_dsl]
 				logger.Debug("    ", "path", path, "s_dsl", s_dsl, "ok", ok)
 				if ok {
-					orig.MergeSkipExisting(D)
+					// check if the generator has been loaded already
+					_, ok := orig.Generators[s_gen]
+					if !ok {
+						orig.MergeSkipExisting(D)
+					} else {
+						// otherwise it has already been loaded
+						loaded = true
+						continue
+					}
 				} else {
 					P.DslMap[s_dsl] = D
 				}
@@ -153,7 +165,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 					// fmt.Println("Dependent GEN: ", depGen)
 					derr := P.LoadGenerator(depGen, dslLookupPaths)
 					if derr != nil {
-						return errors.Wrap(derr, fmt.Sprintf("while loading dependent generator: %+v\n", depGen))
+						return errors.Wrap(derr, fmt.Sprintf("while loading dependent generator: %+v %+v\n", s_gen, depGen))
 					}
 				}
 
@@ -161,7 +173,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 			}
 
 			if !loaded {
-				return errors.New(fmt.Sprintf("while loading dependent generator: %+v\n", gp))
+				return errors.Wrap(lastErr, fmt.Sprintf("while loading generator: %+v\n", gp))
 			}
 		}
 
