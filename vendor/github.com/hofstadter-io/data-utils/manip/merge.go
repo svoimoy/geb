@@ -96,37 +96,11 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 		if !ok {
 			return nil, errors.New("update is not aI like original")
 		}
+		// logger.Warn("O", "data", O)
+		// logger.Warn("U", "data", U)
 
 		logger.Info("aI entering")
-		// turn into maps
-		OM := map[string]interface{}{}
-		for i, elem := range O {
-			switch E := elem.(type) {
-
-			case map[string]interface{}:
-				name, ok := E["name"]
-				if !ok {
-					return nil, errors.New("original array objects must have names to be merged")
-				}
-				OM[name.(string)] = E
-
-				/*
-					case map[interface{}]interface{}:
-						name, ok := E["name"]
-						if !ok {
-							return nil, errors.New("original array objects must have names to be merged")
-						}
-						OM[name.(string)] = E
-				*/
-
-			case string:
-				OM[E] = E
-
-			default:
-				logger.Error("original unknown elem type in aI", "i", i, "elem", elem)
-				return nil, errors.New("original unknown elem type in aI")
-			}
-		}
+		// turn update into map
 		UM := map[string]interface{}{}
 		for i, elem := range U {
 			switch E := elem.(type) {
@@ -138,15 +112,6 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 				}
 				UM[name.(string)] = E
 
-				/*
-					case map[interface{}]interface{}:
-						name, ok := E["name"]
-						if !ok {
-							return nil, errors.New("original array objects must have names to be merged")
-						}
-						UM[name.(string)] = E
-				*/
-
 			case string:
 				UM[E] = E
 
@@ -156,8 +121,46 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 			}
 		}
 
+		extra := []interface{}{}
+		for i, elem := range O {
+			// logger.Crit("O-loop", "i", i, "elem", elem)
+			switch E := elem.(type) {
+
+			case map[string]interface{}:
+				iname, ok := E["name"]
+				if !ok {
+					return nil, errors.New("original array objects must have names to be merged")
+				}
+
+				name := iname.(string)
+				// logger.Error("Name", "name", name)
+
+				curr, exists := UM[name]
+				if exists {
+					tmp, err := merge(elem, curr)
+					// this is correct, the var names curr and elem are backwards...
+					// busy fixing a bug
+					// logger.Crit("merging with existing element", "key", name, "val", curr, "curr", elem)
+					if err != nil {
+						return nil, errors.Wrap(err, "in merge MS")
+					}
+					O[i] = tmp
+					delete(UM, name)
+				}
+			case string:
+				curr, exists := UM[E]
+				if !exists {
+					extra = append(extra, curr)
+				}
+
+			default:
+				logger.Error("original unknown elem type in aI", "i", i, "elem", elem)
+				return nil, errors.New("original unknown elem type in aI")
+			}
+		}
 		// merge
 		logger.Info("aI")
+		/*
 		for key, val := range UM {
 			if curr, exists := OM[key]; exists {
 				tmp, err := merge(curr, val)
@@ -169,12 +172,36 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 			}
 			OM[key] = val
 		}
+		*/
 
 		// turn back into array
 		OA := []interface{}{}
-		for _, val := range OM {
+		for _, val := range O {
 			OA = append(OA, val)
 		}
+		for _, elem := range U {
+			switch E := elem.(type) {
+
+			case map[string]interface{}:
+				name, ok := E["name"]
+				if !ok {
+					return nil, errors.New("original array objects must have names to be merged")
+				}
+				_, exists := UM[name.(string)]
+				if exists {
+					OA = append(OA, elem)
+				}
+
+			case string:
+				_, exists := UM[E]
+				if exists {
+					OA = append(OA, elem)
+				}
+
+			}
+		}
+
+		// logger.Error("OA", "data", OA)
 
 		logger.Info("aI returning", "OA", OA)
 		return OA, nil

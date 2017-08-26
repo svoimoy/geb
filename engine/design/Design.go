@@ -202,6 +202,7 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
 	}
 	logger.Debug("after reading", "iface", iface)
+	// fmt.Printf("%s\n%# v\n", designPath, pretty.Formatter(iface))
 	// logger.Warn("after reading", "iface", iface, "path", designPath)
 
 	// check if iface is nil, meaning empty file, and skip by return nil

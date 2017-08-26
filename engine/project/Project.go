@@ -13,6 +13,11 @@ import (
 	"github.com/hofstadter-io/geb/engine/render"
 	"github.com/hofstadter-io/geb/engine/unify"
 	"github.com/hofstadter-io/geb/engine/utils"
+
+	"github.com/mohae/deepcopy"
+	"github.com/go-test/deep"
+	"reflect"
+	"github.com/kr/pretty"
 	// HOFSTADTER_END   import
 )
 
@@ -165,56 +170,99 @@ func (P *Project) Subdesign() (errorReport []error) {
 	//  this is P.Plan()
 	//
 	//
+	same := false
 
-	// create a map for the planning process
-	data := map[string]interface{}{
-		"proj":   P.Design.Proj,
-		"data":   P.Design.Data,
-		"type":   P.Design.Type,
-		"dsl":    P.Design.Dsl,
-		"pkg":    P.Design.Pkg,
-		"custom": P.Design.Custom,
-	}
+	for !same {
 
-	// call the planning module (except subdesigns here)
-	plans, err := plan.MakeSubdesignPlans(P.DslMap, data)
-	if err != nil {
-		return []error{errors.Wrap(err, "in proj.Project.Plan()\n")}
-	}
-
-	P.Plans = plans
-
-	//
-	//
-	//  this is P.Render()
-	//
-	//
-
-	// render the subdesigns
-	errs := render.RenderPlans(P.Plans, P.Config.OutputDir)
-	if len(errs) > 0 {
-		fmt.Println("Errors during subdesign rendering:")
-		for i, err := range errs {
-			fmt.Printf("  %d) %v\n\n", i, err)
+		// create a map for the planning process
+		data := map[string]interface{}{
+			"proj":   P.Design.Proj,
+			"data":   P.Design.Data,
+			"type":   P.Design.Type,
+			"dsl":    P.Design.Dsl,
+			"pkg":    P.Design.Pkg,
+			"custom": P.Design.Custom,
 		}
-		return errs
+
+		// call the planning module (except subdesigns here)
+		plans, err := plan.MakeSubdesignPlans(P.DslMap, data)
+		if err != nil {
+			return []error{errors.Wrap(err, "in proj.Project.Plan()\n")}
+		}
+
+		P.Plans = plans
+
+		//
+		//
+		//  this is P.Render()
+		//
+		//
+
+		// render the subdesigns
+		errs := render.RenderPlans(P.Plans, P.Config.OutputDir)
+		if len(errs) > 0 {
+			fmt.Println("Errors during subdesign rendering:")
+			for i, err := range errs {
+				fmt.Printf("  %d) %v\n\n", i, err)
+			}
+			return errs
+		}
+
+		//
+		//
+		//  this is P.Load() of the subdesigns
+		//
+		//
+		orig := deepcopy.Copy(P.Design)
+		equal := deep.Equal(orig, P.Design)
+		fmt.Println("Design == Post-Subdesign: ", same, len(equal))
+		if equal != nil {
+
+			for _, line := range equal {
+				fmt.Println(line)
+			}
+		}
+		fmt.Println("============================")
+
+
+		P.Design.ImportDesignFolder("subdesigns")
+
+		//
+		//
+		//  this is P.Unify() of the design + subdesign
+		//
+		//
+		// just call P.Unify() again
+
+		same = reflect.DeepEqual(orig, P.Design)
+		equal = deep.Equal(orig, P.Design)
+		fmt.Println("Design == Post-Subdesign: ", same, len(equal))
+		fmt.Println("============================")
+		if equal != nil {
+
+			if false {
+				// val1 := orig.(*design.Design).Type["types"].(map[string]interface{})["User"].(map[string]interface{})["public-files"].([]interface{})[0]
+				// val2 := P.Design.Type["types"].(map[string]interface{})["User"].(map[string]interface{})["public-files"].([]interface{})[0]
+				val1 := orig.(*design.Design).Type["types"].(map[string]interface{})["User"]
+				val2 := P.Design.Type["types"].(map[string]interface{})["User"]
+				fmt.Printf("%# v\n", pretty.Formatter(val1))
+				fmt.Println("============================")
+				fmt.Printf("%# v\n", pretty.Formatter(val2))
+				fmt.Println("============================")
+			}
+		}
+		if false {
+			fmt.Println("============================")
+			fmt.Printf("%# v\n", pretty.Formatter(orig))
+			fmt.Println("============================")
+			fmt.Printf("%# v\n", pretty.Formatter(P.Design))
+			fmt.Println("============================")
+			fmt.Println("\n\n")
+		}
+
+		P.Unify()
+
 	}
-
-	//
-	//
-	//  this is P.Load() of the subdesigns
-	//
-	//
-	P.Design.ImportDesignFolder("subdesigns")
-
-	//
-	//
-	//  this is P.Unify() of the design + subdesign
-	//
-	//
-	// just call P.Unify() again
-	P.Unify()
-
 	//
 	//
 	//  then we are re-ready for the Plan and Render that is about to happen
@@ -289,6 +337,7 @@ func (P *Project) FindAvailableGenerators(paths []string) (err error) {
 		P.Available = map[string]*dsl.Dsl{}
 	}
 	for _, path := range paths {
+		logger.Info("Searching in path", "path", path)
 
 		// Resolve the path for EnvVars, symlinks, existance
 		t_path, err := utils.ResolvePath(path)

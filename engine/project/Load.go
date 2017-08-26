@@ -63,7 +63,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 	// check to see if the dsl is available
 	d_dsl, ok := P.Available[s_dsl]
 	if !ok {
-		return errors.New("Did not find DSL in available list: " + s_dsl)
+		return errors.New("Did not find DSL in available list: " + s_dsl + " in "  + fmt.Sprint(P.Available))
 	}
 
 	// if there are no generators specified, load all

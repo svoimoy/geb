@@ -10,6 +10,10 @@ import (
 	// "github.com/hofstadter-io/geb/engine/utils"
 	"github.com/hofstadter-io/data-utils/manip"
 
+	"fmt"
+	"github.com/mohae/deepcopy"
+	"github.com/go-test/deep"
+
 	// HOFSTADTER_END   import
 )
 
@@ -149,10 +153,16 @@ func (D *Design) storeTypeDesign(relativePath string, name string, design interf
 	} else {
 		logger.Info("merge...", "D.Type", D.Type, "update", insert)
 
+		orig := deepcopy.Copy(D.Type)
+
 		merged, merr := manip.Merge(D.Type, insert)
 		if merr != nil {
 			return errors.Wrap(merr, "in storeTypeDesign")
 		}
+
+		equal := deep.Equal(orig, D.Type)
+		fmt.Println("DESIGN == Post-Subdesign: ", len(equal))
+
 		logger.Info("result...", "merged", merged)
 		D.Type[F0] = merged.(map[string]interface{})[F0]
 		logger.Debug("final merge", "D.Type", D.Type)

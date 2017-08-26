@@ -10,7 +10,9 @@ import (
 	"path/filepath"
 
 	"github.com/clbanning/mxj"
-	"github.com/ghodss/yaml"
+	// "github.com/ghodss/yaml"
+	"gopkg.in/yaml.v2"
+	// yamlB "github.com/beego/goyaml2"
 	"github.com/naoina/toml"
 	"github.com/hofstadter-io/hof-lang/lib/ast"
 	"github.com/hofstadter-io/hof-lang/lib/parser"
@@ -154,8 +156,12 @@ func ReadFile(filename string, obj *interface{}) (contentType string, err error)
 			*obj = yslice
 			return "yaml", nil
 		} else {
+
 			err = yaml.Unmarshal(data, obj)
+
+			// yobj, err := yamlB.Read(bytes.NewReader(data))
 			if err == nil {
+				// *obj = yobj
 				return "yaml", nil
 			}
 		}

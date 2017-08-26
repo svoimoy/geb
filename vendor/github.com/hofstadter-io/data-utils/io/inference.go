@@ -9,7 +9,9 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
-	"github.com/ghodss/yaml"
+	// "github.com/ghodss/yaml"
+	"gopkg.in/yaml.v2"
+	// yaml "github.com/beego/goyaml2"
 	"github.com/naoina/toml"
 	"github.com/hofstadter-io/hof-lang/lib/parser"
 	// HOFSTADTER_END   import

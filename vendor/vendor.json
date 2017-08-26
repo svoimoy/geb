@@ -475,12 +475,6 @@
 			"revisionTime": "2015-09-21T21:38:54Z"
 		},
 		{
-			"checksumSHA1": "MGk7cSnHqiL5soaovzgcJaNH3fc=",
-			"path": "gopkg.in/yaml.v1",
-			"revision": "9f9df34309c04878acc86042b16630b0f696e1de",
-			"revisionTime": "2014-09-24T16:16:07Z"
-		},
-		{
 			"checksumSHA1": "Hs7pfHDSvTNtnRogAAziW2Lki3M=",
 			"path": "gopkg.in/yaml.v2",
 			"revision": "53feefa2559fb8dfa8d81baad31be332c97d6c77",
