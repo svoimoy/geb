@@ -79,13 +79,11 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 	}
 
 	// make sure loading designs does not depend on the generators being loaded
-	d_dir := P.Config.DesignDir
-	logger.Info("Reading designs", "folder", d_dir)
-	d, err := design.CreateFromFolder(d_dir)
+	err = P.LoadDesign()
 	if err != nil {
-		return errors.Wrapf(err, "While reading design folder: %s\n", d_dir)
+		return errors.Wrap(err, "while loading design\n")
 	}
-	P.Design = d
+
 
 	// dstr := fmt.Sprintf("%# v\n\n", pretty.Formatter(P.Design))
 	// fmt.Println(dstr)
@@ -347,4 +345,17 @@ func (P *Project) FindAvailableGenerators(paths []string) (err error) {
 
 func New() *Project {
 	return NewProject()
+}
+
+func (P* Project) LoadDesign() (error) {
+	// make sure loading designs does not depend on the generators being loaded
+	d_dir := P.Config.DesignDir
+	logger.Info("Reading designs", "folder", d_dir)
+	d, err := design.CreateFromFolder(d_dir)
+	if err != nil {
+		return errors.Wrapf(err, "While reading design folder: %s\n", d_dir)
+	}
+	P.Design = d
+
+	return nil
 }

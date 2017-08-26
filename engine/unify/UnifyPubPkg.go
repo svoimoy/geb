@@ -78,15 +78,6 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 			vmap["pkg_path"] = pkg_path
 			vmap["pkgPath"] = pkgPath
 
-			/*
-				case map[interface{}]interface{}:
-					vmap["parent"] = parent
-					vmap["parent_path"] = parentPath
-					vmap["ctx_path"] = path
-					vmap["pkg_path"] = pkg_path
-					vmap["pkgPath"] = pkgPath
-			*/
-
 		default:
 			return errors.New("in unify, named data is not a map")
 		}
@@ -122,15 +113,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					logger.Debug("returning " + key)
 					return errors.Wrap(err, "in unify: "+key)
 				}
-				/*
-					case map[interface{}]interface{}:
-						logger.Debug("Recursing  mS", "r_parent", r_parent, "r_path", r_path)
-						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-						if err != nil {
-							logger.Debug("returning " + key)
-							return errors.Wrap(err, "in unify: "+key)
-						}
-				*/
+
 			case []interface{}:
 				for idx, elem := range V {
 					sidx := "[" + fmt.Sprint(idx) + "]"
@@ -142,47 +125,25 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 						return errors.Wrap(err, "in unify: "+sidx)
 					}
 				}
+
+			case string:
+				parts := strings.Split(V, "(")
+				if len(parts) == 2 {
+					name := parts[0]
+					arg := strings.Split(parts[1], ")")[0]
+					F, ok := design_functions[name]
+					if ok {
+						result, err := F(arg)
+						if err != nil {
+							return errors.Wrap(err, "in unify: design-functions " + V)
+						}
+						D[key] = result
+
+					}
+				}
 			}
 			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}
-
-		/*
-			case map[interface{}]interface{}:
-				for key, val := range D {
-					logger.Debug("  - inspecting...", "key", key, "val", val)
-					skey := fmt.Sprint(key)
-					r_path := strings.Join([]string{path, skey}, ".")
-
-					switch V := val.(type) {
-					case map[string]interface{}:
-						logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
-						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-						if err != nil {
-							logger.Debug("returning " + skey)
-							return errors.Wrap(err, "in unify: "+skey)
-						}
-					case map[interface{}]interface{}:
-						logger.Debug("Recursing  mI", "r_parent", r_parent, "r_path", r_path)
-						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-						if err != nil {
-							logger.Debug("returning " + skey)
-							return errors.Wrap(err, "in unify: "+skey)
-						}
-					case []interface{}:
-						for idx, elem := range V {
-							sidx := "[" + fmt.Sprint(idx) + "]"
-							i_path := strings.Join([]string{r_path, sidx}, ".")
-							logger.Debug("Recursing  mI []", "r_parent", r_parent, "r_path", i_path)
-							err := unify(r_parent, i_path, pkgPath, r_parent_path, elem)
-							if err != nil {
-								logger.Debug("returning " + sidx)
-								return errors.Wrap(err, "in unify: "+sidx)
-							}
-						}
-					}
-					logger.Debug("  - done inspecting...", "key", key, "val", val)
-				}
-		*/
 
 	case []interface{}:
 		for key, val := range D {
@@ -191,6 +152,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 			r_path := strings.Join([]string{path, skey}, ".")
 
 			switch val.(type) {
+
 			case map[string]interface{}:
 				logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
 				err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
@@ -198,15 +160,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					logger.Debug("returning " + skey)
 					return errors.Wrap(err, "in unify: "+skey)
 				}
-				/*
-					case map[interface{}]interface{}:
-						logger.Debug("Recursing  []i", "r_parent", r_parent, "r_path", r_path)
-						err := unify(r_parent, r_path, pkgPath, r_parent_path, val)
-						if err != nil {
-							logger.Debug("returning " + skey)
-							return errors.Wrap(err, "in unify: "+skey)
-						}
-				*/
+
 			}
 			logger.Debug("  - done inspecting...", "key", key, "val", val)
 		}
