@@ -45,7 +45,7 @@ func GenerateProject(filename string, generators []string) (err error) {
 		return errors.Wrapf(nil, "While subdesigning project: %s %v\n", filename, generators)
 	}
 
-	err = proj.Design.ImportDesignFolder(proj.Config.DesignDir)
+	err = proj.LoadDesignMerge(true)
 	if err != nil {
 		return errors.Wrapf(err, "While reloading project design: %s %v\n", filename, generators)
 	}

@@ -260,7 +260,6 @@ Where's your docs doc?!
 func (D *Design) importDesign(basePath string, designPath string) (err error) {
 	// HOFSTADTER_START importDesign
 
-	fmt.Println("  - file: " + designPath)
 	logger.Info("  - file: " + designPath)
 
 	var iface interface{}
@@ -285,7 +284,6 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 	case map[string]interface{}:
 
 		// get list of all top level DSL entries
-		fmt.Println("top_level(map): ", top_level)
 		for dsl, val := range top_level {
 			data := val.(map[string]interface{})
 			err = D.storeDesign(rel_path, dsl, data)
@@ -295,7 +293,6 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		}
 
 	case []interface{}:
-		fmt.Println("top_level(array): ", top_level)
 
 		for _, item := range top_level {
 
@@ -329,7 +326,6 @@ Where's your docs doc?!
 func (D *Design) storeDesign(relativePath string, dsl string, design interface{}) (err error) {
 	// HOFSTADTER_START storeDesign
 	logger.Info("store_design: " + dsl)
-	fmt.Println("store_design: "+dsl, design)
 
 	dname, err := dotpath.Get("name", design, true)
 	logger.Debug("dotpath for name", "dname", dname, "err", err, "design", design)

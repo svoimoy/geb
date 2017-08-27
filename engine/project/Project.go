@@ -347,12 +347,43 @@ func New() *Project {
 
 func (P *Project) LoadDesign() error {
 	// make sure loading designs does not depend on the generators being loaded
+	return P.LoadDesignMerge(false)
+}
+
+func (P *Project) LoadDesignMerge(merge bool) error {
+	// make sure loading designs does not depend on the generators being loaded
+
+	paths := []string{}
 	d_dir := P.Config.DesignDir
-	logger.Info("Reading designs", "folder", d_dir)
-	d, err := design.CreateFromFolder(d_dir)
-	if err != nil {
-		return errors.Wrapf(err, "While reading design folder: %s\n", d_dir)
+	d_paths := P.Config.DesignPaths
+
+	if len(d_paths) > 0 {
+		for i := len(d_paths) - 1; i >= 0; i-- {
+			paths = append(paths, d_paths[i])
+		}
 	}
+	if d_dir != "" {
+		paths = append(paths, d_dir)
+	}
+
+	if len(paths) == 0 {
+		return errors.Errorf("No design directory or paths specified")
+	}
+
+	logger.Info("Reading designs", "folders", paths)
+
+	d := design.NewDesign()
+	if merge {
+		d = P.Design
+	}
+
+	for _, path := range paths {
+		err := d.ImportDesignFolder(path)
+		if err != nil {
+			return errors.Wrap(err, "in design.CreateFromFolder: "+path+"\n")
+		}
+	}
+
 	P.Design = d
 
 	return nil

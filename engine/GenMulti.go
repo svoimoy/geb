@@ -128,7 +128,7 @@ func GenerateMulti(inputPaths []string, templatePaths []string, repeats []string
 		for _, repeat := range REPEATS {
 
 			data := map[string]interface{}{
-				"ROOT": D.Extra,
+				"ROOT":   D.Extra,
 				"REPEAT": repeat,
 			}
 			// do actual rendering here
@@ -136,7 +136,6 @@ func GenerateMulti(inputPaths []string, templatePaths []string, repeats []string
 			if err != nil {
 				return errors.Wrapf(err, "While rendering repeat:  %q %q\n", infile, val)
 			}
-
 
 			// determine output filename
 			tpl, err := raymond.Parse(outfile)
