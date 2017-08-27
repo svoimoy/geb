@@ -7,8 +7,6 @@ import (
 	// HOFSTADTER_END   import
 )
 
-// hello world
-
 var logger = log.New()
 
 func SetLogger(l log.Logger) {

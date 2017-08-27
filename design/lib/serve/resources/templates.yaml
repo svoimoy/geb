@@ -59,3 +59,6 @@ api:
           path-params:
             - name: template-id
               type: lib.templates.template.fields.id
+          output:
+            - name: render-return
+              type: "map:interface{}"

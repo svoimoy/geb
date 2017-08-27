@@ -1,6 +1,4 @@
-package templates
-
-// package privateFiles
+package main
 
 import (
 	// HOFSTADTER_START import

@@ -1,7 +1,5 @@
 package engine
 
-// package publicFiles
-
 import (
 	// HOFSTADTER_START import
 	"fmt"
@@ -56,7 +54,6 @@ func GenerateProject(filename string, generators []string) (err error) {
 		fmt.Println(errReport)
 		return errors.Wrapf(nil, "While unifying project: %s %v\n", filename, generators)
 	}
-
 
 	fmt.Println("Planning...")
 	err = proj.Plan()

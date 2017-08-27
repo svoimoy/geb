@@ -135,7 +135,7 @@ func unify(parent string, path string, pkgPath string, parentPath string, design
 					if ok {
 						result, err := F(arg)
 						if err != nil {
-							return errors.Wrap(err, "in unify: design-functions " + V)
+							return errors.Wrap(err, "in unify: design-functions "+V)
 						}
 						D[key] = result
 

@@ -9,14 +9,6 @@ api:
     port: "1110"
     base-url: "/api/v1"
 
-  routes:
-    - name: ready-check
-      route: readyz
-      method: GET
-      return: version-response
-
-    - name: health-check
-      route: healthz
-      method: GET
-      return: health-response
+  prometheus-endpoints: true
+  kubernetes-endpoints: true
 

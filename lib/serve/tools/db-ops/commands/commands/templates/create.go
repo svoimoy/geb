@@ -1,7 +1,5 @@
 package templates
 
-// package commands
-
 import (
 	// HOFSTADTER_START import
 	"fmt"

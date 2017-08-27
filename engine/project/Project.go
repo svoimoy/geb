@@ -14,8 +14,8 @@ import (
 	"github.com/hofstadter-io/geb/engine/unify"
 	"github.com/hofstadter-io/geb/engine/utils"
 
-	"github.com/mohae/deepcopy"
 	"github.com/go-test/deep"
+	"github.com/mohae/deepcopy"
 	// HOFSTADTER_END   import
 )
 
@@ -83,7 +83,6 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 	if err != nil {
 		return errors.Wrap(err, "while loading design\n")
 	}
-
 
 	// dstr := fmt.Sprintf("%# v\n\n", pretty.Formatter(P.Design))
 	// fmt.Println(dstr)
@@ -227,7 +226,6 @@ func (P *Project) Subdesign() (errorReport []error) {
 			same = true
 		}
 
-
 	}
 	//
 	//
@@ -347,7 +345,7 @@ func New() *Project {
 	return NewProject()
 }
 
-func (P* Project) LoadDesign() (error) {
+func (P *Project) LoadDesign() error {
 	// make sure loading designs does not depend on the generators being loaded
 	d_dir := P.Config.DesignDir
 	logger.Info("Reading designs", "folder", d_dir)
