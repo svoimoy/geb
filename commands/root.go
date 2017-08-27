@@ -8,8 +8,6 @@ import (
 	"path/filepath"
 	// HOFSTADTER_END   import
 
-	"github.com/spf13/viper"
-
 	"github.com/spf13/cobra"
 )
 
@@ -26,24 +24,6 @@ var GebLong = `Hofstadter is a Framework
 for building data-centric
 Platforms. geb is the tool.
 `
-
-var (
-	RootConfigPFlag string
-	RootDesignPFlag string
-	RootOutputPFlag string
-)
-
-func init() {
-	RootCmd.PersistentFlags().StringVarP(&RootConfigPFlag, "config", "c", "geb.yaml", "A geb project config file.")
-	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
-
-	RootCmd.PersistentFlags().StringVarP(&RootDesignPFlag, "design", "d", "design", "The design files directory.")
-	viper.BindPFlag("design", RootCmd.PersistentFlags().Lookup("design"))
-
-	RootCmd.PersistentFlags().StringVarP(&RootOutputPFlag, "output", "o", "output", "The directory to output generated files to.")
-	viper.BindPFlag("output", RootCmd.PersistentFlags().Lookup("output"))
-
-}
 
 var (
 	RootCmd = &cobra.Command{

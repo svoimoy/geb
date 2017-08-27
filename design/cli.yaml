@@ -10,23 +10,4 @@ cli:
   persistent-prerun: true
   omit-run: true
   
-  pflags:
-    - name: config
-      long: config
-      short: c
-      type: string
-      default: geb.yaml
-      help: A geb project config file.
-    - name: design
-      long: design
-      short: d
-      type: string
-      default: design
-      help: The design files directory.
-    - name: output
-      long: output
-      type: string
-      short: o
-      default: output
-      help: The directory to output generated files to.
 

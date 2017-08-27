@@ -31,7 +31,6 @@ var ViewCmd = &cobra.Command{
 
 	Aliases: []string{
 		"v",
-		"v",
 	},
 
 	Short: "View information known to the geb tool.",

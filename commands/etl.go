@@ -35,9 +35,11 @@ A more flexible, bulk processing 'geb gen adhoc'.
 `
 
 var (
-	EtlInputFlag     string
+	EtlInputFlag string
+
 	EtlInputTypeFlag string
-	EtlOutputFlag    string
+
+	EtlOutputFlag string
 )
 
 func init() {

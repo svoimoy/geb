@@ -270,4 +270,56 @@ func (D *Design) storeCustomDesign(relativePath string, name string, design inte
 	return
 }
 
+/*
+Where's your docs doc?!
+*/
+func (D *Design) storeExtraDesign(relativePath string, name string, design interface{}) (err error) {
+	// HOFSTADTER_START storeExtraDesign
+	logger.Info("    - storing extra", "name", name, "rel_path", relativePath)
+	logger.Debug("          with", "design", design)
+
+	fields := strings.Split(relativePath, "/")
+	F0 := fields[0]
+	logger.Debug("Fields", "fields", fields)
+	if F0 == "" {
+		F0 = name
+	}
+
+	// This block builds up the object to insert
+	// - from the outermost map
+	// - through the namespace fields
+	// - and finally the design itself
+	insert := make(map[string]interface{})
+	dd_map := insert
+	for _, F := range fields {
+		if F != "" {
+			tmp := make(map[string]interface{})
+			dd_map[F] = tmp
+			dd_map = tmp
+		}
+	}
+	dd_map[name] = design
+	logger.Info("Design", "name", name, "design", design, "map", dd_map, "insert", insert)
+
+	if _, ok := D.Extra[F0]; !ok {
+		D.Extra[F0] = insert[F0]
+		logger.Debug("new custom data stored", "D.Extra", D.Extra)
+	} else {
+		logger.Info("merge...", "D.Extra", D.Extra, "update", insert)
+
+		merged, merr := manip.Merge(D.Extra, insert)
+		if merr != nil {
+			return errors.Wrap(merr, "in storeExtraDesign")
+		}
+		logger.Info("result...", "merged", merged)
+
+		D.Extra[F0] = merged.(map[string]interface{})[F0]
+		logger.Debug("final merge", "D.Extra", D.Extra)
+	}
+
+	return nil
+	// HOFSTADTER_END   storeExtraDesign
+	return
+}
+
 // HOFSTADTER_BELOW

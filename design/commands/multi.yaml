@@ -1,0 +1,38 @@
+cli:
+  name: geb
+
+  commands:
+
+    - name: multi
+      usage: multi
+      short: Generate stuff from data and template directories.
+      long: Generate stuff from data and template directories.
+
+      flags:
+
+        - name: input
+          long: input
+          short: I
+          type: "array:string"
+          help: Paths to input files and directories, can be specified multiple times and override/extend.
+
+        - name: template-dir
+          long: template-dir
+          short: T
+          type: "array:string"
+          help: Paths to template directories, can be specified multiple times and override/extend.
+
+        - name: repeat
+          long: repeat
+          short: R
+          type: "array:string"
+          help: Templates to repeat, form is ".some.dotpath:template/path/{{dotpath.for.filename}}.ext"
+
+        - name: output-dir
+          long: output-dir
+          short: O
+          type: string
+          default: "."
+          help: Path to the output directory which will prefix the template file/dir structure.
+
+

@@ -37,6 +37,7 @@ type Design struct {
 	Pkg    map[string]interface{} `json:"pkg" xml:"pkg" yaml:"pkg" form:"pkg" query:"pkg" `
 	Dsl    map[string]interface{} `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
 	Custom map[string]interface{} `json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
+	Extra  map[string]interface{} `json:"extra" xml:"extra" yaml:"extra" form:"extra" query:"extra" `
 }
 
 func NewDesign() *Design {
@@ -47,6 +48,7 @@ func NewDesign() *Design {
 		Pkg:    map[string]interface{}{},
 		Dsl:    map[string]interface{}{},
 		Custom: map[string]interface{}{},
+		Extra:  map[string]interface{}{},
 	}
 }
 
@@ -112,6 +114,65 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 /*
 Where's your docs doc?!
 */
+func (D *Design) ImportExtraFile(filename string) (err error) {
+	// HOFSTADTER_START ImportExtraFile
+	logger.Info("Importing Design filename:", "filename", filename)
+	return D.importExtra(filepath.Dir(filename), filename)
+	// HOFSTADTER_END   ImportExtraFile
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func (D *Design) ImportExtraFolder(folder string) (err error) {
+	// HOFSTADTER_START ImportExtraFolder
+	logger.Info("Importing Design folder: " + folder)
+
+	// Make sure the folder exists
+	_, err = os.Lstat(folder)
+	if err != nil {
+		return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"\n")
+	}
+
+	// local walk function closure
+	import_design_walk_func := func(path string, info os.FileInfo, err error) error {
+		local_d := D
+		if err != nil {
+			return nil
+		}
+		if info.IsDir() {
+			return nil
+		}
+
+		ext := filepath.Ext(path)[1:]
+		switch ext {
+
+		case "json", "toml", "xml", "yaml", "yml", "hof":
+			lerr := local_d.importExtra(folder, path)
+			if lerr != nil {
+				logger.Debug("importing error", "path", path, "error", lerr)
+				return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"  "+path+"\n")
+			}
+			return nil
+		default:
+			return nil
+		}
+	}
+
+	// Walk the directory
+	err = filepath.Walk(folder, import_design_walk_func)
+	if err != nil {
+		return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"\n")
+	}
+	return nil
+	// HOFSTADTER_END   ImportExtraFolder
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
 func (D *Design) Get(path string) (object interface{}, err error) {
 	// HOFSTADTER_START Get
 	return D.GetByPath(path)
@@ -146,6 +207,9 @@ func (D *Design) GetByPath(path string) (object interface{}, err error) {
 		case "type":
 			return D.Type, nil
 
+		case "extra":
+			return D.Extra, nil
+
 		default:
 			return nil, errors.New("Unknown path start for design: " + paths[0])
 
@@ -168,6 +232,9 @@ func (D *Design) GetByPath(path string) (object interface{}, err error) {
 
 	case "type":
 		return dotpath.GetByPathSlice(rest, D.Type, true)
+
+	case "extra":
+		return dotpath.GetByPathSlice(rest, D.Extra, true)
 
 	default:
 		return nil, errors.New("Unknown path start for design: " + P)
@@ -193,8 +260,8 @@ Where's your docs doc?!
 func (D *Design) importDesign(basePath string, designPath string) (err error) {
 	// HOFSTADTER_START importDesign
 
+	fmt.Println("  - file: " + designPath)
 	logger.Info("  - file: " + designPath)
-	// fmt.Println(" -", designPath)
 
 	var iface interface{}
 	_, err = io.ReadFile(designPath, &iface)
@@ -202,16 +269,6 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
 	}
 	logger.Debug("after reading", "iface", iface)
-	// fmt.Printf("%s\n%# v\n", designPath, pretty.Formatter(iface))
-	// logger.Warn("after reading", "iface", iface, "path", designPath)
-
-	// check if iface is nil, meaning empty file, and skip by return nil
-	// at this point because we passed the unmarshalling in the read func
-	/*
-		if iface == nil {
-			return nil
-		}
-	*/
 
 	rel_file, err := filepath.Rel(basePath, designPath)
 	if err != nil {
@@ -223,11 +280,12 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		rel_path = rel_path[1:]
 	}
 
-	// convert to map
+	// convert to map or slice
 	switch top_level := iface.(type) {
 	case map[string]interface{}:
 
 		// get list of all top level DSL entries
+		fmt.Println("top_level(map): ", top_level)
 		for dsl, val := range top_level {
 			data := val.(map[string]interface{})
 			err = D.storeDesign(rel_path, dsl, data)
@@ -237,6 +295,7 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		}
 
 	case []interface{}:
+		fmt.Println("top_level(array): ", top_level)
 
 		for _, item := range top_level {
 
@@ -270,6 +329,7 @@ Where's your docs doc?!
 func (D *Design) storeDesign(relativePath string, dsl string, design interface{}) (err error) {
 	// HOFSTADTER_START storeDesign
 	logger.Info("store_design: " + dsl)
+	fmt.Println("store_design: "+dsl, design)
 
 	dname, err := dotpath.Get("name", design, true)
 	logger.Debug("dotpath for name", "dname", dname, "err", err, "design", design)
@@ -289,20 +349,6 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 		}
 		name = tmp
 		D["relPath"] = relativePath
-
-		/*
-			case map[interface{}]interface{}:
-				iname, ok := D["name"]
-				if !ok {
-					return errors.New("Top-level definition '" + dsl + "' missing required field 'name'.")
-				}
-				tmp, ok := iname.(string)
-				if !ok {
-					return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
-				}
-				name = tmp
-				D["relPath"] = relativePath
-		*/
 
 	default:
 		return errors.New("Top-level definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
@@ -324,16 +370,6 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 			}
 			t_list = tmp_list
 			D["relPath"] = relativePath
-
-			/*
-				case map[interface{}]interface{}:
-					tmp_list, ok := D["list"].([]interface{})
-					if !ok {
-						return errors.New("Top-level type-list does not have a 'list' or is not an array of objects in '" + " design: " + fmt.Sprint(design))
-					}
-					t_list = tmp_list
-					D["relPath"] = relativePath
-			*/
 
 		default:
 			return errors.New("Type-list definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
@@ -359,20 +395,6 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 				ename = tmp
 				E["relPath"] = relativePath
 
-				/*
-					case map[interface{}]interface{}:
-						iname, ok := E["name"]
-						if !ok {
-							return errors.New("Type-list definition '" + name + "' missing required field 'name'.")
-						}
-						tmp, ok := iname.(string)
-						if !ok {
-							return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
-						}
-						ename = tmp
-						E["relPath"] = relativePath
-				*/
-
 			default:
 				return errors.New("Type-list definition '" + dsl + "' is not a map[string]")
 
@@ -395,6 +417,44 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 	}
 	return nil
 	// HOFSTADTER_END   storeDesign
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func (D *Design) importExtra(basePath string, designPath string) (err error) {
+	// HOFSTADTER_START importExtra
+	logger.Info("  - file: " + designPath)
+
+	var iface interface{}
+	_, err = io.ReadFile(designPath, &iface)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
+	}
+	logger.Debug("after reading", "iface", iface)
+
+	rel_file, err := filepath.Rel(basePath, designPath)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (rel filepath): "+designPath+"\n")
+	}
+
+	rel_base := filepath.Base(rel_file)
+	rel_ext := filepath.Ext(rel_base)
+	rel_name := strings.TrimSuffix(rel_base, rel_ext)
+
+	rel_path := filepath.Dir(rel_file)
+	if rel_path[0] == '.' {
+		rel_path = rel_path[1:]
+	}
+
+	// data := val.(map[string]interface{})
+	err = D.storeExtraDesign(rel_path, rel_name, iface)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+	}
+
+	// HOFSTADTER_END   importExtra
 	return
 }
 

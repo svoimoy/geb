@@ -33,8 +33,6 @@ var GebberishCmd = &cobra.Command{
 	Aliases: []string{
 		"games",
 		"G",
-		"games",
-		"G",
 	},
 
 	Short: "it's a puzzle?!",

@@ -57,6 +57,22 @@ pkg:
             - name: err
               type: error
 
+    - name: gen-multi
+      functions:
+        - name: generate-multi
+          args:
+            - name: input-paths
+              type: "array:string"
+            - name: template-paths
+              type: "array:string"
+            - name: repeats
+              type: "array:string"
+            - name: output-path
+              type: "string"
+          return:
+            - name: err
+              type: error
+
     - name: info
       functions:
         - name: get-project-data

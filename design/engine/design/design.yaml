@@ -15,6 +15,8 @@ type:
       type: 'map:interface{}'
     - name: custom
       type: 'map:interface{}'
+    - name: extra
+      type: 'map:interface{}'
 
   public-functions:
 
@@ -27,6 +29,22 @@ type:
           type: error
 
     - name: import-design-folder
+      args:
+        - name: folder
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: import-extra-file
+      args:
+        - name: filename
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: import-extra-folder
       args:
         - name: folder
           type: string
@@ -84,6 +102,16 @@ type:
         - name: err
           type: error
 
+    - name: import-extra
+      args:
+        - name: base-path
+          type: string
+        - name: design-path
+          type: string
+      return:
+        - name: err
+          type: error
+      
   private-files:
     - name: store
       functions: 
@@ -138,6 +166,18 @@ type:
               type: error
           
         - name: store-custom-design
+          args:
+            - name: relative-path
+              type: string
+            - name: name
+              type: string
+            - name: design
+              type: "interface{}"
+          return:
+            - name: err
+              type: error
+          
+        - name: store-extra-design
           args:
             - name: relative-path
               type: string

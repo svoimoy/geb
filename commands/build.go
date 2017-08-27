@@ -34,7 +34,6 @@ var BuildCmd = &cobra.Command{
 
 	Aliases: []string{
 		"b",
-		"b",
 	},
 
 	Short: "Run the build pipeline for a project.",

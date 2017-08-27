@@ -41,7 +41,7 @@ func GenerateFile(designFile string, templateFile string, outputFile string) (er
 	D := design.NewDesign()
 	err = D.ImportDesignFile(designFile)
 	if err != nil {
-		return errors.Wrapf(err, "While generating file: %s %s %s\n", designFile, templateFile, outputFile)
+		return errors.Wrapf(err, "While importing design file: %s %s %s\n", designFile, templateFile, outputFile)
 	}
 
 	T := templates.NewTemplateMap()

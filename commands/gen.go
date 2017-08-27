@@ -36,10 +36,6 @@ var GenCmd = &cobra.Command{
 		"geberate",
 		"generate",
 		"g",
-		"geb",
-		"geberate",
-		"generate",
-		"g",
 	},
 
 	Short: "Generate a project.",

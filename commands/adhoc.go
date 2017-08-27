@@ -40,15 +40,23 @@ import (
 var AdhocLong = `Generate something from data and a template.`
 
 var (
-	AdhocInputFlag          string
-	AdhocInputTypeFlag      string
-	AdhocFieldFlag          string
-	AdhocFlattenFlag        int
-	AdhocMultiFlag          bool
+	AdhocInputFlag string
+
+	AdhocInputTypeFlag string
+
+	AdhocFieldFlag string
+
+	AdhocFlattenFlag int
+
+	AdhocMultiFlag bool
+
 	AdhocTemplateStringFlag string
-	AdhocTemplateFileFlag   string
-	AdhocOutputFlag         string
-	AdhocOutputTypeFlag     string
+
+	AdhocTemplateFileFlag string
+
+	AdhocOutputFlag string
+
+	AdhocOutputTypeFlag string
 )
 
 func init() {
