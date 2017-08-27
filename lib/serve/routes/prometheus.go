@@ -16,6 +16,7 @@ func addPrometheusHandlers(G *echo.Group) (err error) {
 
 	group.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 
+	return nil
 }
 
 // HOFSTADTER_BELOW

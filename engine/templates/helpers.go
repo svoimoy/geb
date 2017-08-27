@@ -91,6 +91,8 @@ func addTemplateHelpers(tpl *raymond.Template) {
 
 	tpl.RegisterHelper("eq", helper_eq)
 	tpl.RegisterHelper("ne", helper_ne)
+	tpl.RegisterHelper("or", helper_or)
+	tpl.RegisterHelper("and", helper_and)
 
 	tpl.RegisterHelper("getenv", helper_getenv)
 
@@ -442,6 +444,20 @@ func helper_ne(lhs, rhs string) string {
 		return lhs
 	}
 	return ""
+}
+
+func helper_or(lhs, rhs interface{}) bool {
+	if lhs != nil || rhs != nil {
+		return true
+	}
+	return false
+}
+
+func helper_and(lhs, rhs interface{}) bool {
+	if lhs != nil && rhs != nil {
+		return true
+	}
+	return false
 }
 
 func helper_getenv(env_var string) string {

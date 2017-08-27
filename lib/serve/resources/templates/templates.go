@@ -33,6 +33,9 @@ Parent:    serve
 
 */
 
+// HOFSTADTER_START start
+// HOFSTADTER_END   start
+
 // HOFSTADTER_START const
 // HOFSTADTER_END   const
 
@@ -295,7 +298,7 @@ func Handle_DELETE_Templates(ctx echo.Context) (err error) {
 // End resource.methods
 
 // Should find a way to build up errors and return all
-// POST    ->
+// POST    ->  map[ctx_path:dsl.lib.serve.api.resources.[0].routes.[0].output.[0] pkg_path:lib/serve/api/resources/[0]/routes/[0]/output pkgPath:serve/templates/render/render-return name:render-return type:map:interface{} parent:serve.templates.render parent_path:dsl.lib.serve.api.resources.[0].routes.[0]]
 func Handle_POST_Render(ctx echo.Context) (err error) {
 
 	// Check params
@@ -307,6 +310,10 @@ func Handle_POST_Render(ctx echo.Context) (err error) {
 	templateID := ctx.Param("template-id")
 
 	// validate that field
+
+	// OUTPUT
+	// user-defined
+	var renderReturn map[string]interface{}
 
 	// HOFSTADTER_START handler
 	t, err := readTemplate(templateID)
@@ -338,7 +345,7 @@ func Handle_POST_Render(ctx echo.Context) (err error) {
 		return err
 	}
 
-	r := map[string]interface{}{}
+	r := renderReturn
 	r["id"] = t.ID
 	r["name"] = t.Name
 	r["data"] = t.Data

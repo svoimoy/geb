@@ -3,16 +3,15 @@ package routes
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-	// TODO routes dir - imports
+	// GOT HERE
 )
 
-/* when
-
-Name: ready-check
-Parent: serve
-pkgPath: serve/ready-check
-
+/* no when
+Name: serve
+Parent:
+pkgPath: serve
 */
+
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
@@ -84,7 +83,6 @@ func SetLogger(l log.Logger) {
 
 func setSubLoggers(logger log.Logger) {
 
-	// TODO routes dir - sub dir logger inits
 }
 
 // HOFSTADTER_BELOW
