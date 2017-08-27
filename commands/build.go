@@ -1,7 +1,5 @@
 package commands
 
-// package commands
-
 import (
 	// HOFSTADTER_START import
 	"fmt"
@@ -35,6 +33,7 @@ var BuildCmd = &cobra.Command{
 	Use: "build",
 
 	Aliases: []string{
+		"b",
 		"b",
 	},
 

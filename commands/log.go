@@ -78,8 +78,8 @@ func SetLogger(l log.Logger) {
 }
 
 func setSubLoggers(logger log.Logger) {
-	system.SetLogger(logger)
 	gebberish.SetLogger(logger)
+	system.SetLogger(logger)
 	view.SetLogger(logger)
 }
 

@@ -6,7 +6,7 @@ cli:
     - name: build
       usage: build
       aliases:
-        - b
+        - "b"
       short: Run the build pipeline for a project.
       long: |
         Run the build pipeline specified in your project.

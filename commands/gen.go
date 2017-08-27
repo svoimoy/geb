@@ -1,7 +1,5 @@
 package commands
 
-// package commands
-
 import (
 	// HOFSTADTER_START import
 	"fmt"
@@ -34,6 +32,10 @@ var GenCmd = &cobra.Command{
 	Use: "gen",
 
 	Aliases: []string{
+		"geb",
+		"geberate",
+		"generate",
+		"g",
 		"geb",
 		"geberate",
 		"generate",

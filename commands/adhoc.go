@@ -1,7 +1,5 @@
 package commands
 
-// package commands
-
 import (
 	// HOFSTADTER_START import
 	"bytes"
@@ -14,8 +12,8 @@ import (
 	"github.com/ghodss/yaml"
 	"github.com/naoina/toml"
 
+	"github.com/hofstadter-io/data-utils/io"
 	"github.com/hofstadter-io/geb/engine"
-	"github.com/hofstadter-io/geb/lib/utils/io"
 	"github.com/hofstadter-io/hof-lang/lib/ast"
 	"github.com/hofstadter-io/hof-lang/lib/parser"
 	// HOFSTADTER_END   import

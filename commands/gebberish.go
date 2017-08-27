@@ -1,7 +1,5 @@
 package commands
 
-// package commands
-
 import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
@@ -33,6 +31,8 @@ var GebberishCmd = &cobra.Command{
 	Use: "gebberish",
 
 	Aliases: []string{
+		"games",
+		"G",
 		"games",
 		"G",
 	},

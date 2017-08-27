@@ -1,7 +1,5 @@
 package utils
 
-// package publicFiles
-
 import (
 	// HOFSTADTER_START import
 	"github.com/pkg/errors"

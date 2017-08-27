@@ -5,7 +5,7 @@ cli:
 
     - name: adhoc
       aliases:
-        - on-the-fly
+        - "on-the-fly"
       usage: adhoc
       short: Generate something from data and a template.
       long: Generate something from data and a template.
