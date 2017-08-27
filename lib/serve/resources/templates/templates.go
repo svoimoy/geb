@@ -298,7 +298,6 @@ func Handle_DELETE_Templates(ctx echo.Context) (err error) {
 // End resource.methods
 
 // Should find a way to build up errors and return all
-// POST    ->  map[ctx_path:dsl.lib.serve.api.resources.[0].routes.[0].output.[0] pkg_path:lib/serve/api/resources/[0]/routes/[0]/output pkgPath:serve/templates/render/render-return name:render-return type:map:interface{} parent:serve.templates.render parent_path:dsl.lib.serve.api.resources.[0].routes.[0]]
 func Handle_POST_Render(ctx echo.Context) (err error) {
 
 	// Check params

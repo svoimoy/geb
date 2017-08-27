@@ -61,35 +61,13 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 				if err != nil {
 					return nil, errors.Wrap(err, "in merge mS")
 				}
-				val = tmp
+				O[key] = tmp
+			} else {
+				O[key] = val
 			}
-			O[key] = val
 		}
 		logger.Info("mS returning", "O", O)
 		return O, nil
-
-		/*
-			case map[interface{}]interface{}:
-				U, ok := update.(map[interface{}]interface{})
-				if !ok {
-					return nil, errors.New("update is not mI like original")
-				}
-				logger.Info("mI entering")
-				for key, val := range U {
-					logger.Debug("in merge mI-U", "key", key, "val", val, "curr", O[key])
-					if curr, exists := O[key]; exists {
-						tmp, err := merge(curr, val)
-						logger.Debug("after merge mI", "tmp", tmp, "err", err)
-						if err != nil {
-							return nil, errors.Wrap(err, "in merge mI")
-						}
-						val = tmp
-					}
-					O[key] = val
-				}
-				logger.Info("mI returning", "O", O)
-				return O, nil
-		*/
 
 	case []interface{}:
 		U, ok := update.([]interface{})
@@ -121,7 +99,6 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 			}
 		}
 
-		extra := []interface{}{}
 		for i, elem := range O {
 			// logger.Crit("O-loop", "i", i, "elem", elem)
 			switch E := elem.(type) {
@@ -148,9 +125,9 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 					delete(UM, name)
 				}
 			case string:
-				curr, exists := UM[E]
-				if !exists {
-					extra = append(extra, curr)
+				_, exists := UM[E]
+				if exists {
+					delete(UM, E)
 				}
 
 			default:
@@ -160,19 +137,6 @@ func merge(original interface{}, update interface{}) (merged interface{}, err er
 		}
 		// merge
 		logger.Info("aI")
-		/*
-		for key, val := range UM {
-			if curr, exists := OM[key]; exists {
-				tmp, err := merge(curr, val)
-				logger.Debug("in merge MS", "key", key, "val", val, "curr", curr)
-				if err != nil {
-					return nil, errors.Wrap(err, "in merge MS")
-				}
-				val = tmp
-			}
-			OM[key] = val
-		}
-		*/
 
 		// turn back into array
 		OA := []interface{}{}
