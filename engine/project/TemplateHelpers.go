@@ -91,6 +91,11 @@ func (P *Project) addTemplateHelpers() {
 				P.registerTemplateHelpers(ray)
 			}
 
+			// Register helpers with the designs
+			for _, design := range G.Designs {
+				ray := (*raymond.Template)(design.Template)
+				P.registerTemplateHelpers(ray)
+			}
 		}
 	}
 	// HOFSTADTER_END   addTemplateHelpers
@@ -189,6 +194,13 @@ func (P *Project) tpl_helper_dotpath_design(path string, no_solo_array bool, opt
 // data optional argument defaults to DSL
 func (P *Project) tpl_helper_dotpath_type(path string, no_solo_array bool, options *raymond.Options) interface{} {
 	data := P.Design.Type
+
+	if path == "" {
+		return options.FnWith("Empty path!!")
+	}
+	if strings.HasPrefix(path, "type.") {
+		path = strings.TrimPrefix(path, "type.")
+	}
 
 	obj, err := dotpath.Get(path, data, no_solo_array)
 	if err != nil {

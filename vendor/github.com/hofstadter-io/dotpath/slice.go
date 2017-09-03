@@ -10,6 +10,10 @@ import (
 )
 
 func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interface{}, error) {
+	if data == nil {
+		return nil, errors.New("input data is nil")
+	}
+
 	header := fmt.Sprintf("get_from_slice_by_path:  %d  %v  in:\n%+v\n\n", IDX, paths, data)
 	// fmt.Println(header)
 	logger.Debug(header)

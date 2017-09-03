@@ -7,6 +7,9 @@ import (
 )
 
 func get_from_smap_by_path(IDX int, paths []string, data map[string]interface{}) (interface{}, error) {
+	if data == nil {
+		return nil, errors.New("input data is nil")
+	}
 
 	P := paths[IDX]
 	path_str := strings.Join(paths[:IDX+1], ".")
@@ -91,6 +94,10 @@ func get_from_smap_by_path(IDX int, paths []string, data map[string]interface{})
 }
 
 func get_from_imap_by_path(IDX int, paths []string, data map[interface{}]interface{}) (interface{}, error) {
+	if data == nil {
+		return nil, errors.New("input data is nil")
+	}
+
 
 	P := paths[IDX]
 	path_str := strings.Join(paths[:IDX+1], ".")

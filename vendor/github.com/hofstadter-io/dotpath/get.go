@@ -65,6 +65,9 @@ func config_logger(level string) {
 }
 
 func Get(path string, data interface{}, no_solo_array bool) (interface{}, error) {
+	if data == nil {
+		return nil, errors.New("input data is nil")
+	}
 	if path == "." {
 		return data, nil
 	}
@@ -92,6 +95,9 @@ func Get(path string, data interface{}, no_solo_array bool) (interface{}, error)
 }
 
 func GetByPathSlice(path []string, data interface{}, no_solo_array bool) (interface{}, error) {
+	if data == nil {
+		return nil, errors.New("input data is nil")
+	}
 	if path[0] == "." {
 		return data, nil
 	}
@@ -112,6 +118,9 @@ func GetByPathSlice(path []string, data interface{}, no_solo_array bool) (interf
 }
 
 func get_by_path(IDX int, paths []string, data interface{}) (interface{}, error) {
+	if data == nil {
+		return nil, errors.New("input data is nil")
+	}
 	header := fmt.Sprintf("get_by_path:  %d  %v  in:\n%+v\n\n", IDX, paths, data)
 	// fmt.Println(header)
 	logger.Debug(header)

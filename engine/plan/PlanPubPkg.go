@@ -135,11 +135,6 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 	case map[string]interface{}:
 		c_slice = append(c_slice, M)
 
-		/*
-			case map[interface{}]interface{}:
-				c_slice = append(c_slice, M)
-		*/
-
 	case []interface{}:
 		for _, elem := range M {
 			// need to think about sub-sub-sub-[cli/api] and N-sub-[dsl]
@@ -153,11 +148,6 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 
 				case map[string]interface{}:
 					c_slice = append(c_slice, M2)
-
-					/*
-						case map[interface{}]interface{}:
-							c_slice = append(c_slice, M2)
-					*/
 
 				case []interface{}:
 					for _, elem2 := range M2 {
@@ -236,6 +226,9 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 			// check the when clause
 			if t_pair.When != "" {
 				logger.Info("When", "t_pair", t_pair)
+
+				// add AND (&&) and OR (||) here
+				// make a loop to check, how to combine elements?
 				when_elems, err := dotpath.Get(t_pair.When, val, false)
 				logger.Debug("  elems", "when_elems", when_elems)
 				if err != nil || when_elems == nil {
