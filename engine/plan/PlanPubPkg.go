@@ -271,6 +271,11 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 				OF_name = strings.TrimPrefix(OF_name, "OUTPUT_ROOT/")
 			}
 
+			if strings.HasPrefix(OF_name, "SUBDESIGN_ROOT/") {
+				ctxDir = "subdesigns"
+				OF_name = strings.TrimPrefix(OF_name, "SUBDESIGN_ROOT/")
+			}
+
 			G_key := filepath.Join(dslKey, genKey)
 			if G.Config.OutputDir != "" {
 				G_key = G.Config.OutputDir
