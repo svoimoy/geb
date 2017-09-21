@@ -17,7 +17,7 @@ import (
 )
 
 /*
-Name:      load
+Name:      Load
 About:
 */
 

@@ -1,72 +1,72 @@
 type-list:
   name: "gen-config-types"
   list:
-    - name: config
+    - name: Config
       kabob: true
       fields:
-        - name: name
+        - name: Name
           type: string
-        - name: version
+        - name: Version
           type: string
-        - name: about
+        - name: About
           type: string
-        - name: type
+        - name: Type
           type: string
-        - name: language
+        - name: Language
           type: string
-        - name: dependencies
-          type: dependencies
-        - name: template-configs
-          type: array:template-config
-        - name: output-dir
+        - name: Dependencies
+          type: Dependencies
+        - name: TemplateConfigs
+          type: array:TemplateConfig
+        - name: OutputDir
           type: string
 
-    - name: template-config
+    - name: TemplateConfig
       kabob: true
       fields:
-        - name: name
+        - name: Name
           type: string
-        - name: field
+        - name: Field
           type: string
-        - name: flatten
+        - name: Flatten
           type: int
-        - name: templates
-          type: array:template-render-pair
+        - name: Templates
+          type: array:TemplateRenderPair
 
-    - name: template-render-pair
+    - name: TemplateRenderPair
       kabob: true
       fields:
-        - name: when
+        - name: When
           type: string
-        - name: unless
+        - name: Unless
           type: string
-        - name: field
+        - name: Field
           type: string
-        - name: flatten
+        - name: Flatten
           type: int
-        - name: in
+        - name: In
           type: string
-        - name: out
+        - name: Out
           type: string
-        - name: extra
+        - name: Extra
           type: array:string
 
-    - name: dependencies
+    - name: Dependencies
       kabob: true
       fields:
-        - name: designs
-          type: array:template-config
-        - name: generators
-          type: array:generator-config
+        - name: Designs
+          type: array:TemplateConfig
+        - name: Generators
+          type: array:GeneratorConfig
 
-    - name: generator-config
+    - name: GeneratorConfig
       kabob: true
       fields:
-        - name: dsl
+        - name: Dsl
           type: string
           required: true
-        - name: gen
+        - name: Gen
           type: array:string
-        - name: output-dir
+        - name: OutputDir
           type: string
 

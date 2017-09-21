@@ -1,6 +1,7 @@
 # add db funcs to the type public functions
+
 cli:
-  name: "serve-tool-db"
+  name: "serveToolDB"
 
   commands:
 
@@ -10,22 +11,32 @@ cli:
       omit-run: true
 
       commands:
-
+ 
         - name: "migrate"
-          return:
-            - name: err
-              type: error
+          usage: "migrate"
+          imports:
+            - path: "github.com/hofstadter-io/geb/lib/templates"
+          body: |
 
         - name: "create"
           usage: "create <data-file>"
+          imports:
+            - path: "github.com/hofstadter-io/geb/lib/templates"
           args:
             - name: data-file
               type: string
+              required: true
+              
+          body: |
+            var template templates.template
+            // unmarshal data file into struct
+            
+            
 
         - name: "find"
           usage: "find <uuid>"
           args:
-            - name: id
+            - name: uuid
               type: string
 
         - name: "update"
@@ -37,7 +48,7 @@ cli:
         - name: "delete"
           usage: "delete <uuid>"
           args:
-            - name: id
+            - name: uuid
               type: string 
 
         - name: "query"
@@ -46,6 +57,7 @@ cli:
             - name: matchers
               rest: true
               type: array:string 
+
 
 
 

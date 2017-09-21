@@ -1,12 +1,12 @@
 type:
-  name: "gen-pair"
+  name: "GenPair"
   kabob: true
   fields:
-    - name: dsl
+    - name: Dsl
       type: string
       required: true
-    - name: gen
+    - name: Gen
       type: array:string
-    - name: output-dir
+    - name: OutputDir
       type: string
 

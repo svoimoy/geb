@@ -1,31 +1,31 @@
 type:
-  name: "generator"
+  name: "Generator"
   kabob: true
   fields:
-    - name: config
+    - name: Config
       type: '*Config'
-    - name: source-path
+    - name: SourcePath
       type: 'string'
-    - name: designs
+    - name: Designs
       type: 'engine.templates.TemplateMap'
-    - name: templates
+    - name: Templates
       type: 'engine.templates.TemplateMap'
-    - name: partials
+    - name: Partials
       type: 'engine.templates.TemplateMap'
 
-  public-functions:
+  functions:
 
-    - name: merge-overwrite
+    - name: MergeOverwrite
       args:
         - name: incoming
           type: "*Generator"
 
-    - name: merge-skip-existing
+    - name: MergeSkipExisting
       args:
         - name: incoming
           type: "*Generator"
 
-    - name: validate
+    - name: Validate
       return:
         - name: errorReport
           type: "map:error"

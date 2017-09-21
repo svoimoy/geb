@@ -1,21 +1,21 @@
 type:
-  name: "project"
+  name: "Project"
   kabob: true
   fields:
-    - name: config
+    - name: Config
       type: '*Config'
-    - name: available
+    - name: Available
       type: 'map:*engine.dsl.Dsl'
-    - name: design
+    - name: Design
       type: '*engine.design.Design'
-    - name: dsl-map
+    - name: DslMap
       type: 'map:*engine.dsl.Dsl'
-    - name: plans
+    - name: Plans
       type: 'array:engine.plan.Plan'
 
-  public-functions:
+  functions:
 
-    - name: load
+    - name: Load
       args:
         - name: filename
           type: string
@@ -25,27 +25,27 @@ type:
         - name: err
           type: error
 
-    - name: unify
+    - name: Unify
       return:
         - name: errorReport
           type: "array:error"
 
-    - name: subdesign
+    - name: Subdesign
       return:
         - name: errorReport
           type: "array:error"
 
-    - name: plan
+    - name: Plan
       return:
         - name: err
           type: error
 
-    - name: render
+    - name: Render
       return:
         - name: err
           type: error
 
-    - name: find-available-generators
+    - name: FindAvailableGenerators
       args:
         - name: paths
           type: "array:string"
@@ -53,30 +53,29 @@ type:
         - name: err
           type: error
 
-  public-files:
-    - name: load
+  files:
+    - name: Load
       functions:
 
-        - name: load-generators
+        - name: LoadGenerators
           return:
             - name: err
               type: error
 
-        - name: load-generator
+        - name: LoadGenerator
           args:
             - name: generator
-              type: "engine.gen.generator-config"
-            - name: dsl-lookup-paths
+              type: "engine.gen.GeneratorConfig"
+            - name: dslLookupPaths
               type: "array:string"
           return:
             - name: err
               type: error
 
 
-  private-files:
-    - name: template-helpers
+    - name: TemplateHelpers
       functions:
-        - name: register-partials
-        - name: add-template-helpers
+        - name: registerPartials
+        - name: addTemplateHelpers
 
 

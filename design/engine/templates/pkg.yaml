@@ -1,5 +1,5 @@
 pkg:
-  name: "templates"
+  name: "Templates"
   about: "the Hofstadter engine templates package"
 
   public-functions:
@@ -48,10 +48,10 @@ pkg:
 
 
 
-  private-files:
+  files:
     - name: helpers
       functions:
-        - name: add-template-helpers
+        - name: addTemplateHelpers
           args:
             - name: tpl
               type: "*github.com/aymerick/raymond.Template"

@@ -10,11 +10,15 @@ import (
 	"github.com/hofstadter-io/geb/engine/utils"
 	// HOFSTADTER_END   import
 
+	// custom imports
+
+	// infered imports
+
 	"github.com/spf13/cobra"
 )
 
 // Tool:   geb
-// Name:   dev-mode
+// Name:   devMode
 // Usage:  dev-mode
 // Parent: system
 
@@ -38,7 +42,7 @@ var DevModeCmd = &cobra.Command{
 	Short: "Put geb in development mode.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In dev-modeCmd", "args", args)
+		logger.Debug("In devModeCmd", "args", args)
 		// Argument Parsing
 
 		// HOFSTADTER_START cmd_run

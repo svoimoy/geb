@@ -1,10 +1,10 @@
 pkg:
-  name: "render"
+  name: "Render"
   about: "the Hofstadter engine rendering package"
 
-  public-functions:
+  functions:
 
-    - name: render-plans
+    - name: RenderPlans
       args:
         - name: plans
           type: "array:engine.plan.Plan"
@@ -14,7 +14,7 @@ pkg:
         - name: errorReport
           type: "array:error"
 
-    - name: render-plan
+    - name: RenderPlan
       args:
         - name: plan
           type: "engine.plan.Plan"
@@ -24,7 +24,7 @@ pkg:
         - name: err
           type: error
 
-    - name: splice-results
+    - name: SpliceResults
       args:
         - name: existing
           type: string
@@ -36,7 +36,7 @@ pkg:
         - name: err
           type: error
 
-    - name: write-results
+    - name: WriteResults
       args:
         - name: filename
           type: string

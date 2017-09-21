@@ -1,7 +1,5 @@
 package utils
 
-// package
-
 import (
 	// HOFSTADTER_START import
 	"fmt"

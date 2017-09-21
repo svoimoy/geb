@@ -1,20 +1,20 @@
 type:
-  name: "config"
+  name: "Config"
   kabob: true
   version: "0.0.1"
   fields:
-    - name: name
+    - name: Name
       type: string
       required: true
-    - name: version
+    - name: Version
       type: string
       required: true
-    - name: about
+    - name: About
       type: string
-    - name: type
+    - name: Type
       type: string
       required: true
-    - name: spec
+    - name: Spec
       type: map:interface{}
       required: true
 

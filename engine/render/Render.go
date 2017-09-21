@@ -1,7 +1,5 @@
 package render
 
-// package
-
 import (
 	// HOFSTADTER_START import
 	"bytes"

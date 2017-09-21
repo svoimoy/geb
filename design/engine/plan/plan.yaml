@@ -1,31 +1,31 @@
 type:
-  name: "plan"
+  name: "Plan"
   kabob: true
   fields:
-    - name: dsl
+    - name: Dsl
       type: string
       required: true
-    - name: gen
+    - name: Gen
       type: string
       required: true
-    - name: file
+    - name: File
       type: string
       required: true
-    - name: data
+    - name: Data
       type: "map:interface{}"
       required: true
-    - name: template
+    - name: Template
       type: '*engine.templates.Template'
       required: true
-    - name: outfile
+    - name: Outfile
       type: string
       required: true
-    - name: dsl-context
+    - name: DslContext
       type: "interface{}"
-    - name: template-context
+    - name: TemplateContext
       type: "interface{}"
-    - name: repeated-context
+    - name: RepeatedContext
       type: "interface{}"
-    - name: when-context
+    - name: WhenContext
       type: "interface{}"
 

@@ -2,9 +2,9 @@ pkg:
   name: "Design"
   about: "the Hofstadter engine design package"
 
-  public-functions:
+  functions:
 
-    - name: create-from-folder
+    - name: createFromFolder
       args:
         - name: folder
           type: string

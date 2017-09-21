@@ -1,11 +1,11 @@
 pkg:
-  name: "engine"
+  name: "Engine"
   about: "The Hofstadter engine package"
 
-  public-files:
-    - name: gen-project
+  files:
+    - name: GenProject
       functions:
-        - name: generate-project
+        - name: GenerateProject
           args:
             - name: filename
               type: string
@@ -15,9 +15,9 @@ pkg:
             - name: err
               type: error
 
-    - name: gen-one
+    - name: GenOne
       functions:
-        - name: generate-folder
+        - name: GenerateFolder
           args:
             - name: design-folder
               type: string
@@ -29,7 +29,7 @@ pkg:
             - name: err
               type: error
 
-        - name: generate-file
+        - name: GenerateFile
           args:
             - name: design-file
               type: string
@@ -41,9 +41,9 @@ pkg:
             - name: err
               type: error
 
-    - name: gen-adhoc
+    - name: GenAdhoc
       functions:
-        - name: generate-adhoc
+        - name: GenerateAdhoc
           args:
             - name: input-data
               type: "interface{}"
@@ -57,9 +57,9 @@ pkg:
             - name: err
               type: error
 
-    - name: gen-multi
+    - name: GenMulti
       functions:
-        - name: generate-multi
+        - name: GenerateMulti
           args:
             - name: input-paths
               type: "array:string"
@@ -73,9 +73,9 @@ pkg:
             - name: err
               type: error
 
-    - name: info
+    - name: Info
       functions:
-        - name: get-project-data
+        - name: GetProjectData
           args:
             - name: filename
               type: string
@@ -88,9 +88,9 @@ pkg:
               type: error
 
 
-    - name: view
+    - name: View
       functions:
-        - name: view-geb
+        - name: ViewGeb
           args:
             - name: args
               type: "array:string"
@@ -100,19 +100,7 @@ pkg:
             - name: err
               type: error
 
-        - name: view-dsl
-          args:
-            - name: folder
-              type: string
-            - name: args
-              type: "array:string"
-          return:
-            - name: output
-              type: string
-            - name: err
-              type: error
-
-        - name: view-gen
+        - name: ViewDsl
           args:
             - name: folder
               type: string
@@ -124,7 +112,7 @@ pkg:
             - name: err
               type: error
 
-        - name: view-design
+        - name: ViewGen
           args:
             - name: folder
               type: string
@@ -136,7 +124,7 @@ pkg:
             - name: err
               type: error
 
-        - name: view-project
+        - name: ViewDesign
           args:
             - name: folder
               type: string
@@ -148,7 +136,19 @@ pkg:
             - name: err
               type: error
 
-        - name: view-plans
+        - name: ViewProject
+          args:
+            - name: folder
+              type: string
+            - name: args
+              type: "array:string"
+          return:
+            - name: output
+              type: string
+            - name: err
+              type: error
+
+        - name: ViewPlans
           args:
             - name: folder
               type: string

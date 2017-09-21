@@ -1,14 +1,14 @@
 pkg:
-  name: "plan"
+  name: "Plan"
   about: "the Hofstadter engine planning package"
 
-  public-functions:
+  functions:
 
-    - name: make-plans
+    - name: MakePlans
       args:
-        - name: dsl-map
+        - name: dslMap
           type: "map:*engine.dsl.Dsl"
-        - name: design-data
+        - name: designData
           type: "map:interface{}"
       return:
         - name: ret
@@ -16,11 +16,11 @@ pkg:
         - name: err
           type: error
 
-    - name: make-subdesign-plans
+    - name: MakeSubdesignPlans
       args:
-        - name: dsl-map
+        - name: dslMap
           type: "map:*engine.dsl.Dsl"
-        - name: design-data
+        - name: designData
           type: "map:interface{}"
       return:
         - name: ret
@@ -28,30 +28,28 @@ pkg:
         - name: err
           type: error
 
-
-  private-functions:
 
     # this will replace the 4 different planning methods which exist today
     # see engine/plan/todo.md
-    - name: make-plans
+    - name: makePlans
       args:
-        - name: dsl-key
+        - name: dslKey
           type: string
-        - name: gen-key
+        - name: genKey
           type: string
-        - name: ctx-dir
+        - name: ctxDir
           type: string
-        - name: dsl-ctx
+        - name: dslCtx
           type: "interface{}"
-        - name: design-data
+        - name: designData
           type: "map:interface{}"
         - name: D
           type: "*engine.dsl.Dsl"
         - name: G
-          type: "*engine.gen.generator"
+          type: "*engine.gen.Generator"
         - name: R
-          type: "engine.gen.template-config"
-        - name: make-design
+          type: "engine.gen.TemplateConfig"
+        - name: makeDesign
           type: bool
 
       return:
@@ -60,15 +58,15 @@ pkg:
         - name: err
           type: error
 
-    - name: make-project-plans
+    - name: makeProjectPlans
       args:
-        - name: dsl-type
+        - name: dslType
           type: string
-        - name: dsl-ctx
+        - name: dslCtx
           type: "interface{}"
-        - name: dsl-map
+        - name: dslMap
           type: "map:*engine.dsl.Dsl"
-        - name: design-data
+        - name: designData
           type: "map:interface{}"
       return:
         - name: plans
@@ -76,15 +74,15 @@ pkg:
         - name: err
           type: error
 
-    - name: make-subdesign-plans
+    - name: makeSubdesignPlans
       args:
-        - name: dsl-type
+        - name: dslType
           type: string
-        - name: dsl-ctx
+        - name: dslCtx
           type: "interface{}"
-        - name: dsl-map
+        - name: dslMap
           type: "map:*engine.dsl.Dsl"
-        - name: design-data
+        - name: designData
           type: "map:interface{}"
       return:
         - name: plans
@@ -92,11 +90,11 @@ pkg:
         - name: err
           type: error
 
-    - name: flatten-design-data
+    - name: flattenDesignData
       args:
-        - name: base-output-path
+        - name: baseOutputPath
           type: string
-        - name: design-data
+        - name: designData
           type: "interface{}"
       return:
         - name: flattened
@@ -104,14 +102,14 @@ pkg:
         - name: err
           type: error
 
-    - name: determine-outfile-name
+    - name: determineOutfileName
       args:
-        - name: outfile-template-string
+        - name: outfileTemplateString
           type: string
-        - name: rendering-data
+        - name: renderingData
           type: "interface{}"
       return:
-        - name: output-filename
+        - name: outputFilename
           type: string
         - name: err
           type: error

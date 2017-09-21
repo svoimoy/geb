@@ -1,34 +1,34 @@
 type:
-  name: "dsl"
+  name: "Dsl"
   kabob: true
   fields:
-    - name: config
+    - name: Config
       type: '*Config'
-    - name: source-path
+    - name: SourcePath
       type: 'string'
-    - name: available-generators
+    - name: AvailableGenerators
       type: 'map:string'
-    - name: generators
+    - name: Generators
       type: 'map:*engine.gen.Generator'
 
-  public-functions:
+  functions:
 
-    - name: merge-available
+    - name: MergeAvailable
       args:
         - name: incoming
           type: "*Dsl"
 
-    - name: merge-overwrite
+    - name: MergeOverwrite
       args:
         - name: incoming
           type: "*Dsl"
 
-    - name: merge-skip-existing
+    - name: MergeSkipExisting
       args:
         - name: incoming
           type: "*Dsl"
 
-    - name: validate
+    - name: Validate
       return:
         - name: errorReport
           type: "map:error"

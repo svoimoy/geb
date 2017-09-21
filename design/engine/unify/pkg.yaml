@@ -1,36 +1,34 @@
 pkg:
-  name: "unify"
+  name: "Unify"
   about: "the Hofstadter engine unify package"
 
-  public-functions:
+  functions:
 
-    - name: unify
+    - name: Unify
       args:
         - name: parent
           type: string
         - name: path
           type: string
-        - name: parent-path
+        - name: parentPath
           type: string
-        - name: design-data
+        - name: designData
           type: "map:interface{}"
       return:
         - name: err
           type: error
 
-  private-functions:
-
     - name: unify
       args:
         - name: parent
           type: string
         - name: path
           type: string
-        - name: pkg-path
+        - name: pkgPath
           type: string
-        - name: parent-path
+        - name: parentPath
           type: string
-        - name: design-data
+        - name: designData
           type: "interface{}"
       return:
         - name: err

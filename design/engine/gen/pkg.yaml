@@ -2,9 +2,9 @@ pkg:
   name: "gen"
   about: "the Hofstadter engine generator package"
 
-  public-functions:
+  functions:
 
-    - name: create-from-folder
+    - name: CreateFromFolder
       args:
         - name: folder
           type: string
@@ -14,9 +14,7 @@ pkg:
         - name: err
           type: error
 
-  private-functions:
-
-    - name: read-config-file
+    - name: readConfigFile
       args:
         - name: filename
           type: string
@@ -26,14 +24,14 @@ pkg:
         - name: err
           type: error
 
-  public-files:
+  files:
     - name: merge
       functions:
-        - name: merge-in-folder
+        - name: MergeInFolder
           args:
             - name: folder
               type: string
-            - name: skip-existing
+            - name: skipExisting
               type: bool
           return:
             - name: g

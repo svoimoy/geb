@@ -1,10 +1,10 @@
 pkg:
-  name: "dsl"
+  name: "Dsl"
   about: "the Hofstadter engine dsl package"
 
-  public-functions:
+  functions:
 
-    - name: create-from-folder
+    - name: CreateFromFolder
       args:
         - name: folder
           type: string
@@ -14,7 +14,7 @@ pkg:
         - name: err
           type: error
 
-    - name: find-available
+    - name: FindAvailable
       args:
         - name: folder
           type: string

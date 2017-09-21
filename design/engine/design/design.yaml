@@ -82,9 +82,9 @@ type:
 
     - name: importDesign
       args:
-        - name: base-path
+        - name: basePath
           type: string
-        - name: design-path
+        - name: designPath
           type: string
       return:
         - name: err
@@ -92,7 +92,7 @@ type:
       
     - name: storeDesign
       args:
-        - name: relative-path
+        - name: relativePath
           type: string
         - name: dsl
           type: string
@@ -104,20 +104,20 @@ type:
 
     - name: importExtra
       args:
-        - name: base-path
+        - name: basePath
           type: string
-        - name: design-path
+        - name: designPath
           type: string
       return:
         - name: err
           type: error
       
-  private-files:
-    - name: store
+  files:
+    - name: Store
       functions: 
         - name: storeDslDesign
           args:
-            - name: relative-path
+            - name: relativePath
               type: string
             - name: dsl
               type: string
@@ -131,7 +131,7 @@ type:
           
         - name: storeDataDesign
           args:
-            - name: relative-path
+            - name: relativePath
               type: string
             - name: name
               type: string
@@ -143,7 +143,7 @@ type:
           
         - name: storeTypeDesign
           args:
-            - name: relative-path
+            - name: relativePath
               type: string
             - name: name
               type: string
@@ -155,7 +155,7 @@ type:
           
         - name: storePackageDesign
           args:
-            - name: relative-path
+            - name: relativePath
               type: string
             - name: name
               type: string
@@ -167,7 +167,7 @@ type:
           
         - name: storeCustomDesign
           args:
-            - name: relative-path
+            - name: relativePath
               type: string
             - name: name
               type: string
@@ -179,7 +179,7 @@ type:
           
         - name: storeExtraDesign
           args:
-            - name: relative-path
+            - name: relativePath
               type: string
             - name: name
               type: string

@@ -13,7 +13,7 @@ import (
 )
 
 /*
-Name:      store
+Name:      Store
 About:
 */
 

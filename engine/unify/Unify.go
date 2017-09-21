@@ -1,7 +1,5 @@
 package unify
 
-// package
-
 import (
 	// HOFSTADTER_START import
 	"fmt"

@@ -1,11 +1,11 @@
 type:
-  name: "dsl-config"
+  name: "DslConfig"
   kabob: true
   version: "0.0.1"
   fields:
-    - name: paths
+    - name: Paths
       type: array:string
       required: true
-    - name: default
-      type: "array:engine.gen.generator-config"
+    - name: Default
+      type: "array:engine.gen.GeneratorConfig"
 

@@ -1,6 +1,4 @@
-package project
-
-// package
+package engine
 
 import (
 // HOFSTADTER_START import

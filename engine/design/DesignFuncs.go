@@ -232,8 +232,65 @@ func (D *Design) Validate() (errorReport map[string]error) {
 Where's your docs doc?!
 */
 func (D *Design) importDesign(basePath string, designPath string) (err error) {
-	// HOFSTADTER_START ImportDesign
-	// HOFSTADTER_END   ImportDesign
+	// HOFSTADTER_START importDesign
+
+	logger.Info("  - file: " + designPath)
+
+	var iface interface{}
+	_, err = io.ReadFile(designPath, &iface)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
+	}
+	logger.Debug("after reading", "iface", iface)
+
+	rel_file, err := filepath.Rel(basePath, designPath)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (rel filepath): "+designPath+"\n")
+	}
+
+	rel_path := filepath.Dir(rel_file)
+	if rel_path[0] == '.' {
+		rel_path = rel_path[1:]
+	}
+
+	// convert to map or slice
+	switch top_level := iface.(type) {
+	case map[string]interface{}:
+
+		// get list of all top level DSL entries
+		for dsl, val := range top_level {
+			data := val.(map[string]interface{})
+			err = D.storeDesign(rel_path, dsl, data)
+			if err != nil {
+				return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+			}
+		}
+
+	case []interface{}:
+
+		for _, item := range top_level {
+
+			obj, ok := item.(map[string]interface{})
+			if !ok {
+				return errors.New("design data is not an object: " + designPath)
+			}
+
+			// get list of all top level DSL entries
+			for dsl, val := range obj {
+				data := val.(map[string]interface{})
+				err = D.storeDesign(rel_path, dsl, data)
+				if err != nil {
+					return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+				}
+			}
+		}
+
+	default:
+		return errors.New("design data is not an object: " + designPath)
+
+	}
+	return nil
+	// HOFSTADTER_END   importDesign
 	return
 }
 
@@ -241,8 +298,95 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 Where's your docs doc?!
 */
 func (D *Design) storeDesign(relativePath string, dsl string, design interface{}) (err error) {
-	// HOFSTADTER_START StoreDesign
-	// HOFSTADTER_END   StoreDesign
+	// HOFSTADTER_START storeDesign
+	logger.Info("store_design: " + dsl)
+
+	dname, err := dotpath.Get("name", design, true)
+	logger.Debug("dotpath for name", "dname", dname, "err", err, "design", design)
+
+	// Everything must have a name!
+	name := ""
+	switch D := design.(type) {
+
+	case map[string]interface{}:
+		iname, ok := D["name"]
+		if !ok {
+			return errors.New("Top-level definition '" + dsl + "' missing required field 'name'.")
+		}
+		tmp, ok := iname.(string)
+		if !ok {
+			return errors.New("Top-level definition '" + dsl + "' field 'name' is not a string.")
+		}
+		name = tmp
+		D["relPath"] = relativePath
+
+	default:
+		return errors.New("Top-level definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
+
+	}
+
+	if name == "" {
+		return errors.New("Top-level definition '" + dsl + "' field 'name' is empty.")
+	}
+
+	switch dsl {
+	case "type-list":
+		var t_list []interface{}
+		switch D := design.(type) {
+		case map[string]interface{}:
+			tmp_list, ok := D["list"].([]interface{})
+			if !ok {
+				return errors.New("Top-level type-list does not have a 'list' or is not an array of objects in '" + " design: " + fmt.Sprint(design))
+			}
+			t_list = tmp_list
+			D["relPath"] = relativePath
+
+		default:
+			return errors.New("Type-list definition '" + dsl + "' must be a map type.\nTry adding a single top-level entry with the rest under it.")
+
+		}
+		for _, elem := range t_list {
+			ename := ""
+			// check that we have a name, and possibly overwrite namespace
+			dname, err := dotpath.Get("name", elem, true)
+			logger.Debug("dotpath for name", "dname", dname, "err", err, "elem", elem)
+
+			switch E := elem.(type) {
+
+			case map[string]interface{}:
+				iname, ok := E["name"]
+				if !ok {
+					return errors.New("Type-list definition '" + name + "' missing required field 'name'.")
+				}
+				tmp, ok := iname.(string)
+				if !ok {
+					return errors.New("Type-list definition '" + name + "' field 'name' is not a string.")
+				}
+				ename = tmp
+				E["relPath"] = relativePath
+
+			default:
+				return errors.New("Type-list definition '" + dsl + "' is not a map[string]")
+
+			}
+			D.storeTypeDesign(relativePath, ename, elem)
+
+		}
+
+	case "type":
+		D.storeTypeDesign(relativePath, name, design)
+
+	case "pkg":
+		D.storePackageDesign(relativePath, name, design)
+
+	case "custom":
+		D.storeCustomDesign(relativePath, name, design)
+
+	default:
+		D.storeDslDesign(relativePath, dsl, name, design)
+	}
+	return nil
+	// HOFSTADTER_END   storeDesign
 	return
 }
 
@@ -250,8 +394,37 @@ func (D *Design) storeDesign(relativePath string, dsl string, design interface{}
 Where's your docs doc?!
 */
 func (D *Design) importExtra(basePath string, designPath string) (err error) {
-	// HOFSTADTER_START ImportExtra
-	// HOFSTADTER_END   ImportExtra
+	// HOFSTADTER_START importExtra
+	logger.Info("  - file: " + designPath)
+
+	var iface interface{}
+	_, err = io.ReadFile(designPath, &iface)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
+	}
+	logger.Debug("after reading", "iface", iface)
+
+	rel_file, err := filepath.Rel(basePath, designPath)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (rel filepath): "+designPath+"\n")
+	}
+
+	rel_base := filepath.Base(rel_file)
+	rel_ext := filepath.Ext(rel_base)
+	rel_name := strings.TrimSuffix(rel_base, rel_ext)
+
+	rel_path := filepath.Dir(rel_file)
+	if rel_path[0] == '.' {
+		rel_path = rel_path[1:]
+	}
+
+	// data := val.(map[string]interface{})
+	err = D.storeExtraDesign(rel_path, rel_name, iface)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+	}
+
+	// HOFSTADTER_END   importExtra
 	return
 }
 

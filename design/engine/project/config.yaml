@@ -1,25 +1,25 @@
 type:
-  name: "config"
+  name: "Config"
   kabob: true
   version: "0.0.1"
   fields:
-    - name: name
+    - name: Name
       type: string
       required: true
-    - name: version
+    - name: Version
       type: string
       required: true
-    - name: about
+    - name: About
       type: string
-    - name: design-dir
+    - name: DesignDir
       type: string
       default: "design"
-    - name: design-paths
+    - name: DesignPaths
       type: "array:string"
-    - name: output-dir
+    - name: OutputDir
       type: string
       default: "."
-    - name: dsl-config
-      type: dsl-config
+    - name: DslConfig
+      type: DslConfig
       required: true
 

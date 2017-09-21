@@ -11,7 +11,7 @@ import (
 )
 
 /*
-Name:      template-helpers
+Name:      TemplateHelpers
 About:
 */
 

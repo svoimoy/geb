@@ -1,7 +1,5 @@
 package system
 
-// package
-
 import (
 // HOFSTADTER_START import
 // HOFSTADTER_END   import
