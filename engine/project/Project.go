@@ -166,9 +166,13 @@ func (P *Project) Subdesign() (errorReport []error) {
 	//
 	//
 	same := false
+	cnt := 0
 
 	for !same {
 
+		if cnt > 10 {
+			fmt.Println("subdesign - loop ")
+		}
 		// create a map for the planning process
 		data := map[string]interface{}{
 			"proj":   P.Design.Proj,
@@ -208,6 +212,7 @@ func (P *Project) Subdesign() (errorReport []error) {
 		//  this is P.Load() of the subdesigns
 		//
 		//
+		P.Unify()
 		orig := deepcopy.Copy(P.Design)
 
 		P.Design.ImportDesignFolder("subdesigns")
@@ -224,7 +229,13 @@ func (P *Project) Subdesign() (errorReport []error) {
 		equal := deep.Equal(orig, P.Design)
 		if equal == nil {
 			same = true
+		} else {
+			if cnt > 10 {
+				fmt.Printf("%v\n", equal)
+			}
 		}
+
+		cnt += 1
 
 	}
 	//

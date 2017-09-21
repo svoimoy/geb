@@ -52,9 +52,6 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 			if err != nil {
 				return nil, errors.Wrap(err, "while extracting splice in dotpath case []interface{}")
 			}
-			if E, ok := elems.([]interface{}); ok && len(E) == 0 {
-				return E[0], nil
-			}
 			return elems, nil
 		}
 
@@ -69,9 +66,6 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 			if err != nil {
 				return nil, errors.Wrap(err, "while extracting has_eq in dotpath case []interface{}")
 			}
-			if E, ok := elems.([]interface{}); ok && len(E) == 0 {
-				return E[0], nil
-			}
 			return elems, nil
 		}
 
@@ -80,9 +74,6 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 			elems, err := extract_from_slice_with_name(inner, data)
 			if err != nil {
 				return nil, errors.Wrap(err, "while extracting listing in dotpath case []interface{}")
-			}
-			if E, ok := elems.([]interface{}); ok && len(E) == 0 {
-				return E[0], nil
 			}
 			return elems, nil
 		}
@@ -103,9 +94,6 @@ func get_from_slice_by_path(IDX int, paths []string, data []interface{}) (interf
 			return nil, errors.Wrap(err, "while extracting name/field in dotpath case []interface{}")
 		}
 
-		if E, ok := elems.([]interface{}); ok && len(E) == 0 {
-			return E[0], nil
-		}
 		return elems, nil
 
 	} else {
