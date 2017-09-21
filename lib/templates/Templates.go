@@ -1,6 +1,4 @@
-package system
-
-// package
+package templates
 
 import (
 // HOFSTADTER_START import

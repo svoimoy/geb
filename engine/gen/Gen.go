@@ -1,7 +1,5 @@
 package gen
 
-// package
-
 import (
 	// HOFSTADTER_START import
 	"github.com/pkg/errors"

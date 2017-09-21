@@ -1,13 +1,13 @@
 type:
-  name: config
+  name: Config
 
   fields:
-    - name: input-path
+    - name: InputPath
       type: string
 
-    - name: output-path
+    - name: OutputPath
       type: string
 
-    - name: template-configs
-      type: array:engine.gen.template-config
+    - name: TemplateConfigs
+      type: array:engine.gen.TemplateConfig
 
