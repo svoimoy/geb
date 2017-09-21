@@ -23,7 +23,7 @@ cli:
           short: 'Initialize the geb tool and files.'
           long: 'Intializes the geb tool and the ~/.geb dot folder.'
 
-        - name: dev-mode
+        - name: devMode
           usage: dev-mode
           aliases:
             - dev

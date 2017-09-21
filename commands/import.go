@@ -5,6 +5,9 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
+	// custom imports
+
+	// infered imports
 	"os"
 
 	"github.com/spf13/viper"

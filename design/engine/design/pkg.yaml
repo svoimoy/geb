@@ -1,5 +1,5 @@
 pkg:
-  name: "design"
+  name: "Design"
   about: "the Hofstadter engine design package"
 
   public-functions:

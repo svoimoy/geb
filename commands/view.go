@@ -4,6 +4,10 @@ import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 
+	// custom imports
+
+	// infered imports
+
 	"github.com/spf13/cobra"
 
 	"github.com/hofstadter-io/geb/commands/view"

@@ -18,6 +18,10 @@ import (
 	"github.com/hofstadter-io/hof-lang/lib/parser"
 	// HOFSTADTER_END   import
 
+	// custom imports
+
+	// infered imports
+
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"

@@ -1,26 +1,28 @@
 type:
-  name: "design"
+  name: "Design"
   kabob: true
   version: "0.0.1"
   fields:
-    - name: proj
+    - name: Files
       type: 'map:interface{}'
-    - name: data
+    - name: Proj
       type: 'map:interface{}'
-    - name: type
+    - name: Data
       type: 'map:interface{}'
-    - name: pkg
+    - name: Type
       type: 'map:interface{}'
-    - name: dsl
+    - name: Pkg
       type: 'map:interface{}'
-    - name: custom
+    - name: Dsl
       type: 'map:interface{}'
-    - name: extra
+    - name: Custom
+      type: 'map:interface{}'
+    - name: Extra
       type: 'map:interface{}'
 
-  public-functions:
+  functions:
 
-    - name: import-design-file
+    - name: ImportDesignFile
       args:
         - name: filename
           type: string
@@ -28,7 +30,7 @@ type:
         - name: err
           type: error
 
-    - name: import-design-folder
+    - name: ImportDesignFolder
       args:
         - name: folder
           type: string
@@ -36,7 +38,7 @@ type:
         - name: err
           type: error
 
-    - name: import-extra-file
+    - name: ImportExtraFile
       args:
         - name: filename
           type: string
@@ -44,7 +46,7 @@ type:
         - name: err
           type: error
 
-    - name: import-extra-folder
+    - name: ImportExtraFolder
       args:
         - name: folder
           type: string
@@ -52,7 +54,7 @@ type:
         - name: err
           type: error
 
-    - name: get
+    - name: Get
       args:
         - name: path
           type: string
@@ -62,7 +64,7 @@ type:
         - name: err
           type: error
 
-    - name: get-by-path
+    - name: GetByPath
       args:
         - name: path
           type: string
@@ -72,15 +74,13 @@ type:
         - name: err
           type: error
 
-    - name: validate
+    - name: Validate
       return:
         - name: errorReport
           type: "map:error"
 
 
-  private-functions:
-
-    - name: import-design
+    - name: importDesign
       args:
         - name: base-path
           type: string
@@ -90,7 +90,7 @@ type:
         - name: err
           type: error
       
-    - name: store-design
+    - name: storeDesign
       args:
         - name: relative-path
           type: string
@@ -102,7 +102,7 @@ type:
         - name: err
           type: error
 
-    - name: import-extra
+    - name: importExtra
       args:
         - name: base-path
           type: string
@@ -115,7 +115,7 @@ type:
   private-files:
     - name: store
       functions: 
-        - name: store-dsl-design
+        - name: storeDslDesign
           args:
             - name: relative-path
               type: string
@@ -129,7 +129,7 @@ type:
             - name: err
               type: error
           
-        - name: store-data-design
+        - name: storeDataDesign
           args:
             - name: relative-path
               type: string
@@ -141,7 +141,7 @@ type:
             - name: err
               type: error
           
-        - name: store-type-design
+        - name: storeTypeDesign
           args:
             - name: relative-path
               type: string
@@ -153,7 +153,7 @@ type:
             - name: err
               type: error
           
-        - name: store-package-design
+        - name: storePackageDesign
           args:
             - name: relative-path
               type: string
@@ -165,7 +165,7 @@ type:
             - name: err
               type: error
           
-        - name: store-custom-design
+        - name: storeCustomDesign
           args:
             - name: relative-path
               type: string
@@ -177,7 +177,7 @@ type:
             - name: err
               type: error
           
-        - name: store-extra-design
+        - name: storeExtraDesign
           args:
             - name: relative-path
               type: string
