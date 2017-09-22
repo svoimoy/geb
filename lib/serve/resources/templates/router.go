@@ -29,14 +29,14 @@ func InitRouter(G *echo.Group) (err error) {
 	// routes NOT SAME NAME
 
 	// routes RESOURCE
-	templatesGroup.POST("/:template-id/render", Handle_POST_Render)
+	templatesGroup.POST("/:templateId/render", Handle_POST_Render)
 
 	// methods
 	templatesGroup.GET("", Handle_LIST_Templates)
 	templatesGroup.POST("", Handle_POST_Templates)
-	templatesGroup.GET("/:template-id", Handle_GET_Templates)
-	templatesGroup.PUT("/:template-id", Handle_PUT_Templates)
-	templatesGroup.DELETE("/:template-id", Handle_DELETE_Templates)
+	templatesGroup.GET("/:templateId", Handle_GET_Templates)
+	templatesGroup.PUT("/:templateId", Handle_PUT_Templates)
+	templatesGroup.DELETE("/:templateId", Handle_DELETE_Templates)
 
 	// HOFSTADTER_START router-end
 	// HOFSTADTER_END   router-end

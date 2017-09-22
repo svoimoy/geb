@@ -5,8 +5,9 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator"
-	"github.com/google/uuid"
 	"github.com/labstack/echo"
+
+	"github.com/hofstadter-io/geb/lib/templates"
 
 	// HOFSTADTER_START import
 	"encoding/json"
@@ -27,7 +28,7 @@ import (
 API:       serve
 Name:      templates
 Route:     templates
-Resource:  lib.templates.template
+Resource:  type.lib.templates.Template
 Path:      resources
 Parent:    serve
 
@@ -55,11 +56,10 @@ func Handle_LIST_Templates(ctx echo.Context) (err error) {
 	// HOFSTADTER_START list-body-start
 	// HOFSTADTER_END   list-body-start
 
-	// input
-
 	// OUTPUT
 	// user-defined
-	var ts []templates.TemplateViewShort
+	// it's a view!
+	var ts []templates.Short
 	// fmt.Println("list templates")
 
 	// HOFSTADTER_START list-body-mid
@@ -79,10 +79,14 @@ func Handle_LIST_Templates(ctx echo.Context) (err error) {
 	}
 	// HOFSTADTER_END   list-body-mid
 
+	// HOFSTADTER_START list-body
+	// HOFSTADTER_END   list-body
+
 	// HOFSTADTER_START list-body-end
 	// HOFSTADTER_END   list-body-end
 
 	// return the output response
+	// should check accept-type here
 	return ctx.JSON(http.StatusOK, ts)
 	return err // hacky...
 }
@@ -96,11 +100,11 @@ func Handle_POST_Templates(ctx echo.Context) (err error) {
 	// HOFSTADTER_END   post-body-start
 
 	// input
-
 	// START binding input to query/form/body params
 	// Initialize
 	// user-defined
-	var inTpl templates.TemplateViewCreate
+	// it's a view!
+	var inTpl templates.Create
 	err = ctx.Bind(&inTpl)
 	if err != nil {
 		return err
@@ -125,6 +129,7 @@ func Handle_POST_Templates(ctx echo.Context) (err error) {
 
 	// OUTPUT
 	// user-defined
+	// it's not a view
 	var outTpl templates.Template
 	// fmt.Println("post templates")
 
@@ -140,10 +145,14 @@ func Handle_POST_Templates(ctx echo.Context) (err error) {
 
 	// HOFSTADTER_END   post-body-mid
 
+	// HOFSTADTER_START post-body
+	// HOFSTADTER_END   post-body
+
 	// HOFSTADTER_START post-body-end
 	// HOFSTADTER_END   post-body-end
 
 	// return the output response
+	// should check accept-type here
 	return ctx.JSON(http.StatusOK, outTpl)
 	return err // hacky...
 }
@@ -156,16 +165,12 @@ func Handle_GET_Templates(ctx echo.Context) (err error) {
 	// HOFSTADTER_START get-body-start
 	// HOFSTADTER_END   get-body-start
 
-	// input
-	// path param
-	// extract
-
-	templateID := ctx.Param("template-id")
-
-	// validate that field
+	// M path params
+	templateId := ctx.Param("templateId")
 
 	// OUTPUT
 	// user-defined
+	// it's not a view
 	var t templates.Template
 	// fmt.Println("get templates")
 
@@ -177,10 +182,14 @@ func Handle_GET_Templates(ctx echo.Context) (err error) {
 	t = T
 	// HOFSTADTER_END   get-body-mid
 
+	// HOFSTADTER_START get-body
+	// HOFSTADTER_END   get-body
+
 	// HOFSTADTER_START get-body-end
 	// HOFSTADTER_END   get-body-end
 
 	// return the output response
+	// should check accept-type here
 	return ctx.JSON(http.StatusOK, t)
 	return err // hacky...
 }
@@ -193,17 +202,14 @@ func Handle_PUT_Templates(ctx echo.Context) (err error) {
 	// HOFSTADTER_START put-body-start
 	// HOFSTADTER_END   put-body-start
 
+	// M path params
+	templateId := ctx.Param("templateId")
+
 	// input
-	// path param
-	// extract
-
-	templateID := ctx.Param("template-id")
-
-	// validate that field
-
 	// START binding input to query/form/body params
 	// Initialize
 	// user-defined
+	// it's not a view
 	var inTpl templates.Template
 	err = ctx.Bind(&inTpl)
 	if err != nil {
@@ -229,6 +235,7 @@ func Handle_PUT_Templates(ctx echo.Context) (err error) {
 
 	// OUTPUT
 	// user-defined
+	// it's not a view
 	var outTpl templates.Template
 	// fmt.Println("put templates")
 
@@ -245,10 +252,14 @@ func Handle_PUT_Templates(ctx echo.Context) (err error) {
 
 	// HOFSTADTER_END   put-body-mid
 
+	// HOFSTADTER_START put-body
+	// HOFSTADTER_END   put-body
+
 	// HOFSTADTER_START put-body-end
 	// HOFSTADTER_END   put-body-end
 
 	// return the output response
+	// should check accept-type here
 	return ctx.JSON(http.StatusOK, outTpl)
 	return err // hacky...
 }
@@ -261,17 +272,13 @@ func Handle_DELETE_Templates(ctx echo.Context) (err error) {
 	// HOFSTADTER_START delete-body-start
 	// HOFSTADTER_END   delete-body-start
 
-	// input
-	// path param
-	// extract
-
-	templateID := ctx.Param("template-id")
-
-	// validate that field
+	// M path params
+	templateId := ctx.Param("templateId")
 
 	// OUTPUT
 	// user-defined
-	var outTpl templates.TemplateViewShort
+	// it's a view!
+	var outTpl templates.Short
 	// fmt.Println("delete templates")
 
 	// HOFSTADTER_START delete-body-mid
@@ -287,10 +294,14 @@ func Handle_DELETE_Templates(ctx echo.Context) (err error) {
 	outTpl.Name = "deleted"
 	// HOFSTADTER_END   delete-body-mid
 
+	// HOFSTADTER_START delete-body
+	// HOFSTADTER_END   delete-body
+
 	// HOFSTADTER_START delete-body-end
 	// HOFSTADTER_END   delete-body-end
 
 	// return the output response
+	// should check accept-type here
 	return ctx.JSON(http.StatusOK, outTpl)
 	return err // hacky...
 }
@@ -303,18 +314,15 @@ func Handle_POST_Render(ctx echo.Context) (err error) {
 	// Check params
 
 	// input
-	// path param
-	// extract
-
-	templateID := ctx.Param("template-id")
-
-	// validate that field
+	// path params
+	templateId := ctx.Param("templateId")
 
 	// OUTPUT
 	// user-defined
+	// it's not a view
 	var renderReturn map[string]interface{}
 
-	// HOFSTADTER_START handler
+	// HOFSTADTER_START templates-render-body
 	t, err := readTemplate(templateID)
 	if err != nil {
 		return err
@@ -353,7 +361,10 @@ func Handle_POST_Render(ctx echo.Context) (err error) {
 
 	return ctx.JSON(http.StatusOK, r)
 
-	// HOFSTADTER_END   handler
+	// HOFSTADTER_END   templates-render-body
+
+	// should check accept-type here
+	return ctx.JSON(http.StatusOK, renderReturn)
 
 	return nil
 }

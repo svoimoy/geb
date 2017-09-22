@@ -5,6 +5,10 @@ release-mode: "debug"
 
 host: "localhost"
 port: "1110"
+base-url: "/api/v1"
+
+databases: []
+
 
 # HOFSTADTER_BELOW
 

@@ -5,7 +5,7 @@ api:
 
     - name: templates
       route: templates
-      resource: lib.templates.template
+      resource: type.lib.templates.Template
 
       omit-db-calls: true
 
@@ -13,43 +13,43 @@ api:
 
         - method: list
           output: 
-            - name: ts
-              type: array:lib.templates.template.views.short
+            name: ts
+            type: array:type.lib.templates.Template.views.Short
 
         - method: post
           input:
-            - name: in-tpl
-              type: lib.templates.template.views.create
+            name: inTpl
+            type: type.lib.templates.Template.views.Create
           output:
-            - name: out-tpl
-              type: lib.templates.template
+            name: outTpl
+            type: type.lib.templates.Template
 
         - method: get
           path-params:
-            - name: template-id
-              type: lib.templates.template.fields.id
+            - name: templateId
+              type: type.lib.templates.Template.fields.Id
           output: 
-            - name: t
-              type: lib.templates.template
+            name: t
+            type: type.lib.templates.Template
 
         - method: put
           path-params:
-            - name: template-id
-              type: lib.templates.template.fields.id
+            - name: templateId
+              type: type.lib.templates.Template.fields.Id
           input:
-            - name: in-tpl
-              type: lib.templates.template
+            name: inTpl
+            type: type.lib.templates.Template
           output:
-            - name: out-tpl
-              type: lib.templates.template
+            name: outTpl
+            type: type.lib.templates.Template
 
         - method: delete
           path-params:
-            - name: template-id
-              type: lib.templates.template.fields.id
+            - name: templateId
+              type: type.lib.templates.Template.fields.Id
           output:
-            - name: out-tpl
-              type: lib.templates.template.views.short
+            name: outTpl
+            type: type.lib.templates.Template.views.Short
 
       routes:
 
@@ -57,8 +57,8 @@ api:
           route: render
           method: POST
           path-params:
-            - name: template-id
-              type: lib.templates.template.fields.id
+            - name: templateId
+              type: type.lib.templates.Template.fields.Id
           output:
-            - name: render-return
-              type: "map:interface{}"
+            name: renderReturn
+            type: "map:interface{}"
