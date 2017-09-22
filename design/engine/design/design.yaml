@@ -112,9 +112,31 @@ type:
         - name: err
           type: error
       
+    - name: importFile
+      args:
+        - name: basePath
+          type: string
+        - name: designPath
+          type: string
+      return:
+        - name: err
+          type: error
+      
   files:
     - name: Store
       functions: 
+        - name: storeFile
+          args:
+            - name: relativePath
+              type: string
+            - name: name
+              type: string
+            - name: design
+              type: "interface{}"
+          return:
+            - name: err
+              type: error
+          
         - name: storeDslDesign
           args:
             - name: relativePath

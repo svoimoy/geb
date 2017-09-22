@@ -4,6 +4,7 @@ import (
 	// HOFSTADTER_START import
 	"fmt"
 	"github.com/pkg/errors"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -408,13 +409,13 @@ func (D *Design) importExtra(basePath string, designPath string) (err error) {
 	var iface interface{}
 	_, err = io.ReadFile(designPath, &iface)
 	if err != nil {
-		return errors.Wrap(err, "in design.import_design (read file): "+designPath+"\n")
+		return errors.Wrap(err, "in design.import_extra (read file): "+designPath+"\n")
 	}
 	logger.Debug("after reading", "iface", iface)
 
 	rel_file, err := filepath.Rel(basePath, designPath)
 	if err != nil {
-		return errors.Wrap(err, "in design.import_design (rel filepath): "+designPath+"\n")
+		return errors.Wrap(err, "in design.import_extra (rel filepath): "+designPath+"\n")
 	}
 
 	rel_base := filepath.Base(rel_file)
@@ -429,10 +430,47 @@ func (D *Design) importExtra(basePath string, designPath string) (err error) {
 	// data := val.(map[string]interface{})
 	err = D.storeExtraDesign(rel_path, rel_name, iface)
 	if err != nil {
-		return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+		return errors.Wrap(err, "in design.import_extra (store design): "+designPath+"\n")
 	}
 
 	// HOFSTADTER_END   importExtra
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func (D *Design) importFile(basePath string, designPath string) (err error) {
+	// HOFSTADTER_START importFile
+	logger.Info("  - file: " + designPath)
+
+	data, err := ioutil.ReadFile(designPath)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_file (read file): "+designPath+"\n")
+	}
+	content := string(data)
+	logger.Debug("after reading", "content", content)
+
+	rel_file, err := filepath.Rel(basePath, designPath)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_file (rel filepath): "+designPath+"\n")
+	}
+
+	rel_base := filepath.Base(rel_file)
+	rel_ext := filepath.Ext(rel_base)
+	rel_name := strings.TrimSuffix(rel_base, rel_ext)
+
+	rel_path := filepath.Dir(rel_file)
+	if rel_path[0] == '.' {
+		rel_path = rel_path[1:]
+	}
+
+	// data := val.(map[string]interface{})
+	err = D.storeFile(rel_path, rel_name, content)
+	if err != nil {
+		return errors.Wrap(err, "in design.import_design (store design): "+designPath+"\n")
+	}
+	// HOFSTADTER_END   importFile
 	return
 }
 

@@ -23,6 +23,60 @@ About:
 /*
 Where's your docs doc?!
 */
+func (D *Design) storeFile(relativePath string, name string, design interface{}) (err error) {
+	// HOFSTADTER_START storeFile
+	logger.Info("    - storing file", "name", name, "rel_path", relativePath)
+	logger.Debug("          with", "design", design)
+
+	fields := strings.Split(relativePath, "/")
+	F0 := fields[0]
+	logger.Debug("Fields", "fields", fields)
+	if F0 == "" {
+		F0 = name
+	}
+
+	// This block builds up the object to insert
+	// - from the outermost map
+	// - through the namespace fields
+	// - and finally the design itself
+	insert := make(map[string]interface{})
+	dd_map := insert
+	for _, F := range fields {
+		if F != "" {
+			tmp := make(map[string]interface{})
+			dd_map[F] = tmp
+			dd_map = tmp
+		}
+	}
+	dd_map[name] = design
+	logger.Info("File", "name", name, "design", design, "map", dd_map, "insert", insert)
+
+	if _, ok := D.Files[F0]; !ok {
+		D.Files[F0] = insert[F0]
+		logger.Info("new type stored", "D.Files", D.Files)
+	} else {
+		logger.Info("merge...", "D.Files", D.Files, "update", insert)
+
+		merged, merr := manip.Merge(D.Files, insert)
+		if merr != nil {
+			return errors.Wrap(merr, "in storeFile")
+		}
+
+		logger.Info("result...", "merged", merged)
+		D.Files[F0] = merged.(map[string]interface{})[F0]
+		logger.Debug("final merge", "D.Files", D.Files)
+	}
+	logger.Debug("       - " + F0)
+
+	return nil
+
+	// HOFSTADTER_END   storeFile
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
 func (D *Design) storeDslDesign(relativePath string, dsl string, name string, design interface{}) (err error) {
 	// HOFSTADTER_START storeDslDesign
 	logger.Info("    - storing dsl", "dsl", dsl, "name", name, "rel_path", relativePath)
