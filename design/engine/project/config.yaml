@@ -18,7 +18,7 @@ type:
       type: "array:string"
     - name: OutputDir
       type: string
-      default: "."
+      default: '"."'
     - name: DslConfig
       type: DslConfig
       required: true

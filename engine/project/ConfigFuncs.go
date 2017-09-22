@@ -1,14 +1,13 @@
 package project
 
-
 import (
-		// HOFSTADTER_START import
-	// HOFSTADTER_END   import
+// HOFSTADTER_START import
+// HOFSTADTER_END   import
 )
 
 /*
 Name:      Config
-About:     
+About:
 */
 
 // HOFSTADTER_START start
@@ -16,18 +15,11 @@ About:
 
 func NewConfig() *Config {
 	return &Config{
-				DesignDir: design,
-DesignPaths: []string{},
-							OutputDir: .,
+		DesignDir:   design,
+		DesignPaths: []string{},
+		OutputDir:   ".",
 	}
 }
-
-
-
-
-
-
-
 
 // HOFSTADTER_BELOW
 
