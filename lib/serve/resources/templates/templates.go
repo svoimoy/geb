@@ -7,7 +7,7 @@ import (
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
 
-	"github.com/hofstadter-io/geb/lib/templates"
+	"github.com/hofstadter-io/geb/lib/types"
 
 	// HOFSTADTER_START import
 	"encoding/json"
@@ -17,10 +17,10 @@ import (
 	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.com/google/uuid"
 	"github.com/spf13/viper"
 
 	T "github.com/hofstadter-io/geb/engine/templates"
-	"github.com/hofstadter-io/geb/lib/templates"
 	// HOFSTADTER_END   import
 )
 
@@ -28,7 +28,7 @@ import (
 API:       serve
 Name:      templates
 Route:     templates
-Resource:  type.lib.templates.Template
+Resource:  type.lib.types.Template
 Path:      resources
 Parent:    serve
 
@@ -59,7 +59,7 @@ func Handle_LIST_Templates(ctx echo.Context) (err error) {
 	// OUTPUT
 	// user-defined
 	// it's a view!
-	var ts []templates.Short
+	var ts []types.Short
 	// fmt.Println("list templates")
 
 	// HOFSTADTER_START list-body-mid
@@ -72,8 +72,8 @@ func Handle_LIST_Templates(ctx echo.Context) (err error) {
 	for _, f := range fis {
 		id := f.Name()
 		id = strings.TrimSuffix(id, ".json")
-		t := templates.TemplateViewShort{
-			ID: id,
+		t := types.Short{
+			Id: id,
 		}
 		ts = append(ts, t)
 	}
@@ -104,7 +104,7 @@ func Handle_POST_Templates(ctx echo.Context) (err error) {
 	// Initialize
 	// user-defined
 	// it's a view!
-	var inTpl templates.Create
+	var inTpl types.Create
 	err = ctx.Bind(&inTpl)
 	if err != nil {
 		return err
@@ -130,11 +130,11 @@ func Handle_POST_Templates(ctx echo.Context) (err error) {
 	// OUTPUT
 	// user-defined
 	// it's not a view
-	var outTpl templates.Template
+	var outTpl types.Template
 	// fmt.Println("post templates")
 
 	// HOFSTADTER_START post-body-mid
-	outTpl.ID = uuid.New().String()
+	outTpl.Id = uuid.New().String()
 	outTpl.Name = inTpl.Name
 	outTpl.Data = inTpl.Data
 
@@ -171,11 +171,11 @@ func Handle_GET_Templates(ctx echo.Context) (err error) {
 	// OUTPUT
 	// user-defined
 	// it's not a view
-	var t templates.Template
+	var t types.Template
 	// fmt.Println("get templates")
 
 	// HOFSTADTER_START get-body-mid
-	T, err := readTemplate(templateID)
+	T, err := readTemplate(templateId)
 	if err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func Handle_PUT_Templates(ctx echo.Context) (err error) {
 	// Initialize
 	// user-defined
 	// it's not a view
-	var inTpl templates.Template
+	var inTpl types.Template
 	err = ctx.Bind(&inTpl)
 	if err != nil {
 		return err
@@ -236,13 +236,13 @@ func Handle_PUT_Templates(ctx echo.Context) (err error) {
 	// OUTPUT
 	// user-defined
 	// it's not a view
-	var outTpl templates.Template
+	var outTpl types.Template
 	// fmt.Println("put templates")
 
 	// HOFSTADTER_START put-body-mid
 	// should check for existance
 
-	inTpl.ID = templateID
+	inTpl.Id = templateId
 	outTpl = inTpl
 
 	err = writeTemplate(outTpl)
@@ -278,19 +278,19 @@ func Handle_DELETE_Templates(ctx echo.Context) (err error) {
 	// OUTPUT
 	// user-defined
 	// it's a view!
-	var outTpl templates.Short
+	var outTpl types.Short
 	// fmt.Println("delete templates")
 
 	// HOFSTADTER_START delete-body-mid
 	tDir := viper.GetString("template-dir")
-	filename := filepath.Join(tDir, templateID+".json")
+	filename := filepath.Join(tDir, templateId+".json")
 
 	err = os.Remove(filename)
 	if err != nil {
 		return err
 	}
 
-	outTpl.ID = templateID
+	outTpl.Id = templateId
 	outTpl.Name = "deleted"
 	// HOFSTADTER_END   delete-body-mid
 
@@ -323,7 +323,7 @@ func Handle_POST_Render(ctx echo.Context) (err error) {
 	var renderReturn map[string]interface{}
 
 	// HOFSTADTER_START templates-render-body
-	t, err := readTemplate(templateID)
+	t, err := readTemplate(templateId)
 	if err != nil {
 		return err
 	}
@@ -353,7 +353,7 @@ func Handle_POST_Render(ctx echo.Context) (err error) {
 	}
 
 	r := renderReturn
-	r["id"] = t.ID
+	r["id"] = t.Id
 	r["name"] = t.Name
 	r["data"] = t.Data
 	r["input"] = inData
@@ -373,7 +373,7 @@ func Handle_POST_Render(ctx echo.Context) (err error) {
 
 // HOFSTADTER_BELOW
 
-func readTemplate(id string) (t templates.Template, err error) {
+func readTemplate(id string) (t types.Template, err error) {
 	tDir := viper.GetString("template-dir")
 	filename := filepath.Join(tDir, id+".json")
 	bytes, err := ioutil.ReadFile(filename)
@@ -388,9 +388,9 @@ func readTemplate(id string) (t templates.Template, err error) {
 	return t, nil
 }
 
-func writeTemplate(t templates.Template) (err error) {
+func writeTemplate(t types.Template) (err error) {
 	tDir := viper.GetString("template-dir")
-	filename := filepath.Join(tDir, t.ID+".json")
+	filename := filepath.Join(tDir, t.Id+".json")
 
 	data, err := json.MarshalIndent(t, "", "  ")
 	if err != nil {

@@ -4,15 +4,19 @@ import (
 	// HOFSTADTER_START import
 	// HOFSTADTER_END   import
 
+	// custom imports
+
+	// infered imports
+
 	"github.com/spf13/cobra"
 
 	"github.com/hofstadter-io/geb/lib/serve/tools/db-ops/commands/commands/templates"
 )
 
-// Tool:   serve-tool-db
+// Tool:   serveToolDB
 // Name:   templates
 // Usage:
-// Parent: serve-tool-db
+// Parent: serveToolDB
 
 // HOFSTADTER_START const
 // HOFSTADTER_END   const

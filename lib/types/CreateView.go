@@ -1,4 +1,4 @@
-package templates
+package types
 
 import (
 // HOFSTADTER_START import

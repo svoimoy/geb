@@ -15,20 +15,20 @@ cli:
         - name: "migrate"
           usage: "migrate"
           imports:
-            - path: "github.com/hofstadter-io/geb/lib/templates"
+            - path: "github.com/hofstadter-io/geb/lib/types"
           body: |
 
         - name: "create"
           usage: "create <data-file>"
           imports:
-            - path: "github.com/hofstadter-io/geb/lib/templates"
+            - path: "github.com/hofstadter-io/geb/lib/types"
           args:
             - name: data-file
               type: string
               required: true
               
           body: |
-            var template templates.template
+            var template types.Template
             // unmarshal data file into struct
             
             

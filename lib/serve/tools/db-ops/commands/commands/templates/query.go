@@ -5,10 +5,14 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
+	// custom imports
+
+	// infered imports
+
 	"github.com/spf13/cobra"
 )
 
-// Tool:   serve-tool-db
+// Tool:   serveToolDB
 // Name:   query
 // Usage:  query [key=value]...
 // Parent: templates

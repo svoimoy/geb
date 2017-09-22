@@ -43,7 +43,7 @@ func SetLogger(l log.Logger) {
 	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.serve-tool-db")
+	lcfg := viper.GetStringMap("log-config.commands.serveToolDB")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

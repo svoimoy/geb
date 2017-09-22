@@ -1,4 +1,4 @@
-package templates
+package types
 
 import (
 	"github.com/spf13/viper"
@@ -10,7 +10,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.lib.templates.default")
+	ldcfg := viper.GetStringMap("log-config.lib.types.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -45,7 +45,7 @@ func SetLogger(l log.Logger) {
 	// HOFSTADTER_END logging-config
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.lib.templates")
+	lcfg := viper.GetStringMap("log-config.lib.types")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

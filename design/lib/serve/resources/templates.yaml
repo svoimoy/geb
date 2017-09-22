@@ -5,7 +5,7 @@ api:
 
     - name: templates
       route: templates
-      resource: type.lib.templates.Template
+      resource: type.lib.types.Template
 
       omit-db-calls: true
 
@@ -14,42 +14,42 @@ api:
         - method: list
           output: 
             name: ts
-            type: array:type.lib.templates.Template.views.Short
+            type: array:type.lib.types.Template.views.Short
 
         - method: post
           input:
             name: inTpl
-            type: type.lib.templates.Template.views.Create
+            type: type.lib.types.Template.views.Create
           output:
             name: outTpl
-            type: type.lib.templates.Template
+            type: type.lib.types.Template
 
         - method: get
           path-params:
             - name: templateId
-              type: type.lib.templates.Template.fields.Id
+              type: type.lib.types.Template.fields.Id
           output: 
             name: t
-            type: type.lib.templates.Template
+            type: type.lib.types.Template
 
         - method: put
           path-params:
             - name: templateId
-              type: type.lib.templates.Template.fields.Id
+              type: type.lib.types.Template.fields.Id
           input:
             name: inTpl
-            type: type.lib.templates.Template
+            type: type.lib.types.Template
           output:
             name: outTpl
-            type: type.lib.templates.Template
+            type: type.lib.types.Template
 
         - method: delete
           path-params:
             - name: templateId
-              type: type.lib.templates.Template.fields.Id
+              type: type.lib.types.Template.fields.Id
           output:
             name: outTpl
-            type: type.lib.templates.Template.views.Short
+            type: type.lib.types.Template.views.Short
 
       routes:
 
@@ -58,7 +58,7 @@ api:
           method: POST
           path-params:
             - name: templateId
-              type: type.lib.templates.Template.fields.Id
+              type: type.lib.types.Template.fields.Id
           output:
             name: renderReturn
             type: "map:interface{}"

@@ -5,10 +5,14 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
+	// custom imports
+
+	// infered imports
+
 	"github.com/spf13/cobra"
 )
 
-// Tool:   serve-tool-db
+// Tool:   serveToolDB
 // Name:   delete
 // Usage:  delete <uuid>
 // Parent: templates
@@ -29,15 +33,15 @@ var DeleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   id
+		// [0]name:   uuid
 		//     help:
 		//     req'd:
 
-		var id string
+		var uuid string
 
 		if 0 < len(args) {
 
-			id = args[0]
+			uuid = args[0]
 		}
 
 		// HOFSTADTER_START cmd_run

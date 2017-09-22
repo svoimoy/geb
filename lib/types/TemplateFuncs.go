@@ -1,4 +1,4 @@
-package templates
+package types
 
 import (
 // HOFSTADTER_START import
@@ -18,11 +18,11 @@ func NewTemplate() *Template {
 }
 
 func NewShort() *Short {
-	return &TemplateShort{}
+	return &Short{}
 }
 
 func NewCreate() *Create {
-	return &TemplateCreate{}
+	return &Create{}
 }
 
 // HOFSTADTER_BELOW

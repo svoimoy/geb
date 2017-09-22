@@ -40,15 +40,15 @@ func read_config() {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
-	// viper.SetConfigName("serve-tool-db")
-	// viper.AddConfigPath("$HOME/.serve-tool-db")
+	// viper.SetConfigName("serveToolDB")
+	// viper.AddConfigPath("$HOME/.serveToolDB")
 	viper.MergeInConfig()
 
 	// Hackery because viper only takes the first config file found... not merging, wtf does merge config mean then anyway
-	f, err := os.Open("serve-tool-db.yml")
+	f, err := os.Open("serveToolDB.yml")
 	if err != nil {
 		f = nil
-		f2, err2 := os.Open("serve-tool-db.yaml")
+		f2, err2 := os.Open("serveToolDB.yaml")
 		if err2 != nil {
 			f = nil
 		} else {

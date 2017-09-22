@@ -1,4 +1,4 @@
-package templates
+package types
 
 import (
 // HOFSTADTER_START import
@@ -6,7 +6,7 @@ import (
 )
 
 /*
-Name:      Short
+Name:      Template
 About:
 */
 
@@ -16,10 +16,15 @@ About:
 /*
 Where's your docs doc?!
 */
-type Short struct {
+type Template struct {
+
+	/* ORM: */
+
 	Id string `json:"id" xml:"id" yaml:"id" form:"id" query:"id" `
 
 	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
+
+	Data string `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
 }
 
 // HOFSTADTER_BELOW

@@ -5,12 +5,17 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
+	// custom imports
+	"github.com/hofstadter-io/geb/lib/types"
+
+	// infered imports
+
 	"github.com/spf13/cobra"
 )
 
-// Tool:   serve-tool-db
+// Tool:   serveToolDB
 // Name:   migrate
-// Usage:
+// Usage:  migrate
 // Parent: templates
 
 // HOFSTADTER_START const

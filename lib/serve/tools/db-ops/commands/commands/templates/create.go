@@ -5,10 +5,16 @@ import (
 	"fmt"
 	// HOFSTADTER_END   import
 
+	// custom imports
+	"github.com/hofstadter-io/geb/lib/types"
+
+	// infered imports
+	"os"
+
 	"github.com/spf13/cobra"
 )
 
-// Tool:   serve-tool-db
+// Tool:   serveToolDB
 // Name:   create
 // Usage:  create <data-file>
 // Parent: templates
@@ -31,7 +37,12 @@ var CreateCmd = &cobra.Command{
 		// Argument Parsing
 		// [0]name:   data-file
 		//     help:
-		//     req'd:
+		//     req'd:  true
+		if 0 >= len(args) {
+			fmt.Println("missing required argument: 'data-file'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
 		var dataFile string
 
@@ -40,11 +51,9 @@ var CreateCmd = &cobra.Command{
 			dataFile = args[0]
 		}
 
-		// HOFSTADTER_START cmd_run
-		fmt.Println("serve-tool-db templates create:",
-			dataFile,
-		)
-		// HOFSTADTER_END   cmd_run
+		var template types.Template
+		// unmarshal data file into struct
+
 	},
 }
 
