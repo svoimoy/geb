@@ -1,8 +1,9 @@
 package project
 
 import (
-// HOFSTADTER_START import
-// HOFSTADTER_END   import
+	// HOFSTADTER_START import
+	"github.com/hofstadter-io/geb/engine/gen"
+	// HOFSTADTER_END   import
 )
 
 /*

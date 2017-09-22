@@ -13,7 +13,7 @@ type:
       type: string
     - name: DesignDir
       type: string
-      default: "design"
+      default: '"design"'
     - name: DesignPaths
       type: "array:string"
     - name: OutputDir

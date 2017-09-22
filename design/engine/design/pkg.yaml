@@ -4,7 +4,7 @@ pkg:
 
   functions:
 
-    - name: createFromFolder
+    - name: CreateFromFolder
       args:
         - name: folder
           type: string

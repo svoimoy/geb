@@ -1,8 +1,11 @@
 package project
 
 import (
-// HOFSTADTER_START import
-// HOFSTADTER_END   import
+	// HOFSTADTER_START import
+	"github.com/hofstadter-io/geb/engine/design"
+	"github.com/hofstadter-io/geb/engine/dsl"
+	"github.com/hofstadter-io/geb/engine/plan"
+	// HOFSTADTER_END   import
 )
 
 /*

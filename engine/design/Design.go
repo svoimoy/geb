@@ -18,14 +18,14 @@ import (
 /*
 Where's your docs doc?!
 */
-func createFromFolder(folder string) (d *Design, err error) {
-	// HOFSTADTER_START createFromFolder
+func CreateFromFolder(folder string) (d *Design, err error) {
+	// HOFSTADTER_START CreateFromFolder
 	d = NewDesign()
 	err = d.ImportDesignFolder(folder)
 	if err != nil {
 		return nil, errors.Wrap(err, "in design.CreateFromFolder: "+folder+"\n")
 	}
-	// HOFSTADTER_END   createFromFolder
+	// HOFSTADTER_END   CreateFromFolder
 	return
 }
 

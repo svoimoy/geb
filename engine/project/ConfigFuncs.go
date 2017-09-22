@@ -1,8 +1,13 @@
 package project
 
 import (
-// HOFSTADTER_START import
-// HOFSTADTER_END   import
+	// HOFSTADTER_START import
+	"bytes"
+	"io"
+	"os"
+
+	"github.com/ghodss/yaml"
+	// HOFSTADTER_END   import
 )
 
 /*
@@ -15,7 +20,7 @@ About:
 
 func NewConfig() *Config {
 	return &Config{
-		DesignDir:   design,
+		DesignDir:   "design",
 		DesignPaths: []string{},
 		OutputDir:   ".",
 	}

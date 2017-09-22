@@ -17,12 +17,12 @@ func NewTemplate() *Template {
 	return &Template{}
 }
 
-func NewTemplateViewShort() *TemplateViewShort {
-	return &TemplateViewShort{}
+func NewShort() *Short {
+	return &TemplateShort{}
 }
 
-func NewTemplateViewCreate() *TemplateViewCreate {
-	return &TemplateViewCreate{}
+func NewCreate() *Create {
+	return &TemplateCreate{}
 }
 
 // HOFSTADTER_BELOW

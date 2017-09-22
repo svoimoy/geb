@@ -1,8 +1,22 @@
 package project
 
 import (
-// HOFSTADTER_START import
-// HOFSTADTER_END   import
+	// HOFSTADTER_START import
+	"fmt"
+	"github.com/pkg/errors"
+	"os"
+	"strings"
+
+	"github.com/hofstadter-io/geb/engine/design"
+	"github.com/hofstadter-io/geb/engine/dsl"
+	"github.com/hofstadter-io/geb/engine/plan"
+	"github.com/hofstadter-io/geb/engine/render"
+	"github.com/hofstadter-io/geb/engine/unify"
+	"github.com/hofstadter-io/geb/engine/utils"
+
+	"github.com/go-test/deep"
+	"github.com/mohae/deepcopy"
+	// HOFSTADTER_END   import
 )
 
 /*

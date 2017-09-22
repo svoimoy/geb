@@ -25,7 +25,7 @@ pkg:
           type: error
 
   files:
-    - name: merge
+    - name: Merge
       functions:
         - name: MergeInFolder
           args:

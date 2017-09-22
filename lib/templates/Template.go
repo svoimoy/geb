@@ -27,33 +27,3 @@ type Template struct {
 	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
 	Data string `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
 }
-
-func NewTemplate() *Template {
-	return &Template{}
-}
-
-/*
-Where's your docs doc?!
-*/
-type TemplateViewShort struct {
-	ID   string `json:"id" xml:"id" yaml:"id" form:"id" query:"id" `
-	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
-}
-
-func NewTemplateViewShort() *TemplateViewShort {
-	return &TemplateViewShort{}
-}
-
-/*
-Where's your docs doc?!
-*/
-type TemplateViewCreate struct {
-	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
-	Data string `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
-}
-
-func NewTemplateViewCreate() *TemplateViewCreate {
-	return &TemplateViewCreate{}
-}
-
-// HOFSTADTER_BELOW
