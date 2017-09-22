@@ -21,15 +21,15 @@ type Generator struct {
 
 	/* ORM: */
 
-	Config *Config `json:"Config" xml:"Config" yaml:"Config" form:"Config" query:"Config" `
+	Config *Config `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
 
-	SourcePath string `json:"SourcePath" xml:"SourcePath" yaml:"SourcePath" form:"SourcePath" query:"SourcePath" `
+	SourcePath string `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
 
-	Designs templates.TemplateMap `json:"Designs" xml:"Designs" yaml:"Designs" form:"Designs" query:"Designs" `
+	Designs templates.TemplateMap `json:"designs" xml:"designs" yaml:"designs" form:"designs" query:"designs" `
 
-	Templates templates.TemplateMap `json:"Templates" xml:"Templates" yaml:"Templates" form:"Templates" query:"Templates" `
+	Templates templates.TemplateMap `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
 
-	Partials templates.TemplateMap `json:"Partials" xml:"Partials" yaml:"Partials" form:"Partials" query:"Partials" `
+	Partials templates.TemplateMap `json:"partials" xml:"partials" yaml:"partials" form:"partials" query:"partials" `
 }
 
 // HOFSTADTER_BELOW

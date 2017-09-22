@@ -21,9 +21,9 @@ type DslConfig struct {
 
 	/* ORM: */
 
-	Paths []string `json:"Paths" xml:"Paths" yaml:"Paths" form:"Paths" query:"Paths" `
+	Paths []string `json:"paths" xml:"paths" yaml:"paths" form:"paths" query:"paths" `
 
-	Default []gen.GeneratorConfig `json:"Default" xml:"Default" yaml:"Default" form:"Default" query:"Default" `
+	Default []gen.GeneratorConfig `json:"default" xml:"default" yaml:"default" form:"default" query:"default" `
 }
 
 // HOFSTADTER_BELOW

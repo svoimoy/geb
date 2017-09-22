@@ -20,11 +20,11 @@ type GenPair struct {
 
 	/* ORM: */
 
-	Dsl string `json:"Dsl" xml:"Dsl" yaml:"Dsl" form:"Dsl" query:"Dsl" `
+	Dsl string `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
 
-	Gen []string `json:"Gen" xml:"Gen" yaml:"Gen" form:"Gen" query:"Gen" `
+	Gen []string `json:"gen" xml:"gen" yaml:"gen" form:"gen" query:"gen" `
 
-	OutputDir string `json:"OutputDir" xml:"OutputDir" yaml:"OutputDir" form:"OutputDir" query:"OutputDir" `
+	OutputDir string `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
 }
 
 // HOFSTADTER_BELOW

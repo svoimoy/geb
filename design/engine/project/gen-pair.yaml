@@ -1,6 +1,6 @@
 type:
   name: "GenPair"
-  kabob: true
+  kebab: true
   fields:
     - name: Dsl
       type: string

@@ -20,9 +20,9 @@ type Dependencies struct {
 
 	/* ORM: */
 
-	Designs []TemplateConfig `json:"Designs" xml:"Designs" yaml:"Designs" form:"Designs" query:"Designs" `
+	Designs []TemplateConfig `json:"designs" xml:"designs" yaml:"designs" form:"designs" query:"designs" `
 
-	Generators []GeneratorConfig `json:"Generators" xml:"Generators" yaml:"Generators" form:"Generators" query:"Generators" `
+	Generators []GeneratorConfig `json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
 }
 
 // HOFSTADTER_BELOW

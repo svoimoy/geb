@@ -20,21 +20,21 @@ type Design struct {
 
 	/* ORM: */
 
-	Files map[string]interface{} `json:"Files" xml:"Files" yaml:"Files" form:"Files" query:"Files" `
+	Files map[string]interface{} `json:"files" xml:"files" yaml:"files" form:"files" query:"files" `
 
-	Proj map[string]interface{} `json:"Proj" xml:"Proj" yaml:"Proj" form:"Proj" query:"Proj" `
+	Proj map[string]interface{} `json:"proj" xml:"proj" yaml:"proj" form:"proj" query:"proj" `
 
-	Data map[string]interface{} `json:"Data" xml:"Data" yaml:"Data" form:"Data" query:"Data" `
+	Data map[string]interface{} `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
 
-	Type map[string]interface{} `json:"Type" xml:"Type" yaml:"Type" form:"Type" query:"Type" `
+	Type map[string]interface{} `json:"type" xml:"type" yaml:"type" form:"type" query:"type" `
 
-	Pkg map[string]interface{} `json:"Pkg" xml:"Pkg" yaml:"Pkg" form:"Pkg" query:"Pkg" `
+	Pkg map[string]interface{} `json:"pkg" xml:"pkg" yaml:"pkg" form:"pkg" query:"pkg" `
 
-	Dsl map[string]interface{} `json:"Dsl" xml:"Dsl" yaml:"Dsl" form:"Dsl" query:"Dsl" `
+	Dsl map[string]interface{} `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
 
-	Custom map[string]interface{} `json:"Custom" xml:"Custom" yaml:"Custom" form:"Custom" query:"Custom" `
+	Custom map[string]interface{} `json:"custom" xml:"custom" yaml:"custom" form:"custom" query:"custom" `
 
-	Extra map[string]interface{} `json:"Extra" xml:"Extra" yaml:"Extra" form:"Extra" query:"Extra" `
+	Extra map[string]interface{} `json:"extra" xml:"extra" yaml:"extra" form:"extra" query:"extra" `
 }
 
 // HOFSTADTER_BELOW

@@ -2,7 +2,7 @@ type-list:
   name: "gen-config-types"
   list:
     - name: Config
-      kabob: true
+      kebab: true
       fields:
         - name: Name
           type: string
@@ -22,7 +22,7 @@ type-list:
           type: string
 
     - name: TemplateConfig
-      kabob: true
+      kebab: true
       fields:
         - name: Name
           type: string
@@ -34,7 +34,7 @@ type-list:
           type: array:TemplateRenderPair
 
     - name: TemplateRenderPair
-      kabob: true
+      kebab: true
       fields:
         - name: When
           type: string
@@ -52,7 +52,7 @@ type-list:
           type: array:string
 
     - name: Dependencies
-      kabob: true
+      kebab: true
       fields:
         - name: Designs
           type: array:TemplateConfig
@@ -60,7 +60,7 @@ type-list:
           type: array:GeneratorConfig
 
     - name: GeneratorConfig
-      kabob: true
+      kebab: true
       fields:
         - name: Dsl
           type: string

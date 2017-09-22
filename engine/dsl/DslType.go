@@ -21,13 +21,13 @@ type Dsl struct {
 
 	/* ORM: */
 
-	Config *Config `json:"Config" xml:"Config" yaml:"Config" form:"Config" query:"Config" `
+	Config *Config `json:"config" xml:"config" yaml:"config" form:"config" query:"config" `
 
-	SourcePath string `json:"SourcePath" xml:"SourcePath" yaml:"SourcePath" form:"SourcePath" query:"SourcePath" `
+	SourcePath string `json:"source-path" xml:"source-path" yaml:"source-path" form:"source-path" query:"source-path" `
 
-	AvailableGenerators map[string]string `json:"AvailableGenerators" xml:"AvailableGenerators" yaml:"AvailableGenerators" form:"AvailableGenerators" query:"AvailableGenerators" `
+	AvailableGenerators map[string]string `json:"available-generators" xml:"available-generators" yaml:"available-generators" form:"available-generators" query:"available-generators" `
 
-	Generators map[string]*gen.Generator `json:"Generators" xml:"Generators" yaml:"Generators" form:"Generators" query:"Generators" `
+	Generators map[string]*gen.Generator `json:"generators" xml:"generators" yaml:"generators" form:"generators" query:"generators" `
 }
 
 // HOFSTADTER_BELOW

@@ -20,19 +20,19 @@ type TemplateRenderPair struct {
 
 	/* ORM: */
 
-	When string `json:"When" xml:"When" yaml:"When" form:"When" query:"When" `
+	When string `json:"when" xml:"when" yaml:"when" form:"when" query:"when" `
 
-	Unless string `json:"Unless" xml:"Unless" yaml:"Unless" form:"Unless" query:"Unless" `
+	Unless string `json:"unless" xml:"unless" yaml:"unless" form:"unless" query:"unless" `
 
-	Field string `json:"Field" xml:"Field" yaml:"Field" form:"Field" query:"Field" `
+	Field string `json:"field" xml:"field" yaml:"field" form:"field" query:"field" `
 
-	Flatten int `json:"Flatten" xml:"Flatten" yaml:"Flatten" form:"Flatten" query:"Flatten" `
+	Flatten int `json:"flatten" xml:"flatten" yaml:"flatten" form:"flatten" query:"flatten" `
 
-	In string `json:"In" xml:"In" yaml:"In" form:"In" query:"In" `
+	In string `json:"in" xml:"in" yaml:"in" form:"in" query:"in" `
 
-	Out string `json:"Out" xml:"Out" yaml:"Out" form:"Out" query:"Out" `
+	Out string `json:"out" xml:"out" yaml:"out" form:"out" query:"out" `
 
-	Extra []string `json:"Extra" xml:"Extra" yaml:"Extra" form:"Extra" query:"Extra" `
+	Extra []string `json:"extra" xml:"extra" yaml:"extra" form:"extra" query:"extra" `
 }
 
 // HOFSTADTER_BELOW

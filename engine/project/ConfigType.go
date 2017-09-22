@@ -20,19 +20,19 @@ type Config struct {
 
 	/* ORM: */
 
-	Name string `json:"Name" xml:"Name" yaml:"Name" form:"Name" query:"Name" `
+	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
 
-	Version string `json:"Version" xml:"Version" yaml:"Version" form:"Version" query:"Version" `
+	Version string `json:"version" xml:"version" yaml:"version" form:"version" query:"version" `
 
-	About string `json:"About" xml:"About" yaml:"About" form:"About" query:"About" `
+	About string `json:"about" xml:"about" yaml:"about" form:"about" query:"about" `
 
-	DesignDir string `json:"DesignDir" xml:"DesignDir" yaml:"DesignDir" form:"DesignDir" query:"DesignDir" `
+	DesignDir string `json:"design-dir" xml:"design-dir" yaml:"design-dir" form:"design-dir" query:"design-dir" `
 
-	DesignPaths []string `json:"DesignPaths" xml:"DesignPaths" yaml:"DesignPaths" form:"DesignPaths" query:"DesignPaths" `
+	DesignPaths []string `json:"design-paths" xml:"design-paths" yaml:"design-paths" form:"design-paths" query:"design-paths" `
 
-	OutputDir string `json:"OutputDir" xml:"OutputDir" yaml:"OutputDir" form:"OutputDir" query:"OutputDir" `
+	OutputDir string `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
 
-	DslConfig DslConfig `json:"DslConfig" xml:"DslConfig" yaml:"DslConfig" form:"DslConfig" query:"DslConfig" `
+	DslConfig DslConfig `json:"dsl-config" xml:"dsl-config" yaml:"dsl-config" form:"dsl-config" query:"dsl-config" `
 }
 
 // HOFSTADTER_BELOW

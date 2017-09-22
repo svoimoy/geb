@@ -20,13 +20,13 @@ type TemplateConfig struct {
 
 	/* ORM: */
 
-	Name string `json:"Name" xml:"Name" yaml:"Name" form:"Name" query:"Name" `
+	Name string `json:"name" xml:"name" yaml:"name" form:"name" query:"name" `
 
-	Field string `json:"Field" xml:"Field" yaml:"Field" form:"Field" query:"Field" `
+	Field string `json:"field" xml:"field" yaml:"field" form:"field" query:"field" `
 
-	Flatten int `json:"Flatten" xml:"Flatten" yaml:"Flatten" form:"Flatten" query:"Flatten" `
+	Flatten int `json:"flatten" xml:"flatten" yaml:"flatten" form:"flatten" query:"flatten" `
 
-	Templates []TemplateRenderPair `json:"Templates" xml:"Templates" yaml:"Templates" form:"Templates" query:"Templates" `
+	Templates []TemplateRenderPair `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
 }
 
 // HOFSTADTER_BELOW

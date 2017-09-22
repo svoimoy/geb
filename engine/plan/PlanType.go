@@ -21,25 +21,25 @@ type Plan struct {
 
 	/* ORM: */
 
-	Dsl string `json:"Dsl" xml:"Dsl" yaml:"Dsl" form:"Dsl" query:"Dsl" `
+	Dsl string `json:"dsl" xml:"dsl" yaml:"dsl" form:"dsl" query:"dsl" `
 
-	Gen string `json:"Gen" xml:"Gen" yaml:"Gen" form:"Gen" query:"Gen" `
+	Gen string `json:"gen" xml:"gen" yaml:"gen" form:"gen" query:"gen" `
 
-	File string `json:"File" xml:"File" yaml:"File" form:"File" query:"File" `
+	File string `json:"file" xml:"file" yaml:"file" form:"file" query:"file" `
 
-	Data map[string]interface{} `json:"Data" xml:"Data" yaml:"Data" form:"Data" query:"Data" `
+	Data map[string]interface{} `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
 
-	Template *templates.Template `json:"Template" xml:"Template" yaml:"Template" form:"Template" query:"Template" `
+	Template *templates.Template `json:"template" xml:"template" yaml:"template" form:"template" query:"template" `
 
-	Outfile string `json:"Outfile" xml:"Outfile" yaml:"Outfile" form:"Outfile" query:"Outfile" `
+	Outfile string `json:"outfile" xml:"outfile" yaml:"outfile" form:"outfile" query:"outfile" `
 
-	DslContext interface{} `json:"DslContext" xml:"DslContext" yaml:"DslContext" form:"DslContext" query:"DslContext" `
+	DslContext interface{} `json:"dsl-context" xml:"dsl-context" yaml:"dsl-context" form:"dsl-context" query:"dsl-context" `
 
-	TemplateContext interface{} `json:"TemplateContext" xml:"TemplateContext" yaml:"TemplateContext" form:"TemplateContext" query:"TemplateContext" `
+	TemplateContext interface{} `json:"template-context" xml:"template-context" yaml:"template-context" form:"template-context" query:"template-context" `
 
-	RepeatedContext interface{} `json:"RepeatedContext" xml:"RepeatedContext" yaml:"RepeatedContext" form:"RepeatedContext" query:"RepeatedContext" `
+	RepeatedContext interface{} `json:"repeated-context" xml:"repeated-context" yaml:"repeated-context" form:"repeated-context" query:"repeated-context" `
 
-	WhenContext interface{} `json:"WhenContext" xml:"WhenContext" yaml:"WhenContext" form:"WhenContext" query:"WhenContext" `
+	WhenContext interface{} `json:"when-context" xml:"when-context" yaml:"when-context" form:"when-context" query:"when-context" `
 }
 
 // HOFSTADTER_BELOW

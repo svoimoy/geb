@@ -1,6 +1,6 @@
 type:
   name: "Dsl"
-  kabob: true
+  kebab: true
   fields:
     - name: Config
       type: '*Config'

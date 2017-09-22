@@ -1,6 +1,6 @@
 type:
   name: "DslConfig"
-  kabob: true
+  kebab: true
   version: "0.0.1"
   fields:
     - name: Paths
