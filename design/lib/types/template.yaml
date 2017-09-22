@@ -1,5 +1,6 @@
 type:
   name: Template
+  snake: true
 
   fields:
     - name: Id
@@ -15,11 +16,13 @@ type:
   views:
 
     - name: Short
+      snake: true
       fields:
         - type: local.Id
         - type: local.Name
 
     - name: Create
+      snake: true
       fields:
         - type: local.Name
           validation:

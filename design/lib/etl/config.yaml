@@ -1,5 +1,6 @@
 type:
   name: Config
+  snake: true
 
   fields:
     - name: InputPath
