@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
+	"runtime"
 	"path/filepath"
 	"strings"
 
@@ -242,6 +243,16 @@ Where's your docs doc?!
 */
 func (D *Design) importDesign(basePath string, designPath string) (err error) {
 	// HOFSTADTER_START importDesign
+
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("In importDesign:", designPath)
+			if _, ok := r.(runtime.Error); ok {
+				panic(r)
+			}
+			err = r.(error)
+		}
+	}()
 
 	logger.Info("  - file: " + designPath)
 

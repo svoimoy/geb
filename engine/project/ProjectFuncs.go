@@ -153,6 +153,8 @@ func (P *Project) Subdesign() (errorReport []error) {
 
 	for !same {
 
+		P.Unify()
+
 		if cnt > 10 {
 			fmt.Println("subdesign - loop ")
 		}

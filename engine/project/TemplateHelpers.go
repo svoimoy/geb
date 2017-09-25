@@ -31,7 +31,7 @@ func (P *Project) registerPartials() {
 		for g_key, G := range D.Generators {
 			logger.Debug("      gen: "+g_key, "gen_cfg", G.Config)
 
-			// Register partials with repeated templates
+			// Register partials with templates
 			for _, R := range G.Templates {
 				// the real template object
 				t_ray := (*raymond.Template)(R.Template)
@@ -57,7 +57,35 @@ func (P *Project) registerPartials() {
 					}
 				}
 
-			} // end loop over repeated templates
+			} // end loop over templates
+
+			// Register partials with subdesigns
+			for _, R := range G.Designs {
+				// the real template object
+				t_ray := (*raymond.Template)(R.Template)
+
+				// register the local generator partials
+				for p_key, partial := range G.Partials {
+					p_ray := (*raymond.Template)(partial.Template)
+					t_ray.RegisterPartialTemplate(p_key, p_ray)
+				}
+
+				// register the global partials
+				// This nasty for loop nesting is to add the global partials to the templates
+				// Loop over each DSL in the current Project
+				for d2_key, D2 := range P.DslMap {
+					// Loop over each generator in the current DSL
+					for g2_key, G2 := range D2.Generators {
+						for p2_key, partial2 := range G2.Partials {
+							p2_ray := (*raymond.Template)(partial2.Template)
+							p2_tkey := strings.Join([]string{d2_key, g2_key, p2_key}, "/")
+							logger.Debug("adding global partial " + p2_tkey)
+							t_ray.RegisterPartialTemplate(p2_tkey, p2_ray)
+						}
+					}
+				}
+
+			} // end loop over subdesigns
 
 		}
 	}

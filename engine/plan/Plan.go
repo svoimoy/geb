@@ -74,7 +74,7 @@ func MakeSubdesignPlans(dslMap map[string]*dsl.Dsl, designData map[string]interf
 
 	flatland, err := flattenDesignData("", designData)
 	if err != nil {
-		return ret, errors.Wrap(err, "in MakePlans\n")
+		return ret, errors.Wrap(err, "in MakeSubdesignPlans\n")
 	}
 	// logger.Debug("    and...  flatland!!", "flatland", flatland)
 
@@ -85,7 +85,7 @@ func MakeSubdesignPlans(dslMap map[string]*dsl.Dsl, designData map[string]interf
 		case "type", "pkg", "dsl":
 			plans, err := makeSubdesignPlans(f0, design, dslMap, designData)
 			if err != nil {
-				return ret, errors.Wrap(err, "in MakePlans\n")
+				return ret, errors.Wrap(err, "in MakeSubdesignPlans\n")
 			}
 			ret = append(ret, plans...)
 
@@ -94,7 +94,7 @@ func MakeSubdesignPlans(dslMap map[string]*dsl.Dsl, designData map[string]interf
 
 		}
 
-		logger.Debug("in MakingPlans", "ctx_path", ctx_path, "plans", len(ret))
+		logger.Debug("in MakeSubdesignPlans", "ctx_path", ctx_path, "plans", len(ret))
 	}
 
 	return ret, nil
@@ -326,11 +326,11 @@ func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl
 	// get the ctx path for later comparison against dsl
 	ictx_path, err := dotpath.Get("ctx_path", dslCtx, true)
 	if err != nil {
-		return nil, errors.New("ctx_path not found, in make_type")
+		return nil, errors.New("ctx_path not found, in makeProjectPlans")
 	}
 	ctx_path, ok := ictx_path.(string)
 	if !ok {
-		return nil, errors.New("ctx_path is not a string, in make_type")
+		return nil, errors.New("ctx_path is not a string, in makeProjectPlans")
 	}
 
 	// For DSLs, we need the last field to know which dsl it is
@@ -396,11 +396,11 @@ func makeSubdesignPlans(dslType string, dslCtx interface{}, dslMap map[string]*d
 	// get the ctx path for later comparison against dsl
 	ictx_path, err := dotpath.Get("ctx_path", dslCtx, true)
 	if err != nil {
-		return nil, errors.New("ctx_path not found, in make_type")
+		return nil, errors.New("ctx_path not found, in makeSubdesignPlans : " + dslType)
 	}
 	ctx_path, ok := ictx_path.(string)
 	if !ok {
-		return nil, errors.New("ctx_path is not a string, in make_type")
+		return nil, errors.New("ctx_path is not a string, in makeSubdesignPlans")
 	}
 
 	// For DSLs, we need the last field to know which dsl it is

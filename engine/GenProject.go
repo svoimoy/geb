@@ -31,15 +31,8 @@ func GenerateProject(filename string, generators []string) (err error) {
 		return errors.Wrapf(err, "While generating project: %s %v\n", filename, generators)
 	}
 
-	fmt.Println("Unifying...")
-	errReport := proj.Unify()
-	if len(errReport) > 0 {
-		fmt.Println(errReport)
-		return errors.Wrapf(nil, "While unifying project: %s %v\n", filename, generators)
-	}
-
-	fmt.Println("Subdesign...")
-	errReport = proj.Subdesign()
+	fmt.Println("Subdesigning...")
+	errReport := proj.Subdesign()
 	if len(errReport) > 0 {
 		fmt.Println(errReport)
 		return errors.Wrapf(nil, "While subdesigning project: %s %v\n", filename, generators)
