@@ -6,15 +6,15 @@ import (
 )
 
 /*
-Name:      StaticFilesRender
+Name:      StaticFilesConfig
 About:
 */
 
 // HOFSTADTER_START start
 // HOFSTADTER_END   start
 
-func NewStaticFilesRender() *StaticFilesRender {
-	return &StaticFilesRender{
+func NewStaticFilesConfig() *StaticFilesConfig {
+	return &StaticFilesConfig{
 		Files:   []string{},
 		Ignores: []string{},
 	}

@@ -32,6 +32,8 @@ type Config struct {
 
 	Dependencies Dependencies `json:"dependencies" xml:"dependencies" yaml:"dependencies" form:"dependencies" query:"dependencies" `
 
+	StaticFiles []StaticFilesConfig `json:"static-files" xml:"static-files" yaml:"static-files" form:"static-files" query:"static-files" `
+
 	TemplateConfigs []TemplateConfig `json:"template-configs" xml:"template-configs" yaml:"template-configs" form:"template-configs" query:"template-configs" `
 
 	OutputDir string `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `

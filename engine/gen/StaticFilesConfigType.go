@@ -6,7 +6,7 @@ import (
 )
 
 /*
-Name:      StaticFilesRender
+Name:      StaticFilesConfig
 About:
 */
 
@@ -16,7 +16,7 @@ About:
 /*
 Where's your docs doc?!
 */
-type StaticFilesRender struct {
+type StaticFilesConfig struct {
 
 	/* ORM: */
 

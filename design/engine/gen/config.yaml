@@ -16,6 +16,8 @@ type-list:
           type: string
         - name: Dependencies
           type: Dependencies
+        - name: StaticFiles
+          type: array:StaticFilesConfig
         - name: TemplateConfigs
           type: array:TemplateConfig
         - name: OutputDir
@@ -33,9 +35,9 @@ type-list:
         - name: Templates
           type: array:TemplateRenderPair
         - name: StaticFiles
-          type: array:StaticFilesRender
+          type: array:StaticFilesConfig
 
-    - name: StaticFilesRender
+    - name: StaticFilesConfig
       kebab: true
       fields:
         - name: When

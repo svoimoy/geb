@@ -28,7 +28,7 @@ type TemplateConfig struct {
 
 	Templates []TemplateRenderPair `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
 
-	StaticFiles []StaticFilesRender `json:"static-files" xml:"static-files" yaml:"static-files" form:"static-files" query:"static-files" `
+	StaticFiles []StaticFilesConfig `json:"static-files" xml:"static-files" yaml:"static-files" form:"static-files" query:"static-files" `
 }
 
 // HOFSTADTER_BELOW
