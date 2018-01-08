@@ -14,10 +14,6 @@ dsl-config:
       gen:
         - golang
       output-dir: "."
-    - dsl: api
-      gen:
-        - golang/echo
-      output-dir: "."
 
 build-pipeline:
   stages:

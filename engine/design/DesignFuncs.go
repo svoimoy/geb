@@ -6,8 +6,8 @@ import (
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
-	"runtime"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/hofstadter-io/data-utils/io"
