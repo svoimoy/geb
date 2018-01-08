@@ -1,0 +1,37 @@
+cli:
+  name: hof
+  short: "The Hofstadter transpiler tool."
+
+  # Root command values
+  usage: "hof"
+
+  flags:
+
+    - name: input
+      long: input
+      short: I
+      type: string
+      default: stdin
+      help: path to an input file or directory, merged with the input command's arguments.
+
+    - name: input-type
+      long: input-type
+      short: i
+      type: string
+      default: auto
+      help: input type, one of [yaml,json,toml,xml,hof]
+
+    - name: output
+      long: output
+      short: O
+      type: string
+      default: stdout
+      help: path to an output file or directory
+
+    - name: output-type
+      long: output-type
+      short: o
+      type: string
+      default: "yaml"
+      help: output type from [yaml,hof,json]
+

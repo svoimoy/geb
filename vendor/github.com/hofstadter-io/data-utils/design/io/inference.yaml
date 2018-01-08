@@ -1,0 +1,30 @@
+pkg:
+  name: io
+
+  files:
+
+    - name: inference
+      about: "helper functions for infering data file content type"
+
+      public-functions:
+
+        - name: infer-data-content-type
+          args:
+            - name: "data"
+              type: "array:byte"
+          return:
+            - name: "content-type"
+              type: "string"
+            - name: "err"
+              type: "error"
+
+        - name: infer-file-content-type
+          args:
+            - name: "filename"
+              type: "string"
+          return:
+            - name: "content-type"
+              type: "string"
+            - name: "err"
+              type: "error"
+

@@ -148,12 +148,6 @@ func (N TokenPath) ToData() (interface{}, error) {
 	return data, nil
 }
 
-func (N BracketPath) ToData() (interface{}, error) {
-	data := map[string]interface{}{}
-
-	return data, nil
-}
-
 func (N RangeExpr) ToData() (interface{}, error) {
 	data := map[string]interface{}{}
 
@@ -175,5 +169,9 @@ func (N Integer) ToData() (interface{}, error) {
 }
 
 func (N Decimal) ToData() (interface{}, error) {
+	return N.Value, nil
+}
+
+func (N Bool) ToData() (interface{}, error) {
 	return N.Value, nil
 }

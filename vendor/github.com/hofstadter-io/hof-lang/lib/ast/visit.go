@@ -40,17 +40,12 @@ func (N TokenPath) Visit(V func(ASTNode, interface{}) (interface{}, error)) erro
 	return nil
 }
 
-func (N BracketPath) Visit(V func(ASTNode, interface{}) (interface{}, error)) error {
+func (N BracePath) Visit(V func(ASTNode, interface{}) (interface{}, error)) error {
 
 	return nil
 }
 
 func (N RangeExpr) Visit(V func(ASTNode, interface{}) (interface{}, error)) error {
-
-	return nil
-}
-
-func (N BracePath) Visit(V func(ASTNode, interface{}) (interface{}, error)) error {
 
 	return nil
 }
@@ -66,6 +61,11 @@ func (N Integer) Visit(V func(ASTNode, interface{}) (interface{}, error)) error 
 }
 
 func (N Decimal) Visit(V func(ASTNode, interface{}) (interface{}, error)) error {
+
+	return nil
+}
+
+func (N Bool) Visit(V func(ASTNode, interface{}) (interface{}, error)) error {
 
 	return nil
 }

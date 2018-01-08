@@ -1,0 +1,39 @@
+pkg:
+  name: manip
+  module: true
+
+  files:
+
+    - name: merge
+      about: "helper functions for merging arbitrary data"
+
+      public-functions:
+
+        - name: merge
+          args:
+            - name: original
+              type: "interface{}"
+            - name: update
+              type: "interface{}"
+          return:   
+            - name: merged
+              type: "interface{}"
+            - name: err
+              type: error
+
+
+      private-functions:
+
+        - name: merge
+          args:
+            - name: original
+              type: "interface{}"
+            - name: update
+              type: "interface{}"
+          return:   
+            - name: merged
+              type: "interface{}"
+            - name: err
+              type: error
+
+

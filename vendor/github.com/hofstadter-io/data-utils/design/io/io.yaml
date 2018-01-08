@@ -1,0 +1,35 @@
+pkg:
+  name: io
+  module: true
+
+  files:
+
+    - name: io
+      about: "helper functions for io operations data"
+
+      public-functions:
+
+        - name: read-all
+          args:
+            - name: reader 
+              type: "io.Reader"
+            - name: obj
+              type: "*interface{}"
+          return:
+            - name: content-type
+              type: string
+            - name: err
+              type: error
+
+        - name: read-file
+          args:
+            - name: filename
+              type: string
+            - name: obj
+              type: "*interface{}"
+          return:
+            - name: content-type
+              type: string
+            - name: err
+              type: error
+

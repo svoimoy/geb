@@ -1,0 +1,33 @@
+pkg:
+  name: visit
+
+  files:
+
+    - name: visit
+      about: "helper functions for visiting arbitrary objects"
+
+      public-functions:
+
+        - name: visit
+          args:
+            - name: "obj"
+              type: "interface{}"
+            - name: "visit-func"
+              # need to deal with func types, reference here though
+              type: "object"
+            - name: "context"
+              type: "context"
+
+
+      private-functions:
+
+        - name: visit-recursively
+          args:
+            - name: "obj"
+              type: "interface{}"
+            - name: "visit-func"
+              # need to deal with func types, reference here though
+              type: "object"
+            - name: "context"
+              type: "context"
+

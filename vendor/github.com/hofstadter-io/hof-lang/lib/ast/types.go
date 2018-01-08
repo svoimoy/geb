@@ -1,11 +1,5 @@
 package ast
 
-type ASTNode interface {
-	ToData() (interface{}, error)
-	Pretty(indent string)
-	Visit(func(ASTNode, interface{}) (interface{}, error)) error
-}
-
 type ParseInfo struct {
 	Line int
 	Col int
@@ -59,11 +53,6 @@ type TokenPath struct {
 	Value string
 }
 
-type BracketPath struct {
-	// Exprs []Expr
-	Exprs []ASTNode
-}
-
 type RangeExpr struct {
 	Low   int
 	High  int
@@ -87,3 +76,6 @@ type Decimal struct {
 	Value float64
 }
 
+type Bool struct {
+	Value bool
+}

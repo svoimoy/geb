@@ -82,7 +82,7 @@ TypeDecl <- _ id:ID _ typ:TYPE _ obj:Object? __ {
 	return ret, nil
 }
 
-Value <- val:( TypeDecl / Object / Array / Number / Integer / String / TypeRef / Bool / Null ) {
+Value <- val:( Boolean / TypeDecl / Object / Array / Number / Integer / String / TypeRef / Bool / Null ) {
     return val, nil
 }
 
@@ -212,6 +212,7 @@ MultiLineComment ← "/*" ( !"*/" SourceChar )* "*/"
 MultiLineCommentNoLineTerminator ← "/*" ( !( "*/" / EOL ) SourceChar )* "*/"
 SingleLineComment ← "//" ( !EOL SourceChar )*
 
+Boolean <- "true" / "false"
 
 DEF <- "def"
 

@@ -1,0 +1,12 @@
+type:
+  name: context
+  fields:
+
+    - name: "obj"
+      type: "interface{}"
+    
+    - name: path
+      type: "array:string"
+    - name: data
+      type: "interface{}"
+
