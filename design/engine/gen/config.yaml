@@ -32,6 +32,22 @@ type-list:
           type: int
         - name: Templates
           type: array:TemplateRenderPair
+        - name: StaticFiles
+          type: array:StaticFilesRender
+
+    - name: StaticFilesRender
+      kebab: true
+      fields:
+        - name: When
+          type: string
+        - name: Unless
+          type: string
+        - name: Field
+          type: string
+        - name: Files
+          type: array:string
+        - name: Ignores
+          type: array:string
 
     - name: TemplateRenderPair
       kebab: true

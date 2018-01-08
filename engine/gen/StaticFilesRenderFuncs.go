@@ -6,17 +6,17 @@ import (
 )
 
 /*
-Name:      TemplateConfig
+Name:      StaticFilesRender
 About:
 */
 
 // HOFSTADTER_START start
 // HOFSTADTER_END   start
 
-func NewTemplateConfig() *TemplateConfig {
-	return &TemplateConfig{
-		Templates:   []TemplateRenderPair{},
-		StaticFiles: []StaticFilesRender{},
+func NewStaticFilesRender() *StaticFilesRender {
+	return &StaticFilesRender{
+		Files:   []string{},
+		Ignores: []string{},
 	}
 }
 
