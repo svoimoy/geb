@@ -11,6 +11,8 @@ type:
     - name: File
       type: string
       required: true
+    - name: StaticContent
+      type: "[]byte"
     - name: Data
       type: "map:interface{}"
       required: true

@@ -3,9 +3,12 @@ package plan
 import (
 	// HOFSTADTER_START import
 	"fmt"
-	"github.com/pkg/errors"
+	"io/ioutil"
 	"path/filepath"
+	"sort"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/aymerick/raymond"
 
@@ -112,49 +115,54 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 
 	logger.Info("Processing Templates Field: '"+R.Name+"'", "field", R.Field, "dslCtx", dslCtx)
 
-	// lookup the field used to fill in the template
-	repeat_elems, err := dotpath.Get(R.Field, dslCtx, false)
-	// meh...
-	if err != nil || repeat_elems == nil {
-		logger.Debug("Skipping Templates Field: '"+R.Name+"'", "err", err, "repeat_elems", repeat_elems)
-
+	// lookup the field used to fill in the template, skip if err or not found
+	fieldElems, err := dotpath.Get(R.Field, dslCtx, false)
+	if err != nil {
+		logger.Debug("Skipping Templates Config on error: '"+R.Name+"'", "err", err, "fieldElems", fieldElems)
+		return nil, nil
+	}
+	if fieldElems == nil {
+		logger.Debug("Skipping Templates Config on empty: '"+R.Name+"'", "err", err, "fieldElems", fieldElems)
 		return nil, nil
 	}
 
 	logger.Debug("Doing Templates Field: '" + R.Name + "'")
-	var c_slice []interface{}
 
 	// the first two clauses ensure its an object of some sort
 	// the last handles arrays, but omits the object check
 	// should we be checking for objects at all?
 	// or just arrays and other?
-	switch M := repeat_elems.(type) {
+	var c_slice []interface{}
+	switch M := fieldElems.(type) {
 
+	// the fieldElems is actully just an object, so make it a single element slice
 	case map[string]interface{}:
 		c_slice = append(c_slice, M)
 
 	case []interface{}:
 		for _, elem := range M {
-			// need to think about sub-sub-sub-[cli/api] and N-sub-[dsl]
-			//
-			// recursion!
-			//
-			// possibly flatten array levels
+
 			if R.Flatten > 0 {
+				flatten := R.Flatten
+				// TODO test this loop, only '1' ever used anywhere
+				for flatten > 0 {
 
-				switch M2 := elem.(type) {
+					switch M2 := elem.(type) {
 
-				case map[string]interface{}:
-					c_slice = append(c_slice, M2)
+					case map[string]interface{}:
+						c_slice = append(c_slice, M2)
 
-				case []interface{}:
-					for _, elem2 := range M2 {
-						c_slice = append(c_slice, elem2)
+					case []interface{}:
+						for _, elem2 := range M2 {
+							c_slice = append(c_slice, elem2)
+						}
+
+					default:
+						logger.Info("input is not a map or slice", "input", M)
+
 					}
 
-				default:
-					logger.Info("input is not a map or slice", "input", M)
-
+					flatten -= 1
 				}
 			} else {
 				// just add the current array to c_slice
@@ -185,16 +193,128 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 	c_slice = tmp_c_slice
 
 	logger.Info("   Collection count", "collection", R.Field, "count", len(c_slice))
-	// for all of the templates in the generator configuration, for this field
-	for _, t_pair := range R.Templates {
-		logger.Info("    Looking for repeat template: ", "t_pair", t_pair, "in", G.Templates)
 
-		t_key := t_pair.In
+	//
+	// GeneratorStatic Files
+	//
+	for _, cfg := range R.StaticFiles {
+		for idx, val := range c_slice {
+			if cfg.Unless != "" {
+				found, err := testUnlessConditions(cfg.Unless, val)
+				if err != nil {
+					logger.Debug("skipping static files on unless error", "cfg", cfg, "err", err)
+					continue
+				}
+				if found != nil {
+					logger.Debug("skipping static files on unless hit", "cfg", cfg, "found", found)
+					continue
+				}
+			}
+
+			if cfg.When != "" {
+				found, err := testWhenConditions(cfg.When, val)
+				if err != nil {
+					logger.Debug("skipping static files on when error", "cfg", cfg, "err", err)
+					continue
+				}
+				if found == nil {
+					logger.Debug("skipping static files on when miss", "cfg", cfg, "found", found)
+					continue
+				}
+			}
+
+			logger.Debug("     context", "val", val, "idx", idx)
+
+			planFile := func(filename string) error {
+
+				content, err := ioutil.ReadFile(filename)
+				if err != nil {
+					return err
+				}
+
+				G_key := filepath.Join(dslKey, genKey)
+				if G.Config.OutputDir != "" {
+					G_key = G.Config.OutputDir
+				}
+
+				outfile := filepath.Join(G_key, ctxDir, filename)
+				logger.Info("OFNAME", "G_key", G_key, "filename", filename, "outfile", outfile)
+
+				// build up the plan data struct
+				fgd := Plan{
+					Dsl:           dslKey,
+					Gen:           genKey,
+					File:          filename,
+					StaticContent: content,
+					Outfile:       outfile,
+				}
+				// logger.Info("        planned repeat file: "+t_key, "index", idx)
+				// logger.Debug("          data...", "fgd", fgd, "index", idx)
+
+				// add the plan to a linear list to be rendered
+				plans = append(plans, fgd)
+				return nil
+			}
+
+			// Gather the ignore file globs and sort
+			ignores := []string{}
+			for _, ignoreGlob := range cfg.Ignores {
+				matches, err := filepath.Glob(ignoreGlob)
+				if err != nil {
+					logger.Error("Static Ignore Glob Error", "ignoreGlob", ignoreGlob, "dslKey", dslKey, "genKey", genKey, "error", err)
+					return plans, err
+				}
+				ignores = append(ignores, matches...)
+			}
+			sort.Strings(ignores)
+
+			// For each glob in the files list
+			for _, fileGlob := range cfg.Files {
+
+				// get the files for the glob
+				matches, err := filepath.Glob(fileGlob)
+				// tmp Warn logging for dev purposes
+				logger.Warn("Static File Glob", "fileGlob", fileGlob, "dslKey", dslKey, "genKey", genKey)
+				if err != nil {
+					logger.Error("Static File Glob error", "fileGlob", fileGlob, "dslKey", dslKey, "genKey", genKey, "error", err)
+					return plans, err
+				}
+
+				// for each file
+				for _, match := range matches {
+					// check no match to any ignoreGlobs
+					idx := sort.SearchStrings(ignores, match)
+					// two conditions for not matching an ignore
+					if idx == len(ignores) || ignores[idx] != match {
+						// if we get here, the static file nees to be generated
+						perr := planFile(match)
+						if perr != nil {
+							logger.Error("Static File Glob error", "fileGlob", fileGlob, "dslKey", dslKey, "genKey", genKey, "error", perr)
+							return plans, perr
+						}
+					}
+					// otherwise we will ignore the file
+				}
+
+			}
+
+		}
+	}
+
+	//
+	// Generator Templates
+	//
+
+	// for all of the templates in the generator configuration, for this field
+	for _, cfg := range R.Templates {
+		logger.Info("    Looking for repeat template: ", "cfg", cfg, "in", G.Templates)
+
+		t_key := cfg.In
 		// need to look up in Templates or Designs here
 		// ugly...
 		T, ok := G.Templates[t_key]
 		if makeDesign == true {
-			logger.Info("    Looking for design template: ", "t_pair", t_pair, "in", G.Designs)
+			logger.Info("    Looking for design template: ", "cfg", cfg, "in", G.Designs)
 			T, ok = G.Designs[t_key]
 		}
 		if !ok {
@@ -205,73 +325,46 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 		logger.Debug("        found repeat template: ", "repeat", R.Name, "in", t_key)
 
 		for idx, val := range c_slice {
-			// needed because of range iteration behavior
-			// also want to override when 'when' is found
-			local_ctx := val
-			var when_ctx interface{}
-
-			// check the unless clause
-			if t_pair.Unless != "" {
-				logger.Info("Unless", "t_pair", t_pair)
-				unless_elems, err := dotpath.Get(t_pair.Unless, val, false)
-				logger.Debug("  elems", "unless_elems", unless_elems)
-				if err == nil || unless_elems != nil {
-					logger.Debug("Skipping TemplatePair Unless Field: '"+R.Name+"'", "unless", t_pair.Unless, "err", err, "unless_elems", unless_elems)
+			if cfg.Unless != "" {
+				found, err := testUnlessConditions(cfg.Unless, val)
+				if err != nil {
+					logger.Debug("skipping rendering on unless error", "cfg", cfg, "err", err)
+					continue
+				}
+				if found != nil {
+					logger.Debug("skipping rendering on unless hit", "cfg", cfg, "found", found)
 					continue
 				}
 			}
 
-			// check the when clause
-			if t_pair.When != "" {
-				logger.Info("When", "t_pair", t_pair)
-
-				// add AND (&&) and OR (||) here
-				// make a loop to check, how to combine elements?
-				when_elems, err := dotpath.Get(t_pair.When, val, false)
-				logger.Debug("  elems", "when_elems", when_elems)
-				if err != nil || when_elems == nil {
-					logger.Debug("Skipping TemplatePair When Field: '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
+			var whenCtx interface{}
+			if cfg.When != "" {
+				found, err := testWhenConditions(cfg.When, val)
+				if err != nil {
+					logger.Debug("skipping rendering on when error", "cfg", cfg, "err", err)
 					continue
 				}
-				switch W := when_elems.(type) {
-				case []interface{}:
-					if len(W) == 0 {
-						logger.Warn("Skipping TemplatePair When Field: (array) '"+R.Name+"'", "when", t_pair.When, "err", err, "when_elems", when_elems)
-						continue
-					}
+				if found != nil {
+					logger.Debug("skipping rendering on when miss", "cfg", cfg, "found", found)
+					continue
 				}
-
-				if t_pair.Field != "" {
-					when_elems, err = dotpath.Get(t_pair.Field, dslCtx, false)
-					if err != nil {
-						return nil, errors.Wrap(err, fmt.Sprintf("err while looking up field (from design root) in template render pair:\n%#v\n", t_pair))
-					}
-
-				}
-
-				logger.Debug("When is NOW")
-				when_ctx = when_elems
+				// use the when field by default
+				whenCtx = found
 			}
 
-			logger.Debug("     context", "val", local_ctx, "idx", idx)
+			// Override the when context
+			if cfg.Field != "" {
+				whenCtx, err = dotpath.Get(cfg.Field, dslCtx, false)
+				if err != nil {
+					return nil, errors.Wrap(err, fmt.Sprintf("err while looking up when override 'field' (from design root) in template render pair:\n%v\n", cfg))
+				}
+			}
 
-			// ************** move all this to the determine name ************//
-			OF_name, err := determineOutfileName(t_pair.Out, val)
+			logger.Debug("     context", "val", val, "idx", idx)
+
+			OF_name, err := determineOutfileName(cfg.Out, val, ctxDir)
 			if err != nil {
 				return nil, errors.Wrap(err, "in make_dsls\n")
-			}
-
-			// check if outfile name has special key to build the path from the output root
-			// basically just erase the ctxDir because the other directories are determined else where in the config
-			// (template-configs, dependecies.[designs,generators])
-			if strings.HasPrefix(OF_name, "OUTPUT_ROOT/") {
-				ctxDir = ""
-				OF_name = strings.TrimPrefix(OF_name, "OUTPUT_ROOT/")
-			}
-
-			if strings.HasPrefix(OF_name, "SUBDESIGN_ROOT/") {
-				ctxDir = "subdesigns"
-				OF_name = strings.TrimPrefix(OF_name, "SUBDESIGN_ROOT/")
 			}
 
 			G_key := filepath.Join(dslKey, genKey)
@@ -279,9 +372,11 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 				G_key = G.Config.OutputDir
 			}
 
-			outfile := filepath.Join(G_key, ctxDir, OF_name)
-			logger.Info("OFNAME", "G_key", G_key, "ctx_dir", ctxDir, "OF_name", OF_name, "outfile", outfile)
-			// ************** move all this to the determine name ************//
+			outfile := filepath.Join(G_key, OF_name)
+			logger.Info("OFNAME", "G_key", G_key, "OF_name", OF_name, "outfile", outfile)
+
+			// needed because of range iteration behavior
+			localCtx := val
 
 			// build up the plan data struct
 			fgd := Plan{
@@ -293,9 +388,9 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 				Outfile:  outfile,
 
 				DslContext:      dslCtx,
-				RepeatedContext: local_ctx,
-				TemplateContext: local_ctx,
-				WhenContext:     when_ctx,
+				RepeatedContext: localCtx,
+				TemplateContext: localCtx,
+				WhenContext:     whenCtx,
 			}
 			// logger.Info("        planned repeat file: "+t_key, "index", idx)
 			// logger.Debug("          data...", "fgd", fgd, "index", idx)
@@ -359,19 +454,31 @@ func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl
 			logger.Info("      gen: "+g_key, "gen_cfg", G.Config)
 
 			//
-			//  TEMPLATES
+			//  STATIC FILES
+			//    Render the static files
 			//
-			// Render the templates
-			repeats := G.Config.TemplateConfigs
-			if len(repeats) == 0 {
-				logger.Debug("       skipping dsl repeat: "+D.Config.Type, "name", D.Config.Name, "repeats", repeats)
+			/*
+				ps, err := makeGeneratorStaticFiles(d_key, g_key, D, G)
+				if err != nil {
+					return nil, errors.Wrap(err, "while making project plans")
+				}
+				plans = append(plans, ps...)
+			*/
+
+			//
+			//  TEMPLATES
+			//    Render the templates
+			//
+			tplCfgs := G.Config.TemplateConfigs
+			if len(tplCfgs) == 0 {
+				logger.Debug("       skipping generator templates: "+D.Config.Type, "name", D.Config.Name, "tplCfgs", tplCfgs)
 				continue
 			}
-			logger.Info("Templates found in config:", "count", len(repeats), "repeats", repeats)
-			logger.Info("      doing dsl repeat: "+D.Config.Type, "name", D.Config.Name, "d_key", d_key)
 
-			// Render the repeated templates
-			for _, R := range repeats {
+			logger.Info("Templates found in config:", "count", len(tplCfgs), "tplCfgs", tplCfgs)
+			logger.Info("      doing generator templates: "+D.Config.Type, "name", D.Config.Name, "d_key", d_key)
+
+			for _, R := range tplCfgs {
 				ps, err := makePlans(d_key, g_key, ctx_dir, dslCtx, designData, D, G, R, false)
 				if err != nil {
 					return nil, errors.Wrap(err, "while making project plans")
@@ -524,7 +631,7 @@ func flattenDesignData(baseOutputPath string, designData interface{}) (flattened
 /*
 Where's your docs doc?!
 */
-func determineOutfileName(outfileTemplateString string, renderingData interface{}) (outputFilename string, err error) {
+func determineOutfileName(outfileTemplateString string, renderingData interface{}, ctxDir string) (outputFilename string, err error) {
 	// HOFSTADTER_START determineOutfileName
 	logger.Debug("outfile_name", "in", outfileTemplateString)
 	rtpl, err := raymond.Parse(outfileTemplateString)
@@ -539,8 +646,83 @@ func determineOutfileName(outfileTemplateString string, renderingData interface{
 		return "", errors.Wrap(err, "in determine_outfile_name\n")
 	}
 
+	// check if outfile name has special key to build the path from the output root
+	// basically just erase the ctxDir because the other directories are determined else where in the config
+	// (template-configs, dependecies.[designs,generators])
+
+	if strings.HasPrefix(outputFilename, "OUTPUT_ROOT/") {
+		outputFilename = strings.TrimPrefix(outputFilename, "OUTPUT_ROOT/")
+	}
+
+	if strings.HasPrefix(outputFilename, "SUBDESIGN_ROOT/") {
+		ctxDir = "subdesigns" // is this a hard value?
+		outputFilename = strings.TrimPrefix(outputFilename, "SUBDESIGN_ROOT/")
+	}
+	outputFilename = filepath.Join(ctxDir, outputFilename)
+
 	return outputFilename, nil
 	// HOFSTADTER_END   determineOutfileName
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func testUnlessConditions(unless string, localCtx interface{}) (found interface{}, err error) {
+	// HOFSTADTER_START testUnlessConditions
+
+	// check the unless clause
+	if unless != "" {
+		logger.Info("Unless", "unless", unless)
+		unlessElems, err := dotpath.Get(unless, localCtx, false)
+		if err != nil {
+			return nil, err
+		}
+		logger.Debug("  elems", "unlessElems", unlessElems)
+		// nil err means something was found
+		if unlessElems != nil {
+			return unlessElems, nil
+		}
+	}
+
+	// HOFSTADTER_END   testUnlessConditions
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func testWhenConditions(when string, localCtx interface{}) (found interface{}, err error) {
+	// HOFSTADTER_START testWhenConditions
+
+	// check the when clause
+	if when != "" {
+		logger.Info("When", "when", when)
+
+		// add AND (&&) and OR (||) here
+		// make a loop to check, how to combine elements?
+		var whenElems interface{}
+		whenElems, err = dotpath.Get(when, localCtx, false)
+		if err != nil {
+			return
+		}
+		logger.Debug("  elems", "whenElems", whenElems)
+		if whenElems == nil {
+			return
+		}
+		switch W := whenElems.(type) {
+		case []interface{}:
+			// found, but empty, do we ever get here?
+			if len(W) == 0 {
+				logger.Warn("Skipping TemplatePair When Field: (empty array)", "when", when, "err", err, "whenElems", whenElems)
+				return
+			}
+		}
+
+		logger.Debug("When is NOW")
+		return whenElems, nil
+	}
+	// HOFSTADTER_END   testWhenConditions
 	return
 }
 

@@ -27,6 +27,8 @@ type Plan struct {
 
 	File string `json:"file" xml:"file" yaml:"file" form:"file" query:"file" `
 
+	StaticContent []byte `json:"static-content" xml:"static-content" yaml:"static-content" form:"static-content" query:"static-content" `
+
 	Data map[string]interface{} `json:"data" xml:"data" yaml:"data" form:"data" query:"data" `
 
 	Template *templates.Template `json:"template" xml:"template" yaml:"template" form:"template" query:"template" `

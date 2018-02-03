@@ -108,10 +108,35 @@ pkg:
           type: string
         - name: renderingData
           type: "interface{}"
+        - name: ctxDir
+          type: string
       return:
         - name: outputFilename
           type: string
         - name: err
           type: error
 
+    - name: testUnlessConditions
+      args:
+        - name: unless
+          type: string
+        - name: localCtx
+          type: "interface{}"
+      return:
+        - name: found
+          type: "interface{}"
+        - name: err
+          type: error
+
+    - name: testWhenConditions
+      args:
+        - name: when
+          type: string
+        - name: localCtx
+          type: "interface{}"
+      return:
+        - name: found
+          type: "interface{}"
+        - name: err
+          type: error
 
