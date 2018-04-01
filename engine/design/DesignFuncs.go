@@ -3,12 +3,13 @@ package design
 import (
 	// HOFSTADTER_START import
 	"fmt"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/data-utils/io"
 	"github.com/hofstadter-io/dotpath"
@@ -306,7 +307,7 @@ func (D *Design) importDesign(basePath string, designPath string) (err error) {
 		}
 
 	default:
-		return errors.New("design data is not an object: " + designPath)
+		return errors.New(fmt.Sprintf("design data is not an object: %q %T", designPath, top_level))
 
 	}
 	return nil
