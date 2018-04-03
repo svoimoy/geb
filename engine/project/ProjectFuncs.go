@@ -3,9 +3,10 @@ package project
 import (
 	// HOFSTADTER_START import
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/geb/engine/design"
 	"github.com/hofstadter-io/geb/engine/dsl"
@@ -378,6 +379,11 @@ func (P *Project) LoadDesignMerge(merge bool) error {
 		if err != nil {
 			return errors.Wrap(err, "in design.CreateFromFolder: "+path+"\n")
 		}
+	}
+
+	// If we aren't merging, make sure we get the latest subdesigns too
+	if !merge {
+		d.ImportDesignFolder("subdesigns")
 	}
 
 	P.Design = d

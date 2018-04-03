@@ -3,6 +3,7 @@ package engine
 import (
 	// HOFSTADTER_START import
 	"fmt"
+
 	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/geb/engine/project"
@@ -38,7 +39,8 @@ func GenerateProject(filename string, generators []string) (err error) {
 		return errors.Wrapf(nil, "While subdesigning project: %s %v\n", filename, generators)
 	}
 
-	err = proj.LoadDesignMerge(true)
+	err = proj.LoadDesignMerge(false)
+	// err = proj.LoadDesignMerge(true)
 	if err != nil {
 		return errors.Wrapf(err, "While reloading project design: %s %v\n", filename, generators)
 	}

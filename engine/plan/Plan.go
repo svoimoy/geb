@@ -344,7 +344,7 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 					logger.Debug("skipping rendering on when error", "cfg", cfg, "err", err)
 					continue
 				}
-				if found != nil {
+				if found == nil {
 					logger.Debug("skipping rendering on when miss", "cfg", cfg, "found", found)
 					continue
 				}
