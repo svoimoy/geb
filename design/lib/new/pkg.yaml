@@ -1,0 +1,30 @@
+pkg:
+  name: new
+  about: "package for managing the geb new commands"
+
+  functions:
+
+    - name: NewProject
+      args:
+        - name: name
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: NewDsl
+      args:
+        - name: name
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: NewGenerator
+      args:
+        - name: name
+          type: string
+      return:
+        - name: err
+          type: error
+

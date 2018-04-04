@@ -1,0 +1,50 @@
+cli:
+  name: geb
+
+  commands:
+
+    - name: new
+      usage: new
+      short: Create new stuff.
+      long: Create new geb projects, dsls, generators, and designs.
+
+      omit-run: true
+
+      commands:
+
+        - name: project
+          usage: project [name]
+          aliases:
+            - proj
+          short: 'Initialize a new geb project.'
+          long: 'Initialize a new geb project. If you do not provide a name, the current directory name will be used.'
+          args:
+            - name: name
+              long: name
+              type: string
+              help: 'The name for the project'
+
+        - name: generator
+          usage: generator <name>
+          aliases:
+            - gen
+          short: 'Initialize a new geb generator.'
+          long: 'Initialize a new geb generator. If you do not provide a name, the current directory name will be used. The dsl type will be infered by looking recursively up the parent directories until a geb-dsl found.'
+          args:
+            - name: name
+              long: name
+              type: string
+              help: 'The name for the generator'
+
+        - name: dsl
+          usage: dsl <name>
+          short: 'Initialize a new geb dsl.'
+          long: 'Initialize a new geb DSL. If you do not provide a name, the current directory name will be used.'
+          args:
+            - name: name
+              long: name
+              type: string
+              help: 'The name for the dsl'
+
+
+

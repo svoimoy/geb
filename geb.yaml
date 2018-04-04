@@ -8,7 +8,8 @@ design-dir: "design"
 
 dsl-config:
   paths:
-    - "$HOME/.geb/dsl"
+    - "../dsl-library"
+      # - "$HOME/.geb/dsl"
   default:
     - dsl: cli
       gen:
