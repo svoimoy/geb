@@ -1,0 +1,13 @@
+pkg:
+  name: "run"
+  about: "All about run..."
+
+  functions:
+    - name: Run
+      args:
+        - name: commands
+          type: "array:string"
+      return:
+        - name: err
+          type: error
+

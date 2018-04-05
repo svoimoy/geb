@@ -5,8 +5,6 @@ cli:
 
     - name: run
       usage: run <run-onfigname>
-      aliases:
-        - "b"
       short: Run a run-config pipeline for a project.
       long: |
         Run a run-config pipeline specified in your project  file.
@@ -14,8 +12,9 @@ cli:
         run-config Pipelines may also be used by generators.
         See [docs link...] for more information.
       args:
-        - name: stages
+        - name: configs
           type: array:string
           rest: true
+          required: true
           help: The stages to run in order. Used to override the pipeline in the project file.
 

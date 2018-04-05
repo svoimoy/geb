@@ -3,11 +3,14 @@ package commands
 import (
 	// HOFSTADTER_START import
 	"fmt"
+
+	"github.com/hofstadter-io/geb/lib/run"
 	// HOFSTADTER_END   import
 
 	// custom imports
 
 	// infered imports
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -36,10 +39,6 @@ var RunCmd = &cobra.Command{
 
 	Use: "run <run-onfigname>",
 
-	Aliases: []string{
-		"b",
-	},
-
 	Short: "Run a run-config pipeline for a project.",
 
 	Long: RunLong,
@@ -47,20 +46,30 @@ var RunCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In runCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   stages
+		// [0]name:   configs
 		//     help:   The stages to run in order. Used to override the pipeline in the project file.
-		//     req'd:
+		//     req'd:  true
+		if 0 >= len(args) {
+			fmt.Println("missing required argument: 'configs'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
-		var stages []string
+		var configs []string
 
 		if 0 < len(args) {
-			stages = args[0:]
+			configs = args[0:]
 		}
 
 		// HOFSTADTER_START cmd_run
 		fmt.Println("geb run:",
-			stages,
+			configs,
 		)
+
+		err := run.Run(configs)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
 		// HOFSTADTER_END   cmd_run
 	},
 }

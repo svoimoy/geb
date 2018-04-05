@@ -29,7 +29,7 @@ func GenerateProject(filename string, generators []string) (err error) {
 	fmt.Println("Loading...")
 	err = proj.Load(filename, generators)
 	if err != nil {
-		return errors.Wrapf(err, "While generating project: %s %v\n", filename, generators)
+		return errors.Wrapf(err, "While loading project: %s %v\n", filename, generators)
 	}
 
 	fmt.Println("Subdesigning...")
