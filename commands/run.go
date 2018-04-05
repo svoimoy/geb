@@ -62,10 +62,6 @@ var RunCmd = &cobra.Command{
 		}
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("geb run:",
-			configs,
-		)
-
 		err := run.Run(configs)
 		if err != nil {
 			fmt.Println("Error:", err)

@@ -7,6 +7,7 @@ import (
 	"go/format"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -260,6 +261,7 @@ func WriteResults(filename string, outdir string, content string) (err error) {
 	// HOFSTADTER_START WriteResults
 	out_filename := filepath.Join(outdir, filename)
 	shadow_filename := filepath.Join(".geb/shadow", filename)
+	tmp_filename := filepath.Join(".geb/tmp", filename)
 
 	dir := filepath.Dir(out_filename)
 	err = os.MkdirAll(dir, 0755)
@@ -322,62 +324,42 @@ func WriteResults(filename string, outdir string, content string) (err error) {
 				// ugh oh, the file has been changed on both sides of the transformation...
 				// the design or template since last regen, the user at some point in history
 
-				fmt.Printf("%s\n-------------------\n%v\n%v\n%v\n%v\n\n", filename,
-					len(b2c_diffs), len(b2u_diffs),
-					dmp.DiffPrettyText(b2c_diffs),
-					dmp.DiffPrettyText(b2u_diffs),
-				)
+				/*
+					fmt.Printf("%s\n-------------------\n%v\n%v\n%v\n%v\n\n", filename,
+						len(b2c_diffs), len(b2u_diffs),
+						dmp.DiffPrettyText(b2c_diffs),
+						dmp.DiffPrettyText(b2u_diffs),
+					)
+				*/
 
-				// fall back to old method for now, but need to diff3
-				spliced, err := SpliceResults(string(old_content), content)
+				err = WriteShadow(tmp_filename, content)
 				if err != nil {
 					return errors.Wrap(err, "in render.WriteResults\n")
 				}
-				final_result = spliced
-			}
-			/*
-				s2c_patches := dmp.PatchMake(shadow, s2c_diffs)
-				s2u_patches := dmp.PatchMake(shadow, s2u_diffs)
-				u2c_patches := dmp.PatchMake(user, u2c_diffs)
-				c2u_patches := dmp.PatchMake(content, c2u_diffs)
-
-				fmt.Printf("%s\n-------------------\n%+v\n%+v\n%+v\n%+v\n\n", filename,
-					s2c_patches,
-					s2u_patches,
-					u2c_patches,
-					c2u_patches,
-				)
-				fmt.Printf("%s\n-------------------\n%v\n%v\n%v\n%v\n\n", filename,
-					dmp.PatchToText(s2c_patches),
-					dmp.PatchToText(s2u_patches),
-					dmp.PatchToText(u2c_patches),
-					dmp.PatchToText(c2u_patches),
-				)
-			*/
-
-			/*
-				var patched_content string
-				patches := dmp.PatchMake(base, b2u_diffs)
-				patched_content, _ := dmp.PatchApply(patches, base)
-
-				// need to check applied here
-				for _, patch := range applied {
-					if patch != true {
-						return errors.Errorf("Failed to diff/patch %q\n%v\napplied: %v", filename, dmp.PatchToText(patches), applied)
+				cmd := exec.Command("diff3", "-m", out_filename, shadow_filename, tmp_filename)
+				stdoutStderr, err := cmd.CombinedOutput()
+				if err != nil {
+					if EE, ok := err.(*exec.ExitError); ok {
+						fmt.Printf("Error during diff3 on %q %+v", filename, EE)
+						fmt.Printf("cmd.Sys", EE.Sys())
+						fmt.Printf("%s\n", stdoutStderr)
+						return err
+					} else {
+						return err
 					}
 				}
 
-				final_result = patched_content
-			*/
-			/*
-				fmt.Println("--------------------------")
-				fmt.Println(dmp.DiffPrettyText(diffs))
-				fmt.Println("--------------------------")
-				fmt.Println(patched_content)
-				fmt.Println("--------------------------")
-				fmt.Println(applied)
-				fmt.Println("--------------------------")
-			*/
+				final_result = string(stdoutStderr)
+
+				/*
+					// fall back to old method for now, but need to diff3
+					spliced, err := SpliceResults(string(old_content), content)
+					if err != nil {
+						return errors.Wrap(err, "in render.WriteResults\n")
+					}
+					final_result = spliced
+				*/
+			}
 		}
 
 	} else {

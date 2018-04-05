@@ -35,7 +35,7 @@ func Run(commands []string) (err error) {
 	for _, cname := range commands {
 		Cfg, ok := proj.Config.RunConfig[cname]
 		if ok {
-			fmt.Printf("Exec'n %+v\n", Cfg)
+			// fmt.Printf("Exec'n %+v\n", Cfg)
 		} else {
 			return errors.Errorf("Unknown command %q", cname)
 		}
@@ -54,7 +54,7 @@ func Run(commands []string) (err error) {
 				fmt.Printf("%s\n", stdoutStderr)
 				return err
 			}
-			fmt.Printf("%s\n", stdoutStderr)
+			fmt.Printf("%s %v\n================\n%s\n-----------------\n", C.Command, C.Args, stdoutStderr)
 
 		}
 	}
