@@ -3,6 +3,8 @@ package render
 import (
 	// HOFSTADTER_START import
 	"bytes"
+	"fmt"
+	"go/format"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -127,20 +129,24 @@ func RenderPlan(plan plan.Plan, outputDir string) (err error) {
 		return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
 	}
 
-	// Write the shadow, the rendered template without user modifications
-	/*
-		shadow_filename := filepath.Join(".geb/shadow", plan.Outfile)
-		err = WriteShadow(shadow_filename, result)
-		if err != nil {
-			return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
-		}
-	*/
+	result, err = formatContent(plan.Outfile, result)
+	if err != nil {
+		return errors.Wrapf(err, "while formatting result: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
+	}
 
 	// Write the results, splicing if needed
 	// out_filename := filepath.Join(outputDir, plan.Outfile)
 	err = WriteResults(plan.Outfile, outputDir, result)
 	if err != nil {
-		return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
+		return errors.Wrapf(err, "while writing result: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
+	}
+
+	// Write the shadow, the rendered template without user modifications
+	// After the Results writing
+	shadow_filename := filepath.Join(".geb/shadow", plan.Outfile)
+	err = WriteShadow(shadow_filename, result)
+	if err != nil {
+		return errors.Wrapf(err, "while writing shadow: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
 	}
 
 	logger.Info("Wrote file", "filename", plan.Outfile)
@@ -253,7 +259,7 @@ Where's your docs doc?!
 func WriteResults(filename string, outdir string, content string) (err error) {
 	// HOFSTADTER_START WriteResults
 	out_filename := filepath.Join(outdir, filename)
-	// shadow_filename := filepath.Join(".geb/shadow", filename)
+	shadow_filename := filepath.Join(".geb/shadow", filename)
 
 	dir := filepath.Dir(out_filename)
 	err = os.MkdirAll(dir, 0755)
@@ -272,29 +278,107 @@ func WriteResults(filename string, outdir string, content string) (err error) {
 			return errors.Wrap(err, "in render.WriteResults\n")
 		}
 
-		shadow := content
-		user := string(old_content)
+		shadow_content, err := ioutil.ReadFile(shadow_filename)
+		if err != nil {
 
-		dmp := diffmatchpatch.New()
-		diffs := dmp.DiffMain(shadow, user, false)
-		patches := dmp.PatchMake(shadow, diffs)
-		patched_content, applied := dmp.PatchApply(patches, shadow)
-
-		// need to check applied here
-		for _, patch := range applied {
-			if patch != true {
-				return errors.Errorf("Failed to diff/patch %q\n%v\napplied: %v", filename, dmp.PatchToText(patches), applied)
-			}
-		}
-
-		final_result = patched_content
-		/*
-			spliced, err := SpliceResults(string(old_content), content)
-			if err != nil {
+			if _, ok := err.(*os.PathError); !ok {
+				// there was some other error besides not finding the file
 				return errors.Wrap(err, "in render.WriteResults\n")
+				// otherwise, the shadow file doesn't exist
 			}
-			final_result = spliced
-		*/
+
+		} else {
+			// We have a shadow file for the template
+
+			base := string(shadow_content)
+			user := string(old_content)
+
+			dmp := diffmatchpatch.New()
+			b2c_diffs := dmp.DiffMain(base, content, true)
+			b2u_diffs := dmp.DiffMain(base, user, true)
+
+			if len(b2u_diffs) == 1 {
+				// This file has not been changed by the user (or a formatter?)
+				// So we can do nothing, because... already set
+				// final_result = content
+				// and we short circuit the other clauses
+
+			} else if len(b2c_diffs) == 1 {
+				// This file has not had it's design or templates changed since last (re)generation
+				// but the user has changed it at some point along the way, in history [we may have dealt with the diff3 on this file before]
+				// So lets apply the changes
+				patches := dmp.PatchMake(base, b2u_diffs)
+				patched_content, applied := dmp.PatchApply(patches, base)
+
+				// need to check applied here
+				for _, patch := range applied {
+					if patch != true {
+						return errors.Errorf("Failed to diff/patch %q\n%v\napplied: %v", filename, dmp.PatchToText(patches), applied)
+					}
+				}
+				final_result = patched_content
+
+			} else {
+				// ugh oh, the file has been changed on both sides of the transformation...
+				// the design or template since last regen, the user at some point in history
+
+				fmt.Printf("%s\n-------------------\n%v\n%v\n%v\n%v\n\n", filename,
+					len(b2c_diffs), len(b2u_diffs),
+					dmp.DiffPrettyText(b2c_diffs),
+					dmp.DiffPrettyText(b2u_diffs),
+				)
+
+				// fall back to old method for now, but need to diff3
+				spliced, err := SpliceResults(string(old_content), content)
+				if err != nil {
+					return errors.Wrap(err, "in render.WriteResults\n")
+				}
+				final_result = spliced
+			}
+			/*
+				s2c_patches := dmp.PatchMake(shadow, s2c_diffs)
+				s2u_patches := dmp.PatchMake(shadow, s2u_diffs)
+				u2c_patches := dmp.PatchMake(user, u2c_diffs)
+				c2u_patches := dmp.PatchMake(content, c2u_diffs)
+
+				fmt.Printf("%s\n-------------------\n%+v\n%+v\n%+v\n%+v\n\n", filename,
+					s2c_patches,
+					s2u_patches,
+					u2c_patches,
+					c2u_patches,
+				)
+				fmt.Printf("%s\n-------------------\n%v\n%v\n%v\n%v\n\n", filename,
+					dmp.PatchToText(s2c_patches),
+					dmp.PatchToText(s2u_patches),
+					dmp.PatchToText(u2c_patches),
+					dmp.PatchToText(c2u_patches),
+				)
+			*/
+
+			/*
+				var patched_content string
+				patches := dmp.PatchMake(base, b2u_diffs)
+				patched_content, _ := dmp.PatchApply(patches, base)
+
+				// need to check applied here
+				for _, patch := range applied {
+					if patch != true {
+						return errors.Errorf("Failed to diff/patch %q\n%v\napplied: %v", filename, dmp.PatchToText(patches), applied)
+					}
+				}
+
+				final_result = patched_content
+			*/
+			/*
+				fmt.Println("--------------------------")
+				fmt.Println(dmp.DiffPrettyText(diffs))
+				fmt.Println("--------------------------")
+				fmt.Println(patched_content)
+				fmt.Println("--------------------------")
+				fmt.Println(applied)
+				fmt.Println("--------------------------")
+			*/
+		}
 
 	} else {
 		if _, ok := serr.(*os.PathError); !ok {
@@ -326,7 +410,6 @@ func WriteShadow(filename string, content string) (err error) {
 	if err != nil {
 		return errors.Wrap(err, "in render.WriteResults\n")
 	}
-
 	err = ioutil.WriteFile(filename, []byte(content), 0644)
 	if err != nil {
 		return errors.Wrap(err, "in render.WriteResults\n")
@@ -338,3 +421,17 @@ func WriteShadow(filename string, content string) (err error) {
 }
 
 // HOFSTADTER_BELOW
+
+func formatContent(filename string, content string) (formatted string, err error) {
+	ext := filepath.Ext(filename)
+	switch ext {
+	case ".go":
+		fmtd, ferr := format.Source([]byte(content))
+		if ferr != nil {
+			return "", errors.Wrap(ferr, "in render.WriteResults\n")
+		}
+		formatted = string(fmtd)
+	}
+
+	return
+}

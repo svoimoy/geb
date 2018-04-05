@@ -44,7 +44,7 @@ func NewProject(name string) (err error) {
 		return
 	}
 
-	return mkdirs(outdir, []string{"design", "dsls"})
+	return mkdirs(outdir, []string{"design", "dsls", ".geb/shadow"})
 	// HOFSTADTER_END   NewProject
 	return
 }
@@ -229,22 +229,31 @@ dsl-config:
 run-config:
   all:
     - name: "all"
-      cmd: "geb"
+      command: "geb run"
       args:
         - gen
         - fmt
-        - build
+        - install
+  regen:
+    - name: "regen"
+      command: "geb run"
+      args:
+        - gen
+        - fmt
   gen:
     - name: generate
-      cmd: "geb"
+      command: "geb"
       args:
         - "gen"
   fmt:
     - name: format
-      cmd: "gofmt -w ."
+      command: "gofmt -w main.go commands engine lib"
   build:
     - name: build
-      cmd: "go build"
+      command: "go build"
+  install:
+    - name: install
+      command: "go install"
 
 
 log-config:
