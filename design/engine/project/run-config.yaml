@@ -1,0 +1,19 @@
+type:
+  name: "RunConfigItem"
+  kebab: true
+  version: "0.0.1"
+  fields:
+    - name: Name
+      type: string
+      required: true
+    - name: Command
+      type: string
+      required: true
+    - name: Args
+      type: array:string
+    - name: Workdir
+      type: string
+    - name: Env
+      type: array:string
+
+

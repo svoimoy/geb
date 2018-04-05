@@ -13,8 +13,8 @@ import (
 )
 
 // Tool:   geb
-// Name:   build
-// Usage:  build
+// Name:   run
+// Usage:  run <run-onfigname>
 // Parent: geb
 
 // HOFSTADTER_START const
@@ -26,26 +26,26 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-var BuildLong = `Run the build pipeline specified in your project.
+var RunLong = `Run a run-config pipeline specified in your project  file.
 Use this to run pre and post steps around 'gen gen'.
-Pipelines are also used by generators.
-See [...] for more information.
+run-config Pipelines may also be used by generators.
+See [docs link...] for more information.
 `
 
-var BuildCmd = &cobra.Command{
+var RunCmd = &cobra.Command{
 
-	Use: "build",
+	Use: "run <run-onfigname>",
 
 	Aliases: []string{
 		"b",
 	},
 
-	Short: "Run the build pipeline for a project.",
+	Short: "Run a run-config pipeline for a project.",
 
-	Long: BuildLong,
+	Long: RunLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In buildCmd", "args", args)
+		logger.Debug("In runCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   stages
 		//     help:   The stages to run in order. Used to override the pipeline in the project file.
@@ -58,13 +58,15 @@ var BuildCmd = &cobra.Command{
 		}
 
 		// HOFSTADTER_START cmd_run
-		fmt.Println("geb build:", stages)
+		fmt.Println("geb run:",
+			stages,
+		)
 		// HOFSTADTER_END   cmd_run
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(BuildCmd)
+	RootCmd.AddCommand(RunCmd)
 }
 
 func init() {

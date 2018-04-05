@@ -3,16 +3,16 @@ cli:
 
   commands:
 
-    - name: build
-      usage: build
+    - name: run
+      usage: run <run-onfigname>
       aliases:
         - "b"
-      short: Run the build pipeline for a project.
+      short: Run a run-config pipeline for a project.
       long: |
-        Run the build pipeline specified in your project.
+        Run a run-config pipeline specified in your project  file.
         Use this to run pre and post steps around 'gen gen'.
-        Pipelines are also used by generators.
-        See [...] for more information.
+        run-config Pipelines may also be used by generators.
+        See [docs link...] for more information.
       args:
         - name: stages
           type: array:string

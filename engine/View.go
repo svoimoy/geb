@@ -3,6 +3,7 @@ package engine
 import (
 	// HOFSTADTER_START import
 	"fmt"
+
 	"github.com/pkg/errors"
 
 	"github.com/ghodss/yaml"
@@ -270,9 +271,10 @@ func ViewProject(folder string, args []string) (output string, err error) {
 
 	ret := ""
 	for _, path := range args {
-		ret += fmt.Sprintln("path:    ", path, "\n--------------------------------")
-		val, err := dotpath.Get(path, data, true)
+		ret += fmt.Sprintln("\npath:    ", path, "\n--------------------------------")
+		val, err := dotpath.Get(path, data, false)
 		if err != nil {
+			fmt.Println("The requested path may be missing from the dotpath input data")
 			return ret, errors.Wrap(err, "in engine.ViewGen")
 		}
 

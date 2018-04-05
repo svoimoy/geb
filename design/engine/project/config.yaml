@@ -22,4 +22,6 @@ type:
     - name: DslConfig
       type: DslConfig
       required: true
+    - name: RunConfig
+      type: "map:RunConfig"
 

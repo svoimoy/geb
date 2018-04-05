@@ -23,6 +23,7 @@ func NewConfig() *Config {
 		DesignDir:   "design",
 		DesignPaths: []string{},
 		OutputDir:   ".",
+		RunConfig:   map[string]RunConfig{},
 	}
 }
 

@@ -33,6 +33,8 @@ type Config struct {
 	OutputDir string `json:"output-dir" xml:"output-dir" yaml:"output-dir" form:"output-dir" query:"output-dir" `
 
 	DslConfig DslConfig `json:"dsl-config" xml:"dsl-config" yaml:"dsl-config" form:"dsl-config" query:"dsl-config" `
+
+	RunConfig map[string]RunConfig `json:"run-config" xml:"run-config" yaml:"run-config" form:"run-config" query:"run-config" `
 }
 
 // HOFSTADTER_BELOW
