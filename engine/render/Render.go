@@ -340,10 +340,14 @@ func WriteResults(filename string, outdir string, content string) (err error) {
 				stdoutStderr, err := cmd.CombinedOutput()
 				if err != nil {
 					if EE, ok := err.(*exec.ExitError); ok {
-						fmt.Printf("Error during diff3 on %q %+v", filename, EE)
-						fmt.Printf("cmd.Sys", EE.Sys())
-						fmt.Printf("%s\n", stdoutStderr)
-						return err
+						if EE.Error() != "exit status 1" {
+							fmt.Printf("Error during diff3 on %q %+v\n", filename, EE)
+							// fmt.Printf("%s\n", stdoutStderr)
+							return err
+
+						} else {
+							fmt.Println("MERGE CONFLICT in:", out_filename)
+						}
 					} else {
 						return err
 					}
