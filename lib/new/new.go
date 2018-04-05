@@ -44,7 +44,7 @@ func NewProject(name string) (err error) {
 		return
 	}
 
-	return mkdirs(outdir, []string{"design", "dsls"})
+	return mkdirs(outdir, []string{"design", "dsls", ".geb/shadow"})
 	// HOFSTADTER_END   NewProject
 	return
 }

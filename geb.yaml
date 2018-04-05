@@ -23,7 +23,13 @@ run-config:
       args:
         - gen
         - fmt
-        - build
+        - install
+  regen:
+    - name: "regen"
+      command: "geb run"
+      args:
+        - gen
+        - fmt
   gen:
     - name: generate
       command: "geb"

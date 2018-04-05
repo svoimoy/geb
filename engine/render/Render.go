@@ -3,13 +3,14 @@ package render
 import (
 	// HOFSTADTER_START import
 	"bytes"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/aymerick/raymond"
+	"github.com/pkg/errors"
+	"github.com/sergi/go-diff/diffmatchpatch"
 
 	"github.com/hofstadter-io/geb/engine/plan"
 	// HOFSTADTER_END   import
@@ -126,14 +127,23 @@ func RenderPlan(plan plan.Plan, outputDir string) (err error) {
 		return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
 	}
 
+	// Write the shadow, the rendered template without user modifications
+	/*
+		shadow_filename := filepath.Join(".geb/shadow", plan.Outfile)
+		err = WriteShadow(shadow_filename, result)
+		if err != nil {
+			return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
+		}
+	*/
+
 	// Write the results, splicing if needed
-	out_filename := filepath.Join(outputDir, plan.Outfile)
-	err = WriteResults(out_filename, result)
+	// out_filename := filepath.Join(outputDir, plan.Outfile)
+	err = WriteResults(plan.Outfile, outputDir, result)
 	if err != nil {
 		return errors.Wrapf(err, "while executing template: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
 	}
 
-	logger.Info("Wrote file", "filename", out_filename)
+	logger.Info("Wrote file", "filename", plan.Outfile)
 
 	return nil
 	// HOFSTADTER_END   RenderPlan
@@ -240,9 +250,12 @@ func SpliceResults(existing string, rendered string) (spliced string, err error)
 /*
 Where's your docs doc?!
 */
-func WriteResults(filename string, content string) (err error) {
+func WriteResults(filename string, outdir string, content string) (err error) {
 	// HOFSTADTER_START WriteResults
-	dir := filepath.Dir(filename)
+	out_filename := filepath.Join(outdir, filename)
+	// shadow_filename := filepath.Join(".geb/shadow", filename)
+
+	dir := filepath.Dir(out_filename)
 	err = os.MkdirAll(dir, 0755)
 	if err != nil {
 		return errors.Wrap(err, "in render.WriteResults\n")
@@ -251,20 +264,37 @@ func WriteResults(filename string, content string) (err error) {
 	final_result := content
 	file_existed := false
 
-	_, serr := os.Stat(filename)
+	_, serr := os.Stat(out_filename)
 	if serr == nil {
 		file_existed = true
-		old_content, err := ioutil.ReadFile(filename)
+		old_content, err := ioutil.ReadFile(out_filename)
 		if err != nil {
 			return errors.Wrap(err, "in render.WriteResults\n")
 		}
 
-		spliced, err := SpliceResults(string(old_content), content)
-		if err != nil {
-			return errors.Wrap(err, "in render.WriteResults\n")
+		shadow := content
+		user := string(old_content)
+
+		dmp := diffmatchpatch.New()
+		diffs := dmp.DiffMain(shadow, user, false)
+		patches := dmp.PatchMake(shadow, diffs)
+		patched_content, applied := dmp.PatchApply(patches, shadow)
+
+		// need to check applied here
+		for _, patch := range applied {
+			if patch != true {
+				return errors.Errorf("Failed to diff/patch %q\n%v\napplied: %v", filename, dmp.PatchToText(patches), applied)
+			}
 		}
 
-		final_result = spliced
+		final_result = patched_content
+		/*
+			spliced, err := SpliceResults(string(old_content), content)
+			if err != nil {
+				return errors.Wrap(err, "in render.WriteResults\n")
+			}
+			final_result = spliced
+		*/
 
 	} else {
 		if _, ok := serr.(*os.PathError); !ok {
@@ -276,13 +306,34 @@ func WriteResults(filename string, content string) (err error) {
 		// os.Remove(out_name)
 		// fmt.Println("Maybe delete or backup file before writing")
 	}
-	err = ioutil.WriteFile(filename, []byte(final_result), 0644)
+	err = ioutil.WriteFile(out_filename, []byte(final_result), 0644)
 	if err != nil {
 		return errors.Wrap(err, "in render.WriteResults\n")
 	}
 
 	return nil
 	// HOFSTADTER_END   WriteResults
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
+func WriteShadow(filename string, content string) (err error) {
+	// HOFSTADTER_START WriteShadow
+	dir := filepath.Dir(filename)
+	err = os.MkdirAll(dir, 0755)
+	if err != nil {
+		return errors.Wrap(err, "in render.WriteResults\n")
+	}
+
+	err = ioutil.WriteFile(filename, []byte(content), 0644)
+	if err != nil {
+		return errors.Wrap(err, "in render.WriteResults\n")
+	}
+
+	return nil
+	// HOFSTADTER_END   WriteShadow
 	return
 }
 

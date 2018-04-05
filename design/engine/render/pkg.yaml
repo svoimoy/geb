@@ -40,6 +40,18 @@ pkg:
       args:
         - name: filename
           type: string
+        - name: outdir
+          type: string
+        - name: content
+          type: string
+      return:
+        - name: err
+          type: error
+
+    - name: WriteShadow
+      args:
+        - name: filename
+          type: string
         - name: content
           type: string
       return:
