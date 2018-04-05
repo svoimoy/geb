@@ -48,6 +48,7 @@ func init() {
 	NewCmd.AddCommand(new.ProjectCmd)
 	NewCmd.AddCommand(new.GeneratorCmd)
 	NewCmd.AddCommand(new.DslCmd)
+	NewCmd.AddCommand(new.DesignCmd)
 }
 
 // HOFSTADTER_BELOW

@@ -16,7 +16,7 @@ import (
 
 // Tool:   geb
 // Name:   generator
-// Usage:  generator <name>
+// Usage:  generator [name]
 // Parent: new
 
 // HOFSTADTER_START const
@@ -32,7 +32,7 @@ var GeneratorLong = `Initialize a new geb generator. If you do not provide a nam
 
 var GeneratorCmd = &cobra.Command{
 
-	Use: "generator <name>",
+	Use: "generator [name]",
 
 	Aliases: []string{
 		"gen",
@@ -60,7 +60,10 @@ var GeneratorCmd = &cobra.Command{
 		fmt.Println("geb new generator:",
 			name,
 		)
-		libnew.NewGenerator(name)
+		err := libnew.NewGenerator(name)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
 		// HOFSTADTER_END   cmd_run
 	},
 }

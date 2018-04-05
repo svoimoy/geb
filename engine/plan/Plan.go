@@ -108,6 +108,110 @@ func MakeSubdesignPlans(dslMap map[string]*dsl.Dsl, designData map[string]interf
 /*
 Where's your docs doc?!
 */
+func MakeNewPlans(gen *gen.Generator, sub string, basedir string, designData map[string]interface{}) (ret []Plan, err error) {
+	// HOFSTADTER_START MakeNewPlans
+	NC := gen.Config.NewConfigs[sub]
+	logger.Info("Planning New things")
+	logger.Info("    with...", "gen.Config", gen.Config.NewConfigs, "templates", gen.NewTemplates)
+	logger.Info("    and... ", "config", NC, "sub", sub, "data", designData)
+
+	// lookup the field used to fill in the template, skip if err or not found
+	fieldElems, err := dotpath.Get(NC.Field, designData, false)
+	fmt.Println("fieldElems", fieldElems, err, NC.Field, designData)
+	if err != nil {
+		logger.Debug("Skipping NewTemplates Config on error: '"+NC.Name+"'", "err", err, "fieldElems", fieldElems)
+		return nil, nil
+	}
+	if fieldElems == nil {
+		logger.Debug("Skipping NewTemplates Config on empty: '"+NC.Name+"'", "err", err, "fieldElems", fieldElems)
+		return nil, nil
+	}
+
+	val := fieldElems
+
+	// Render the repeated templates
+	for _, cfg := range NC.Templates {
+		fmt.Println("NewConfig template", cfg)
+
+		// check unless
+		if cfg.Unless != "" {
+			found, err := testUnlessConditions(cfg.Unless, val)
+			if err != nil {
+				logger.Debug("skipping plan on unless error", "cfg", cfg, "err", err)
+				continue
+			}
+			if found != nil {
+				logger.Debug("skipping plan on unless hit", "cfg", cfg, "found", found)
+				continue
+			}
+		}
+
+		// check when
+		var whenCtx interface{}
+		if cfg.When != "" {
+			found, err := testWhenConditions(cfg.When, val)
+			if err != nil {
+				logger.Debug("skipping plan on when error", "cfg", cfg, "err", err)
+				continue
+			}
+			if found == nil {
+				logger.Debug("skipping plan on when miss", "cfg", cfg, "found", found)
+				continue
+			}
+			// use the when field by default
+			whenCtx = found
+		}
+
+		// Override the when context
+		if cfg.Field != "" {
+			whenCtx, err = dotpath.Get(cfg.Field, designData, false)
+			if err != nil {
+				return nil, errors.Wrap(err, fmt.Sprintf("err while looking up when override 'field' (from design root) in template render pair:\n%v\n", cfg))
+			}
+		}
+
+		OF_name, err := determineOutfileName(cfg.Out, designData, "")
+		if err != nil {
+			return nil, errors.Wrap(err, "in MakeNewPlans\n")
+		}
+
+		T, ok := gen.NewTemplates[cfg.In]
+		if !ok {
+			return nil, errors.New("Unknown new file template input: " + cfg.In)
+		}
+		outfile := OF_name
+		// outfile := filepath.Join(basedir, OF_name)
+
+		// build up the plan data struct
+		fgd := Plan{
+			// Dsl:      dslKey,
+			// Gen:      genKey,
+			File:     OF_name,
+			Template: T,
+			Data:     designData,
+			Outfile:  outfile,
+
+			DslContext:      designData,
+			RepeatedContext: val,
+			TemplateContext: val,
+			WhenContext:     whenCtx,
+		}
+
+		fmt.Printf("NewFilePlan:\n%+v\n", fgd)
+		// logger.Info("        planned repeat file: "+t_key, "index", idx)
+		// logger.Debug("          data...", "fgd", fgd, "index", idx)
+
+		// add the plan to a linear list to be rendered
+		ret = append(ret, fgd)
+	} // End of template processing
+
+	// HOFSTADTER_END   MakeNewPlans
+	return
+}
+
+/*
+Where's your docs doc?!
+*/
 func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, designData map[string]interface{}, D *dsl.Dsl, G *gen.Generator, R gen.TemplateConfig, makeDesign bool) (plans []Plan, err error) {
 	// HOFSTADTER_START makePlans
 	logger.Info("makePlans")

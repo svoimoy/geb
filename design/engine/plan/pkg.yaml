@@ -29,6 +29,23 @@ pkg:
           type: error
 
 
+    - name: MakeNewPlans
+      args:
+        - name: gen
+          type: "*engine.gen.Generator"
+        - name: sub
+          type: string
+        - name: basedir
+          type: string
+        - name: designData
+          type: "map:interface{}"
+      return:
+        - name: ret
+          type: "array:Plan"
+        - name: err
+          type: error
+
+
     # this will replace the 4 different planning methods which exist today
     # see engine/plan/todo.md
     - name: makePlans

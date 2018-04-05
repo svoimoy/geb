@@ -16,7 +16,7 @@ import (
 
 // Tool:   geb
 // Name:   dsl
-// Usage:  dsl <name>
+// Usage:  dsl [name]
 // Parent: new
 
 // HOFSTADTER_START const
@@ -28,11 +28,11 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
-var DslLong = `Initialize a new geb DSL. If you do not provide a name, the current directory name will be used.`
+var DslLong = `Initialize a new geb dsl. If you do not provide a name, the current directory name will be used.`
 
 var DslCmd = &cobra.Command{
 
-	Use: "dsl <name>",
+	Use: "dsl [name]",
 
 	Short: "Initialize a new geb dsl.",
 
@@ -56,7 +56,10 @@ var DslCmd = &cobra.Command{
 		fmt.Println("geb new dsl:",
 			name,
 		)
-		libnew.NewDsl(name)
+		err := libnew.NewDsl(name)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
 		// HOFSTADTER_END   cmd_run
 	},
 }

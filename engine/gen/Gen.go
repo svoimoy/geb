@@ -2,9 +2,10 @@ package gen
 
 import (
 	// HOFSTADTER_START import
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"path/filepath"
+
+	"github.com/pkg/errors"
 
 	"github.com/ghodss/yaml"
 
@@ -42,16 +43,29 @@ func CreateFromFolder(folder string) (g *Generator, err error) {
 
 	d, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "designs"))
 	if err != nil {
-		return nil, errors.Wrapf(err, "while reading 'designs' folder in: %s\n", folder)
+		logger.Info("no 'designs' folder found in generator")
+		// return nil, errors.Wrapf(err, "while reading 'designs' folder in: %s\n", folder)
+	} else {
+		g.Designs = d
 	}
-	g.Designs = d
+
+	n, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "new"))
+	if err != nil {
+		logger.Info("no 'new' folder found in generator")
+		// return nil, errors.Wrapf(err, "while reading 'new' folder in: %s\n", folder)
+	} else {
+		g.NewTemplates = n
+	}
 
 	p, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "partials"))
 	if err != nil {
-		return nil, errors.Wrapf(err, "while reading 'partials' folder in: %s\n", folder)
+		logger.Info("no 'partials' folder found in generator")
+		// return nil, errors.Wrapf(err, "while reading 'partials' folder in: %s\n", folder)
+	} else {
+		g.Partials = p
 	}
-	g.Partials = p
 
+	// Templates is the only required folder in a generator
 	r, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "templates"))
 	if err != nil {
 		return nil, errors.Wrapf(err, "while reading 'repeated' folder in: %s\n", folder)

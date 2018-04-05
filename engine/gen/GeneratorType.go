@@ -30,6 +30,8 @@ type Generator struct {
 	Templates templates.TemplateMap `json:"templates" xml:"templates" yaml:"templates" form:"templates" query:"templates" `
 
 	Partials templates.TemplateMap `json:"partials" xml:"partials" yaml:"partials" form:"partials" query:"partials" `
+
+	NewTemplates templates.TemplateMap `json:"new-templates" xml:"new-templates" yaml:"new-templates" form:"new-templates" query:"new-templates" `
 }
 
 // HOFSTADTER_BELOW

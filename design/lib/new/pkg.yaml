@@ -28,3 +28,15 @@ pkg:
         - name: err
           type: error
 
+    - name: NewDesign
+      args:
+        - name: dslname
+          type: string
+        - name: genname
+          type: string
+        - name: name
+          type: string
+      return:
+        - name: err
+          type: error
+

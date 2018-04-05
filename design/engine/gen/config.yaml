@@ -16,6 +16,8 @@ type-list:
           type: string
         - name: Dependencies
           type: Dependencies
+        - name: NewConfigs
+          type: map:TemplateConfig
         - name: StaticFiles
           type: array:StaticFilesConfig
         - name: TemplateConfigs

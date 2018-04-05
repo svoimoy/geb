@@ -37,6 +37,16 @@ func (G *Generator) MergeOverwrite(incoming *Generator) {
 		G.Designs[path] = T
 	}
 
+	for path, N := range incoming.NewTemplates {
+		_, ok := G.NewTemplates[path]
+		if ok {
+			logger.Info("Overriding newfile", "newfile", path)
+		} else {
+			logger.Info("Adding newfile", "newfile", path)
+		}
+		G.NewTemplates[path] = N
+	}
+
 	for path, T := range incoming.Templates {
 		_, ok := G.Templates[path]
 		if ok {
@@ -74,6 +84,16 @@ func (G *Generator) MergeSkipExisting(incoming *Generator) {
 		} else {
 			logger.Info("Adding design", "design", path)
 			G.Designs[path] = T
+		}
+	}
+
+	for path, N := range incoming.NewTemplates {
+		_, ok := G.NewTemplates[path]
+		if ok {
+			logger.Info("Skipping newfile", "newfile", path)
+		} else {
+			logger.Info("Adding newfile", "newfile", path)
+			G.NewTemplates[path] = N
 		}
 	}
 

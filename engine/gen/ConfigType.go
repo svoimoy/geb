@@ -32,6 +32,8 @@ type Config struct {
 
 	Dependencies Dependencies `json:"dependencies" xml:"dependencies" yaml:"dependencies" form:"dependencies" query:"dependencies" `
 
+	NewConfigs map[string]TemplateConfig `json:"new-configs" xml:"new-configs" yaml:"new-configs" form:"new-configs" query:"new-configs" `
+
 	StaticFiles []StaticFilesConfig `json:"static-files" xml:"static-files" yaml:"static-files" form:"static-files" query:"static-files" `
 
 	TemplateConfigs []TemplateConfig `json:"template-configs" xml:"template-configs" yaml:"template-configs" form:"template-configs" query:"template-configs" `

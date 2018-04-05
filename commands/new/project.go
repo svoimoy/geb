@@ -60,7 +60,10 @@ var ProjectCmd = &cobra.Command{
 		fmt.Println("geb new project:",
 			name,
 		)
-		libnew.NewProject(name)
+		err := libnew.NewProject(name)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
 		// HOFSTADTER_END   cmd_run
 	},
 }

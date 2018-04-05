@@ -15,6 +15,7 @@ About:
 
 func NewConfig() *Config {
 	return &Config{
+		NewConfigs:      map[string]TemplateConfig{},
 		StaticFiles:     []StaticFilesConfig{},
 		TemplateConfigs: []TemplateConfig{},
 	}

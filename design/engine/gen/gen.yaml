@@ -12,6 +12,8 @@ type:
       type: 'engine.templates.TemplateMap'
     - name: Partials
       type: 'engine.templates.TemplateMap'
+    - name: NewTemplates
+      type: 'engine.templates.TemplateMap'
 
   functions:
 
