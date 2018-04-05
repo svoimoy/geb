@@ -47,3 +47,11 @@
 [[constraint]]
   name = "gopkg.in/inconshreveable/log15.v2"
   version = "2.11.0"
+
+[[constraint]]
+  name = "github.com/src-d/go-git"
+  version = "3.2.0"
+
+[[constraint]]
+  name = "gopkg.in/src-d/go-git.v4"
+  version = "4.2.1"
