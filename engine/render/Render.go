@@ -418,7 +418,10 @@ func formatContent(filename string, content string) (formatted string, err error
 			return "", errors.Wrap(ferr, "in render.WriteResults\n")
 		}
 		formatted = string(fmtd)
+
+	default:
+		formatted = content
 	}
 
-	return content, nil
+	return
 }
