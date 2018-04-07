@@ -150,7 +150,7 @@ func RenderPlan(plan plan.Plan, outputDir string) (err error) {
 		return errors.Wrapf(err, "while writing shadow: %s -> %s -> %s = %s\n", plan.Dsl, plan.Gen, plan.File, plan.Outfile)
 	}
 
-	logger.Info("Wrote file", "filename", plan.Outfile)
+	logger.Info("Wrote file", "filename", plan.Outfile, "bytes", len([]byte(result)))
 
 	return nil
 	// HOFSTADTER_END   RenderPlan
@@ -282,6 +282,7 @@ func WriteResults(filename string, outdir string, content string) (err error) {
 
 		shadow_content, err := ioutil.ReadFile(shadow_filename)
 		if err != nil {
+			logger.Info("Err Shadow Content", "err", err)
 
 			if _, ok := err.(*os.PathError); !ok {
 				// there was some other error besides not finding the file
@@ -419,5 +420,5 @@ func formatContent(filename string, content string) (formatted string, err error
 		formatted = string(fmtd)
 	}
 
-	return
+	return content, nil
 }
