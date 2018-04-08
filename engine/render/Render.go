@@ -282,89 +282,86 @@ func WriteResults(filename string, outdir string, content string) (err error) {
 
 		shadow_content, err := ioutil.ReadFile(shadow_filename)
 		if err != nil {
-			logger.Info("Err Shadow Content", "err", err)
-
 			if _, ok := err.(*os.PathError); !ok {
 				// there was some other error besides not finding the file
 				return errors.Wrap(err, "in render.WriteResults\n")
-				// otherwise, the shadow file doesn't exist
 			}
 
-		} else {
-			// We have a shadow file for the template
+			// otherwise, the shadow file doesn't exist, so lets just set the shadow to the content
+			shadow_content = []byte(content)
+		}
 
-			base := string(shadow_content)
-			user := string(old_content)
+		base := string(shadow_content)
+		user := string(old_content)
 
-			dmp := diffmatchpatch.New()
-			b2c_diffs := dmp.DiffMain(base, content, true)
-			b2u_diffs := dmp.DiffMain(base, user, true)
+		dmp := diffmatchpatch.New()
+		b2c_diffs := dmp.DiffMain(base, content, true)
+		b2u_diffs := dmp.DiffMain(base, user, true)
 
-			if len(b2u_diffs) == 1 {
-				// This file has not been changed by the user (or a formatter?)
-				// So we can do nothing, because... already set
-				// final_result = content
-				// and we short circuit the other clauses
+		if len(b2u_diffs) == 1 {
+			// This file has not been changed by the user (or a formatter?)
+			// So we can do nothing, because... already set
+			// final_result = content
+			// and we short circuit the other clauses
 
-			} else if len(b2c_diffs) == 1 {
-				// This file has not had it's design or templates changed since last (re)generation
-				// but the user has changed it at some point along the way, in history [we may have dealt with the diff3 on this file before]
-				// So lets apply the changes
-				patches := dmp.PatchMake(base, b2u_diffs)
-				patched_content, applied := dmp.PatchApply(patches, base)
+		} else if len(b2c_diffs) == 1 {
+			// This file has not had it's design or templates changed since last (re)generation
+			// but the user has changed it at some point along the way, in history [we may have dealt with the diff3 on this file before]
+			// So lets apply the changes
+			patches := dmp.PatchMake(base, b2u_diffs)
+			patched_content, applied := dmp.PatchApply(patches, base)
 
-				// need to check applied here
-				for _, patch := range applied {
-					if patch != true {
-						return errors.Errorf("Failed to diff/patch %q\n%v\napplied: %v", filename, dmp.PatchToText(patches), applied)
-					}
+			// need to check applied here
+			for _, patch := range applied {
+				if patch != true {
+					return errors.Errorf("Failed to diff/patch %q\n%v\napplied: %v", filename, dmp.PatchToText(patches), applied)
 				}
-				final_result = patched_content
+			}
+			final_result = patched_content
 
-			} else {
-				// ugh oh, the file has been changed on both sides of the transformation...
-				// the design or template since last regen, the user at some point in history
+		} else {
+			// ugh oh, the file has been changed on both sides of the transformation...
+			// the design or template since last regen, the user at some point in history
 
-				/*
-					fmt.Printf("%s\n-------------------\n%v\n%v\n%v\n%v\n\n", filename,
-						len(b2c_diffs), len(b2u_diffs),
-						dmp.DiffPrettyText(b2c_diffs),
-						dmp.DiffPrettyText(b2u_diffs),
-					)
-				*/
+			/*
+				fmt.Printf("%s\n-------------------\n%v\n%v\n%v\n%v\n\n", filename,
+					len(b2c_diffs), len(b2u_diffs),
+					dmp.DiffPrettyText(b2c_diffs),
+					dmp.DiffPrettyText(b2u_diffs),
+				)
+			*/
 
-				err = WriteShadow(tmp_filename, content)
+			err = WriteShadow(tmp_filename, content)
+			if err != nil {
+				return errors.Wrap(err, "in render.WriteResults\n")
+			}
+			cmd := exec.Command("diff3", "-m", out_filename, shadow_filename, tmp_filename)
+			stdoutStderr, err := cmd.CombinedOutput()
+			if err != nil {
+				if EE, ok := err.(*exec.ExitError); ok {
+					if EE.Error() != "exit status 1" {
+						fmt.Printf("Error during diff3 on %q %+v\n", filename, EE)
+						// fmt.Printf("%s\n", stdoutStderr)
+						return err
+
+					} else {
+						fmt.Println("MERGE CONFLICT in:", out_filename)
+					}
+				} else {
+					return err
+				}
+			}
+
+			final_result = string(stdoutStderr)
+
+			/*
+				// fall back to old method for now, but need to diff3
+				spliced, err := SpliceResults(string(old_content), content)
 				if err != nil {
 					return errors.Wrap(err, "in render.WriteResults\n")
 				}
-				cmd := exec.Command("diff3", "-m", out_filename, shadow_filename, tmp_filename)
-				stdoutStderr, err := cmd.CombinedOutput()
-				if err != nil {
-					if EE, ok := err.(*exec.ExitError); ok {
-						if EE.Error() != "exit status 1" {
-							fmt.Printf("Error during diff3 on %q %+v\n", filename, EE)
-							// fmt.Printf("%s\n", stdoutStderr)
-							return err
-
-						} else {
-							fmt.Println("MERGE CONFLICT in:", out_filename)
-						}
-					} else {
-						return err
-					}
-				}
-
-				final_result = string(stdoutStderr)
-
-				/*
-					// fall back to old method for now, but need to diff3
-					spliced, err := SpliceResults(string(old_content), content)
-					if err != nil {
-						return errors.Wrap(err, "in render.WriteResults\n")
-					}
-					final_result = spliced
-				*/
-			}
+				final_result = spliced
+			*/
 		}
 
 	} else {
