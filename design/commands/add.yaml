@@ -18,7 +18,7 @@ cli:
         - name: global
           long: global
           short: g
-          type: boolean
+          type: bool
           default: false
           help: add the package to the global context in ~/.geb/dsl/... Ignored by designs
 

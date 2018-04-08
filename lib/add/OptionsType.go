@@ -30,7 +30,7 @@ type Options struct {
 
 	Location string `json:"Location" xml:"Location" yaml:"Location" form:"Location" query:"Location" `
 
-	Global boolean `json:"Global" xml:"Global" yaml:"Global" form:"Global" query:"Global" `
+	Global bool `json:"Global" xml:"Global" yaml:"Global" form:"Global" query:"Global" `
 }
 
 // HOFSTADTER_BELOW

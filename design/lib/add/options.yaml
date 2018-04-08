@@ -17,5 +17,5 @@ type:
 
     # only for dsl/gen
     - name: Global
-      type: boolean
+      type: bool
 

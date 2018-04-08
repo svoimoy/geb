@@ -35,7 +35,7 @@ See [docs link...] for more information.
 `
 
 var (
-	AddGlobalPFlag boolean
+	AddGlobalPFlag bool
 
 	AddBranchPFlag string
 
@@ -45,20 +45,7 @@ var (
 )
 
 func init() {
-	/* unknown Flag type in:
-	ctx_path: dsl.cli.commands.[0].pflags.[0]
-	default: false
-	help: add the package to the global context in ~/.geb/dsl/... Ignored by designs
-	long: global
-	name: global
-	parent: geb.add
-	parent_path: dsl.cli.commands.[0]
-	pkg_path: cli/commands/[0]/pflags
-	pkgPath: geb/add/global
-	short: g
-	type: boolean
-
-	*/
+	AddCmd.PersistentFlags().BoolVarP(&AddGlobalPFlag, "global", "g", false, "add the package to the global context in ~/.geb/dsl/... Ignored by designs")
 	viper.BindPFlag("global", AddCmd.PersistentFlags().Lookup("global"))
 
 	AddCmd.PersistentFlags().StringVarP(&AddBranchPFlag, "branch", "b", "master", "The branch to check out.")
