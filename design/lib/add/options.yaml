@@ -1,0 +1,21 @@
+type:
+
+  name: Options
+  fields:
+    - name: Url
+      type: string
+
+    - name: Branch
+      type: string
+    - name: Tag
+      type: string
+    - name: Commit
+      type: string
+
+    - name: Location
+      type: string
+
+    # only for dsl/gen
+    - name: Global
+      type: boolean
+

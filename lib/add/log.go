@@ -1,20 +1,16 @@
-package commands
+package add
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.com/hofstadter-io/geb/commands/add"
-	"github.com/hofstadter-io/geb/commands/gebberish"
-	"github.com/hofstadter-io/geb/commands/new"
-	"github.com/hofstadter-io/geb/commands/system"
-	"github.com/hofstadter-io/geb/commands/view"
+	// HOFSTADTER_START import
+	// HOFSTADTER_END   import
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.default")
+	ldcfg := viper.GetStringMap("log-config.lib.add.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -43,17 +39,27 @@ func SetLogger(l log.Logger) {
 		logger.SetHandler(termlog)
 	}
 
-	// set sub-command loggers before possibly overriding locally next
-	setSubLoggers(logger)
+	// set sub-loggers before possibly overriding locally next
+
+	// HOFSTADTER_START logging-config
+	// HOFSTADTER_END logging-config
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.geb")
+	lcfg := viper.GetStringMap("log-config.lib.add")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
 	} else {
+		// hack because of default override (should look for both upfront)
+		logger = log.New()
+
 		// find the logging level
-		level_str := lcfg["level"].(string)
+		level_iface, ok := lcfg["level"]
+		level_str := "warn"
+		if ok {
+			level_str = level_iface.(string)
+		}
+
 		level, err := log.LvlFromString(level_str)
 		if err != nil {
 			panic(err)
@@ -78,13 +84,3 @@ func SetLogger(l log.Logger) {
 	}
 
 }
-
-func setSubLoggers(logger log.Logger) {
-	add.SetLogger(logger)
-	gebberish.SetLogger(logger)
-	new.SetLogger(logger)
-	system.SetLogger(logger)
-	view.SetLogger(logger)
-}
-
-// HOFSTADTER_BELOW

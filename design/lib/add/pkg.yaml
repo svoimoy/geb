@@ -1,0 +1,31 @@
+pkg:
+  name: add
+  about: "package for the geb add command functionality"
+
+  functions:
+
+    - name: AddDsl
+      args:
+        - name: opts
+          type: "Options"
+      return:
+        - name: err
+          type: error
+
+    - name: AddGenerator
+      args:
+        - name: opts
+          type: "Options"
+      return:
+        - name: err
+          type: error
+
+    - name: AddDesign
+      args:
+        - name: opts
+          type: "Options"
+      return:
+        - name: err
+          type: error
+
+
