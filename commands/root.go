@@ -47,6 +47,9 @@ var (
 			// short circuit for system child commands
 			if cmd.Parent().Name() == "system" {
 				return
+			} else {
+				// temporary short circuit
+				return
 			}
 
 			// Look for .geb dotfolder
