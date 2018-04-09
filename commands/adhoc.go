@@ -176,6 +176,14 @@ var AdhocCmd = &cobra.Command{
 			}
 		}
 
+		// Handle XML <doc></doc>
+		if inputContentType == "xml" {
+			data := inputData.(map[string]interface{})
+			if doc, ok := data["doc"]; ok {
+				inputData = doc
+			}
+		}
+
 		// read in the template
 		data := []byte("{{{json .}}}")
 		tsF := AdhocTemplateStringFlag != ""
