@@ -49,6 +49,7 @@ func addTemplateHelpers(tpl *raymond.Template) {
 	tpl.RegisterHelper("pretty", helper_pretty)
 	tpl.RegisterHelper("lwidth", helper_lwidth)
 	tpl.RegisterHelper("rwidth", helper_rwidth)
+	tpl.RegisterHelper("string", helper_string)
 	tpl.RegisterHelper("printf", helper_printf)
 	tpl.RegisterHelper("lower", helper_lower)
 	tpl.RegisterHelper("upper", helper_upper)
@@ -182,6 +183,10 @@ func helper_lwidth(width string, value string) string {
 func helper_rwidth(width string, value string) string {
 	fmt_str := "%-" + width + "s"
 	return fmt.Sprintf(fmt_str, value)
+}
+
+func helper_string(str string) string {
+	return fmt.Sprintf(str)
 }
 
 func helper_printf(fmt_str string, args ...interface{}) string {
