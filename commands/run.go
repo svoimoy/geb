@@ -17,7 +17,7 @@ import (
 
 // Tool:   geb
 // Name:   run
-// Usage:  run <run-onfigname>
+// Usage:  run <run-config-pipeline-name>...
 // Parent: geb
 
 // HOFSTADTER_START const
@@ -31,13 +31,12 @@ import (
 
 var RunLong = `Run a run-config pipeline specified in your project  file.
 Use this to run pre and post steps around 'gen gen'.
-run-config Pipelines may also be used by generators.
 See [docs link...] for more information.
 `
 
 var RunCmd = &cobra.Command{
 
-	Use: "run <run-onfigname>",
+	Use: "run <run-config-pipeline-name>...",
 
 	Short: "Run a run-config pipeline for a project.",
 
@@ -46,23 +45,23 @@ var RunCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In runCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   configs
-		//     help:   The stages to run in order. Used to override the pipeline in the project file.
+		// [0]name:   pipelines
+		//     help:   The pipelines to run, in order.
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'configs'\n")
+			fmt.Println("missing required argument: 'pipelines'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}
 
-		var configs []string
+		var pipelines []string
 
 		if 0 < len(args) {
-			configs = args[0:]
+			pipelines = args[0:]
 		}
 
 		// HOFSTADTER_START cmd_run
-		err := run.Run(configs)
+		err := run.Run(pipelines)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}

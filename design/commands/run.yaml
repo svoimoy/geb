@@ -4,17 +4,16 @@ cli:
   commands:
 
     - name: run
-      usage: run <run-onfigname>
+      usage: run <run-config-pipeline-name>...
       short: Run a run-config pipeline for a project.
       long: |
         Run a run-config pipeline specified in your project  file.
         Use this to run pre and post steps around 'gen gen'.
-        run-config Pipelines may also be used by generators.
         See [docs link...] for more information.
       args:
-        - name: configs
+        - name: pipelines
           type: array:string
           rest: true
           required: true
-          help: The stages to run in order. Used to override the pipeline in the project file.
+          help: The pipelines to run, in order.
 
