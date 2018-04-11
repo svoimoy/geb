@@ -390,7 +390,7 @@ func makePlans(dslKey string, genKey string, ctxDir string, dslCtx interface{}, 
 					idx := sort.SearchStrings(ignores, match)
 					// two conditions for not matching an ignore
 					if idx == len(ignores) || ignores[idx] != match {
-						// if we get here, the static file nees to be generated
+						// if we get here, the static file needs to be generated
 						perr := planFile(match)
 						if perr != nil {
 							logger.Error("Static File Glob error", "fileGlob", fileGlob, "dslKey", dslKey, "genKey", genKey, "error", perr)
