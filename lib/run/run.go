@@ -3,6 +3,7 @@ package run
 import (
 	// HOFSTADTER_START import
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -48,13 +49,14 @@ func Run(commands []string) (err error) {
 			}
 
 			cmd := exec.Command(C.Command, C.Args...)
-			stdoutStderr, err := cmd.CombinedOutput()
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Stdin = os.Stdin
+			err = cmd.Run()
 			if err != nil {
 				fmt.Println("Error running command", C, err)
-				fmt.Printf("%s\n", stdoutStderr)
 				return err
 			}
-			fmt.Printf("%s %v\n================\n%s\n-----------------\n", C.Command, C.Args, stdoutStderr)
 
 		}
 	}
