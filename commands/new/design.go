@@ -3,6 +3,7 @@ package new
 import (
 	// HOFSTADTER_START import
 	"fmt"
+	"strings"
 
 	libnew "github.com/hofstadter-io/geb/lib/new"
 	// HOFSTADTER_END   import
@@ -90,7 +91,20 @@ var DesignCmd = &cobra.Command{
 			dsl,
 			name,
 		)
-		err := libnew.NewDesign(dsl, gen, name)
+		sub := "default"
+		if strings.Contains(gen, ":") {
+			flds := strings.Split(gen, ":")
+			gen, sub = flds[0], flds[1]
+		}
+
+		data := map[string]interface{}{
+			"name": name,
+			"dsl":  dsl,
+			"gen":  gen,
+			"sub":  sub,
+		}
+
+		err := libnew.NewDesign(data)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}

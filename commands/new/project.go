@@ -60,7 +60,10 @@ var ProjectCmd = &cobra.Command{
 		fmt.Println("geb new project:",
 			name,
 		)
-		err := libnew.NewProject(name)
+		data := map[string]interface{}{
+			"name": name,
+		}
+		err := libnew.NewProject(data)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}

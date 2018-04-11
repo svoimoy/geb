@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"github.com/aymerick/raymond"
 	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/geb/engine/design"
@@ -63,6 +64,33 @@ func GenerateFile(designFile string, templateFile string, outputFile string) (er
 	err = ioutil.WriteFile(outputFile, []byte(result), 0644)
 	if err != nil {
 		return errors.Wrapf(err, "While generating file:  %s %s %s\n", designFile, templateFile, outputFile)
+	}
+
+	return nil
+	// HOFSTADTER_END   GenerateFile
+	return
+}
+
+func GenerateFileWithData(data map[string]interface{}, templateData string, outputFile string) (err error) {
+	// HOFSTADTER_START GenerateFile
+	// fmt.Printf("%+v\n + %s => %s\n", data, templateFile, outputFile)
+
+	// parse template
+	tpl, err := raymond.Parse(templateData)
+	if err != nil {
+		return errors.Wrapf(err, "While generating file: %s\n", outputFile)
+	}
+
+	templates.AddHelpersToRaymond(&templates.Template{Template: tpl})
+
+	result, err := tpl.Exec(data)
+	if err != nil {
+		return errors.Wrapf(err, "While generating file: %s\n", outputFile)
+	}
+
+	err = ioutil.WriteFile(outputFile, []byte(result), 0644)
+	if err != nil {
+		return errors.Wrapf(err, "While generating file:  %s\n", outputFile)
 	}
 
 	return nil

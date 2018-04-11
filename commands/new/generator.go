@@ -60,7 +60,10 @@ var GeneratorCmd = &cobra.Command{
 		fmt.Println("geb new generator:",
 			name,
 		)
-		err := libnew.NewGenerator(name)
+		data := map[string]interface{}{
+			"name": name,
+		}
+		err := libnew.NewGenerator(data)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}

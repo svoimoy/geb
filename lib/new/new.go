@@ -3,11 +3,10 @@ package new
 import (
 	// HOFSTADTER_START import
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"github.com/hofstadter-io/geb/engine"
 	"github.com/hofstadter-io/geb/engine/gen"
 	"github.com/hofstadter-io/geb/engine/plan"
 	"github.com/hofstadter-io/geb/engine/project"
@@ -29,8 +28,9 @@ import (
 /*
 Where's your docs doc?!
 */
-func NewProject(name string) (err error) {
+func NewProject(data map[string]interface{}) (err error) {
 	// HOFSTADTER_START NewProject
+	name := data["name"].(string)
 	var outdir string
 	name, outdir, err = prep(name)
 	if err != nil {
@@ -38,13 +38,12 @@ func NewProject(name string) (err error) {
 	}
 
 	outfile := filepath.Join(outdir, "geb.yaml")
-	output := strings.Replace(PACKAGE_TEMPLATE, "__NAME__", name, -1)
-	err = ioutil.WriteFile(outfile, []byte(output), 0664)
+	err = engine.GenerateFileWithData(data, PACKAGE_TEMPLATE, outfile)
 	if err != nil {
 		return
 	}
 
-	return mkdirs(outdir, []string{"design", "dsl", ".geb/shadow", ".geb/tmp"})
+	return mkdirs(outdir, PACKAGE_DIRS)
 	// HOFSTADTER_END   NewProject
 	return
 }
@@ -52,8 +51,9 @@ func NewProject(name string) (err error) {
 /*
 Where's your docs doc?!
 */
-func NewDsl(name string) (err error) {
+func NewDsl(data map[string]interface{}) (err error) {
 	// HOFSTADTER_START NewDsl
+	name := data["name"].(string)
 	var outdir string
 	name, outdir, err = prep(name)
 	if err != nil {
@@ -61,8 +61,7 @@ func NewDsl(name string) (err error) {
 	}
 
 	outfile := filepath.Join(outdir, "geb-dsl.yaml")
-	output := strings.Replace(DSL_TEMPLATE, "__NAME__", name, -1)
-	err = ioutil.WriteFile(outfile, []byte(output), 0664)
+	err = engine.GenerateFileWithData(data, DSL_TEMPLATE, outfile)
 	if err != nil {
 		return
 	}
@@ -73,25 +72,25 @@ func NewDsl(name string) (err error) {
 /*
 Where's your docs doc?!
 */
-func NewGenerator(name string) (err error) {
+func NewGenerator(data map[string]interface{}) (err error) {
 	// HOFSTADTER_START NewGenerator
+	name := data["name"].(string)
 	var outdir string
 	name, outdir, err = prep(name)
 	if err != nil {
 		return
 	}
 
-	dsltype := "unknown"
 	// TODO search for geb-dsl.yaml recurisvely
+	dsltype := "unknown"
+	data["type"] = dsltype
 
 	outfile := filepath.Join(outdir, "geb-gen.yaml")
-	output := strings.Replace(GEN_TEMPLATE, "__NAME__", name, -1)
-	output = strings.Replace(output, "__TYPE__", dsltype, -1)
-	err = ioutil.WriteFile(outfile, []byte(output), 0664)
+	err = engine.GenerateFileWithData(data, GEN_TEMPLATE, outfile)
 	if err != nil {
 		return
 	}
-	return mkdirs(outdir, []string{"designs", "partials", "templates", "new"})
+	return mkdirs(outdir, GEN_DIRS)
 	// HOFSTADTER_END   NewGenerator
 	return
 }
@@ -99,14 +98,13 @@ func NewGenerator(name string) (err error) {
 /*
 Where's your docs doc?!
 */
-func NewDesign(dslname string, genname string, name string) (err error) {
+func NewDesign(data map[string]interface{}) (err error) {
 	// HOFSTADTER_START NewDesign
 
-	subname := "default"
-	if strings.Contains(genname, ":") {
-		flds := strings.Split(genname, ":")
-		genname, subname = flds[0], flds[1]
-	}
+	name := data["name"].(string)
+	dslname := data["dslname"].(string)
+	genname := data["genname"].(string)
+	subname := data["subname"].(string)
 
 	P := project.NewProject()
 
@@ -180,13 +178,6 @@ func NewDesign(dslname string, genname string, name string) (err error) {
 
 	fmt.Printf("new design: %q %v\n", outfile, G.Config.NewConfigs)
 
-	data := map[string]interface{}{
-		"name": name,
-		"dsl":  dslname,
-		"gen":  genname,
-		"sub":  subname,
-	}
-
 	plans, err := plan.MakeNewPlans(G, subname, outdir, data)
 	if err != nil {
 		fmt.Println("error planning new things", err)
@@ -206,116 +197,6 @@ func NewDesign(dslname string, genname string, name string) (err error) {
 }
 
 // HOFSTADTER_BELOW
-
-const PACKAGE_TEMPLATE = `name: "__NAME__"
-about: "All about __NAME__..."
-
-output-dir: "."
-
-design-dir: "design"
-
-# Below is example content, update to your needs.
-# See more at [doc link t.b.d.]
-
-dsl-config:
-  paths:
-    - "./dsl"
-  default:
-    - dsl: cli
-      gen:
-        - golang
-      output-dir: "."
-
-run-config:
-  all:
-    - name: "all"
-      command: "geb run"
-      args:
-        - gen
-        - fmt
-        - install
-  regen:
-    - name: "regen"
-      command: "geb run"
-      args:
-        - gen
-        - fmt
-  gen:
-    - name: generate
-      command: "geb"
-      args:
-        - "gen"
-  fmt:
-    - name: format
-      command: "gofmt -w main.go commands engine lib"
-  build:
-    - name: build
-      command: "go build"
-  install:
-    - name: install
-      command: "go install"
-
-
-log-config:
-  default:
-    level: warn
-    stack: false
-`
-
-const DSL_TEMPLATE = `name: "__NAME__"
-about: "All about __NAME__..."
-version: "0.0.1"
-type: "dsl"
-`
-const GEN_TEMPLATE = `name: "__NAME__"
-about: "All about __NAME__..."
-version: "0.0.1"
-language: golang
-type: "__TYPE__"
-
-# Below is example content, update to your needs.
-# See more at [doc link t.b.d.]
-
-dependencies:
-  generators:
-    - dsl: common
-      gen:
-        - golang
-      output-dir: "."
-    - dsl: type
-      gen:
-        - golang
-      output-dir: "."
-    - dsl: pkg
-      gen:
-        - golang
-      output-dir: "."
-
-template-configs:
-
-  - name: once-files
-    field: "."
-    templates:
-      - in: "main.go"
-        out: "main.go"
-      - in: "root.go"
-        out: "commands/root.go"
-      - unless: commands
-        in: "rootonlylog.go"
-        out: "commands/log.go"
-      - when: commands
-        in: "log.go"
-        out: "commands/log.go"
-
-  - name: command
-    field: commands
-    templates:
-      - in: "cmd.go"
-        out: "commands/{{trimto_first pkgPath '/' false}}.go"
-      - when: commands
-        in: "log.go"
-        out: "commands/{{name}}/log.go"
-`
 
 func prep(inname string) (name, outdir string, err error) {
 	wd, err := os.Getwd()

@@ -56,7 +56,11 @@ var DslCmd = &cobra.Command{
 		fmt.Println("geb new dsl:",
 			name,
 		)
-		err := libnew.NewDsl(name)
+		data := map[string]interface{}{
+			"name": name,
+		}
+
+		err := libnew.NewDsl(data)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}

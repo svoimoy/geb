@@ -6,36 +6,32 @@ pkg:
 
     - name: NewProject
       args:
-        - name: name
-          type: string
+        - name: data
+          type: "map:interface{}"
       return:
         - name: err
           type: error
 
     - name: NewDsl
       args:
-        - name: name
-          type: string
+        - name: data
+          type: "map:interface{}"
       return:
         - name: err
           type: error
 
     - name: NewGenerator
       args:
-        - name: name
-          type: string
+        - name: data
+          type: "map:interface{}"
       return:
         - name: err
           type: error
 
     - name: NewDesign
       args:
-        - name: dslname
-          type: string
-        - name: genname
-          type: string
-        - name: name
-          type: string
+        - name: data
+          type: "map:interface{}"
       return:
         - name: err
           type: error
