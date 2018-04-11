@@ -24,7 +24,7 @@ import (
 // ------------------- NewMapXml & NewMapXmlReader ... -------------------------
 
 // If XmlCharsetReader != nil, it will be used to decode the XML, if required.
-// Note: if CustomDeocder != nil, then XmlCharsetReader is ignored;
+// Note: if CustomDecoder != nil, then XmlCharsetReader is ignored;
 // set the CustomDecoder attribute instead.
 //   import (
 //	     charset "code.google.com/p/go-charset/charset"
@@ -460,11 +460,15 @@ func cast(s string, r bool) interface{} {
 		if f, err := strconv.ParseFloat(s, 64); err == nil {
 			return interface{}(f)
 		}
-		// ParseBool treats "1"==true & "0"==false
-		// but be more strick - only allow TRUE, True, true, FALSE, False, false
-		if s != "t" && s != "T" && s != "f" && s != "F" {
-			if b, err := strconv.ParseBool(s); err == nil {
-				return interface{}(b)
+		// ParseBool treats "1"==true & "0"==false, we've already scanned those
+		// values as float64. See if value has 't' or 'f' as initial screen to
+		// minimize calls to ParseBool; also, see if len(s) < 6.
+		if len(s) < 6 {
+			switch s[:1] {
+			case "t", "T", "f", "F":
+				if b, err := strconv.ParseBool(s); err == nil {
+					return interface{}(b)
+				}
 			}
 		}
 	}
@@ -951,6 +955,34 @@ func mapToXmlIndent(doIndent bool, s *string, key string, value interface{}, pp 
 			}
 		}
 		return nil
+	case []string:
+		// This was added by https://github.com/slotix ... not a type that
+		// would be encountered if mv generated from NewMapXml, NewMapJson.
+		// Could be encountered in AnyXml(), so we'll let it stay, though
+		// it should be merged with case []interface{}, above.
+		//quick fix for []string type
+		//[]string should be treated exaclty as []interface{}
+		if len(value.([]string)) == 0 {
+			if doIndent {
+				*s += p.padding + p.indent
+			}
+			*s += "<" + key
+			elen = 0
+			endTag = true
+			break
+		}
+		for _, v := range value.([]string) {
+			if doIndent {
+				p.Indent()
+			}
+			if err := mapToXmlIndent(doIndent, s, key, v, p); err != nil {
+				return err
+			}
+			if doIndent {
+				p.Outdent()
+			}
+		}
+		return nil
 	case nil:
 		// terminate the tag
 		if doIndent {
@@ -1043,10 +1075,7 @@ func (a attrList) Swap(i, j int) {
 }
 
 func (a attrList) Less(i, j int) bool {
-	if a[i][0] > a[j][0] {
-		return false
-	}
-	return true
+	return a[i][0] <= a[j][0]
 }
 
 type elemList [][2]interface{}
@@ -1060,8 +1089,5 @@ func (e elemList) Swap(i, j int) {
 }
 
 func (e elemList) Less(i, j int) bool {
-	if e[i][0].(string) > e[j][0].(string) {
-		return false
-	}
-	return true
+	return e[i][0].(string) <= e[j][0].(string)
 }

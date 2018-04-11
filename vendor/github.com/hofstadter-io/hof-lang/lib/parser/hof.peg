@@ -82,7 +82,7 @@ TypeDecl <- _ id:ID _ typ:TYPE _ obj:Object? __ {
 	return ret, nil
 }
 
-Value <- val:( Boolean / TypeDecl / Object / Array / Number / Integer / String / TypeRef / Bool / Null ) {
+Value <- val:( Boolean / TypeDecl / Object / Array / Number / Integer / String / TypeRef / Null ) {
     return val, nil
 }
 
@@ -192,7 +192,9 @@ NonZeroDecimalDigit <- [1-9]
 
 HexDigit <- [0-9a-f]i
 
-Bool <- "true" { return true, nil } / "false" { return false, nil }
+Boolean <- "true" { return ast.Bool { Value: true }, nil } / "false" { return ast.Bool{ Value: false }, nil }
+// Boolean <- "true" / "false"
+
 
 Null <- "null" { return nil, nil }
 
@@ -212,11 +214,9 @@ MultiLineComment ← "/*" ( !"*/" SourceChar )* "*/"
 MultiLineCommentNoLineTerminator ← "/*" ( !( "*/" / EOL ) SourceChar )* "*/"
 SingleLineComment ← "//" ( !EOL SourceChar )*
 
-Boolean <- "true" / "false"
-
 DEF <- "def"
 
-TypeRef <- val:( Alphabetic ( AlphaNumeric / [.] )* ) {
+TypeRef <- val:( Alphabetic ( TokenCharactors / [.] )* ) {
 	text := string(c.text)
     ret := ast.Token {
         Value: text,

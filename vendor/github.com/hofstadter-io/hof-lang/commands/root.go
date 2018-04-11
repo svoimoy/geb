@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"github.com/kr/pretty"
 
 	"github.com/hofstadter-io/data-utils/io"
 	"github.com/hofstadter-io/hof-lang/lib/ast"
@@ -132,10 +131,6 @@ var (
 					os.Exit(1)
 				}
 			}
-
-			fmt.Println("============================")
-			fmt.Printf("%# v\n", pretty.Formatter(inputData))
-			fmt.Println("============================")
 
 			output := ""
 			switch RootOutputTypeFlag {

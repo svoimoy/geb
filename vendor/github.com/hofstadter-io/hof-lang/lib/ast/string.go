@@ -117,10 +117,12 @@ func (N Array) String(indent string) (string, error) {
 		if err != nil {
 			return "", err
 		}
+
 		switch c.(type) {
-		case Object:
+		case Object, Token, Integer, Decimal, Bool:
 			ret += indent + "  "
 		}
+
 		ret += part + ",\n"
 	}
 	ret += fmt.Sprintf("%s]", indent)
