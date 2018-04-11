@@ -65,6 +65,16 @@ func AddGitRepo(opts Options) (err error) {
 		return
 	}
 
+	subs, err := tree.Submodules()
+	if err != nil {
+		return
+	}
+
+	err = subs.Init()
+	if err != nil {
+		return
+	}
+
 	err = os.RemoveAll(filepath.Join(opts.Location, ".git"))
 	if err != nil {
 		return
