@@ -1,8 +1,15 @@
 package add
 
 import (
-// HOFSTADTER_START import
-// HOFSTADTER_END   import
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+
+	git "gopkg.in/src-d/go-git.v4"
+	"gopkg.in/src-d/go-git.v4/plumbing"
+	// HOFSTADTER_START import
+	// HOFSTADTER_END   import
 )
 
 // HOFSTADTER_START const
@@ -17,29 +24,52 @@ import (
 /*
 Where's your docs doc?!
 */
-func AddDsl(opts Options) (err error) {
-	// HOFSTADTER_START AddDsl
+func AddGitRepo(opts Options) (err error) {
+	// HOFSTADTER_START AddGitRepo
 
-	// HOFSTADTER_END   AddDsl
-	return
-}
+	// Check the location
+	if opts.Location == "vendor" {
+		opts.Location = filepath.Join("vendor", opts.Url[strings.LastIndex(opts.Url, "/")+1:])
+	}
 
-/*
-Where's your docs doc?!
-*/
-func AddGenerator(opts Options) (err error) {
-	// HOFSTADTER_START AddGenerator
+	fmt.Println("Writing to:", opts.Location)
 
-	// HOFSTADTER_END   AddGenerator
-	return
-}
+	// Get the repository
+	repo, err := git.PlainClone(opts.Location, false, &git.CloneOptions{
+		URL: opts.Url,
+	})
+	if err != nil {
+		return
+	}
 
-/*
-Where's your docs doc?!
-*/
-func AddDesign(opts Options) (err error) {
-	// HOFSTADTER_START AddDesign
+	// Get the working tree
+	tree, err := repo.Worktree()
+	if err != nil {
+		return
+	}
 
-	// HOFSTADTER_END   AddDesign
+	checkoutOpts := &git.CheckoutOptions{
+		Force: false,
+	}
+	// Checkout the right thing
+	if opts.Commit != "" {
+		checkoutOpts.Hash = plumbing.NewHash(opts.Commit)
+	} else if opts.Tag != "" {
+		checkoutOpts.Branch = plumbing.ReferenceName(opts.Tag)
+	} else {
+		checkoutOpts.Branch = plumbing.ReferenceName("refs/heads/" + opts.Branch)
+	}
+
+	err = tree.Checkout(checkoutOpts)
+	if err != nil {
+		return
+	}
+
+	err = os.RemoveAll(filepath.Join(opts.Location, ".git"))
+	if err != nil {
+		return
+	}
+
+	// HOFSTADTER_END   AddGitRepo
 	return
 }

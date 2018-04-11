@@ -4,28 +4,11 @@ pkg:
 
   functions:
 
-    - name: AddDsl
+    - name: AddGitRepo
       args:
         - name: opts
           type: "Options"
       return:
         - name: err
           type: error
-
-    - name: AddGenerator
-      args:
-        - name: opts
-          type: "Options"
-      return:
-        - name: err
-          type: error
-
-    - name: AddDesign
-      args:
-        - name: opts
-          type: "Options"
-      return:
-        - name: err
-          type: error
-
 

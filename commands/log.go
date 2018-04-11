@@ -4,7 +4,6 @@ import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
-	"github.com/hofstadter-io/geb/commands/add"
 	"github.com/hofstadter-io/geb/commands/gebberish"
 	"github.com/hofstadter-io/geb/commands/new"
 	"github.com/hofstadter-io/geb/commands/system"
@@ -80,7 +79,6 @@ func SetLogger(l log.Logger) {
 }
 
 func setSubLoggers(logger log.Logger) {
-	add.SetLogger(logger)
 	gebberish.SetLogger(logger)
 	new.SetLogger(logger)
 	system.SetLogger(logger)

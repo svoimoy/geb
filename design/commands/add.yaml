@@ -11,8 +11,6 @@ cli:
 
         See [docs link...] for more information.
 
-      omit-run: true
-
       pflags:
 
         - name: global
@@ -43,44 +41,20 @@ cli:
           default: ""
           help: The commit hash to check out. Overrides branch and tag.
 
+        - name: submodule
+          long: submodule
+          short: s
+          type: bool
+          default: false
+          help: Add as a submodule. Git must be init'd already.
 
-      commands:
+      args:
+        - name: url
+          type: string
+          required: true
+          help: The url of a git repository. May be any of the remote types (git@, http(s)).
+        - name: location
+          type: string
+          help: The location for the design. Defaults to the first design path listed in the geb.yaml file.
 
-        - name: design
-          usage: design [git-repo-url] <output-location>
-          short: Add a design to a project.
-          args:
-            - name: url
-              type: string
-              required: true
-              help: The url of a git repository. May be any of the remote types (git@, http(s)).
-            - name: location
-              type: string
-              help: The location for the design. Defaults to the first design path listed in the geb.yaml file.
-
-        - name: dsl
-          usage: dsl [git-repo-url] <output-location>
-          short: Add a dsl to a project.
-          args:
-            - name: url
-              type: string
-              required: true
-              help: The url of a git repository. May be any of the remote types (git@, http(s)).
-            - name: location
-              type: string
-              help: The location for the dsl. Defaults to the first dsl path listed in the geb.yaml file.
-
-        - name: generator
-          usage: generator [git-repo-url] <output-location>
-          short: Add a generator to a project.
-          aliases:
-            - gen
-          args:
-            - name: url
-              type: string
-              required: true
-              help: The url of a git repository. May be any of the remote types (git@, http(s)).
-            - name: location
-              type: string
-              help: The location for the generator. Defaults to the first dsl path listed in the geb.yaml file.
 
