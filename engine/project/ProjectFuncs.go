@@ -58,7 +58,7 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 	// This should probably move below the design loading
 	// or perhaps we just have a step during unification to load the dependencies and such
 	err = P.LoadGenerators()
-	logger.Warn("Project Generators", "err", err)
+	logger.Debug("Project Generators", "err", err)
 	if err != nil {
 		return errors.Wrap(err, "while loading generators\n")
 	}

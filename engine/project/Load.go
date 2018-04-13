@@ -185,7 +185,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 
 	} // end loop over dsl generators
 
-	logger.Crit("Project after gen load", "P", P)
+	logger.Debug("Project after gen load", "P", P)
 
 	// HOFSTADTER_END   LoadGenerator
 	return
