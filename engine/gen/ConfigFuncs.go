@@ -1,9 +1,7 @@
 package gen
 
-import (
 // HOFSTADTER_START import
 // HOFSTADTER_END   import
-)
 
 /*
 Name:      Config
@@ -22,3 +20,17 @@ func NewConfig() *Config {
 }
 
 // HOFSTADTER_BELOW
+
+func (C *Config) Merge(M *Config) {
+
+	// Merge Template Configs
+	for i, ElemC := range C.TemplateConfigs {
+		for _, ElemM := range M.TemplateConfigs {
+			if ElemC.Name == ElemM.Name {
+				ElemC.Templates = append(ElemC.Templates, ElemM.Templates...)
+				ElemC.StaticFiles = append(ElemC.StaticFiles, ElemM.StaticFiles...)
+			}
+		}
+		C.TemplateConfigs[i] = ElemC
+	}
+}

@@ -2,6 +2,7 @@ package gen
 
 import (
 	// HOFSTADTER_START import
+
 	"io/ioutil"
 	"path/filepath"
 
@@ -42,6 +43,36 @@ func CreateFromFolder(folder string) (g *Generator, err error) {
 	g.Config = c
 	g.SourcePath = folder
 	logger.Info("!!!!!!!!!!FOUND in generator", "g", g, "config", *g.Config)
+
+	// Read all geb-gen*.yaml files
+	matches, err := filepath.Glob(filepath.Join(folder, "geb-gen-*.yaml"))
+	if err != nil {
+		return nil, errors.Wrapf(err, "while globing for 'geb-gen-*.yaml' in folder: %s\n", folder)
+	}
+	matches2, err := filepath.Glob(filepath.Join(folder, "geb-gen/*.yaml"))
+	if err != nil {
+		return nil, errors.Wrapf(err, "while globing for 'geb-gen-*.yaml' in folder: %s\n", folder)
+	}
+	matches = append(matches, matches2...)
+	matches3, err := filepath.Glob(filepath.Join(folder, "geb-gen/*/*.yaml"))
+	if err != nil {
+		return nil, errors.Wrapf(err, "while globing for 'geb-gen-*.yaml' in folder: %s\n", folder)
+	}
+	matches = append(matches, matches3...)
+	matches4, err := filepath.Glob(filepath.Join(folder, "geb-gen/*/*/*.yaml"))
+	if err != nil {
+		return nil, errors.Wrapf(err, "while globing for 'geb-gen-*.yaml' in folder: %s\n", folder)
+	}
+	matches = append(matches, matches4...)
+
+	for _, match := range matches {
+		c, cerr := readConfigFile(match)
+		if cerr != nil {
+			return nil, errors.Wrapf(cerr, "Error in gen.CreateFromFolder with 'geb-gen.yml' file in folder: %s\n", folder)
+		}
+
+		g.Config.Merge(c)
+	}
 
 	d, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "designs"))
 	if err != nil {
