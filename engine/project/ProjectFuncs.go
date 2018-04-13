@@ -45,7 +45,7 @@ func NewProject() *Project {
 /*
 Where's your docs doc?!
 */
-func (P *Project) Load(filename string, generators []string) (err error) {
+func (P *Project) Load(filename string, paths []string) (err error) {
 	// HOFSTADTER_START Load
 	logger.Debug("Reading config file", "filename", filename)
 	c, err := ReadConfigFile(filename)
@@ -64,10 +64,12 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 	}
 
 	// make sure loading designs does not depend on the generators being loaded
-	err = P.LoadDesign()
+	err = P.LoadDesign(paths)
 	if err != nil {
 		return errors.Wrap(err, "while loading design\n")
 	}
+
+	// select subdesigns if necessary
 
 	// dstr := fmt.Sprintf("%# v\n\n", pretty.Formatter(P.Design))
 	// fmt.Println(dstr)
@@ -202,7 +204,7 @@ func (P *Project) Subdesign() (errorReport []error) {
 		P.Unify()
 		orig := deepcopy.Copy(P.Design)
 
-		P.Design.ImportDesignFolder("subdesigns")
+		P.Design.ImportDesignFolder("subdesigns", "")
 
 		//
 		//
@@ -343,48 +345,74 @@ func New() *Project {
 	return NewProject()
 }
 
-func (P *Project) LoadDesign() error {
+func (P *Project) LoadDesign(paths []string) error {
 	// make sure loading designs does not depend on the generators being loaded
-	return P.LoadDesignMerge(false)
+	return P.LoadDesignMerge(false, paths)
 }
 
-func (P *Project) LoadDesignMerge(merge bool) error {
+func (P *Project) LoadDesignMerge(merge bool, paths []string) error {
 	// make sure loading designs does not depend on the generators being loaded
-
-	paths := []string{}
-	d_dir := P.Config.DesignDir
-	d_paths := P.Config.DesignPaths
-
-	if len(d_paths) > 0 {
-		for i := len(d_paths) - 1; i >= 0; i-- {
-			paths = append(paths, d_paths[i])
-		}
-	}
-	if d_dir != "" {
-		paths = append(paths, d_dir)
-	}
-
-	if len(paths) == 0 {
-		return errors.Errorf("No design directory or paths specified")
-	}
-
-	logger.Info("Reading designs", "folders", paths)
 
 	d := design.NewDesign()
 	if merge {
 		d = P.Design
 	}
 
-	for _, path := range paths {
-		err := d.ImportDesignFolder(path)
-		if err != nil {
-			return errors.Wrap(err, "in design.CreateFromFolder: "+path+"\n")
+	// gather design directories from geb.yaml
+	var cfg_d_paths []string
+	d_dir := P.Config.DesignDir
+	d_paths := P.Config.DesignPaths
+
+	if len(d_paths) > 0 {
+		for i := len(d_paths) - 1; i >= 0; i-- {
+			cfg_d_paths = append(cfg_d_paths, d_paths[i])
 		}
+	}
+	if d_dir != "" {
+		cfg_d_paths = append(cfg_d_paths, d_dir)
+	}
+
+	// If nothing supplied as args, use everything in the config
+	if len(paths) == 0 {
+
+		if len(cfg_d_paths) == 0 {
+			return errors.Errorf("No design directory or paths specified. Please add to geb.yaml or the commandline.")
+		}
+		logger.Info("Reading designs from geb.yaml", "folders", cfg_d_paths)
+
+		for _, path := range cfg_d_paths {
+			err := d.ImportDesignFolder(path, "")
+			if err != nil {
+				return errors.Wrap(err, "in design.CreateFromFolder: "+path+"\n")
+			}
+		}
+
+	} else {
+		// use the paths args
+
+		// loop over paths X cfg_d_paths looking for a match to act as the base dir
+		for _, path := range paths {
+			for _, cpath := range cfg_d_paths {
+				var err error
+				if strings.HasPrefix(path, cpath) {
+					err = d.ImportDesignFolder(path, cpath)
+				} else {
+					err = d.ImportDesignFolder(path, "")
+				}
+
+				if err != nil {
+					return errors.Wrap(err, "in design.CreateFromFolder: "+path+"\n")
+				}
+			}
+		}
+
+		logger.Info("Reading designs", "folders", paths)
+		// TODO some magic
 	}
 
 	// If we aren't merging, make sure we get the latest subdesigns too
 	if !merge {
-		d.ImportDesignFolder("subdesigns")
+		d.ImportDesignFolder("subdesigns", "")
 	}
 
 	P.Design = d

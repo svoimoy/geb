@@ -4,7 +4,7 @@ cli:
   commands:
 
     - name: gen
-      usage: gen
+      usage: "gen [subdesign-dotpaths]"
       aliases:
         - geb
         - geberate
@@ -12,4 +12,10 @@ cli:
         - g
       short: Generate a project.
       long: Generate a project from its working directory.
+
+      args:
+        - name: paths
+          type: "array:string"
+          rest: true
+          help: A list of filepaths to use as the designs. If no paths are provided, than the geb.yaml is consulted.
 

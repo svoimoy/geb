@@ -34,6 +34,8 @@ type:
       args:
         - name: folder
           type: string
+        - name: basedir
+          type: string
       return:
         - name: err
           type: error

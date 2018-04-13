@@ -19,15 +19,17 @@ dsl-config:
 run-config:
   all:
     - name: "all"
-      command: "geb run"
+      command: "geb"
       args:
+        - run
         - gen
         - fmt
         - install
   regen:
     - name: "regen"
-      command: "geb run"
+      command: "geb"
       args:
+        - run
         - gen
         - fmt
   gen:
@@ -37,13 +39,30 @@ run-config:
         - "gen"
   fmt:
     - name: format
-      command: "gofmt -w main.go commands engine lib"
+      command: "gofmt"
+      args:
+        - "-w"
+        - "main.go"
+        - "commands"
+        - "engine"
+        - "lib"
   build:
     - name: build
-      command: "go build"
+      command: "go"
+      args:
+        - "build"
   install:
     - name: install
-      command: "go install"
+      command: "go"
+      args:
+        - "install"
+  clean:
+    - name: clean
+      command: "rm"
+      args:
+        - "-rf"
+        - ".geb"
+        - "geb"
 
 log-config:
   default:

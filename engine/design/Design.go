@@ -21,7 +21,7 @@ Where's your docs doc?!
 func CreateFromFolder(folder string) (d *Design, err error) {
 	// HOFSTADTER_START CreateFromFolder
 	d = NewDesign()
-	err = d.ImportDesignFolder(folder)
+	err = d.ImportDesignFolder(folder, "")
 	if err != nil {
 		return nil, errors.Wrap(err, "in design.CreateFromFolder: "+folder+"\n")
 	}

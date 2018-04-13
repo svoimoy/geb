@@ -51,9 +51,13 @@ func (D *Design) ImportDesignFile(filename string) (err error) {
 /*
 Where's your docs doc?!
 */
-func (D *Design) ImportDesignFolder(folder string) (err error) {
+func (D *Design) ImportDesignFolder(folder string, basedir string) (err error) {
 	// HOFSTADTER_START ImportDesignFolder
 	logger.Info("Importing Design folder: " + folder)
+
+	if basedir == "" {
+		basedir = folder
+	}
 
 	// Make sure the folder exists
 	_, err = os.Lstat(folder)
@@ -75,7 +79,7 @@ func (D *Design) ImportDesignFolder(folder string) (err error) {
 		switch ext {
 
 		case "json", "toml", "xml", "yaml", "yml", "hof":
-			lerr := local_d.importDesign(folder, path)
+			lerr := local_d.importDesign(basedir, path)
 			if lerr != nil {
 				logger.Debug("importing error", "path", path, "error", lerr)
 				return errors.Wrap(err, "in design.ImportDesignFolder: "+folder+"  "+path+"\n")

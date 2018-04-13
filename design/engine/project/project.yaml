@@ -19,7 +19,7 @@ type:
       args:
         - name: filename
           type: string
-        - name: generators
+        - name: paths
           type: "array:string"
       return:
         - name: err

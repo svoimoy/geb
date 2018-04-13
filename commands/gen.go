@@ -3,7 +3,6 @@ package commands
 import (
 	// HOFSTADTER_START import
 	"fmt"
-	"os"
 
 	"github.com/hofstadter-io/geb/engine"
 	// HOFSTADTER_END   import
@@ -33,7 +32,7 @@ var GenLong = `Generate a project from its working directory.`
 
 var GenCmd = &cobra.Command{
 
-	Use: "gen",
+	Use: "gen [subdesign-dotpaths]",
 
 	Aliases: []string{
 		"geb",
@@ -49,17 +48,20 @@ var GenCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In genCmd", "args", args)
 		// Argument Parsing
+		// [0]name:   paths
+		//     help:   A list of filepaths to use as the designs. If no paths are provided, than the geb.yaml is consulted.
+		//     req'd:
 
-		// HOFSTADTER_START cmd_run
-		if len(args) > 0 {
-			fmt.Println("Error: 'geb gen' does not accept arguments.\n")
-			cmd.Usage()
-			os.Exit(1)
+		var paths []string
+
+		if 0 < len(args) {
+			paths = args[0:]
 		}
 
+		// HOFSTADTER_START cmd_run
 		filename := "geb.yaml"
 
-		err := engine.GenerateProject(filename, args)
+		err := engine.GenerateProject(filename, paths)
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
