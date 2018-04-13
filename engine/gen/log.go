@@ -1,6 +1,8 @@
 package gen
 
 import (
+	"fmt"
+
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 	// HOFSTADTER_START import
@@ -59,6 +61,8 @@ func SetLogger(l log.Logger) {
 		if ok {
 			level_str = level_iface.(string)
 		}
+
+		fmt.Println("GOT HERE", level_str)
 
 		level, err := log.LvlFromString(level_str)
 		if err != nil {

@@ -3,10 +3,11 @@ package project
 import (
 	// HOFSTADTER_START import
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/ryanuber/go-glob"
 
@@ -93,7 +94,10 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 
 		var lastErr error
 
-		if found {
+		if !found {
+			logger.Error("Did not find generator", "gen", spath)
+			return errors.Errorf("Did not find generator %q an any dsl paths %v", spath, dslLookupPaths)
+		} else {
 			logger.Info("    importing", "dsl", s_dsl, "generator", s_gen)
 
 			// for each DSL lookup path
@@ -130,6 +134,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 				// load the generator
 				gen_path := filepath.Join(dsl_path, s_gen)
 				G, err := gen.CreateFromFolder(gen_path)
+				logger.Debug("    ", "path", path, "gen", G, "err", err)
 				if err != nil {
 					lastErr = err
 					continue
@@ -142,6 +147,7 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 
 				// add the generator to the dsl
 				D.Generators[s_gen] = G
+				logger.Debug("    ", "path", path, "dsl", D, "err", err)
 
 				// possibly merge the dsl/generator into the existing
 				orig, ok := P.DslMap[s_dsl]
@@ -178,6 +184,8 @@ func (P *Project) LoadGenerator(generator gen.GeneratorConfig, dslLookupPaths []
 		}
 
 	} // end loop over dsl generators
+
+	logger.Crit("Project after gen load", "P", P)
 
 	// HOFSTADTER_END   LoadGenerator
 	return

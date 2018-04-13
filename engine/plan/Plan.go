@@ -35,7 +35,7 @@ Where's your docs doc?!
 func MakePlans(dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (ret []Plan, err error) {
 	// HOFSTADTER_START MakePlans
 	logger.Info("Planning Project")
-	logger.Info("    with...", "dslMap", dslMap)
+	logger.Info("    with...", "dslMap", dslMap, "data", designData)
 
 	flatland, err := flattenDesignData("", designData)
 	if err != nil {
@@ -521,7 +521,7 @@ Where's your docs doc?!
 */
 func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl.Dsl, designData map[string]interface{}) (plans []Plan, err error) {
 	// HOFSTADTER_START makeProjectPlans
-	logger.Debug("makeProjectPlans start")
+	logger.Debug("makeProjectPlans start", "dsl", dslType, "ctx", dslCtx, "dslMap", dslMap)
 	// get the ctx path for later comparison against dsl
 	ictx_path, err := dotpath.Get("ctx_path", dslCtx, true)
 	if err != nil {
@@ -543,13 +543,19 @@ func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl
 		ctx_dsl = ctx_flds[len(ctx_flds)-1]
 	}
 
-	logger.Debug("Making Dsl plan", "dslMap", dslMap, "ctx_dsl", ctx_dsl, "ctx_dir", ctx_dir)
+	logger.Debug("Making Dsl plan", "dslMap", dslMap, "ctx_dsl", ctx_dsl, "ctx_dir", ctx_dir, "ctx_flds", ctx_flds)
 
 	// Loop over DSLs in the plans
+	found := false
+	var keys []string
 	for d_key, D := range dslMap {
+		keys = append(keys, d_key)
 		// ... comparing the dsl type to the design type
+		logger.Debug("    dsl: "+D.Config.Name, "d_key", d_key, "ctx_dsl", ctx_dsl, "ctx_path", ctx_path)
 		if d_key != ctx_dsl {
 			continue
+		} else {
+			found = true
 		}
 		logger.Info("    dsl: "+D.Config.Name, "d_key", d_key, "ctx_dsl", ctx_dsl, "ctx_path", ctx_path)
 
@@ -593,6 +599,10 @@ func makeProjectPlans(dslType string, dslCtx interface{}, dslMap map[string]*dsl
 		} // End Generator loop
 
 	} // End DSL loop
+
+	if !found {
+		return nil, errors.Errorf("Dsl not found for %q in %v", ctx_dsl, keys)
+	}
 
 	// HOFSTADTER_END   makeProjectPlans
 	return

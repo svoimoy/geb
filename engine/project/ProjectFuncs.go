@@ -58,6 +58,7 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 	// This should probably move below the design loading
 	// or perhaps we just have a step during unification to load the dependencies and such
 	err = P.LoadGenerators()
+	logger.Warn("Project Generators", "err", err)
 	if err != nil {
 		return errors.Wrap(err, "while loading generators\n")
 	}
@@ -70,7 +71,7 @@ func (P *Project) Load(filename string, generators []string) (err error) {
 
 	// dstr := fmt.Sprintf("%# v\n\n", pretty.Formatter(P.Design))
 	// fmt.Println(dstr)
-	logger.Debug("Project Design", "design", P.Design)
+	logger.Info("Project Design", "design", P.Design, "dsls", P.DslMap)
 
 	// Prep the templates now that they are loaded
 	P.registerPartials()

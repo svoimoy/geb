@@ -28,6 +28,7 @@ Where's your docs doc?!
 func CreateFromFolder(folder string) (g *Generator, err error) {
 	// HOFSTADTER_START CreateFromFolder
 	g = NewGenerator()
+	logger.Info("!!!!!!!!!! GOT HERE GENERATOR")
 
 	c, cerr := readConfigFile(filepath.Join(folder, "geb-gen.yml"))
 	if cerr != nil {
@@ -40,6 +41,7 @@ func CreateFromFolder(folder string) (g *Generator, err error) {
 
 	g.Config = c
 	g.SourcePath = folder
+	logger.Info("!!!!!!!!!!FOUND in generator", "g", g, "config", *g.Config)
 
 	d, err := templates.CreateTemplateMapFromFolder(filepath.Join(folder, "designs"))
 	if err != nil {
@@ -72,6 +74,7 @@ func CreateFromFolder(folder string) (g *Generator, err error) {
 	}
 	g.Templates = r
 
+	logger.Info("!!!!!!!!!!FOUND in generator", "g", g, "config", *g.Config)
 	return g, nil
 	// HOFSTADTER_END   CreateFromFolder
 	return
