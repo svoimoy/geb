@@ -27,8 +27,8 @@ fpm:
       - deb
   vendor: "hofstadter.io"
   homepage: "https://geb.hofstadter.io/"
-  maintainer: "Bjørn Erik Pedersen <bjorn.erik.pedersen@gmail.com>"
-  description: "A Fast and Flexible Static Site Generator built with love in GoLang."
+  maintainer: "Tony Worm <verdverm@gmail.com>"
+  description: "A DSL and Code Generation framework built with love in GoLang."
   license: "BSD 3-Clause"
 archive:
   format: tar.gz
@@ -49,7 +49,7 @@ archive:
     freebsd: FreeBSD
     dragonfly: DragonFlyBSD
   files:
-    - README.md
+    - readme.md
     - LICENSE.md
 release:
   draft: true
