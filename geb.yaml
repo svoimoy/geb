@@ -64,6 +64,12 @@ run-config:
         - ".geb"
         - "geb"
 
+  test-build-releases:
+    - name: clean
+      command: "rm -rf dist"
+    - name: build
+      command: "goreleaser --snapshot --skip-publish"
+
 log-config:
   default:
     level: warn

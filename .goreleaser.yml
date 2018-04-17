@@ -51,5 +51,9 @@ archive:
   files:
     - readme.md
     - LICENSE.md
+
+git:
+  short_hash: true
+
 release:
   draft: true

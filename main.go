@@ -25,6 +25,11 @@ import (
 // HOFSTADTER_START init
 // HOFSTADTER_END   init
 
+var version = "master"
+var commit = "head"
+var builddate = "today"
+var goversion = "1.10.1"
+
 var logger = log.New()
 
 func main() {
