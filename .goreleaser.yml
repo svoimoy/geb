@@ -1,7 +1,7 @@
 build:
   main: main.go
   binary: geb
-  # ldflags: -s -w -X github.com/gohugoio/hugo/hugolib.BuildDate={{.Date}}
+  ldflags: -s -w -X main.builddate={{.Date}}
   env:
     - CGO_ENABLED=0
   goos:
@@ -14,9 +14,9 @@ build:
     # - dragonfly
   goarch:
     - amd64
-    # - 386
-    # - arm
-    # - arm64
+    - 386
+    - arm
+    - arm64
   ignore:
     - goos: openbsd
       goarch: arm
