@@ -22,7 +22,7 @@ build:
       goarch: arm
       goarm: 6
 
-fpm:
+nfpm:
   formats:
       - deb
   vendor: "hofstadter.io"
